@@ -3,479 +3,982 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Carnet & Red Social - Estilo Completo</title>
+    <title>Rincón de Bollolandia</title>
+
+    <!-- Icono personalizado desde Imgur -->
+    <link rel="apple-touch-icon" href="https://i.imgur.com/aMNQnO5.png">
+    <link rel="icon" type="image/png" href="https://i.imgur.com/aMNQnO5.png">
+
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#bdb2ff">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Bollolandia">
+
+    <!-- Librería para descargar el carnet como imagen PNG -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <!-- Fuentes personalizadas -->
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Cinzel:wght@700&display=swap" rel="stylesheet">
+
     <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        :root {
+            --rosa: #ffc6ff;
+            --lila: #bdb2ff;
+            --fondo: #fff0f5;
+            --tarjeta: #ffffff;
+            --texto: #4a3e4e;
+            --morado: #6c5ce7;
+            --fucsia: #ff85a1;
+            --oro-light: #fff3a0;
+            --oro-main: #ffd700;
+            --oro-dark: #b8860b;
         }
 
         body {
-            background-color: #fce7f3;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background-color: var(--fondo);
+            color: var(--texto);
+            margin: 0;
+            padding: 0 0 85px 0;
+            overflow-x: hidden;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--rosa), var(--lila));
+            padding: 22px 15px 18px 15px;
+            text-align: center;
+            border-bottom-left-radius: 20px;
+            border-bottom-right-radius: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            position: relative;
+        }
+
+        h1 { 
+            margin: 0; 
+            font-size: 1.5rem; 
+            color: #fff; 
+            padding-right: 75px;
+        }
+        p.subtitulo { 
+            margin: 4px 0 0; 
+            color: #fff; 
+            font-size: 0.85rem; 
+            opacity: 0.95; 
+            padding-right: 75px;
+        }
+
+        /* BANNER DE CORAZONES */
+        .hearts-counter {
+            position: absolute;
+            top: 25px;
+            right: 12px;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-weight: bold;
+            color: #d63384;
+            font-size: 0.85rem;
+            box-shadow: 0 3px 8px rgba(0,0,0,0.12);
             display: flex;
-            justify-content: center;
             align-items: center;
-            min-height: 100vh;
+            gap: 5px;
+            z-index: 10;
+        }
+
+        .container { padding: 15px; max-width: 500px; margin: 0 auto; }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+
+        .card {
+            background: var(--tarjeta);
+            border-radius: 16px;
+            padding: 16px;
+            margin-bottom: 15px;
+            box-shadow: 0 4px 12px rgba(189, 178, 255, 0.25);
+        }
+
+        h2 { color: var(--morado); margin-top: 0; font-size: 1.2rem; }
+
+        input, select, textarea, button {
+            width: 100%;
+            padding: 12px;
+            margin: 8px 0;
+            border-radius: 10px;
+            border: 1px solid #e2d4f0;
+            box-sizing: border-box;
+            font-size: 0.95rem;
+            font-family: inherit;
+        }
+
+        .btn-principal {
+            background: linear-gradient(135deg, #a0c4ff, var(--lila));
+            color: white;
+            font-weight: bold;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-flechazo {
+            background: linear-gradient(135deg, var(--rosa), var(--fucsia));
+            color: white;
+            font-weight: bold;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-logout {
+            background: #fee2e2;
+            color: #dc2626;
+            border: 1px solid #fca5a5;
+            padding: 10px;
+            border-radius: 10px;
+            font-weight: bold;
+            font-size: 0.85rem;
+            cursor: pointer;
+            margin-top: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .btn-mapa {
+            background: #e8def8;
+            color: var(--morado);
+            border: none;
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-weight: bold;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 6px;
+            font-size: 0.85rem;
+        }
+
+        .grid-pets { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px; }
+        .pet-item img { width: 100%; height: 120px; object-fit: cover; border-radius: 10px; }
+
+        .match-box {
+            background: #ffe5ec;
+            border: 2px dashed var(--fucsia);
+            border-radius: 12px;
+            padding: 15px;
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        /* OVERLAY MATCH */
+        #matchOverlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(255, 240, 245, 0.95);
+            z-index: 9999;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
             padding: 20px;
         }
 
-        /* Contenedor principal de la tarjeta de carnet */
-        .carnet-container {
-            background: #ffffff;
-            width: 400px;
-            border-radius: 24px;
-            box-shadow: 0 12px 30px rgba(219, 39, 119, 0.18);
-            padding: 25px;
-            text-align: center;
-            border: 2px solid #fbcfe8;
-            position: relative;
-        }
-
-        /* Foto de perfil y marco exclusivo de Fundadora (Humo Blanco) */
-        .foto-box {
-            position: relative;
-            width: 120px;
-            height: 120px;
-            margin: 10px auto 15px auto;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .founder-frame {
-            position: absolute;
-            width: 136px;
-            height: 136px;
-            border-radius: 50%;
-            background: conic-gradient(from 0deg, #ffffff, #cbd5e1, #ffffff, #94a3b8, #ffffff);
-            animation: rotateSmoke 4s linear infinite;
-            filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.9));
-            z-index: 1;
-        }
-
-        @keyframes rotateSmoke {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        .foto-interior {
-            width: 110px;
-            height: 110px;
-            border-radius: 50%;
-            background: #e2e8f0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 3rem;
-            z-index: 2;
-            position: relative;
-        }
-
-        .nombre {
-            font-size: 20px;
-            font-weight: bold;
-            color: #db2777;
-            margin-bottom: 4px;
-        }
-
-        .badge-gold {
-            display: inline-block;
-            background: linear-gradient(135deg, #f59e0b, #d97706);
-            color: white;
-            font-size: 11px;
-            font-weight: bold;
-            padding: 4px 12px;
-            border-radius: 20px;
-            margin-bottom: 12px;
-            box-shadow: 0 2px 5px rgba(245, 158, 11, 0.3);
-        }
-
-        .datos {
-            text-align: left;
-            background: #fdf2f8;
+        /* ESTILOS DEL CARNET ESTÁNDAR Y DORADO */
+        .file-input-label {
+            background: #f1f5f9;
+            border: 2px dashed var(--morado);
             padding: 12px;
-            border-radius: 12px;
-            font-size: 13px;
-            color: #4b5563;
-            margin-bottom: 15px;
-            border: 1px solid #fbcfe8;
-        }
-
-        .datos p {
-            margin: 5px 0;
-        }
-
-        .hearts-counter {
-            font-weight: bold;
-            color: #db2777;
-            font-size: 14px;
-            margin-bottom: 15px;
-            background: #fff1f2;
-            padding: 6px;
             border-radius: 10px;
-            display: inline-block;
-            border: 1px solid #fda4af;
-        }
-
-        /* Secciones de contenido dinámico (Ocultas/Visibles según la pestaña) */
-        .tab-content {
-            display: none;
-            text-align: left;
-            animation: fadeIn 0.3s ease;
-        }
-
-        .tab-content.active {
-            display: block;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(4px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .section-title {
-            font-size: 14px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            color: var(--morado);
             font-weight: bold;
-            color: #be185d;
+            text-align: center;
+            display: block;
+            margin: 8px 0;
+        }
+
+        .mini-badge {
+            background: rgba(255, 255, 255, 0.95);
+            border: 2px solid var(--morado);
+            border-radius: 20px;
+            padding: 8px 12px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            margin-top: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+        .mini-badge.gold-badge {
+            background: linear-gradient(135deg, #fffbeb, #fef3c7);
+            border: 2px solid var(--oro-main);
+            box-shadow: 0 0 10px rgba(255, 215, 0, 0.4);
+        }
+
+        .badge-avatar {
+            width: 38px; height: 38px;
+            border-radius: 50%;
+            border: 1px solid var(--morado);
+            background: #e2e8f0;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.1rem; overflow: hidden; flex-shrink: 0;
+        }
+
+        .card-modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 10000;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        /* DISEÑO BASE DEL CARNET */
+        .mclovin-card {
+            width: 320px;
+            background: white;
+            border-radius: 12px;
+            border: 2px solid #b0b0b0;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+            overflow: hidden;
+            background-image: linear-gradient(120deg, #fbcfe8 0%, #fed7aa 30%, #fef08a 60%, #bae6fd 100%);
+            font-family: 'Arial', sans-serif;
+            box-sizing: border-box;
+            color: #333;
+            position: relative;
+        }
+
+        /* ESTILO DORADO */
+        .mclovin-card.gold-edition {
+            background-image: linear-gradient(135deg, #bf953f 0%, #fcf6ba 25%, #b38728 50%, #fbf5b7 75%, #aa771c 100%);
+            border: 2px solid #ffd700;
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.6);
+        }
+
+        .card-header {
+            padding: 6px 10px;
+            text-align: center;
+            background: #0284c7;
+            color: white;
+            border-bottom: 2px solid #f59e0b;
+        }
+
+        .mclovin-card.gold-edition .card-header {
+            background: linear-gradient(90deg, #785212, #b8860b, #785212);
+            border-bottom: 2px solid #fff;
+        }
+
+        .header-main { font-size: 0.8rem; font-weight: 900; color: #fef08a; text-transform: uppercase; }
+        .header-sub { font-size: 0.6rem; font-weight: bold; color: #ffffff; letter-spacing: 1px; }
+
+        .card-body { display: flex; padding: 10px; gap: 10px; align-items: flex-start; }
+
+        .card-photo-box {
+            width: 85px; height: 105px;
+            background: #e2e8f0;
+            border: 2px solid #0284c7;
+            border-radius: 4px;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 2px 2px 5px rgba(0,0,0,0.15);
+            flex-shrink: 0;
+        }
+
+        .mclovin-card.gold-edition .card-photo-box {
+            border: 2px solid #b8860b;
+            box-shadow: 0 0 8px rgba(184, 134, 11, 0.5);
+        }
+
+        .card-photo-img { width: 100%; height: 100%; object-fit: cover; }
+        .card-info { flex: 1; font-size: 0.65rem; color: #1e293b; font-weight: bold; text-align: left; }
+        .info-row { margin-bottom: 3px; }
+        .label-red { color: #b91c1c; font-size: 0.58rem; text-transform: uppercase; }
+        .mclovin-card.gold-edition .label-red { color: #5c3d00; }
+        .val-bold { font-size: 0.8rem; font-weight: 900; color: #000; text-transform: uppercase; }
+        .val-mision { font-size: 0.65rem; color: #1e3a8a; line-height: 1.1; display: block; margin-top: 1px; }
+        .mclovin-card.gold-edition .val-mision { color: #3d2700; }
+
+        .signature { 
+            font-family: 'Great Vibes', cursive; 
+            font-size: 1.3rem; 
+            color: #0f172a;
+            line-height: 1;
+            transform: rotate(-2deg);
+            display: inline-block;
+            margin-top: 2px;
+        }
+
+        .founder-seal {
+            display: none;
+            position: absolute;
+            bottom: 8px;
+            right: 8px;
+            background: #785212;
+            color: #fff3a0;
+            padding: 3px 6px;
+            border-radius: 4px;
+            font-size: 0.55rem;
+            font-weight: 900;
+            border: 1px solid #ffd700;
+            letter-spacing: 0.5px;
+        }
+
+        .gold-edition .founder-seal { display: block; }
+
+        .modal-buttons { display: flex; flex-direction: column; gap: 8px; width: 320px; margin-top: 15px; }
+        .btn-action { width: 100%; padding: 10px; border: none; border-radius: 8px; font-size: 0.85rem; cursor: pointer; font-weight: bold; text-align: center; }
+        .btn-close { background: #333; color: white; }
+        .btn-download { background: #10b981; color: white; }
+
+        /* TIENDA DE RECOMPENSAS */
+        .shop-item {
+            border: 1px solid #e2d4f0;
+            border-radius: 12px;
+            padding: 12px;
             margin-bottom: 10px;
             display: flex;
             align-items: center;
-            gap: 6px;
-        }
-
-        /* Estilos Tienda */
-        .store-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 8px;
-        }
-
-        .store-item {
+            justify-content: space-between;
             background: #fff;
-            border: 1px solid #f472b6;
+        }
+
+        .shop-item-info h4 { margin: 0 0 4px 0; font-size: 0.95rem; color: var(--morado); }
+        .shop-item-info p { margin: 0; font-size: 0.78rem; color: #666; }
+        .btn-buy {
+            background: linear-gradient(135deg, var(--rosa), var(--fucsia));
+            color: white;
+            border: none;
+            padding: 8px 12px;
             border-radius: 8px;
-            padding: 10px;
-            text-align: center;
-            font-size: 12px;
-            color: #4b5563;
-        }
-
-        .store-btn {
-            background: #db2777;
-            color: white;
-            border: none;
-            padding: 5px 8px;
-            border-radius: 6px;
             font-weight: bold;
+            font-size: 0.8rem;
             cursor: pointer;
-            margin-top: 6px;
-            font-size: 11px;
-            width: 100%;
+            width: auto;
+            flex-shrink: 0;
         }
 
-        /* Estilos Ruleta */
-        .roulette-area {
-            background: #fff1f2;
-            border-radius: 10px;
-            padding: 12px;
-            text-align: center;
-            border: 1px solid #fda4af;
-        }
-
-        .roulette-result {
-            font-size: 13px;
-            font-weight: bold;
-            color: #e11d48;
-            margin: 8px 0;
-            min-height: 40px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .spin-btn {
-            background: #e11d48;
-            color: white;
-            border: none;
-            padding: 6px 14px;
-            border-radius: 15px;
-            font-weight: bold;
-            cursor: pointer;
-            font-size: 12px;
-        }
-
-        /* Estilos Tablón / Post-its */
-        .post-it-area textarea {
-            width: 100%;
-            height: 60px;
-            border: 1px solid #fde047;
-            background: #fef9c3;
-            border-radius: 6px;
-            padding: 6px;
-            font-size: 12px;
-            resize: none;
-            box-sizing: border-box;
-        }
-
-        .post-it-btn {
-            background: #d97706;
-            color: white;
-            border: none;
-            padding: 5px 10px;
-            border-radius: 6px;
-            font-weight: bold;
-            cursor: pointer;
-            font-size: 11px;
-            margin-top: 4px;
-            width: 100%;
-        }
-
-        .post-it-list {
-            margin-top: 10px;
-            max-height: 120px;
-            overflow-y: auto;
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-        }
-
-        .post-it {
-            background: #fef08a;
-            padding: 8px;
-            border-radius: 4px;
-            font-size: 12px;
-            color: #713f12;
-            box-shadow: 1px 2px 5px rgba(0,0,0,0.1);
-            animation: bounceIn 0.4s ease;
-        }
-
-        @keyframes bounceIn {
-            0% { transform: scale(0); opacity: 0; }
-            70% { transform: scale(1.05); opacity: 1; }
-            100% { transform: scale(1); opacity: 1; }
-        }
-
-        /* Quedadas y Mascotas (Secciones de ejemplo fieles a la estructura clásica) */
-        .generic-card {
-            background: #fdf2f8;
-            padding: 10px;
-            border-radius: 8px;
-            border: 1px solid #fbcfe8;
-            font-size: 13px;
-            color: #4b5563;
-            margin-bottom: 8px;
-        }
-
-        /* BARRA DE NAVEGACIÓN INFERIOR (Estilo clásico exacto) */
-        .nav-bottom {
+        /* MENÚ NAVEGACIÓN INFERIOR */
+        .nav-tabs {
             display: flex;
             justify-content: space-around;
-            margin-top: 20px;
-            padding-top: 12px;
-            border-top: 2px solid #fbcfe8;
             background: #fff;
+            position: fixed;
+            bottom: 0; left: 0; right: 0;
+            padding: 10px 2px;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.08);
+            z-index: 99;
         }
 
-        .nav-btn {
-            background: none;
-            border: none;
-            cursor: pointer;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            font-size: 11px;
-            color: #9ca3af;
-            font-weight: 600;
-            transition: color 0.2s;
+        .tab-btn {
+            background: none; border: none;
+            font-size: 0.65rem; color: #888;
+            display: flex; flex-direction: column; align-items: center; gap: 2px;
+            font-weight: bold; flex: 1; padding: 0; margin: 0; cursor: pointer;
         }
 
-        .nav-btn span {
-            font-size: 18px;
-            margin-bottom: 2px;
-        }
+        .tab-btn.active { color: var(--morado); }
+        .tab-btn span { font-size: 1.1rem; }
 
-        .nav-btn.active, .nav-btn:hover {
-            color: #db2777;
-        }
+        footer { text-align: center; padding: 15px; font-size: 0.8rem; color: #666; }
     </style>
 </head>
 <body>
 
-    <div class="carnet-container">
-        
-        <!-- 1. PESTAÑA CARNET (Por defecto visible) -->
-        <div id="tab-carnet" class="tab-content active">
-            <div class="foto-box">
-                <div class="founder-frame"></div>
-                <div class="foto-interior">👩‍💻</div>
-            </div>
-            
-            <div class="nombre">Fundadora</div>
-            <div class="badge-gold">👑 Estatus Gold</div>
+    <!-- OVERLAY ANIMADO DE MATCH -->
+    <div id="matchOverlay" onclick="cerrarMatchAnimacion()">
+        <div style="font-size: 80px;">💖🏹</div>
+        <div style="font-size: 1.6rem; color: var(--fucsia); font-weight: bold; margin-top: 10px;">¡FLECHAZO MUTUO! 🌸</div>
+        <p id="matchTextoAnimado" style="font-size:1.1rem; color:var(--texto); font-weight:600;"></p>
+        <p style="font-size:0.8rem; color:#888; margin-top:20px;">(Toca la pantalla para cerrar)</p>
+    </div>
 
-            <div class="datos">
-                <p><strong>ID:</strong> #0001-FOUNDER</p>
-                <p><strong>Rol:</strong> Propietaria & Creadora</p>
-                <p><strong>Acceso:</strong> Total / Privilegiado</p>
+    <!-- MODAL VER CARNET GRANDE -->
+    <div id="cardModal" class="card-modal" onclick="cerrarModalCarnet()">
+        <div id="mclovin-card" class="mclovin-card" onclick="event.stopPropagation()">
+            <div class="card-header">
+                <div class="header-main" id="cardHeaderTitle">ESPAÑA • BOLLOLANDIA 🌈</div>
+                <div class="header-sub">DRIVER LICENSE / CARNET SÁFICO</div>
             </div>
-
-            <div class="hearts-counter">
-                💖 <span id="userHearts">150</span> Corazones
-            </div>
-        </div>
-
-        <!-- 2. PESTAÑA TIENDA (Marcos nuevos) -->
-        <div id="tab-tienda" class="tab-content">
-            <div class="section-title">🛍️ Tienda de Marcos Digitales</div>
-            <div class="store-grid">
-                <div class="store-item">
-                    <b>Partículas Rojas 🔴</b><br>
-                    <span style="font-size: 10px; color: #6b7280;">Órbita ardiente</span>
-                    <button class="store-btn" onclick="buyItem('Partículas Rojas', 50)">50 💖</button>
+            <div class="card-body">
+                <div class="card-photo-box" id="cardPhotoBox">
+                    <span style="font-size: 2.2rem;">👤</span>
                 </div>
-                <div class="store-item">
-                    <b>Líneas Esfera ⚡</b><br>
-                    <span style="font-size: 10px; color: #6b7280;">Estilo polar</span>
-                    <button class="store-btn" onclick="buyItem('Líneas Esfera', 60)">60 💖</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- 3. PESTAÑA QUEDADAS -->
-        <div id="tab-quedadas" class="tab-content">
-            <div class="section-title">✨ Quedadas & Eventos</div>
-            <div class="generic-card">
-                <b>☕ Café & Networking VIP</b><br>
-                <span>Próximo encuentro presencial exclusivo para miembros Gold.</span>
-            </div>
-            <div class="generic-card">
-                <b>🎨 Taller de Estética de Perfiles</b><br>
-                <span>Aprende a combinar marcos y colores.</span>
-            </div>
-        </div>
-
-        <!-- 4. PESTAÑA MASCOTAS -->
-        <div id="tab-mascotas" class="tab-content">
-            <div class="section-title">🐾 Zona de Mascotas VIP</div>
-            <div class="generic-card">
-                <b>🐱 Michi Guardián (#01)</b><br>
-                <span>Compañero oficial de la comunidad. ¡Le encantan los corazones!</span>
-            </div>
-        </div>
-
-        <!-- 5. PESTAÑA RULETA & TABLÓN -->
-        <div id="tab-extras" class="tab-content">
-            <div class="roulette-area" style="margin-bottom: 12px;">
-                <div class="section-title" style="color: #e11d48; margin-bottom: 4px; justify-content: center;">🎲 Ruleta de Corazones</div>
-                <div class="roulette-result" id="rouletteResult">¡Gira por 10 💖!</div>
-                <button class="spin-btn" onclick="spinRoulette()">Girar Ruleta</button>
-            </div>
-
-            <div class="post-it-area">
-                <div class="section-title" style="color: #b45309; margin-bottom: 4px;">📌 Tablón (Post-its)</div>
-                <textarea id="postContent" placeholder="Escribe tu nota..."></textarea>
-                <button class="post-it-btn" onclick="addPostIt()">Pegar Nota</button>
-                <div class="post-it-list" id="postItContainer">
-                    <div class="post-it">
-                        ¡Bienvenidos al tablón oficial de la comunidad! 📌
+                <div class="card-info">
+                    <div class="info-row">
+                        <span class="label-red">LICENCE NO.</span><br>
+                        <span class="val-bold" id="cardIdOut" style="color: #b91c1c;">BL-0000001</span>
+                    </div>
+                    <div class="info-row" style="display: flex; gap: 8px;">
+                        <div>
+                            <span class="label-red">EXP:</span> <span id="cardExpOut">PERMANENTE</span>
+                        </div>
+                        <div>
+                            <span class="label-red">DOB:</span> <span id="cardDateOut">00/00/0000</span>
+                        </div>
+                    </div>
+                    <div class="info-row" style="margin-top: 3px;">
+                        <span class="label-red">NOMBRE / APODO:</span><br>
+                        <span class="val-bold" id="cardNameOut">---</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="label-red">MISIÓN PRINCIPAL:</span><br>
+                        <span class="val-mision" id="cardMisionOut">---</span>
+                    </div>
+                    <div class="info-row" style="margin-top: 3px;">
+                        <span class="label-red">FIRMA DEL TITULAR:</span><br>
+                        <span class="signature" id="cardSignatureOut">---</span>
                     </div>
                 </div>
             </div>
+            <div class="founder-seal">✨ CREADORA VIP ✨</div>
         </div>
 
-        <!-- BARRA DE NAVEGACIÓN INFERIOR (ESTILO CLÁSICO) -->
-        <div class="nav-bottom">
-            <button class="nav-btn active" onclick="switchTab('carnet', this)">
-                <span>🪪</span> Carnet
-            </button>
-            <button class="nav-btn" onclick="switchTab('tienda', this)">
-                <span>🛍️</span> Tienda
-            </button>
-            <button class="nav-btn" onclick="switchTab('quedadas', this)">
-                <span>☕</span> Quedadas
-            </button>
-            <button class="nav-btn" onclick="switchTab('mascotas', this)">
-                <span>🐾</span> Mascotas
-            </button>
-            <button class="nav-btn" onclick="switchTab('extras', this)">
-                <span>🎲</span> Extras
-            </button>
+        <div class="modal-buttons" onclick="event.stopPropagation()">
+            <button class="btn-action btn-download" onclick="descargarCarnet()">📸 Descargar Carnet</button>
+            <button class="btn-action btn-close" onclick="cerrarModalCarnet()">Cerrar</button>
+        </div>
+    </div>
+
+    <header>
+        <div class="hearts-counter">💖 <span id="heartCount">0</span></div>
+        <h1>🌸 Rincón de Bollolandia 🌸</h1>
+        <p class="subtitulo">Nuestro espacio seguro ✨</p>
+    </header>
+
+    <div class="container">
+
+        <!-- REGISTRO Y CARNET SÁFICO -->
+        <div id="carnet" class="tab-content active">
+            <div class="card" id="formRegistroCarnet">
+                <h2>💳 Carnet Sáfico de Bollolandia</h2>
+                <p style="font-size:0.85rem; color:#666; margin-top:-5px;">Ingresa tus datos y el código exclusivo para obtener tu carnet personalizado y acceder a la web.</p>
+                
+                <input type="text" id="inName" placeholder="Tu Apodo / Nombre" maxlength="15">
+                
+                <select id="inMision">
+                    <option value="" disabled selected>Selecciona tu misión principal...</option>
+                    <option value="Fundadora & Creadora de Bollolandia">👑 Fundadora & Creadora Oficial</option>
+                    <option value="Traer el chisme fresco">✨ Traer el chisme fresco</option>
+                    <option value="Organizar las previas">🍻 Organizar las previas</option>
+                    <option value="Dar los mejores abrazos">🫂 Dar los mejores abrazos</option>
+                    <option value="Servir drama libre">Aesthetic & Drama Libre</option>
+                    <option value="Analizar las red flags">🚩 Analizadora de Red Flags</option>
+                    <option value="Ser la DJ oficial del grupo">🎧 DJ oficial del grupo</option>
+                    <option value="Crisis existenciales 3 AM">🌙 Crisis existenciales 3 AM</option>
+                    <option value="Adoptar gatitos y llorar">🐱 Adoptar gatitos y llorar</option>
+                </select>
+
+                <label for="inPhoto" class="file-input-label" id="photoLabel">📷 Subir Foto de Perfil</label>
+                <input type="file" id="inPhoto" accept="image/*" style="display: none;" onchange="procesarFotoCarnet()">
+
+                <input type="password" id="inCodigo" placeholder="🔒 Código de acceso exclusivo">
+
+                <button class="btn-principal" onclick="crearCarnet()">✨ Validar Código y Crear Carnet</button>
+            </div>
+
+            <div class="card" id="seccionMiCarnet" style="display: none;">
+                <h2>Tu Carnet Sáfico</h2>
+                <p style="font-size:0.85rem; color:#666; margin-top:-5px;">¡Identificación verificada! Haz clic en el carnet para verlo ampliado o descargarlo.</p>
+                
+                <div class="mini-badge" id="miniBadgeBox" onclick="abrirModalCarnet()">
+                    <div class="badge-avatar" id="miniAvatarBox">👤</div>
+                    <div style="flex:1;">
+                        <div style="font-weight: bold; font-size: 0.9rem; color: var(--morado);" id="badgeNameOut">Apodo</div>
+                        <div style="font-size: 0.75rem; color: #888;" id="badgeIdOut">#BL-0000001</div>
+                    </div>
+                    <span style="font-size: 0.8rem; color: var(--morado); font-weight: bold;">Ver Carnet 👁️</span>
+                </div>
+
+                <button class="btn-logout" onclick="cerrarSesion()">🚪 Cerrar Sesión / Regenerar Carnet</button>
+            </div>
         </div>
 
+        <!-- TIENDA DE RECOMPENSAS -->
+        <div id="tienda" class="tab-content">
+            <div class="card">
+                <h2>🛍️ Tienda de Poderes & Favores</h2>
+                <p style="font-size:0.85rem; color:#666; margin-top:-5px;">
+                    Canjea tus 💖 acumulados por dinámicas exclusivas en las quedadas o en la web.
+                </p>
+
+                <div class="shop-item">
+                    <div class="shop-item-info">
+                        <h4>🎲 Misión Secreta para Quedadas</h4>
+                        <p>Recibes un reto secreto en tu pantalla. Si lo cumples sin que lo noten, ganas +100 💖.</p>
+                    </div>
+                    <button class="btn-buy" onclick="comprarItem('Misión Secreta', 40)">40 💖</button>
+                </div>
+
+                <div class="shop-item">
+                    <div class="shop-item-info">
+                        <h4>🔄 Carta Reversa (Joker de Plan)</h4>
+                        <p>Derecho a vetar o reorientar un plan de quedada que no te apetezca nada.</p>
+                    </div>
+                    <button class="btn-buy" onclick="comprarItem('Carta Reversa', 80)">80 💖</button>
+                </div>
+
+                <div class="shop-item">
+                    <div class="shop-item-info">
+                        <h4>🤫 Borrón y Cuenta Nueva</h4>
+                        <p>Silencia un tema embarazoso o metedura de pata. Nadie puede volver a sacarlo.</p>
+                    </div>
+                    <button class="btn-buy" onclick="comprarItem('Borrón y Cuenta Nueva', 60)">60 💖</button>
+                </div>
+
+                <div class="shop-item">
+                    <div class="shop-item-info">
+                        <h4>🤝 Mercadillo de Favores</h4>
+                        <p>Te ayuda el grupo a montar un mueble, mudanza o te prestan ropa para una cita.</p>
+                    </div>
+                    <button class="btn-buy" onclick="comprarItem('Favores del Grupo', 120)">120 💖</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- CUMPLEAÑOS -->
+        <div id="cumples" class="tab-content">
+            <div class="card">
+                <h2>📅 Añadir Cumpleaños</h2>
+                <input type="text" id="nombreCumple" placeholder="Nombre de la cumpleañera">
+                <input type="date" id="fechaCumple">
+                <button class="btn-principal" onclick="agregarCumple()">Añadir a la lista (+15💖)</button>
+            </div>
+            <div class="card">
+                <h2>🎉 Próximos Cumpleaños</h2>
+                <div id="listaCumples">Aún no hay cumpleaños añadidos.</div>
+            </div>
+        </div>
+
+        <!-- QUEDADAS -->
+        <div id="quedadas" class="tab-content">
+            <div class="card">
+                <h2>📍 Proponer Quedada</h2>
+                <input type="text" id="tituloQuedada" placeholder="Plan (ej: Picnic, Café...)">
+                <input type="text" id="lugarQuedada" placeholder="Lugar o Ciudad (ej: Retiro Madrid)">
+                <input type="datetime-local" id="fechaQuedada">
+                <button class="btn-principal" onclick="agregarQuedada()">Publicar Quedada (+25💖)</button>
+            </div>
+            <div class="card">
+                <h2>🗺️ Próximos Planes</h2>
+                <div id="listaQuedadas">Aún no hay quedadas propuestas.</div>
+            </div>
+        </div>
+
+        <!-- BUZÓN SECRETO (MATCH) -->
+        <div id="buzon" class="tab-content">
+            <div class="card">
+                <h2>💌 Buzón Secreto de Flechazos</h2>
+                <p style="font-size:0.85rem; color:#666; margin-top:-5px;">
+                    Nadie sabrá a quién le has mandado un flechazo... ¡a menos que sea mutuo! 💖
+                </p>
+                <input type="text" id="miNombre" placeholder="Tu nombre / apodo">
+                <input type="text" id="destinoNombre" placeholder="¿A quién le mandas el flechazo?">
+                <button class="btn-flechazo" onclick="enviarFlechazo()">💘 Mandar Flechazo Secreto</button>
+            </div>
+
+            <div class="card">
+                <h2>✨ Tus Matches Secretos</h2>
+                <div id="misMatches">Introduce tu nombre para comprobar si tienes algún match en secreto.</div>
+            </div>
+        </div>
+
+        <!-- MASCOTAS -->
+        <div id="mascotas" class="tab-content">
+            <div class="card">
+                <h2>🐾 Subir Foto de Mascota</h2>
+                <input type="text" id="nombreMascota" placeholder="Nombre del animalito">
+                <input type="file" id="fotoMascota" accept="image/*">
+                <button class="btn-principal" onclick="subirMascota()">Publicar Foto (+20💖)</button>
+            </div>
+            <div class="card">
+                <h2>📸 Galería de Peludos</h2>
+                <div id="galeriaMascotas" class="grid-pets"></div>
+            </div>
+        </div>
+
+        <!-- SUGERENCIAS -->
+        <div id="sugerencias" class="tab-content">
+            <div class="card">
+                <h2>💡 ¿Qué quieres que añadamos?</h2>
+                <textarea id="textoSugerencia" rows="3" placeholder="Escribe aquí ideas o mejoras..."></textarea>
+                <button class="btn-principal" onclick="enviarSugerencia()">Enviar Idea</button>
+            </div>
+            <div class="card">
+                <h2>💬 Ideas del grupo</h2>
+                <div id="listaSugerencias">Aún no hay sugerencias.</div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p id="fraseRotativa">✨ "Un espacio donde siempre puedes ser tú misma." ✨</p>
+    </footer>
+
+    <!-- MENÚ NAVEGACIÓN INFERIOR -->
+    <div class="nav-tabs" id="navTabs" style="display: none;">
+        <button class="tab-btn active" onclick="cambiarPestana('carnet', this)"><span>💳</span>Carnet</button>
+        <button class="tab-btn" onclick="cambiarPestana('tienda', this)"><span>🛍️</span>Tienda</button>
+        <button class="tab-btn" onclick="cambiarPestana('cumples', this)"><span>📅</span>Cumples</button>
+        <button class="tab-btn" onclick="cambiarPestana('quedadas', this)"><span>📍</span>Planes</button>
+        <button class="tab-btn" onclick="cambiarPestana('buzon', this)"><span>💌</span>Buzón</button>
+        <button class="tab-btn" onclick="cambiarPestana('mascotas', this)"><span>🐾</span>Peludos</button>
     </div>
 
     <script>
-        let hearts = 150;
+        // CÓDIGOS DE ACCESO
+        const CODIGO_CORRECTO = "BL-VIP-8317";
+        const CODIGO_FUNDADORA = "BL-FUNDADORA-GOLD";
 
-        function updateHearts() {
-            document.getElementById('userHearts').innerText = hearts;
+        let carnetFotoBase64 = "";
+        let userHearts = parseInt(localStorage.getItem("user_hearts") || "0", 10);
+
+        function actualizarCorazones(cantidad) {
+            userHearts += cantidad;
+            localStorage.setItem("user_hearts", userHearts.toString());
+            document.getElementById("heartCount").innerText = userHearts;
         }
 
-        function switchTab(tabName, btnElement) {
-            // Ocultar todas las pestañas
-            document.querySelectorAll('.tab-content').forEach(tab => {
-                tab.classList.remove('active');
-            });
-            // Mostrar la seleccionada
-            document.getElementById('tab-' + tabName).classList.add('active');
-
-            // Actualizar botones de navegación
-            document.querySelectorAll('.nav-btn').forEach(btn => {
-                btn.classList.remove('active');
-            });
-            btnElement.classList.add('active');
+        function cambiarPestana(idPestana, btn) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+            document.getElementById(idPestana).classList.add('active');
+            if(btn) btn.classList.add('active');
         }
 
-        function buyItem(name, cost) {
-            if (hearts >= cost) {
-                hearts -= cost;
-                updateHearts();
-                alert('¡Has comprado con éxito: ' + name + '!');
-            } else {
-                alert('¡No tienes suficientes corazones (💖)!');
+        /* --- LÓGICA DEL CARNET --- */
+        function procesarFotoCarnet() {
+            const file = document.getElementById('inPhoto').files[0];
+            const label = document.getElementById('photoLabel');
+            
+            if (file) {
+                const reader = new FileReader();
+                reader.onloadend = function() {
+                    carnetFotoBase64 = reader.result;
+                    label.innerText = "✅ Foto cargada correctamente";
+                    label.style.borderColor = "#10b981";
+                    label.style.color = "#10b981";
+                }
+                reader.readAsDataURL(file);
             }
         }
 
-        function spinRoulette() {
-            if (hearts < 10) {
-                alert('Necesitas al menos 10 💖 para girar.');
+        function crearCarnet() {
+            if (localStorage.getItem("dispositivo_registrado")) {
+                return alert("⛔ Ya has emitido un carnet en este dispositivo. Usa 'Cerrar Sesión' si deseas cambiarlo.");
+            }
+
+            const name = document.getElementById("inName").value.trim();
+            const mision = document.getElementById("inMision").value;
+            const codigoIngresado = document.getElementById("inCodigo").value.trim();
+
+            if (!name || !mision) {
+                return alert("Por favor escribe tu nombre y elige una misión 🌈");
+            }
+
+            let esGold = false;
+            if (codigoIngresado === CODIGO_FUNDADORA) {
+                esGold = true;
+            } else if (codigoIngresado !== CODIGO_CORRECTO) {
+                return alert("🔒 Código de acceso incorrecto. Pídelo a las administradoras.");
+            }
+
+            let counter = parseInt(localStorage.getItem("dni_counter_num") || "0", 10) + 1;
+            localStorage.setItem("dni_counter_num", counter.toString());
+
+            const formattedNum = counter.toString().padStart(7, '0');
+            const cardId = esGold ? `BL-GOLD-001` : `BL-${formattedNum}`;
+            const today = new Date().toLocaleDateString();
+
+            const data = { name, mision, cardId, date: today, photo: carnetFotoBase64, isGold: esGold };
+            localStorage.setItem("dni_safico_data", JSON.stringify(data));
+            localStorage.setItem("dispositivo_registrado", "true");
+
+            actualizarCorazones(esGold ? 200 : 100);
+
+            cargarDatosCarnet(data);
+            desbloquearNavegacion();
+            abrirModalCarnet();
+        }
+
+        function desbloquearNavegacion() {
+            document.getElementById("navTabs").style.display = "flex";
+            document.getElementById("formRegistroCarnet").style.display = "none";
+            document.getElementById("seccionMiCarnet").style.display = "block";
+        }
+
+        function cargarDatosCarnet(data) {
+            document.getElementById("badgeNameOut").innerText = data.name;
+            document.getElementById("badgeIdOut").innerText = `#${data.cardId}`;
+
+            document.getElementById("cardNameOut").innerText = data.name;
+            document.getElementById("cardMisionOut").innerText = data.mision;
+            document.getElementById("cardSignatureOut").innerText = data.name;
+            document.getElementById("cardIdOut").innerText = data.cardId;
+            document.getElementById("cardDateOut").innerText = data.date;
+
+            const cardElement = document.getElementById("mclovin-card");
+            const badgeBox = document.getElementById("miniBadgeBox");
+
+            if (data.isGold) {
+                cardElement.classList.add("gold-edition");
+                badgeBox.classList.add("gold-badge");
+                document.getElementById("cardHeaderTitle").innerText = "GOLD • ESPAÑA 👑";
+            } else {
+                cardElement.classList.remove("gold-edition");
+                badgeBox.classList.remove("gold-badge");
+                document.getElementById("cardHeaderTitle").innerText = "ESPAÑA • BOLLOLANDIA 🌈";
+            }
+
+            if (data.photo) {
+                document.getElementById("cardPhotoBox").innerHTML = `<img src="${data.photo}" class="card-photo-img">`;
+                document.getElementById("miniAvatarBox").innerHTML = `<img src="${data.photo}" style="width:100%;height:100%;object-fit:cover;">`;
+            } else {
+                document.getElementById("cardPhotoBox").innerHTML = `<span style="font-size: 2.2rem;">👤</span>`;
+                document.getElementById("miniAvatarBox").innerHTML = `👤`;
+            }
+            
+            document.getElementById("miNombre").value = data.name;
+            comprobarMatches();
+        }
+
+        function cerrarSesion() {
+            if (confirm("¿Quieres cerrar sesión para actualizar o cambiar los datos de tu carnet?")) {
+                localStorage.removeItem("dni_safico_data");
+                localStorage.removeItem("dispositivo_registrado");
+                location.reload();
+            }
+        }
+
+        function abrirModalCarnet() {
+            document.getElementById("cardModal").style.display = "flex";
+        }
+
+        function cerrarModalCarnet() {
+            document.getElementById("cardModal").style.display = "none";
+        }
+
+        function descargarCarnet() {
+            const cardElement = document.getElementById("mclovin-card");
+            html2canvas(cardElement).then(canvas => {
+                const link = document.createElement("a");
+                link.download = `carnet-bollolandia-${document.getElementById("cardNameOut").innerText}.png`;
+                link.href = canvas.toDataURL("image/png");
+                link.click();
+            });
+        }
+
+        /* --- TIENDA DE CANJE --- */
+        function comprarItem(itemNombre, precio) {
+            if (userHearts < precio) {
+                return alert(`⛔ Necesitas ${precio} 💖 para canjear esto. ¡Sigue participando para ganar más!`);
+            }
+            actualizarCorazones(-precio);
+            alert(`🎉 ¡Has canjeado "${itemNombre}" con éxito! Muestra esta pantalla al grupo en la próxima quedada.`);
+        }
+
+        /* --- CUMPLEAÑOS --- */
+        function agregarCumple() {
+            const nombre = document.getElementById('nombreCumple').value;
+            const fecha = document.getElementById('fechaCumple').value;
+            if(!nombre || !fecha) return alert('Por favor rellena ambos campos');
+
+            const cumples = JSON.parse(localStorage.getItem('cumples') || '[]');
+            cumples.push({ nombre, fecha });
+            localStorage.setItem('cumples', JSON.stringify(cumples));
+            document.getElementById('nombreCumple').value = '';
+            document.getElementById('fechaCumple').value = '';
+            
+            actualizarCorazones(15);
+            cargarCumples();
+        }
+
+        function cargarCumples() {
+            const cumples = JSON.parse(localStorage.getItem('cumples') || '[]');
+            const cont = document.getElementById('listaCumples');
+            if(cumples.length === 0) return cont.innerHTML = 'Aún no hay cumpleaños añadidos.';
+            cont.innerHTML = cumples.map(c => `<div style="padding:10px 0; border-bottom:1px solid #eee;">🎂 <strong>${c.nombre}</strong> - ${c.fecha}</div>`).join('');
+        }
+
+        /* --- QUEDADAS --- */
+        function agregarQuedada() {
+            const titulo = document.getElementById('tituloQuedada').value;
+            const lugar = document.getElementById('lugarQuedada').value;
+            const fecha = document.getElementById('fechaQuedada').value;
+            if(!titulo || !lugar || !fecha) return alert('Por favor rellena todos los datos');
+
+            const quedadas = JSON.parse(localStorage.getItem('quedadas') || '[]');
+            quedadas.push({ titulo, lugar, fecha });
+            localStorage.setItem('quedadas', JSON.stringify(quedadas));
+            
+            document.getElementById('tituloQuedada').value = '';
+            document.getElementById('lugarQuedada').value = '';
+            document.getElementById('fechaQuedada').value = '';
+
+            actualizarCorazones(25);
+            cargarQuedadas();
+        }
+
+        function cargarQuedadas() {
+            const quedadas = JSON.parse(localStorage.getItem('quedadas') || '[]');
+            const cont = document.getElementById('listaQuedadas');
+            if(quedadas.length === 0) return cont.innerHTML = 'Aún no hay quedadas propuestas.';
+            
+            cont.innerHTML = quedadas.map(q => {
+                const mapUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(q.lugar)}`;
+                return `
+                    <div style="padding:10px 0; border-bottom:1px solid #eee;">
+                        <strong>📍 ${q.titulo}</strong><br>
+                        <small>🏠 Lugar: ${q.lugar}</small><br>
+                        <small>⏰ Fecha/Hora: ${q.fecha.replace('T', ' a las ')}</small><br>
+                        <a href="${mapUrl}" target="_blank" class="btn-mapa">🗺️ Abrir lugar en Google Maps</a>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        /* --- BUZÓN SECRETO & MATCH --- */
+        function lanzarAnimacionMatch(nombre1, nombre2) {
+            const overlay = document.getElementById('matchOverlay');
+            const texto = document.getElementById('matchTextoAnimado');
+            const n1 = nombre1.charAt(0).toUpperCase() + nombre1.slice(1);
+            const n2 = nombre2.charAt(0).toUpperCase() + nombre2.slice(1);
+
+            texto.innerHTML = `¡Tú (${n1}) y ${n2} habéis conectado! 💕<br><br>Es el momento perfecto para un café. ☕`;
+            overlay.style.display = 'flex';
+        }
+
+        function cerrarMatchAnimacion() {
+            document.getElementById('matchOverlay').style.display = 'none';
+        }
+
+        function enviarFlechazo() {
+            const de = document.getElementById('miNombre').value.trim().toLowerCase();
+            const para = document.getElementById('destinoNombre').value.trim().toLowerCase();
+
+            if(!de || !para) return alert('Escribe tu nombre y el de la chica a la que envías el flechazo');
+            if(de === para) return alert('¡No te puedes mandar un flechazo a ti misma! 😉');
+
+            const flechazos = JSON.parse(localStorage.getItem('flechazos') || '[]');
+            const existe = flechazos.some(f => f.de === de && f.para === para);
+
+            if(!existe) {
+                flechazos.push({ de, para });
+                localStorage.setItem('flechazos', JSON.stringify(flechazos));
+            }
+
+            document.getElementById('destinoNombre').value = '';
+            const hayMatchMutuo = flechazos.some(f => f.de === para && f.para === de);
+            
+            if(hayMatchMutuo) {
+                actualizarCorazones(50);
+                lanzarAnimacionMatch(de, para);
+            } else {
+                alert('💘 Flechazo guardado en secreto.');
+            }
+
+            comprobarMatches();
+        }
+
+        function comprobarMatches() {
+            const miNombre = document.getElementById('miNombre').value.trim().toLowerCase();
+            const cont = document.getElementById('misMatches');
+
+            if(!miNombre) {
+                cont.innerHTML = 'Introduce tu nombre arriba para ver tus matches.';
                 return;
             }
-            hearts -= 10;
-            updateHearts();
 
-            const res = document.getElementById('rouletteResult');
-            res.innerText = "Girando...";
+            const flechazos = JSON.parse(localStorage.getItem('flechazos') || '[]');
+            const misFlechazosEnviados = flechazos.filter(f => f.de === miNombre).map(f => f.para);
+            const matches = flechazos.filter(f => f.para === miNombre && misFlechazosEnviados.includes(f.de));
 
-            setTimeout(() => {
-                const prizes = [
-                    { text: "🎉 ¡+20 Corazones extra!", add: 20 },
-                    { text: "✨ ¡+5 Corazones!", add: 5 },
-                    { text: "🔓 ¡Marco temporal 24h!", add: 0 },
-                    { text: "📌 ¡Pack de Post-its dorados!", add: 0 },
-                    { text: "🕵️‍♂️ ¡Pista de flechazo gratis!", add: 0 },
-                    { text: "🎭 ¡Sigue intentándolo!", add: 0 }
-                ];
-                const win = prizes[Math.floor(Math.random() * prizes.length)];
-                hearts += win.add;
-                updateHearts();
-                res.innerText = win.text;
-            }, 600);
+            if(matches.length === 0) {
+                cont.innerHTML = '<p style="color:#888; font-size:0.9rem;">De momento no hay matches mutuos. ¡Sigue enviando flechazos en secreto! 💌</p>';
+            } else {
+                cont.innerHTML = matches.map(m => `
+                    <div class="match-box">
+                        <h3 style="margin:0; color:#d63384;">¡HAY MATCH MUTUO! 🌸💖</h3>
+                        <p style="margin:5px 0 0 0; font-weight:bold; font-size:1.05rem;">
+                            Tú y <span style="text-transform:capitalize; color:#6c5ce7;">${m.de}</span> os habéis mandado un flechazo. ☕✨
+                        </p>
+                    </div>
+                `).join('');
+            }
         }
 
-        function addPostIt() {
-            const text = document.getElementById('postContent').value.trim();
-            if (!text) return;
+        document.getElementById('miNombre').addEventListener('input', comprobarMatches);
 
-            const container = document.getElementById('postItContainer');
-            const note = document.createElement('div');
-            note.className = 'post-it';
-            note.innerText = text;
-            container.prepend(note);
-            document.getElementById('postContent').value = '';
+        /* --- MASCOTAS --- */
+        function subirMascota() {
+            const nombre = document.getElementById('nombreMascota').value;
+            const fileInput = document.getElementById('fotoMascota');
+            if(!nombre || fileInput.files.length === 0) return alert('Pon el nombre y selecciona la foto');
+
+            const file = fileInput.files[0];
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const mascotas = JSON.parse(localStorage.getItem('mascotas') || '[]');
+                mascotas.push({ nombre, foto: e.target.result });
+                localStorage.setItem('mascotas', JSON.stringify(mascotas));
+                document.getElementById('nombreMascota').value = '';
+                fileInput.value = '';
+                
+                actualizarCorazones(20);
+                cargarMascotas();
+            };
+            reader.readAsDataURL(file);
         }
+
+        function cargarMascotas() {
+            const mascotas = JSON.parse(localStorage.getItem('mascotas') || '[]');
+            const cont = document.getElementById('galeriaMascotas');
+            if(mascotas.length === 0) return cont.innerHTML = '<p style="grid-column:1/3; color:#888;">No hay fotos de mascotas subidas aún.</p>';
+            cont.innerHTML = mascotas.map(m => `
+                <div class="pet-item">
+                    <img src="${m.foto}">
+                    <p style="text-align:center; font-weight:bold; margin:4px 0;">${m.nombre}</p>
+                </div>
+            `).join('');
+        }
+
+        /* --- SUGERENCIAS --- */
+        function enviarSugerencia() {
+            const texto = document.getElementById('textoSugerencia').value;
+            if(!texto) return;
+
+            const sugs = JSON.parse(localStorage.getItem('sugerencias') || '[]');
+            sugs.push(texto);
+            localStorage.setItem('sugerencias', JSON.stringify(sugs));
+            document.getElementById('textoSugerencia').value = '';
+            cargarSugerencias();
+        }
+
+        function cargarSugerencias() {
+            const sugs = JSON.parse(localStorage.getItem('sugerencias') || '[]');
+            const cont = document.getElementById('listaSugerencias');
+            if(sugs.length === 0) return cont.innerHTML = 'Aún no hay sugerencias.';
+            cont.innerHTML = sugs.map(s => `<div style="padding:8px 0; border-bottom:1px solid #eee;">💡 ${s}</div>`).join('');
+        }
+
+        // CARGA INICIAL
+        window.addEventListener("DOMContentLoaded", function() {
+            document.getElementById("heartCount").innerText = userHearts;
+            cargarCumples();
+            cargarQuedadas();
+            cargarMascotas();
+            cargarSugerencias();
+
+            const savedCardData = localStorage.getItem("dni_safico_data");
+            if (savedCardData) {
+                cargarDatosCarnet(JSON.parse(savedCardData));
+                desbloquearNavegacion();
+            }
+        });
     </script>
 </body>
 </html>
