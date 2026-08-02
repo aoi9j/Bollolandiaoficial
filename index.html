@@ -57,7 +57,7 @@
             margin: 0; 
             font-size: 1.5rem; 
             color: #fff; 
-            padding-right: 75px; /* Evita que el título tape los corazones */
+            padding-right: 75px;
         }
         p.subtitulo { 
             margin: 4px 0 0; 
@@ -67,7 +67,7 @@
             padding-right: 75px;
         }
 
-        /* BANNER DE CORAZONES (AJUSTADO PARA NO MOLESTAR) */
+        /* BANNER DE CORAZONES */
         .hearts-counter {
             position: absolute;
             top: 25px;
@@ -251,7 +251,7 @@
             position: relative;
         }
 
-        /* ESTILO DORADO DE FUNDADORA */
+        /* ESTILO DORADO */
         .mclovin-card.gold-edition {
             background-image: linear-gradient(135deg, #bf953f 0%, #fcf6ba 25%, #b38728 50%, #fbf5b7 75%, #aa771c 100%);
             border: 2px solid #ffd700;
@@ -313,7 +313,6 @@
             margin-top: 2px;
         }
 
-        /* SELLO DE CREADORA */
         .founder-seal {
             display: none;
             position: absolute;
@@ -402,7 +401,7 @@
     <div id="cardModal" class="card-modal" onclick="cerrarModalCarnet()">
         <div id="mclovin-card" class="mclovin-card" onclick="event.stopPropagation()">
             <div class="card-header">
-                <div class="header-main" id="cardHeaderTitle">HAWAII • BOLLOLANDIA 🌈</div>
+                <div class="header-main" id="cardHeaderTitle">ESPAÑA • BOLLOLANDIA 🌈</div>
                 <div class="header-sub">DRIVER LICENSE / CARNET SÁFICO</div>
             </div>
             <div class="card-body">
@@ -453,11 +452,11 @@
 
     <div class="container">
 
-        <!-- REGISTRO Y CARNET -->
+        <!-- REGISTRO Y CARNET SÁFICO -->
         <div id="carnet" class="tab-content active">
             <div class="card" id="formRegistroCarnet">
-                <h2>💳 Identificación de Bollolandia</h2>
-                <p style="font-size:0.85rem; color:#666; margin-top:-5px;">Ingresa tus datos y el código exclusivo para obtener tu carnet y desbloquear la web.</p>
+                <h2>💳 Carnet Sáfico de Bollolandia</h2>
+                <p style="font-size:0.85rem; color:#666; margin-top:-5px;">Ingresa tus datos y el código exclusivo para obtener tu carnet personalizado y acceder a la web.</p>
                 
                 <input type="text" id="inName" placeholder="Tu Apodo / Nombre" maxlength="15">
                 
@@ -483,8 +482,8 @@
             </div>
 
             <div class="card" id="seccionMiCarnet" style="display: none;">
-                <h2>Acreditación Emitida</h2>
-                <p style="font-size:0.85rem; color:#666; margin-top:-5px;">¡Identificación verificada! Puedes acceder a todas las secciones desde el menú inferior.</p>
+                <h2>Tu Carnet Sáfico</h2>
+                <p style="font-size:0.85rem; color:#666; margin-top:-5px;">¡Identificación verificada! Haz clic en el carnet para verlo ampliado o descargarlo.</p>
                 
                 <div class="mini-badge" id="miniBadgeBox" onclick="abrirModalCarnet()">
                     <div class="badge-avatar" id="miniAvatarBox">👤</div>
@@ -499,7 +498,7 @@
             </div>
         </div>
 
-        <!-- TIENDA DE RECOMPENSAS / PODERES -->
+        <!-- TIENDA DE RECOMPENSAS -->
         <div id="tienda" class="tab-content">
             <div class="card">
                 <h2>🛍️ Tienda de Poderes & Favores</h2>
@@ -633,7 +632,7 @@
     <script>
         // CÓDIGOS DE ACCESO
         const CODIGO_CORRECTO = "BL-VIP-8317";
-        const CODIGO_FUNDADORA = "BL-FUNDADORA-GOLD"; // CÓDIGO DORADO DE CREADORA
+        const CODIGO_FUNDADORA = "BL-FUNDADORA-GOLD";
 
         let carnetFotoBase64 = "";
         let userHearts = parseInt(localStorage.getItem("user_hearts") || "0", 10);
@@ -699,7 +698,6 @@
             localStorage.setItem("dni_safico_data", JSON.stringify(data));
             localStorage.setItem("dispositivo_registrado", "true");
 
-            // Bonificación de bienvenida
             actualizarCorazones(esGold ? 200 : 100);
 
             cargarDatosCarnet(data);
@@ -729,11 +727,11 @@
             if (data.isGold) {
                 cardElement.classList.add("gold-edition");
                 badgeBox.classList.add("gold-badge");
-                document.getElementById("cardHeaderTitle").innerText = "GOLD • FUNDADORA 👑";
+                document.getElementById("cardHeaderTitle").innerText = "GOLD • ESPAÑA 👑";
             } else {
                 cardElement.classList.remove("gold-edition");
                 badgeBox.classList.remove("gold-badge");
-                document.getElementById("cardHeaderTitle").innerText = "HAWAII • BOLLOLANDIA 🌈";
+                document.getElementById("cardHeaderTitle").innerText = "ESPAÑA • BOLLOLANDIA 🌈";
             }
 
             if (data.photo) {
@@ -749,7 +747,7 @@
         }
 
         function cerrarSesion() {
-            if (confirm("¿Quieres cerrar sesión para cambiar tu carnet o introducir el código de Fundadora?")) {
+            if (confirm("¿Quieres cerrar sesión para actualizar o cambiar los datos de tu carnet?")) {
                 localStorage.removeItem("dni_safico_data");
                 localStorage.removeItem("dispositivo_registrado");
                 location.reload();
