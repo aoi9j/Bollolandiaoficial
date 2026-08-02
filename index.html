@@ -5,19 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Rincón de Bollolandia</title>
 
-    <!-- Icono personalizado desde Imgur -->
     <link rel="apple-touch-icon" href="https://i.imgur.com/aMNQnO5.png">
     <link rel="icon" type="image/png" href="https://i.imgur.com/aMNQnO5.png">
-
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#bdb2ff">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="Bollolandia">
 
-    <!-- Librería para descargar el carnet como imagen PNG -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-    <!-- Fuentes personalizadas -->
     <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Cinzel:wght@700&display=swap" rel="stylesheet">
 
     <style>
@@ -53,21 +49,9 @@
             position: relative;
         }
 
-        h1 { 
-            margin: 0; 
-            font-size: 1.5rem; 
-            color: #fff; 
-            padding-right: 75px;
-        }
-        p.subtitulo { 
-            margin: 4px 0 0; 
-            color: #fff; 
-            font-size: 0.85rem; 
-            opacity: 0.95; 
-            padding-right: 75px;
-        }
+        h1 { margin: 0; font-size: 1.5rem; color: #fff; padding-right: 75px; }
+        p.subtitulo { margin: 4px 0 0; color: #fff; font-size: 0.85rem; opacity: 0.95; padding-right: 75px; }
 
-        /* BANNER DE CORAZONES */
         .hearts-counter {
             position: absolute;
             top: 25px;
@@ -167,7 +151,6 @@
             margin-top: 10px;
         }
 
-        /* OVERLAY MATCH */
         #matchOverlay {
             display: none;
             position: fixed;
@@ -181,7 +164,6 @@
             padding: 20px;
         }
 
-        /* ESTILOS DEL CARNET */
         .file-input-label {
             background: #f1f5f9;
             border: 2px dashed var(--morado);
@@ -335,34 +317,16 @@
         .btn-close { background: #333; color: white; }
         .btn-download { background: #10b981; color: white; }
 
-        /* --- MARCOS ARTÍSTICOS ANIMADOS --- */
-        @keyframes gLowVanGogh {
-            0% { border-color: #ffd700; box-shadow: 0 0 8px #ff8c00; }
-            50% { border-color: #ff8c00; box-shadow: 0 0 16px #ffd700; }
-            100% { border-color: #ffd700; box-shadow: 0 0 8px #ff8c00; }
-        }
-        @keyframes gFlowMonet {
-            0% { border-color: #38bdf8; box-shadow: 0 0 8px #bae6fd; }
-            50% { border-color: #a7f3d0; box-shadow: 0 0 16px #38bdf8; }
-            100% { border-color: #38bdf8; box-shadow: 0 0 8px #bae6fd; }
-        }
-        @keyframes gPulseDali {
-            0% { border-color: #f43f5e; box-shadow: 0 0 8px #fb7185; transform: scale(1); }
-            50% { border-color: #fbbf24; box-shadow: 0 0 16px #f43f5e; transform: scale(1.01); }
-            100% { border-color: #f43f5e; box-shadow: 0 0 8px #fb7185; transform: scale(1); }
-        }
-
-        .marco-vangogh {
-            border: 3px solid #ffd700 !important;
-            animation: gLowVanGogh 3s infinite;
-        }
-        .marco-monet {
-            border: 3px solid #38bdf8 !important;
-            animation: gFlowMonet 4s infinite;
-        }
-        .marco-dali {
-            border: 3px solid #f43f5e !important;
-            animation: gPulseDali 2.5s infinite;
+        /* --- MARCO ANIMADO REAL (GIF DE HUMO / ANILLO MÍSTICO) --- */
+        .marco-mistico-overlay {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-image: url('https://i.imgur.com/eQ4L582.gif'); /* Enlace directo de tu animación optimizada */
+            background-size: cover;
+            background-position: center;
+            mix-blend-mode: screen; /* Hace que el fondo negro del gif desaparezca y solo brille el humo blanco */
+            pointer-events: none;
+            z-index: 5;
         }
 
         /* --- RULETA DE PREMIOS --- */
@@ -439,7 +403,6 @@
 </head>
 <body>
 
-    <!-- OVERLAY ANIMADO DE MATCH -->
     <div id="matchOverlay" onclick="cerrarMatchAnimacion()">
         <div style="font-size: 80px;">💖🏹</div>
         <div style="font-size: 1.6rem; color: var(--fucsia); font-weight: bold; margin-top: 10px;">¡FLECHAZO MUTUO! 🌸</div>
@@ -447,7 +410,6 @@
         <p style="font-size:0.8rem; color:#888; margin-top:20px;">(Toca la pantalla para cerrar)</p>
     </div>
 
-    <!-- MODAL VER CARNET GRANDE -->
     <div id="cardModal" class="card-modal" onclick="cerrarModalCarnet()">
         <div id="mclovin-card" class="mclovin-card" onclick="event.stopPropagation()">
             <div class="card-header">
@@ -502,11 +464,10 @@
 
     <div class="container">
 
-        <!-- REGISTRO Y CARNET SÁFICO -->
         <div id="carnet" class="tab-content active">
             <div class="card" id="formRegistroCarnet">
                 <h2>💳 Carnet Sáfico de Bollolandia</h2>
-                <p style="font-size:0.85rem; color:#666; margin-top:-5px;">Ingresa tus datos y el código exclusivo para obtener tu carnet personalizado y acceder a la web.</p>
+                <p style="font-size:0.85rem; color:#666; margin-top:-5px;">Ingresa tus datos y el código exclusivo para obtener tu carnet personalizado.</p>
                 
                 <input type="text" id="inName" placeholder="Tu Apodo / Nombre" maxlength="15">
                 
@@ -532,7 +493,7 @@
 
             <div class="card" id="seccionMiCarnet" style="display: none;">
                 <h2>Tu Carnet y Perfil 🌸</h2>
-                <p style="font-size:0.85rem; color:#666; margin-top:-5px;">¡Identificación verificada! Visualiza tu carnet, cambia tus marcos o gestiona tus premios.</p>
+                <p style="font-size:0.85rem; color:#666; margin-top:-5px;">¡Identificación verificada! Visualiza tu carnet o gestiona tus marcos animados.</p>
                 
                 <div class="mini-badge" id="miniBadgeBox" onclick="abrirModalCarnet()">
                     <div class="badge-avatar" id="miniAvatarBox">👤</div>
@@ -543,10 +504,9 @@
                     <span style="font-size: 0.8rem; color: var(--morado); font-weight: bold;">Ver Carnet 👁️</span>
                 </div>
 
-                <!-- SECCIÓN DE INVENTARIO Y MARCOS -->
                 <div style="margin-top: 15px; border-top: 1px solid #eee; padding-top: 12px;">
-                    <h3 style="font-size: 1rem; color: var(--morado); margin-bottom: 5px;">🖼️ Tus Marcos de Perfil</h3>
-                    <p style="font-size: 0.78rem; color: #666; margin-bottom: 8px;">Selecciona un marco que hayas desbloqueado para ponértelo:</p>
+                    <h3 style="font-size: 1rem; color: var(--morado); margin-bottom: 5px;">🖼️ Tus Marcos Animados</h3>
+                    <p style="font-size: 0.78rem; color: #666; margin-bottom: 8px;">Selecciona tu marco animado desbloqueado:</p>
                     <div id="inventarioMarcos" style="display: flex; gap: 8px; flex-wrap: wrap;">
                         <span style="font-size: 0.8rem; color: #888;">Aún no tienes marcos. ¡Gánalos en la ruleta o tienda!</span>
                     </div>
@@ -556,67 +516,38 @@
             </div>
         </div>
 
-        <!-- TIENDA Y RULETA DE PREMIOS -->
         <div id="tienda" class="tab-content">
-            <!-- RULETA DE PREMIOS -->
             <div class="ruleta-box">
-                <h2 style="margin-top:0; color:#c026d3;">🎡 La Ruleta de Pintores & Premios</h2>
-                <p style="font-size:0.8rem; color:#666;">¡Prueba tu suerte! Gira la ruleta para conseguir corazones o marcos artísticos animados exclusivos (Cuesta 20 💖).</p>
+                <h2 style="margin-top:0; color:#c026d3;">🎡 La Ruleta de la Suerte</h2>
+                <p style="font-size:0.8rem; color:#666;">¡Gira la ruleta para conseguir corazones o el Anillo Místico animado (Cuesta 20 💖).</p>
                 <div class="ruleta-wheel" id="ruletaWheel">🎨</div>
                 <button class="btn-principal" style="background: linear-gradient(135deg, #ec4899, #8b5cf6);" onclick="girarRuleta()">🎯 ¡Girar Ruleta (20 💖)!</button>
             </div>
 
             <div class="card">
-                <h2>🛍️ Tienda de Arte & Poderes</h2>
+                <h2>🛍️ Tienda de Efectos Animados</h2>
                 <p style="font-size:0.85rem; color:#666; margin-top:-5px;">
-                    Desbloquea marcos animados inspirados en obras maestras de pintores famosos o dinámicas de grupo.
+                    Desbloquea marcos con movimiento real para destacar tu foto de perfil.
                 </p>
 
-                <!-- MARCOS ANIMADOS DE PINTORES -->
                 <div class="shop-item">
                     <div class="shop-item-info">
-                        <h4>🌻 Van Gogh (Girasoles Dorados)</h4>
-                        <p>Marco animado con brillo vibrante al estilo postimpresionista.</p>
+                        <h4>🔮 Anillo Místico Animado</h4>
+                        <p>Efecto de energía de humo mágico girando alrededor de tu foto.</p>
                     </div>
-                    <button class="btn-buy" onclick="comprarMarco('marco-vangogh', 'Van Gogh', 60)">60 💖</button>
+                    <button class="btn-buy" onclick="comprarMarco('marco-mistico', 'Anillo Místico', 50)">50 💖</button>
                 </div>
 
-                <div class="shop-item">
-                    <div class="shop-item-info">
-                        <h4>🌊 Monet (Impresión Acuática)</h4>
-                        <p>Marco animado con tonos fluidos inspirado en los nenúfares.</p>
-                    </div>
-                    <button class="btn-buy" onclick="comprarMarco('marco-monet', 'Monet', 75)">75 💖</button>
-                </div>
-
-                <div class="shop-item">
-                    <div class="shop-item-info">
-                        <h4>🕰️ Dalí (Surrealismo Mágico)</h4>
-                        <p>Marco animado con sutil pulso onírico y misterioso.</p>
-                    </div>
-                    <button class="btn-buy" onclick="comprarMarco('marco-dali', 'Dalí', 90)">90 💖</button>
-                </div>
-
-                <!-- DINÁMICAS -->
                 <div class="shop-item" style="margin-top: 15px;">
                     <div class="shop-item-info">
                         <h4>🎲 Misión Secreta para Quedadas</h4>
-                        <p>Recibes un reto secreto en tu pantalla. Si lo cumples sin que lo noten, ganas +100 💖.</p>
+                        <p>Reto secreto en pantalla. Si lo cumples sin que lo noten, ganas +100 💖.</p>
                     </div>
                     <button class="btn-buy" onclick="comprarItem('Misión Secreta', 40)">40 💖</button>
-                </div>
-
-                <div class="shop-item">
-                    <div class="shop-item-info">
-                        <h4>🔄 Carta Reversa (Joker de Plan)</h4>
-                        <p>Derecho a vetar o reorientar un plan de quedada que no te apetezca nada.</p>
-                    </div>
-                    <button class="btn-buy" onclick="comprarItem('Carta Reversa', 80)">80 💖</button>
                 </div>
             </div>
         </div>
 
-        <!-- CUMPLEAÑOS -->
         <div id="cumples" class="tab-content">
             <div class="card">
                 <h2>📅 Añadir Cumpleaños</h2>
@@ -630,7 +561,6 @@
             </div>
         </div>
 
-        <!-- QUEDADAS -->
         <div id="quedadas" class="tab-content">
             <div class="card">
                 <h2>📍 Proponer Quedada</h2>
@@ -645,12 +575,11 @@
             </div>
         </div>
 
-        <!-- BUZÓN SECRETO (MATCH) -->
         <div id="buzon" class="tab-content">
             <div class="card">
                 <h2>💌 Buzón Secreto de Flechazos</h2>
                 <p style="font-size:0.85rem; color:#666; margin-top:-5px;">
-                    Nadie sabrá a quién le has mandado un flechazo... ¡a menos que sea mutuo! 💖
+                    Nadie sabrá a quién le mandas un flechazo... ¡a menos que sea mutuo! 💖
                 </p>
                 <input type="text" id="miNombre" placeholder="Tu nombre / apodo">
                 <input type="text" id="destinoNombre" placeholder="¿A quién le mandas el flechazo?">
@@ -663,7 +592,6 @@
             </div>
         </div>
 
-        <!-- MASCOTAS -->
         <div id="mascotas" class="tab-content">
             <div class="card">
                 <h2>🐾 Subir Foto de Mascota</h2>
@@ -676,26 +604,12 @@
                 <div id="galeriaMascotas" class="grid-pets"></div>
             </div>
         </div>
-
-        <!-- SUGERENCIAS -->
-        <div id="sugerencias" class="tab-content">
-            <div class="card">
-                <h2>💡 ¿Qué quieres que añadamos?</h2>
-                <textarea id="textoSugerencia" rows="3" placeholder="Escribe aquí ideas o mejoras..."></textarea>
-                <button class="btn-principal" onclick="enviarSugerencia()">Enviar Idea</button>
-            </div>
-            <div class="card">
-                <h2>💬 Ideas del grupo</h2>
-                <div id="listaSugerencias">Aún no hay sugerencias.</div>
-            </div>
-        </div>
     </div>
 
     <footer>
         <p id="fraseRotativa">✨ "Un espacio donde siempre puedes ser tú misma." ✨</p>
     </footer>
 
-    <!-- MENÚ NAVEGACIÓN INFERIOR -->
     <div class="nav-tabs" id="navTabs" style="display: none;">
         <button class="tab-btn active" onclick="cambiarPestana('carnet', this)"><span>💳</span>Carnet</button>
         <button class="tab-btn" onclick="cambiarPestana('tienda', this)"><span>🛍️</span>Tienda</button>
@@ -742,7 +656,6 @@
             if(btn) btn.classList.add('active');
         }
 
-        /* --- LÓGICA DEL CARNET --- */
         function procesarFotoCarnet() {
             const file = document.getElementById('inPhoto').files[0];
             const label = document.getElementById('photoLabel');
@@ -836,11 +749,11 @@
             }
 
             if (data.photo) {
-                document.getElementById("cardPhotoBox").innerHTML = `<img src="${data.photo}" class="card-photo-img">`;
-                document.getElementById("miniAvatarBox").innerHTML = `<img src="${data.photo}" style="width:100%;height:100%;object-fit:cover;">`;
+                document.getElementById("cardPhotoBox").innerHTML = `<img src="${data.photo}" class="card-photo-img"><div id="marcoLayer"></div>`;
+                document.getElementById("miniAvatarBox").innerHTML = `<img src="${data.photo}" style="width:100%;height:100%;object-fit:cover;"><div id="miniMarcoLayer"></div>`;
             } else {
-                document.getElementById("cardPhotoBox").innerHTML = `<span style="font-size: 2.2rem;">👤</span>`;
-                document.getElementById("miniAvatarBox").innerHTML = `👤`;
+                document.getElementById("cardPhotoBox").innerHTML = `<span style="font-size: 2.2rem;">👤</span><div id="marcoLayer"></div>`;
+                document.getElementById("miniAvatarBox").innerHTML = `👤<div id="miniMarcoLayer"></div>`;
             }
             
             document.getElementById("miNombre").value = data.name;
@@ -877,7 +790,6 @@
             });
         }
 
-        /* --- LÓGICA DE LA RULETA --- */
         function girarRuleta() {
             const costo = 20;
             if (!esFundadoraActiva() && userHearts < costo) {
@@ -889,17 +801,15 @@
             }
 
             const wheel = document.getElementById("ruletaWheel");
-            const randomDeg = Math.floor(1440 + Math.random() * 1080); // Vueltas aleatorias
+            const randomDeg = Math.floor(1440 + Math.random() * 1080);
             wheel.style.transform = `rotate(${randomDeg}deg)`;
 
             setTimeout(() => {
                 const premios = [
                     { tipo: 'corazones', valor: 30, texto: '¡Has ganado +30 💖 extra!' },
-                    { tipo: 'marco', id: 'marco-vangogh', nombre: 'Van Gogh', texto: '¡Felicidades! Ganaste el marco animado de Van Gogh 🌻' },
+                    { tipo: 'marco', id: 'marco-mistico', nombre: 'Anillo Místico', texto: '¡Felicidades! Ganaste el Anillo Místico animado 🔮' },
                     { tipo: 'corazones', valor: 50, texto: '¡Premio gordo! +50 💖 para tu cuenta 🎉' },
-                    { tipo: 'marco', id: 'marco-monet', nombre: 'Monet', texto: '¡Increíble! Ganaste el marco animado de Monet 🌊' },
-                    { tipo: 'corazones', valor: 10, texto: 'Has ganado +10 💖.' },
-                    { tipo: 'marco', id: 'marco-dali', nombre: 'Dalí', texto: '¡Arte puro! Ganaste el marco animado de Dalí 🕰️' }
+                    { tipo: 'corazones', valor: 10, texto: 'Has ganado +10 💖.' }
                 ];
                 
                 const premioObtenido = premios[Math.floor(Math.random() * premios.length)];
@@ -919,7 +829,6 @@
             }, 3000);
         }
 
-        /* --- GESTIÓN DE MARCOS E INVENTARIO --- */
         function comprarMarco(idMarco, nombreMarco, precio) {
             let marcos = JSON.parse(localStorage.getItem("marcos_comprados") || "[]");
             if (marcos.includes(idMarco)) {
@@ -938,7 +847,7 @@
             localStorage.setItem("marcos_comprados", JSON.stringify(marcos));
             
             renderizarInventarioMarcos();
-            alert(`🎉 ¡Has desbloqueado el marco de ${nombreMarco}! Ya puedes ponértelo desde tu carnet.`);
+            alert(`🎉 ¡Has desbloqueado el ${nombreMarco}! Ya puedes ponértelo desde tu carnet.`);
         }
 
         function renderizarInventarioMarcos() {
@@ -949,26 +858,20 @@
             let marcoActivo = localStorage.getItem("marco_activo") || "";
 
             if (esFundadoraActiva()) {
-                marcos = ["marco-vangogh", "marco-monet", "marco-dali"];
+                marcos = ["marco-mistico"];
             }
 
             if (marcos.length === 0) {
-                contenedor.innerHTML = `<span style="font-size: 0.8rem; color: #888;">Aún no tienes marcos. ¡Gánalos en la ruleta o tienda!</span>`;
+                contenedor.innerHTML = `<span style="font-size: 0.8rem; color: #888;">Aún no tienes marcos animados. ¡Gánalos en la ruleta o tienda!</span>`;
                 return;
             }
-
-            const nombresMap = {
-                "marco-vangogh": "🌻 Van Gogh",
-                "marco-monet": "🌊 Monet",
-                "marco-dali": "🕰️ Dalí"
-            };
 
             let html = `<button onclick="quitarMarco()" style="padding:6px 10px; font-size:0.75rem; border-radius:6px; background:#e2e8f0; border:none; cursor:pointer; font-weight:bold;">Sin Marco</button>`;
             
             marcos.forEach(m => {
                 let activo = marcoActivo === m;
                 let btnStyle = activo ? "background:var(--morado); color:white;" : "background:#fff; color:var(--morado); border:1px solid var(--morado);";
-                html += `<button onclick="equiparMarco('${m}')" style="padding:6px 10px; font-size:0.75rem; border-radius:6px; cursor:pointer; font-weight:bold; ${btnStyle}">${nombresMap[m] || m} ${activo ? '✓' : ''}</button>`;
+                html += `<button onclick="equiparMarco('${m}')" style="padding:6px 10px; font-size:0.75rem; border-radius:6px; cursor:pointer; font-weight:bold; ${btnStyle}">🔮 Anillo Místico ${activo ? '✓' : ''}</button>`;
             });
 
             contenedor.innerHTML = html;
@@ -978,7 +881,7 @@
             localStorage.setItem("marco_activo", idMarco);
             aplicarMarcoGuardado();
             renderizarInventarioMarcos();
-            alert("✨ ¡Marco artístico aplicado con éxito!");
+            alert("✨ ¡Marco animado aplicado con éxito!");
         }
 
         function quitarMarco() {
@@ -990,21 +893,18 @@
 
         function aplicarMarcoGuardado() {
             let marcoActivo = localStorage.getItem("marco_activo") || "";
-            const photoBox = document.getElementById("cardPhotoBox");
-            const avatarBox = document.getElementById("miniAvatarBox");
+            const marcoLayer = document.getElementById("marcoLayer");
+            const miniMarcoLayer = document.getElementById("miniMarcoLayer");
 
-            ["marco-vangogh", "marco-monet", "marco-dali"].forEach(cls => {
-                if (photoBox) photoBox.classList.remove(cls);
-                if (avatarBox) avatarBox.classList.remove(cls);
-            });
+            if (marcoLayer) marcoLayer.innerHTML = "";
+            if (miniMarcoLayer) miniMarcoLayer.innerHTML = "";
 
-            if (marcoActivo) {
-                if (photoBox) photoBox.classList.add(marcoActivo);
-                if (avatarBox) avatarBox.classList.add(marcoActivo);
+            if (marcoActivo === "marco-mistico") {
+                if (marcoLayer) marcoLayer.innerHTML = `<div class="marco-mistico-overlay"></div>`;
+                if (miniMarcoLayer) miniMarcoLayer.innerHTML = `<div class="marco-mistico-overlay"></div>`;
             }
         }
 
-        /* --- TIENDA DE CANJE (DINÁMICAS) --- */
         function comprarItem(itemNombre, precio) {
             if (!esFundadoraActiva() && userHearts < precio) {
                 return alert(`⛔ Necesitas ${precio} 💖 para canjear esto.`);
@@ -1015,7 +915,6 @@
             alert(`🎉 ¡Has canjeado "${itemNombre}" con éxito! Muestra esta pantalla al grupo.`);
         }
 
-        /* --- CUMPLEAÑOS --- */
         function agregarCumple() {
             const nombre = document.getElementById('nombreCumple').value;
             const fecha = document.getElementById('fechaCumple').value;
@@ -1038,7 +937,6 @@
             cont.innerHTML = cumples.map(c => `<div style="padding:10px 0; border-bottom:1px solid #eee;">🎂 <strong>${c.nombre}</strong> - ${c.fecha}</div>`).join('');
         }
 
-        /* --- QUEDADAS --- */
         function agregarQuedada() {
             const titulo = document.getElementById('tituloQuedada').value;
             const lugar = document.getElementById('lugarQuedada').value;
@@ -1075,7 +973,6 @@
             }).join('');
         }
 
-        /* --- BUZÓN SECRETO & MATCH --- */
         function lanzarAnimacionMatch(nombre1, nombre2) {
             const overlay = document.getElementById('matchOverlay');
             const texto = document.getElementById('matchTextoAnimado');
@@ -1150,7 +1047,6 @@
             inputMiNombre.addEventListener('input', comprobarMatches);
         }
 
-        /* --- MASCOTAS --- */
         function subirMascota() {
             const nombre = document.getElementById('nombreMascota').value;
             const fileInput = document.getElementById('fotoMascota');
@@ -1184,27 +1080,6 @@
             `).join('');
         }
 
-        /* --- SUGERENCIAS --- */
-        function enviarSugerencia() {
-            const texto = document.getElementById('textoSugerencia').value;
-            if(!texto) return;
-
-            const sugs = JSON.parse(localStorage.getItem('sugerencias') || '[]');
-            sugs.push(texto);
-            localStorage.setItem('sugerencias', JSON.stringify(sugs));
-            document.getElementById('textoSugerencia').value = '';
-            cargarSugerencias();
-        }
-
-        function cargarSugerencias() {
-            const sugs = JSON.parse(localStorage.getItem('sugerencias') || '[]');
-            const cont = document.getElementById('listaSugerencias');
-            if(!cont) return;
-            if(sugs.length === 0) return cont.innerHTML = 'Aún no hay sugerencias.';
-            cont.innerHTML = sugs.map(s => `<div style="padding:8px 0; border-bottom:1px solid #eee;">💡 ${s}</div>`).join('');
-        }
-
-        // CARGA INICIAL
         window.addEventListener("DOMContentLoaded", function() {
             const savedCardData = localStorage.getItem("dni_safico_data");
             if (savedCardData) {
@@ -1221,7 +1096,6 @@
             cargarCumples();
             cargarQuedadas();
             cargarMascotas();
-            cargarSugerencias();
         });
     </script>
 </body>
