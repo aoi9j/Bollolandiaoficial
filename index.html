@@ -3,17 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Carnet & Red Social - Edición Fundadora</title>
+    <title>Carnet & Red Social - Estilo Completo</title>
     <style>
-        :root {
-            --primary: #ec4899;
-            --secondary: #8b5cf6;
-            --gold: #f59e0b;
-            --bg: #faf5ff;
-            --card-bg: #ffffff;
-            --text: #1f2937;
-        }
-
         * {
             box-sizing: border-box;
             margin: 0;
@@ -22,88 +13,46 @@
         }
 
         body {
-            background-color: var(--bg);
-            color: var(--text);
-            padding: 20px;
+            background-color: #fce7f3;
             display: flex;
-            flex-direction: column;
+            justify-content: center;
             align-items: center;
             min-height: 100vh;
-        }
-
-        header {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-
-        header h1 {
-            font-size: 24px;
-            color: #9333ea;
-            margin-bottom: 5px;
-        }
-
-        header p {
-            font-size: 14px;
-            color: #6b7280;
-        }
-
-        .container {
-            width: 100%;
-            max-width: 500px;
-            display: flex;
-            flex-direction: column;
-            gap: 25px;
-        }
-
-        .card {
-            background: var(--card-bg);
-            border-radius: 20px;
             padding: 20px;
-            box-shadow: 0 10px 25px rgba(147, 51, 234, 0.08);
-            border: 1px solid #f3e8ff;
         }
 
-        /* PERFIL / CARNET */
-        .profile-card {
+        /* Contenedor principal de la tarjeta de carnet */
+        .carnet-container {
+            background: #ffffff;
+            width: 400px;
+            border-radius: 24px;
+            box-shadow: 0 12px 30px rgba(219, 39, 119, 0.18);
+            padding: 25px;
             text-align: center;
+            border: 2px solid #fbcfe8;
             position: relative;
         }
 
-        .badge-founder {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            background: linear-gradient(135deg, #f59e0b, #d97706);
-            color: white;
-            font-size: 11px;
-            font-weight: bold;
-            padding: 4px 10px;
-            border-radius: 20px;
-            box-shadow: 0 2px 5px rgba(245, 158, 11, 0.3);
-        }
-
-        .avatar-container {
+        /* Foto de perfil y marco exclusivo de Fundadora (Humo Blanco) */
+        .foto-box {
             position: relative;
-            width: 110px;
-            height: 110px;
-            margin: 15px auto 10px auto;
+            width: 120px;
+            height: 120px;
+            margin: 10px auto 15px auto;
             display: flex;
             align-items: center;
             justify-content: center;
         }
 
-        /* Marco Exclusivo Fundadora (Simulación de humo/energía blanca brillante) */
         .founder-frame {
             position: absolute;
-            width: 120px;
-            height: 120px;
+            width: 136px;
+            height: 136px;
             border-radius: 50%;
             background: conic-gradient(from 0deg, #ffffff, #cbd5e1, #ffffff, #94a3b8, #ffffff);
             animation: rotateSmoke 4s linear infinite;
-            filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.8));
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.9));
+            z-index: 1;
         }
 
         @keyframes rotateSmoke {
@@ -111,9 +60,9 @@
             100% { transform: rotate(360deg); }
         }
 
-        .avatar-inner {
-            width: 104px;
-            height: 104px;
+        .foto-interior {
+            width: 110px;
+            height: 110px;
             border-radius: 50%;
             background: #e2e8f0;
             display: flex;
@@ -121,273 +70,338 @@
             justify-content: center;
             font-size: 3rem;
             z-index: 2;
-            overflow: hidden;
             position: relative;
         }
 
-        .profile-name {
-            font-size: 18px;
+        .nombre {
+            font-size: 20px;
             font-weight: bold;
-            color: #1f2937;
-        }
-
-        .profile-status {
-            font-size: 13px;
-            color: #6b7280;
-            margin-top: 2px;
-        }
-
-        .hearts-wallet {
-            margin-top: 15px;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            background: #fdf2f8;
             color: #db2777;
-            padding: 6px 14px;
-            border-radius: 20px;
+            margin-bottom: 4px;
+        }
+
+        .badge-gold {
+            display: inline-block;
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            color: white;
+            font-size: 11px;
             font-weight: bold;
-            font-size: 14px;
+            padding: 4px 12px;
+            border-radius: 20px;
+            margin-bottom: 12px;
+            box-shadow: 0 2px 5px rgba(245, 158, 11, 0.3);
+        }
+
+        .datos {
+            text-align: left;
+            background: #fdf2f8;
+            padding: 12px;
+            border-radius: 12px;
+            font-size: 13px;
+            color: #4b5563;
+            margin-bottom: 15px;
             border: 1px solid #fbcfe8;
         }
 
-        /* TIENDA DE RECOMPENSAS */
-        .section-title {
-            font-size: 16px;
+        .datos p {
+            margin: 5px 0;
+        }
+
+        .hearts-counter {
             font-weight: bold;
-            color: #7e22ce;
-            margin-bottom: 12px;
+            color: #db2777;
+            font-size: 14px;
+            margin-bottom: 15px;
+            background: #fff1f2;
+            padding: 6px;
+            border-radius: 10px;
+            display: inline-block;
+            border: 1px solid #fda4af;
+        }
+
+        /* Secciones de contenido dinámico (Ocultas/Visibles según la pestaña) */
+        .tab-content {
+            display: none;
+            text-align: left;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(4px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .section-title {
+            font-size: 14px;
+            font-weight: bold;
+            color: #be185d;
+            margin-bottom: 10px;
             display: flex;
             align-items: center;
             gap: 6px;
         }
 
+        /* Estilos Tienda */
         .store-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 12px;
+            gap: 8px;
         }
 
         .store-item {
-            background: #faf5ff;
-            border: 1px solid #e9d5ff;
-            border-radius: 12px;
-            padding: 12px;
+            background: #fff;
+            border: 1px solid #f472b6;
+            border-radius: 8px;
+            padding: 10px;
             text-align: center;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-        }
-
-        .store-item h4 {
-            font-size: 13px;
-            margin-bottom: 6px;
-            color: #581c87;
+            font-size: 12px;
+            color: #4b5563;
         }
 
         .store-btn {
-            background: #9333ea;
+            background: #db2777;
             color: white;
             border: none;
-            padding: 6px 10px;
-            border-radius: 8px;
-            font-size: 12px;
+            padding: 5px 8px;
+            border-radius: 6px;
             font-weight: bold;
             cursor: pointer;
-            margin-top: 8px;
-            transition: background 0.2s;
+            margin-top: 6px;
+            font-size: 11px;
+            width: 100%;
         }
 
-        .store-btn:hover {
-            background: #7e22ce;
-        }
-
-        /* RULETA DIGITAL */
-        .roulette-box {
+        /* Estilos Ruleta */
+        .roulette-area {
+            background: #fff1f2;
+            border-radius: 10px;
+            padding: 12px;
             text-align: center;
-            background: linear-gradient(135deg, #fff1f2, #ffe4e6);
-            border: 1px solid #fecdd3;
+            border: 1px solid #fda4af;
         }
 
-        .roulette-display {
-            background: white;
-            border-radius: 12px;
-            padding: 15px;
-            font-size: 15px;
+        .roulette-result {
+            font-size: 13px;
             font-weight: bold;
             color: #e11d48;
-            margin: 10px 0;
-            min-height: 50px;
+            margin: 8px 0;
+            min-height: 40px;
             display: flex;
             align-items: center;
             justify-content: center;
-            border: 2px dashed #fda4af;
         }
 
         .spin-btn {
             background: #e11d48;
             color: white;
             border: none;
-            padding: 10px 20px;
-            border-radius: 20px;
+            padding: 6px 14px;
+            border-radius: 15px;
             font-weight: bold;
-            font-size: 14px;
             cursor: pointer;
-            box-shadow: 0 4px 10px rgba(225, 29, 72, 0.3);
-            transition: transform 0.1s;
+            font-size: 12px;
         }
 
-        .spin-btn:active {
-            transform: scale(0.95);
-        }
-
-        /* TABLÓN DE ANUNCIOS */
-        .board-box {
-            background: #fffbeb;
-            border: 1px solid #fef3c7;
-        }
-
-        .post-it-form {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-            margin-bottom: 15px;
-        }
-
-        .post-it-form textarea {
+        /* Estilos Tablón / Post-its */
+        .post-it-area textarea {
             width: 100%;
-            height: 70px;
+            height: 60px;
             border: 1px solid #fde047;
             background: #fef9c3;
-            border-radius: 8px;
-            padding: 8px;
-            font-size: 13px;
+            border-radius: 6px;
+            padding: 6px;
+            font-size: 12px;
             resize: none;
+            box-sizing: border-box;
         }
 
-        .post-it-form button {
+        .post-it-btn {
             background: #d97706;
             color: white;
             border: none;
-            padding: 8px;
-            border-radius: 8px;
+            padding: 5px 10px;
+            border-radius: 6px;
             font-weight: bold;
             cursor: pointer;
+            font-size: 11px;
+            margin-top: 4px;
+            width: 100%;
         }
 
-        .post-its-container {
+        .post-it-list {
+            margin-top: 10px;
+            max-height: 120px;
+            overflow-y: auto;
             display: flex;
             flex-direction: column;
-            gap: 10px;
-            max-height: 200px;
-            overflow-y: auto;
+            gap: 6px;
         }
 
         .post-it {
             background: #fef08a;
-            padding: 12px;
+            padding: 8px;
             border-radius: 4px;
-            box-shadow: 2px 3px 8px rgba(0,0,0,0.1);
-            font-size: 13px;
+            font-size: 12px;
             color: #713f12;
-            position: relative;
-            animation: bounceIn 0.5s ease;
-            transform: rotate(-1deg);
-        }
-
-        .post-it:nth-child(even) {
-            transform: rotate(1.5deg);
-            background: #fde047;
+            box-shadow: 1px 2px 5px rgba(0,0,0,0.1);
+            animation: bounceIn 0.4s ease;
         }
 
         @keyframes bounceIn {
-            0% { transform: scale(0) translateY(-50px); opacity: 0; }
-            60% { transform: scale(1.05) translateY(5px); opacity: 1; }
-            100% { transform: scale(1) translateY(0); opacity: 1; }
+            0% { transform: scale(0); opacity: 0; }
+            70% { transform: scale(1.05); opacity: 1; }
+            100% { transform: scale(1); opacity: 1; }
         }
 
-        .post-it-footer {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-top: 8px;
-            font-size: 11px;
-            color: #854d0e;
+        /* Quedadas y Mascotas (Secciones de ejemplo fieles a la estructura clásica) */
+        .generic-card {
+            background: #fdf2f8;
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid #fbcfe8;
+            font-size: 13px;
+            color: #4b5563;
+            margin-bottom: 8px;
         }
 
-        .reactions {
+        /* BARRA DE NAVEGACIÓN INFERIOR (Estilo clásico exacto) */
+        .nav-bottom {
             display: flex;
-            gap: 6px;
+            justify-content: space-around;
+            margin-top: 20px;
+            padding-top: 12px;
+            border-top: 2px solid #fbcfe8;
+            background: #fff;
+        }
+
+        .nav-btn {
+            background: none;
+            border: none;
             cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-size: 11px;
+            color: #9ca3af;
+            font-weight: 600;
+            transition: color 0.2s;
+        }
+
+        .nav-btn span {
+            font-size: 18px;
+            margin-bottom: 2px;
+        }
+
+        .nav-btn.active, .nav-btn:hover {
+            color: #db2777;
         }
     </style>
 </head>
 <body>
 
-    <header>
-        <h1>Carnet & Comunidad VIP</h1>
-        <p>Sistema Interactivo con Tienda, Ruleta y Tablón</p>
-    </header>
-
-    <div class="container">
-
-        <!-- 1. CARNET / PERFIL DE FUNDADORA -->
-        <div class="card profile-card">
-            <div class="badge-founder">👑 Estatus Gold</div>
-            <div class="avatar-container">
-                <!-- Marco de Fundadora exclusivo (humo blanco animado) -->
+    <div class="carnet-container">
+        
+        <!-- 1. PESTAÑA CARNET (Por defecto visible) -->
+        <div id="tab-carnet" class="tab-content active">
+            <div class="foto-box">
                 <div class="founder-frame"></div>
-                <div class="avatar-inner">👩‍💻</div>
+                <div class="foto-interior">👩‍💻</div>
             </div>
-            <div class="profile-name">Fundadora Principal</div>
-            <div class="profile-status">Dueña y creadora de la app</div>
             
-            <div class="hearts-wallet">
+            <div class="nombre">Fundadora</div>
+            <div class="badge-gold">👑 Estatus Gold</div>
+
+            <div class="datos">
+                <p><strong>ID:</strong> #0001-FOUNDER</p>
+                <p><strong>Rol:</strong> Propietaria & Creadora</p>
+                <p><strong>Acceso:</strong> Total / Privilegiado</p>
+            </div>
+
+            <div class="hearts-counter">
                 💖 <span id="userHearts">150</span> Corazones
             </div>
         </div>
 
-        <!-- 2. TIENDA DE RECOMPENSAS DIGITALES -->
-        <div class="card">
+        <!-- 2. PESTAÑA TIENDA (Marcos nuevos) -->
+        <div id="tab-tienda" class="tab-content">
             <div class="section-title">🛍️ Tienda de Marcos Digitales</div>
             <div class="store-grid">
                 <div class="store-item">
-                    <h4>Partículas Rojas 🔴</h4>
-                    <p style="font-size: 11px; color: #6b7280; margin-bottom: 5px;">Órbita de chispas ardientes</p>
-                    <button class="store-btn" onclick="buyItem('Marco Partículas Rojas', 50)">Comprar (50 💖)</button>
+                    <b>Partículas Rojas 🔴</b><br>
+                    <span style="font-size: 10px; color: #6b7280;">Órbita ardiente</span>
+                    <button class="store-btn" onclick="buyItem('Partículas Rojas', 50)">50 💖</button>
                 </div>
                 <div class="store-item">
-                    <h4>Líneas de Esfera ⚡</h4>
-                    <p style="font-size: 11px; color: #6b7280; margin-bottom: 5px;">Estilo futurista y polar</p>
-                    <button class="store-btn" onclick="buyItem('Marco Líneas Rojas', 60)">Comprar (60 💖)</button>
+                    <b>Líneas Esfera ⚡</b><br>
+                    <span style="font-size: 10px; color: #6b7280;">Estilo polar</span>
+                    <button class="store-btn" onclick="buyItem('Líneas Esfera', 60)">60 💖</button>
                 </div>
             </div>
         </div>
 
-        <!-- 3. RULETA DIGITAL -->
-        <div class="card roulette-box">
-            <div class="section-title" style="color: #e11d48;">🎲 Ruleta Digital de Corazones</div>
-            <p style="font-size: 12px; color: #9f1239; margin-bottom: 8px;">Gira por 10 💖 y gana premios automáticos</p>
-            <div class="roulette-display" id="rouletteResult">¡Pulsa girar para probar suerte!</div>
-            <button class="spin-btn" onclick="spinRoulette()">Girar Ruleta (10 💖)</button>
+        <!-- 3. PESTAÑA QUEDADAS -->
+        <div id="tab-quedadas" class="tab-content">
+            <div class="section-title">✨ Quedadas & Eventos</div>
+            <div class="generic-card">
+                <b>☕ Café & Networking VIP</b><br>
+                <span>Próximo encuentro presencial exclusivo para miembros Gold.</span>
+            </div>
+            <div class="generic-card">
+                <b>🎨 Taller de Estética de Perfiles</b><br>
+                <span>Aprende a combinar marcos y colores.</span>
+            </div>
         </div>
 
-        <!-- 4. TABLÓN DE ANUNCIOS (POST-ITS) -->
-        <div class="card board-box">
-            <div class="section-title" style="color: #b45309;">📌 Tablón de Anuncios (Post-its)</div>
-            <div class="post-it-form">
-                <textarea id="postContent" placeholder="Escribe tu nota rápida para el tablón..."></textarea>
-                <button onclick="addPostIt()">Pegar Nota en el Tablón</button>
+        <!-- 4. PESTAÑA MASCOTAS -->
+        <div id="tab-mascotas" class="tab-content">
+            <div class="section-title">🐾 Zona de Mascotas VIP</div>
+            <div class="generic-card">
+                <b>🐱 Michi Guardián (#01)</b><br>
+                <span>Compañero oficial de la comunidad. ¡Le encantan los corazones!</span>
             </div>
-            <div class="post-its-container" id="postItContainer">
-                <div class="post-it">
-                    ¡Bienvenidos al nuevo tablón de anuncios! Las notas se pegan con rebote y estilo clásico. 📌
-                    <div class="post-it-footer">
-                        <span>Fundadora</span>
-                        <div class="reactions" onclick="react(this)">❤️ <span>12</span></div>
+        </div>
+
+        <!-- 5. PESTAÑA RULETA & TABLÓN -->
+        <div id="tab-extras" class="tab-content">
+            <div class="roulette-area" style="margin-bottom: 12px;">
+                <div class="section-title" style="color: #e11d48; margin-bottom: 4px; justify-content: center;">🎲 Ruleta de Corazones</div>
+                <div class="roulette-result" id="rouletteResult">¡Gira por 10 💖!</div>
+                <button class="spin-btn" onclick="spinRoulette()">Girar Ruleta</button>
+            </div>
+
+            <div class="post-it-area">
+                <div class="section-title" style="color: #b45309; margin-bottom: 4px;">📌 Tablón (Post-its)</div>
+                <textarea id="postContent" placeholder="Escribe tu nota..."></textarea>
+                <button class="post-it-btn" onclick="addPostIt()">Pegar Nota</button>
+                <div class="post-it-list" id="postItContainer">
+                    <div class="post-it">
+                        ¡Bienvenidos al tablón oficial de la comunidad! 📌
                     </div>
                 </div>
             </div>
+        </div>
+
+        <!-- BARRA DE NAVEGACIÓN INFERIOR (ESTILO CLÁSICO) -->
+        <div class="nav-bottom">
+            <button class="nav-btn active" onclick="switchTab('carnet', this)">
+                <span>🪪</span> Carnet
+            </button>
+            <button class="nav-btn" onclick="switchTab('tienda', this)">
+                <span>🛍️</span> Tienda
+            </button>
+            <button class="nav-btn" onclick="switchTab('quedadas', this)">
+                <span>☕</span> Quedadas
+            </button>
+            <button class="nav-btn" onclick="switchTab('mascotas', this)">
+                <span>🐾</span> Mascotas
+            </button>
+            <button class="nav-btn" onclick="switchTab('extras', this)">
+                <span>🎲</span> Extras
+            </button>
         </div>
 
     </div>
@@ -395,85 +409,72 @@
     <script>
         let hearts = 150;
 
-        function updateHeartsUI() {
+        function updateHearts() {
             document.getElementById('userHearts').innerText = hearts;
         }
 
-        function buyItem(itemName, cost) {
+        function switchTab(tabName, btnElement) {
+            // Ocultar todas las pestañas
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            // Mostrar la seleccionada
+            document.getElementById('tab-' + tabName).classList.add('active');
+
+            // Actualizar botones de navegación
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            btnElement.classList.add('active');
+        }
+
+        function buyItem(name, cost) {
             if (hearts >= cost) {
                 hearts -= cost;
-                updateHeartsUI();
-                alert('¡Has comprado con éxito: ' + itemName + '!');
+                updateHearts();
+                alert('¡Has comprado con éxito: ' + name + '!');
             } else {
-                alert('¡No tienes suficientes corazones (💖)! Gana más participando o en la ruleta.');
+                alert('¡No tienes suficientes corazones (💖)!');
             }
         }
 
         function spinRoulette() {
-            const cost = 10;
-            if (hearts < cost) {
-                alert('Necesitas al menos 10 💖 para girar la ruleta.');
+            if (hearts < 10) {
+                alert('Necesitas al menos 10 💖 para girar.');
                 return;
             }
-            hearts -= cost;
-            updateHeartsUI();
+            hearts -= 10;
+            updateHearts();
 
-            const resultDisplay = document.getElementById('rouletteResult');
-            resultDisplay.innerText = "Girando ruleta...";
+            const res = document.getElementById('rouletteResult');
+            res.innerText = "Girando...";
 
             setTimeout(() => {
                 const prizes = [
-                    { text: "🎉 ¡Premio Gordo! +20 💖", add: 20 },
-                    { text: "✨ ¡Mini-Premio! +5 💖", add: 5 },
-                    { text: "🔓 ¡Desbloqueo temporal de marco por 24h!", add: 0 },
-                    { text: "📌 ¡Pack de 3 Post-its dorados especiales!", add: 0 },
-                    { text: "🕵️‍♂️ ¡Pista de flechazo gratuita conseguida!", add: 0 },
-                    { text: "🎭 ¡Sigue girando! Vuelve a probar suerte.", add: 0 }
+                    { text: "🎉 ¡+20 Corazones extra!", add: 20 },
+                    { text: "✨ ¡+5 Corazones!", add: 5 },
+                    { text: "🔓 ¡Marco temporal 24h!", add: 0 },
+                    { text: "📌 ¡Pack de Post-its dorados!", add: 0 },
+                    { text: "🕵️‍♂️ ¡Pista de flechazo gratis!", add: 0 },
+                    { text: "🎭 ¡Sigue intentándolo!", add: 0 }
                 ];
-
-                const winning = prizes[Math.floor(Math.random() * prizes.length)];
-                hearts += winning.add;
-                updateHeartsUI();
-                resultDisplay.innerText = winning.text;
-            }, 800);
+                const win = prizes[Math.floor(Math.random() * prizes.length)];
+                hearts += win.add;
+                updateHearts();
+                res.innerText = win.text;
+            }, 600);
         }
 
         function addPostIt() {
             const text = document.getElementById('postContent').value.trim();
-            if (!text) {
-                alert('Escribe algo en la nota antes de pegarla.');
-                return;
-            }
+            if (!text) return;
 
             const container = document.getElementById('postItContainer');
-            const newPostIt = document.createElement('div');
-            newPostIt.className = 'post-it';
-            newPostIt.innerHTML = `
-                ${escapeHtml(text)}
-                <div class="post-it-footer">
-                    <span>Anónimo / Tú</span>
-                    <div class="reactions" onclick="react(this)">❤️ <span>1</span></div>
-                </div>
-            `;
-            container.prepend(newPostIt);
+            const note = document.createElement('div');
+            note.className = 'post-it';
+            note.innerText = text;
+            container.prepend(note);
             document.getElementById('postContent').value = '';
-        }
-
-        function react(element) {
-            const span = element.querySelector('span');
-            let count = parseInt(span.innerText);
-            span.innerText = count + 1;
-        }
-
-        function escapeHtml(text) {
-            const map = {
-                '&': '&amp;',
-                '<': '&lt;',
-                '>': '&gt;',
-                '"': '&quot;',
-                "'": '&#039;'
-            };
-            return text.replace(/[&<>"']/g, function(m) { return map[m]; });
         }
     </script>
 </body>
