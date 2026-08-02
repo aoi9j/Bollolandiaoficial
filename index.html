@@ -514,11 +514,11 @@
 
     <div class="container">
 
-        <!-- PESTAÑA: CARNET -->
+        <!-- PESTAÑA: MOCHILA (ANTES CARNET) -->
         <div id="carnet" class="tab-content active">
             <div class="card" id="formRegistroCarnet">
-                <h2>💳 Carnet Sáfico de Bollolandia</h2>
-                <p style="font-size:0.85rem; color:#666; margin-top:-5px;">Regístrate con tu apodo y código exclusivo.</p>
+                <h2>🎒 Mochila • Tu Carnet Sáfico</h2>
+                <p style="font-size:0.85rem; color:#666; margin-top:-5px;">Regístrate con tu apodo y código exclusivo para guardar tu perfil en la mochila.</p>
                 
                 <input type="text" id="inName" placeholder="Tu Apodo / Nombre" maxlength="15">
                 
@@ -539,11 +539,11 @@
 
                 <input type="password" id="inCodigo" placeholder="🔒 Código de acceso exclusivo">
 
-                <button class="btn-principal" onclick="crearCarnet()">✨ Validar Código y Crear Carnet</button>
+                <button class="btn-principal" onclick="crearCarnet()">✨ Validar Código y Guardar en Mochila</button>
             </div>
 
             <div class="card" id="seccionMiCarnet" style="display: none;">
-                <h2>Tu Carnet y Perfil 🌸</h2>
+                <h2>🎒 Tu Mochila y Carnet 🌸</h2>
                 <div class="mini-badge" id="miniBadgeBox" onclick="abrirModalCarnet()">
                     <div class="badge-avatar" id="miniAvatarBox">👤</div>
                     <div style="flex:1;">
@@ -677,8 +677,8 @@
                 <p style="font-size:0.8rem; color:#666;">Novedades y notas importantes para todas las usuarias de Bollolandia:</p>
                 
                 <div style="background:#f8fafc; border-left:4px solid var(--morado); padding:10px; border-radius:6px; margin-top:10px;">
-                    <strong style="color:var(--morado); font-size:0.85rem;">✨ Versión 3.0 - Sistema de Buzón Privado</strong>
-                    <p style="font-size:0.8rem; margin:4px 0 0 0; color:#444;">¡Ya puedes mandar cartas y retos directos al perfil de tus amigas! Además, hemos integrado perfiles múltiples en la esquina superior derecha.</p>
+                    <strong style="color:var(--morado); font-size:0.85rem;">✨ Versión 3.1 - La Mochila Pokémon</strong>
+                    <p style="font-size:0.8rem; margin:4px 0 0 0; color:#444;">¡Actualizado el acceso principal a modo de Mochila estilo Pokémon para guardar tu carnet y objetos!</p>
                     <span style="font-size:0.65rem; color:#888; display:block; margin-top:6px;">Actualizado: 2026</span>
                 </div>
 
@@ -710,7 +710,7 @@
     </footer>
 
     <div class="nav-tabs" id="navTabs" style="display: none;">
-        <button class="tab-btn active" onclick="cambiarPestana('carnet', this)"><span>💳</span>Carnet</button>
+        <button class="tab-btn active" onclick="cambiarPestana('carnet', this)"><span>🎒</span>Mochila</button>
         <button class="tab-btn" onclick="cambiarPestana('tienda', this)"><span>🛍️</span>Tienda</button>
         <button class="tab-btn" onclick="cambiarPestana('cumples', this)"><span>📅</span>Cumples</button>
         <button class="tab-btn" onclick="cambiarPestana('quedadas', this)"><span>📍</span>Planes</button>
