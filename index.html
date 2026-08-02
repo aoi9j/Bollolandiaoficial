@@ -220,7 +220,7 @@
         }
 
         .mclovin-card {
-            width: 320px;
+            width: 340px;
             background: white;
             border-radius: 12px;
             border: 2px solid #b0b0b0;
@@ -240,7 +240,7 @@
         }
 
         .card-header {
-            padding: 6px 10px;
+            padding: 8px 10px;
             text-align: center;
             background: #0284c7;
             color: white;
@@ -252,16 +252,16 @@
             border-bottom: 2px solid #fff;
         }
 
-        .header-main { font-size: 0.8rem; font-weight: 900; color: #fef08a; text-transform: uppercase; }
-        .header-sub { font-size: 0.6rem; font-weight: bold; color: #ffffff; letter-spacing: 1px; }
+        .header-main { font-size: 0.85rem; font-weight: 900; color: #fef08a; text-transform: uppercase; }
+        .header-sub { font-size: 0.65rem; font-weight: bold; color: #ffffff; letter-spacing: 1px; }
 
-        .card-body { display: flex; padding: 10px; gap: 10px; align-items: flex-start; }
+        .card-body { display: flex; padding: 12px; gap: 12px; align-items: flex-start; }
 
         .card-photo-box {
-            width: 85px; height: 105px;
+            width: 90px; height: 110px;
             background: #e2e8f0;
             border: 2px solid #0284c7;
-            border-radius: 4px;
+            border-radius: 6px;
             overflow: hidden;
             display: flex;
             justify-content: center;
@@ -277,17 +277,17 @@
         }
 
         .card-photo-img { width: 100%; height: 100%; object-fit: cover; }
-        .card-info { flex: 1; font-size: 0.65rem; color: #1e293b; font-weight: bold; text-align: left; }
-        .info-row { margin-bottom: 3px; }
-        .label-red { color: #b91c1c; font-size: 0.58rem; text-transform: uppercase; }
+        .card-info { flex: 1; font-size: 0.7rem; color: #1e293b; font-weight: bold; text-align: left; }
+        .info-row { margin-bottom: 4px; }
+        .label-red { color: #b91c1c; font-size: 0.6rem; text-transform: uppercase; }
         .mclovin-card.gold-edition .label-red { color: #5c3d00; }
-        .val-bold { font-size: 0.8rem; font-weight: 900; color: #000; text-transform: uppercase; }
-        .val-mision { font-size: 0.65rem; color: #1e3a8a; line-height: 1.1; display: block; margin-top: 1px; }
+        .val-bold { font-size: 0.85rem; font-weight: 900; color: #000; text-transform: uppercase; }
+        .val-mision { font-size: 0.7rem; color: #1e3a8a; line-height: 1.15; display: block; margin-top: 1px; }
         .mclovin-card.gold-edition .val-mision { color: #3d2700; }
 
         .signature { 
             font-family: 'Great Vibes', cursive; 
-            font-size: 1.3rem; 
+            font-size: 1.4rem; 
             color: #0f172a;
             line-height: 1;
             transform: rotate(-2deg);
@@ -312,19 +312,34 @@
 
         .gold-edition .founder-seal { display: block; }
 
-        .modal-buttons { display: flex; flex-direction: column; gap: 8px; width: 320px; margin-top: 15px; }
+        .modal-buttons { display: flex; flex-direction: column; gap: 8px; width: 340px; margin-top: 15px; }
         .btn-action { width: 100%; padding: 10px; border: none; border-radius: 8px; font-size: 0.85rem; cursor: pointer; font-weight: bold; text-align: center; }
         .btn-close { background: #333; color: white; }
         .btn-download { background: #10b981; color: white; }
 
-        /* --- MARCO ANIMADO REAL (GIF DE HUMO / ANILLO MÍSTICO) --- */
-        .marco-mistico-overlay {
+        /* --- MARCO ANIMADO CSS PURO (BRILLO NEÓN MÍSTICO FLUIDO) --- */
+        @keyframes animacionMarcoMistico {
+            0% {
+                box-shadow: inset 0 0 10px rgba(255, 255, 255, 0.9), 0 0 12px #38bdf8, 0 0 20px #8b5cf6;
+                border-color: #38bdf8;
+            }
+            50% {
+                box-shadow: inset 0 0 18px rgba(255, 255, 255, 1), 0 0 20px #f43f5e, 0 0 30px #fbbf24;
+                border-color: #f43f5e;
+            }
+            100% {
+                box-shadow: inset 0 0 10px rgba(255, 255, 255, 0.9), 0 0 12px #38bdf8, 0 0 20px #8b5cf6;
+                border-color: #38bdf8;
+            }
+        }
+
+        .marco-mistico-css {
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
-            background-image: url('https://i.imgur.com/eQ4L582.gif'); /* Enlace directo de tu animación optimizada */
-            background-size: cover;
-            background-position: center;
-            mix-blend-mode: screen; /* Hace que el fondo negro del gif desaparezca y solo brille el humo blanco */
+            border: 4px solid #38bdf8;
+            border-radius: 6px;
+            box-sizing: border-box;
+            animation: animacionMarcoMistico 3s infinite ease-in-out;
             pointer-events: none;
             z-index: 5;
         }
@@ -533,7 +548,7 @@
                 <div class="shop-item">
                     <div class="shop-item-info">
                         <h4>🔮 Anillo Místico Animado</h4>
-                        <p>Efecto de energía de humo mágico girando alrededor de tu foto.</p>
+                        <p>Efecto de energía de luz fluida brillando alrededor de tu foto.</p>
                     </div>
                     <button class="btn-buy" onclick="comprarMarco('marco-mistico', 'Anillo Místico', 50)">50 💖</button>
                 </div>
@@ -900,8 +915,8 @@
             if (miniMarcoLayer) miniMarcoLayer.innerHTML = "";
 
             if (marcoActivo === "marco-mistico") {
-                if (marcoLayer) marcoLayer.innerHTML = `<div class="marco-mistico-overlay"></div>`;
-                if (miniMarcoLayer) miniMarcoLayer.innerHTML = `<div class="marco-mistico-overlay"></div>`;
+                if (marcoLayer) marcoLayer.innerHTML = `<div class="marco-mistico-css"></div>`;
+                if (miniMarcoLayer) miniMarcoLayer.innerHTML = `<div class="marco-mistico-css" style="border-radius: 50%;"></div>`;
             }
         }
 
