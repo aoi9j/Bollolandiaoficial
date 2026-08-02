@@ -222,6 +222,7 @@
             background: #e2e8f0;
             display: flex; align-items: center; justify-content: center;
             font-size: 1.1rem; overflow: hidden; flex-shrink: 0;
+            position: relative;
         }
 
         .card-modal {
@@ -287,6 +288,7 @@
             align-items: center;
             box-shadow: 2px 2px 5px rgba(0,0,0,0.15);
             flex-shrink: 0;
+            position: relative;
         }
 
         .mclovin-card.gold-edition .card-photo-box {
@@ -334,6 +336,23 @@
         .btn-action { width: 100%; padding: 10px; border: none; border-radius: 8px; font-size: 0.85rem; cursor: pointer; font-weight: bold; text-align: center; }
         .btn-close { background: #333; color: white; }
         .btn-download { background: #10b981; color: white; }
+
+        /* SISTEMA DE MARCOS APLICADOS */
+        /* Marco Corazones */
+        .marco-corazones {
+            border: 3px solid var(--fucsia) !important;
+            box-shadow: 0 0 8px var(--fucsia);
+        }
+        /* Marco Neón */
+        .marco-neon {
+            border: 3px solid #00f3ff !important;
+            box-shadow: 0 0 10px #00f3ff;
+        }
+        /* Marco Corona/Oro */
+        .marco-corona {
+            border: 3px solid var(--oro-main) !important;
+            box-shadow: 0 0 10px var(--oro-main);
+        }
 
         /* TIENDA DE RECOMPENSAS */
         .shop-item {
@@ -462,7 +481,6 @@
                 
                 <select id="inMision">
                     <option value="" disabled selected>Selecciona tu misión principal...</option>
-                    <option value="Fundadora & Creadora de Bollolandia">👑 Fundadora & Creadora Oficial</option>
                     <option value="Traer el chisme fresco">✨ Traer el chisme fresco</option>
                     <option value="Organizar las previas">🍻 Organizar las previas</option>
                     <option value="Dar los mejores abrazos">🫂 Dar los mejores abrazos</option>
@@ -482,8 +500,8 @@
             </div>
 
             <div class="card" id="seccionMiCarnet" style="display: none;">
-                <h2>Tu Carnet Sáfico</h2>
-                <p style="font-size:0.85rem; color:#666; margin-top:-5px;">¡Identificación verificada! Haz clic en el carnet para verlo ampliado o descargarlo.</p>
+                <h2>Tu Carnet y Perfil 🌸</h2>
+                <p style="font-size:0.85rem; color:#666; margin-top:-5px;">¡Identificación verificada! Visualiza tu carnet, cambia tus marcos o gestiona tus premios.</p>
                 
                 <div class="mini-badge" id="miniBadgeBox" onclick="abrirModalCarnet()">
                     <div class="badge-avatar" id="miniAvatarBox">👤</div>
@@ -494,6 +512,15 @@
                     <span style="font-size: 0.8rem; color: var(--morado); font-weight: bold;">Ver Carnet 👁️</span>
                 </div>
 
+                <!-- SECCIÓN DE INVENTARIO Y MARCOS -->
+                <div style="margin-top: 15px; border-top: 1px solid #eee; padding-top: 12px;">
+                    <h3 style="font-size: 1rem; color: var(--morado); margin-bottom: 5px;">🖼️ Tus Marcos de Perfil</h3>
+                    <p style="font-size: 0.78rem; color: #666; margin-bottom: 8px;">Selecciona un marco que hayas comprado en la tienda para ponértelo:</p>
+                    <div id="inventarioMarcos" style="display: flex; gap: 8px; flex-wrap: wrap;">
+                        <span style="font-size: 0.8rem; color: #888;">Aún no tienes marcos comprados. ¡Visita la tienda!</span>
+                    </div>
+                </div>
+
                 <button class="btn-logout" onclick="cerrarSesion()">🚪 Cerrar Sesión / Regenerar Carnet</button>
             </div>
         </div>
@@ -501,12 +528,38 @@
         <!-- TIENDA DE RECOMPENSAS -->
         <div id="tienda" class="tab-content">
             <div class="card">
-                <h2>🛍️ Tienda de Poderes & Favores</h2>
+                <h2>🛍️ Tienda de Poderes & Marcos</h2>
                 <p style="font-size:0.85rem; color:#666; margin-top:-5px;">
-                    Canjea tus 💖 acumulados por dinámicas exclusivas en las quedadas o en la web.
+                    Canjea tus 💖 acumulados por marcos exclusivos para tu perfil o dinámicas de grupo.
                 </p>
 
+                <!-- MARCOS -->
                 <div class="shop-item">
+                    <div class="shop-item-info">
+                        <h4>💖 Marco Coqueta de Corazones</h4>
+                        <p>Dale un borde brillante y romántico a la foto de tu carnet y perfil.</p>
+                    </div>
+                    <button class="btn-buy" onclick="comprarMarco('marco-corazones', 'Marco Corazones', 50)">50 💖</button>
+                </div>
+
+                <div class="shop-item">
+                    <div class="shop-item-info">
+                        <h4>⚡ Marco Neón Cyber</h4>
+                        <p>Ilumina tu perfil con un toque eléctrico y moderno estilo neón.</p>
+                    </div>
+                    <button class="btn-buy" onclick="comprarMarco('marco-neon', 'Marco Neón', 75)">75 💖</button>
+                </div>
+
+                <div class="shop-item">
+                    <div class="shop-item-info">
+                        <h4>👑 Marco Corona Dorada</h4>
+                        <p>Un marco de alta distinción digno de la realeza sáfica de Bollolandia.</p>
+                    </div>
+                    <button class="btn-buy" onclick="comprarMarco('marco-corona', 'Marco Corona', 100)">100 💖</button>
+                </div>
+
+                <!-- DINÁMICAS -->
+                <div class="shop-item" style="margin-top: 15px;">
                     <div class="shop-item-info">
                         <h4>🎲 Misión Secreta para Quedadas</h4>
                         <p>Recibes un reto secreto en tu pantalla. Si lo cumples sin que lo noten, ganas +100 💖.</p>
@@ -528,14 +581,6 @@
                         <p>Silencia un tema embarazoso o metedura de pata. Nadie puede volver a sacarlo.</p>
                     </div>
                     <button class="btn-buy" onclick="comprarItem('Borrón y Cuenta Nueva', 60)">60 💖</button>
-                </div>
-
-                <div class="shop-item">
-                    <div class="shop-item-info">
-                        <h4>🤝 Mercadillo de Favores</h4>
-                        <p>Te ayuda el grupo a montar un mueble, mudanza o te prestan ropa para una cita.</p>
-                    </div>
-                    <button class="btn-buy" onclick="comprarItem('Favores del Grupo', 120)">120 💖</button>
                 </div>
             </div>
         </div>
@@ -683,7 +728,9 @@
             let esGold = false;
             if (codigoIngresado === CODIGO_FUNDADORA) {
                 esGold = true;
-            } else if (codigoIngresado !== CODIGO_CORRECTO) {
+            } else if (codigoIngresado === CODIGO_CORRECTO) {
+                esGold = false; // El código VIP ahora otorga carnet normal, no fundadora
+            } else {
                 return alert("🔒 Código de acceso incorrecto. Pídelo a las administradoras.");
             }
 
@@ -709,6 +756,7 @@
             document.getElementById("navTabs").style.display = "flex";
             document.getElementById("formRegistroCarnet").style.display = "none";
             document.getElementById("seccionMiCarnet").style.display = "block";
+            renderizarInventarioMarcos();
         }
 
         function cargarDatosCarnet(data) {
@@ -744,12 +792,15 @@
             
             document.getElementById("miNombre").value = data.name;
             comprobarMatches();
+            aplicarMarcoGuardado();
         }
 
         function cerrarSesion() {
             if (confirm("¿Quieres cerrar sesión para actualizar o cambiar los datos de tu carnet?")) {
                 localStorage.removeItem("dni_safico_data");
                 localStorage.removeItem("dispositivo_registrado");
+                localStorage.removeItem("marcos_comprados");
+                localStorage.removeItem("marco_activo");
                 location.reload();
             }
         }
@@ -772,7 +823,85 @@
             });
         }
 
-        /* --- TIENDA DE CANJE --- */
+        /* --- GESTIÓN DE MARCOS E INVENTARIO --- */
+        function comprarMarco(idMarco, nombreMarco, precio) {
+            let marcos = JSON.parse(localStorage.getItem("marcos_comprados") || "[]");
+            if (marcos.includes(idMarco)) {
+                return alert("✨ ¡Ya tienes este marco en tu inventario! Ve a tu perfil para ponértelo.");
+            }
+            if (userHearts < precio) {
+                return alert(`⛔ Te faltan ${precio - userHearts} 💖 para comprar el ${nombreMarco}. ¡Participa más en la web!`);
+            }
+
+            actualizarCorazones(-precio);
+            marcos.push(idMarco);
+            localStorage.setItem("marcos_comprados", JSON.stringify(marcos));
+            
+            renderizarInventarioMarcos();
+            alert(`🎉 ¡Has comprado con éxito el ${nombreMarco}! Ya puedes ponértelo desde tu sección de perfil en el carnet.`);
+        }
+
+        function renderizarInventarioMarcos() {
+            const contenedor = document.getElementById("inventarioMarcos");
+            if (!contenedor) return;
+
+            let marcos = JSON.parse(localStorage.getItem("marcos_comprados") || "[]");
+            let marcoActivo = localStorage.getItem("marco_activo") || "";
+
+            if (marcos.length === 0) {
+                contenedor.innerHTML = `<span style="font-size: 0.8rem; color: #888;">Aún no tienes marcos comprados. ¡Visita la tienda!</span>`;
+                return;
+            }
+
+            const nombresMap = {
+                "marco-corazones": "💖 Corazones",
+                "marco-neon": "⚡ Neón",
+                "marco-corona": "👑 Corona"
+            };
+
+            let html = `<button onclick="quitarMarco()" style="padding:6px 10px; font-size:0.75rem; border-radius:6px; background:#e2e8f0; border:none; cursor:pointer; font-weight:bold;">Sin Marco</button>`;
+            
+            marcos.forEach(m => {
+                let activo = marcoActivo === m;
+                let btnStyle = activo ? "background:var(--morado); color:white;" : "background:#fff; color:var(--morado); border:1px solid var(--morado);";
+                html += `<button onclick="equiparMarco('${m}')" style="padding:6px 10px; font-size:0.75rem; border-radius:6px; cursor:pointer; font-weight:bold; ${btnStyle}">${nombresMap[m] || m} ${activo ? '✓' : ''}</button>`;
+            });
+
+            contenedor.innerHTML = html;
+        }
+
+        function equiparMarco(idMarco) {
+            localStorage.setItem("marco_activo", idMarco);
+            aplicarMarcoGuardado();
+            renderizarInventarioMarcos();
+            alert("✨ ¡Marco aplicado con éxito a tu carnet y perfil!");
+        }
+
+        function quitarMarco() {
+            localStorage.removeItem("marco_activo");
+            aplicarMarcoGuardado();
+            renderizarInventarioMarcos();
+            alert("🧹 Has quitado el marco actual.");
+        }
+
+        function aplicarMarcoGuardado() {
+            let marcoActivo = localStorage.getItem("marco_activo") || "";
+            const photoBox = document.getElementById("cardPhotoBox");
+            const avatarBox = document.getElementById("miniAvatarBox");
+
+            // Limpiar clases anteriores de marcos
+            ["marco-corazones", "marco-neon", "marco-corona"].forEach(cls => {
+                if (photoBox) photoBox.classList.remove(cls);
+                if (avatarBox) avatarBox.classList.remove(cls);
+            });
+
+            if (marcoActivo) {
+                if (photoBox) photoBox.classList.add(marcoActivo);
+                if (avatarBox) avatarBox.classList.add(marcoActivo);
+            }
+        }
+
+        /* --- TIENDA DE CANJE (DINÁMICAS) --- */
         function comprarItem(itemNombre, precio) {
             if (userHearts < precio) {
                 return alert(`⛔ Necesitas ${precio} 💖 para canjear esto. ¡Sigue participando para ganar más!`);
