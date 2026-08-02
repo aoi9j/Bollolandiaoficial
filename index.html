@@ -1,525 +1,391 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rincón de Bollolandia</title>
-    <style>
-        :root {
-            --rosa: #ffc6ff;
-            --lila: #bdb2ff;
-            --fondo: #fff0f5;
-            --tarjeta: #ffffff;
-            --texto: #4a3e4e;
-            --morado: #6c5ce7;
-            --fucsia: #ff85a1;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>República Sáfica de Bollolandia 🌈</title>
+  <style>
+    /* === ESTILOS GENERALES === */
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #fff0f5;
+      margin: 0;
+      padding: 20px;
+      color: #333;
+    }
 
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            background-color: var(--fondo);
-            color: var(--texto);
-            margin: 0;
-            padding: 0 0 85px 0;
-            overflow-x: hidden;
-        }
+    .hidden { display: none !important; }
 
-        header {
-            background: linear-gradient(135deg, var(--rosa), var(--lila));
-            padding: 22px 15px;
-            text-align: center;
-            border-bottom-left-radius: 20px;
-            border-bottom-right-radius: 20px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
-        }
+    /* === MINI CARNET FLOTANTE (Arriba a la derecha) === */
+    .mini-badge {
+      position: fixed;
+      top: 15px;
+      right: 15px;
+      z-index: 1000;
+      background: rgba(255, 255, 255, 0.95);
+      border: 2px solid #FFB6C1;
+      border-radius: 25px;
+      padding: 5px 12px 5px 6px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      cursor: pointer;
+      backdrop-filter: blur(5px);
+      animation: popIn 0.3s ease-out;
+    }
 
-        h1 { margin: 0; font-size: 1.7rem; color: #fff; }
-        p.subtitulo { margin: 6px 0 0; color: #fff; font-size: 0.9rem; opacity: 0.95; }
+    .badge-avatar {
+      font-size: 1.2rem;
+      background: #FFE4E1;
+      border-radius: 50%;
+      width: 30px;
+      height: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
 
-        .container { padding: 15px; max-width: 500px; margin: 0 auto; }
-        .tab-content { display: none; }
-        .tab-content.active { display: block; }
+    .badge-info {
+      display: flex;
+      flex-direction: column;
+    }
 
-        .card {
-            background: var(--tarjeta);
-            border-radius: 16px;
-            padding: 16px;
-            margin-bottom: 15px;
-            box-shadow: 0 4px 12px rgba(189, 178, 255, 0.25);
-        }
+    .badge-name {
+      font-size: 0.8rem;
+      font-weight: bold;
+      color: #333;
+      line-height: 1;
+    }
 
-        h2 { color: var(--morado); margin-top: 0; font-size: 1.2rem; }
+    .badge-id {
+      font-size: 0.65rem;
+      color: #d10056;
+      font-weight: bold;
+    }
 
-        input, textarea, button {
-            width: 100%;
-            padding: 12px;
-            margin: 8px 0;
-            border-radius: 10px;
-            border: 1px solid #e2d4f0;
-            box-sizing: border-box;
-            font-size: 0.95rem;
-        }
+    /* === MODAL CARNET GRANDE (Estilo McLovin) === */
+    .card-modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0, 0, 0, 0.6);
+      z-index: 2000;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
 
-        .btn-principal {
-            background: linear-gradient(135deg, #a0c4ff, var(--lila));
-            color: white;
-            font-weight: bold;
-            border: none;
-            cursor: pointer;
-        }
+    .mclovin-card {
+      width: 320px;
+      background: white;
+      border-radius: 12px;
+      border: 1px solid #ccc;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+      overflow: hidden;
+      background-image: linear-gradient(135deg, rgba(255,182,193,0.5), rgba(173,216,230,0.5), rgba(255,239,184,0.5));
+      font-family: 'Courier New', Courier, monospace;
+    }
 
-        .btn-flechazo {
-            background: linear-gradient(135deg, var(--rosa), var(--fucsia));
-            color: white;
-            font-weight: bold;
-            border: none;
-            cursor: pointer;
-        }
+    .card-header {
+      padding: 8px;
+      text-align: center;
+      background: rgba(255,255,255,0.8);
+      border-bottom: 1px solid #ddd;
+    }
 
-        .btn-mapa {
-            background: #e8def8;
-            color: var(--morado);
-            border: none;
-            padding: 8px 12px;
-            border-radius: 8px;
-            font-weight: bold;
-            text-decoration: none;
-            display: inline-block;
-            margin-top: 6px;
-            font-size: 0.85rem;
-        }
+    .header-main { font-size: 0.9rem; font-weight: bold; color: #222; }
+    .header-sub { font-size: 0.7rem; color: #666; }
 
-        .grid-pets { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px; }
-        .pet-item img { width: 100%; height: 120px; object-fit: cover; border-radius: 10px; }
+    .card-body { display: flex; padding: 12px; gap: 10px; }
+    .card-photo {
+      width: 75px; height: 95px; background: #eee;
+      border: 1px solid #ccc; display: flex;
+      justify-content: center; align-items: center;
+      font-size: 2.5rem; border-radius: 4px;
+    }
 
-        .match-box {
-            background: #ffe5ec;
-            border: 2px dashed var(--fucsia);
-            border-radius: 12px;
-            padding: 15px;
-            text-align: center;
-            margin-top: 10px;
-        }
+    .card-info { flex: 1; font-size: 0.7rem; }
+    .main-color { color: #b00; font-weight: bold; margin-bottom: 4px; }
+    .large { font-size: 1.1rem; font-weight: bold; color: #000; }
+    .signature { font-family: 'Brush Script MT', cursive; font-size: 1.1rem; color: #333; }
 
-        /* --- ANIMACIÓN MÁGICA DE MATCH --- */
-        #matchOverlay {
-            display: none;
-            position: fixed;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(255, 240, 245, 0.95);
-            z-index: 9999;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            padding: 20px;
-            animation: fadeIn 0.4s ease-out;
-        }
+    .close-btn {
+      width: 100%;
+      padding: 10px;
+      background: #333;
+      color: white;
+      border: none;
+      font-size: 0.8rem;
+      cursor: pointer;
+      font-weight: bold;
+    }
 
-        .match-animation-container {
-            position: relative;
-            width: 150px;
-            height: 150px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 20px;
-        }
+    /* === FORMULARIO DE REGISTRO DE CARNET === */
+    .card-form-container {
+      display: flex; justify-content: center; margin: 20px 0;
+    }
 
-        .big-heart {
-            font-size: 90px;
-            animation: heartbeat 1.2s infinite;
-            filter: drop-shadow(0 0 10px rgba(255, 133, 161, 0.6));
-        }
+    .card-form {
+      background: #fff; padding: 20px; border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.08); display: flex;
+      flex-direction: column; gap: 10px; width: 290px; text-align: center;
+    }
 
-        .cupid-arrow {
-            position: absolute;
-            font-size: 80px;
-            animation: shootArrow 1s cubic-bezier(0.175, 0.885, 0.32, 1.27) forwards;
-        }
+    .card-form h3 { margin: 0; color: #FFB6C1; }
+    .card-form p { font-size: 0.8rem; color: #666; margin-bottom: 5px; }
 
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
+    .card-form input {
+      padding: 10px; border: 1px solid #ddd; border-radius: 6px; font-size: 0.9rem;
+    }
 
-        @keyframes heartbeat {
-            0% { transform: scale(1); }
-            25% { transform: scale(1.15); }
-            40% { transform: scale(1); }
-            60% { transform: scale(1.12); }
-            100% { transform: scale(1); }
-        }
+    .card-form button {
+      padding: 12px; background: #FFB6C1; color: white;
+      border: none; border-radius: 6px; font-weight: bold; cursor: pointer;
+    }
 
-        @keyframes shootArrow {
-            0% {
-                transform: translate(-120px, -120px) rotate(45deg) scale(0.5);
-                opacity: 0;
-            }
-            70% {
-                transform: translate(10px, 10px) rotate(45deg) scale(1.2);
-                opacity: 1;
-            }
-            100% {
-                transform: translate(0, 0) rotate(45deg) scale(1);
-                opacity: 1;
-            }
-        }
+    /* === SECCIÓN DE CUMPLEAÑOS === */
+    .cumples-container {
+      background: white;
+      padding: 20px;
+      border-radius: 12px;
+      max-width: 320px;
+      margin: 30px auto;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+    }
 
-        .sparkle-text {
-            font-size: 1.8rem;
-            color: var(--fucsia);
-            margin: 10px 0;
-            font-weight: bold;
-            text-shadow: 1px 1px 3px rgba(0,0,0,0.1);
-        }
+    .cumples-container h3 {
+      color: #FFB6C1;
+      margin-top: 0;
+      text-align: center;
+    }
 
-        .nav-tabs {
-            display: flex;
-            justify-content: space-around;
-            background: #fff;
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            padding: 10px 2px;
-            box-shadow: 0 -2px 10px rgba(0,0,0,0.08);
-        }
+    .cumple-form {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-bottom: 15px;
+    }
 
-        .tab-btn {
-            background: none;
-            border: none;
-            font-size: 0.65rem;
-            color: #888;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 2px;
-            font-weight: bold;
-            flex: 1;
-        }
+    .cumple-form input {
+      padding: 8px;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+    }
 
-        .tab-btn.active { color: var(--morado); }
-        .tab-btn span { font-size: 1.1rem; }
+    .cumple-form button {
+      padding: 9px;
+      background: #FFB6C1;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-weight: bold;
+      cursor: pointer;
+    }
 
-        footer { text-align: center; padding: 15px; font-size: 0.8rem; color: #666; }
-    </style>
+    .lista-cumples {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .cumple-card {
+      background: #FFF0F5;
+      border-left: 4px solid #FFB6C1;
+      padding: 8px 12px;
+      border-radius: 4px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.9rem;
+    }
+
+    .cumple-nombre { font-weight: bold; color: #333; }
+    .cumple-fecha { color: #d10056; font-size: 0.8rem; font-weight: bold; }
+
+    @keyframes popIn {
+      0% { transform: scale(0); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+  </style>
 </head>
 <body>
 
-    <!-- OVERLAY ANIMADO DE MATCH -->
-    <div id="matchOverlay" onclick="cerrarMatchAnimacion()">
-        <div class="match-animation-container">
-            <div class="big-heart">💖</div>
-            <div class="cupid-arrow">🏹</div>
+  <!-- 1. MINI CARNET FLOTANTE (Arriba a la derecha) -->
+  <div id="mini-badge" class="mini-badge hidden" onclick="toggleCardModal()">
+    <div class="badge-avatar">👤</div>
+    <div class="badge-info">
+      <span class="badge-name" id="badge-name-out">Apodo</span>
+      <span class="badge-id" id="badge-id-out">#BL-0000</span>
+    </div>
+  </div>
+
+  <!-- 2. MODAL CARNET GRANDE (Desplegable) -->
+  <div id="card-modal" class="card-modal hidden" onclick="toggleCardModal()">
+    <div class="mclovin-card" onclick="event.stopPropagation()">
+      <div class="card-header">
+        <div class="header-main">REPÚBLICA SÁFICA DE BOLLOLANDIA 🌈</div>
+        <div class="header-sub">CARNET DE IDENTIDAD OFICIAL</div>
+      </div>
+      <div class="card-body">
+        <div class="card-photo">👤</div>
+        <div class="card-info">
+          <div class="info-row main-color">
+            <span>NÚMERO: </span><span id="card-id-out">BL-0000</span>
+          </div>
+          <div class="info-row main-color">
+            <span>ALTA: </span><span id="card-date-out">00/00/0000</span>
+          </div>
+          <div class="info-details">
+            <div style="margin-top:6px;">
+              <span style="font-weight:bold;">APODO:</span><br>
+              <span class="large" id="card-name-out">---</span>
+            </div>
+            <div style="margin-top:4px;">
+              <span style="font-weight:bold;">MISIÓN:</span><br>
+              <span id="card-mision-out">---</span>
+            </div>
+            <div style="margin-top:4px;">
+              <span style="font-weight:bold;">SUPERPODER:</span><br>
+              <span class="signature" id="card-super-out">---</span>
+            </div>
+          </div>
         </div>
-        <div class="sparkle-text">¡FLECHAZO MUTUO! 🌸</div>
-        <p id="matchTextoAnimado" style="font-size:1.1rem; color:var(--texto); font-weight:600;"></p>
-        <p style="font-size:0.8rem; color:#888; margin-top:20px;">(Toca la pantalla para cerrar)</p>
+      </div>
+      <button class="close-btn" onclick="toggleCardModal()">Cerrar / Ocultar</button>
+    </div>
+  </div>
+
+  <!-- 3. FORMULARIO CARNET (Solo sale si NO tienen carnet) -->
+  <div id="setup-form-container" class="card-form-container">
+    <div class="card-form">
+      <h3>Obtén tu DNI Sáfico 💳</h3>
+      <p>Crea tu carnet oficial para estar identificada en la web.</p>
+      <input type="text" id="in-name" placeholder="Tu Apodo / Nombre" maxlength="15">
+      <input type="text" id="in-mision" placeholder="Tu Misión en el grupo" maxlength="25">
+      <input type="text" id="in-super" placeholder="Tu Superpoder (firma)" maxlength="20">
+      <button onclick="crearYGuardarCarnet()">¡Generar mi Carnet!</button>
+    </div>
+  </div>
+
+  <!-- 4. SECCIÓN DE CUMPLEAÑOS -->
+  <div class="cumples-container">
+    <h3>🎂 Cumpleaños del Grupo</h3>
+    
+    <div class="cumple-form">
+      <input type="text" id="cumple-nombre" placeholder="Nombre / Apodo" maxlength="15">
+      <input type="date" id="cumple-fecha">
+      <button onclick="guardarCumple()">Añadir Cumple ✨</button>
     </div>
 
-    <header>
-        <h1>🌸 Rincón de Bollolandia 🌸</h1>
-        <p class="subtitulo">Nuestro espacio seguro ✨</p>
-    </header>
-
-    <div class="container">
-        <!-- CUMPLEAÑOS -->
-        <div id="cumples" class="tab-content active">
-            <div class="card">
-                <h2>📅 Añadir Cumpleaños</h2>
-                <input type="text" id="nombreCumple" placeholder="Nombre de la cumpleañera">
-                <input type="date" id="fechaCumple">
-                <button class="btn-principal" onclick="agregarCumple()">Añadir a la lista</button>
-            </div>
-            <div class="card">
-                <h2>🎉 Próximos Cumpleaños</h2>
-                <div id="listaCumples">Aún no hay cumpleaños añadidos.</div>
-            </div>
-        </div>
-
-        <!-- QUEDADAS -->
-        <div id="quedadas" class="tab-content">
-            <div class="card">
-                <h2>📍 Proponer Quedada</h2>
-                <input type="text" id="tituloQuedada" placeholder="Plan (ej: Picnic, Café...)">
-                <input type="text" id="lugarQuedada" placeholder="Lugar o Ciudad (ej: Retiro Madrid)">
-                <input type="datetime-local" id="fechaQuedada">
-                <button class="btn-principal" onclick="agregarQuedada()">Publicar Quedada</button>
-            </div>
-            <div class="card">
-                <h2>🗺️ Próximos Planes</h2>
-                <div id="listaQuedadas">Aún no hay quedadas propuestas.</div>
-            </div>
-        </div>
-
-        <!-- BUZÓN SECRETO (MATCH) -->
-        <div id="buzon" class="tab-content">
-            <div class="card">
-                <h2>💌 Buzón Secreto de Flechazos</h2>
-                <p style="font-size:0.85rem; color:#666; margin-top:-5px;">
-                    Nadie sabrá a quién le has mandado un flechazo... ¡a menos que sea mutuo! 💖
-                </p>
-                <input type="text" id="miNombre" placeholder="Tu nombre / apodo">
-                <input type="text" id="destinoNombre" placeholder="¿A quién le mandas el flechazo?">
-                <button class="btn-flechazo" onclick="enviarFlechazo()">💘 Mandar Flechazo Secreto</button>
-            </div>
-
-            <div class="card">
-                <h2>✨ Tus Matches Secretos</h2>
-                <div id="misMatches">Introduce tu nombre para comprobar si tienes algún match en secreto.</div>
-            </div>
-        </div>
-
-        <!-- MASCOTAS -->
-        <div id="mascotas" class="tab-content">
-            <div class="card">
-                <h2>🐾 Subir Foto de Mascota</h2>
-                <input type="text" id="nombreMascota" placeholder="Nombre del animalito">
-                <input type="file" id="fotoMascota" accept="image/*">
-                <button class="btn-principal" onclick="subirMascota()">Publicar Foto</button>
-            </div>
-            <div class="card">
-                <h2>📸 Galería de Peludos</h2>
-                <div id="galeriaMascotas" class="grid-pets"></div>
-            </div>
-        </div>
-
-        <!-- SUGERENCIAS -->
-        <div id="sugerencias" class="tab-content">
-            <div class="card">
-                <h2>💡 ¿Qué quieres que añadamos?</h2>
-                <textarea id="textoSugerencia" rows="3" placeholder="Escribe aquí ideas o mejoras..."></textarea>
-                <button class="btn-principal" onclick="enviarSugerencia()">Enviar Idea</button>
-            </div>
-            <div class="card">
-                <h2>💬 Ideas del grupo</h2>
-                <div id="listaSugerencias">Aún no hay sugerencias.</div>
-            </div>
-        </div>
+    <div id="lista-cumples" class="lista-cumples">
+      <!-- Se dibuja automáticamente aquí -->
     </div>
+  </div>
 
-    <footer>
-        <p id="fraseRotativa">✨ "Un espacio donde siempre puedes ser tú misma." ✨</p>
-    </footer>
+  <!-- LÓGICA JAVASCRIPT -->
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      // 1. Cargar carnet si existe
+      const savedCardData = localStorage.getItem("dni_safico_data");
+      if (savedCardData) {
+        mostrarCarnetEnPantalla(JSON.parse(savedCardData));
+      }
 
-    <!-- MENÚ NAVEGACIÓN -->
-    <div class="nav-tabs">
-        <button class="tab-btn active" onclick="cambiarPestana('cumples', this)"><span>📅</span>Cumples</button>
-        <button class="tab-btn" onclick="cambiarPestana('quedadas', this)"><span>📍</span>Quedadas</button>
-        <button class="tab-btn" onclick="cambiarPestana('buzon', this)"><span>💌</span>Buzón</button>
-        <button class="tab-btn" onclick="cambiarPestana('mascotas', this)"><span>🐾</span>Mascotas</button>
-        <button class="tab-btn" onclick="cambiarPestana('sugerencias', this)"><span>💡</span>Ideas</button>
-    </div>
+      // 2. Cargar lista de cumpleaños
+      cargarCumpleanos();
+    });
 
-    <script>
-        function cambiarPestana(idPestana, btn) {
-            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
-            document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
-            document.getElementById(idPestana).classList.add('active');
-            btn.classList.add('active');
-        }
+    /* --- LÓGICA DEL CARNET --- */
+    function crearYGuardarCarnet() {
+      const name = document.getElementById("in-name").value.trim();
+      const mision = document.getElementById("in-mision").value.trim();
+      const superpoder = document.getElementById("in-super").value.trim();
 
-        // CUMPLEAÑOS
-        function agregarCumple() {
-            const nombre = document.getElementById('nombreCumple').value;
-            const fecha = document.getElementById('fechaCumple').value;
-            if(!nombre || !fecha) return alert('Por favor rellena ambos campos');
+      if (!name || !mision || !superpoder) {
+        alert("¡Porfa, rellena todos los campos para tu DNI oficial! 🌈");
+        return;
+      }
 
-            const cumples = JSON.parse(localStorage.getItem('cumples') || '[]');
-            cumples.push({ nombre, fecha });
-            localStorage.setItem('cumples', JSON.stringify(cumples));
-            document.getElementById('nombreCumple').value = '';
-            document.getElementById('fechaCumple').value = '';
-            cargarCumples();
-        }
+      const randomNum = Math.floor(1000 + Math.random() * 9000);
+      const cardId = `BL-${randomNum}`;
+      const today = new Date().toLocaleDateString();
 
-        function cargarCumples() {
-            const cumples = JSON.parse(localStorage.getItem('cumples') || '[]');
-            const cont = document.getElementById('listaCumples');
-            if(cumples.length === 0) return cont.innerHTML = 'Aún no hay cumpleaños añadidos.';
-            cont.innerHTML = cumples.map(c => `<div style="padding:10px 0; border-bottom:1px solid #eee;">🎂 <strong>${c.nombre}</strong> - ${c.fecha}</div>`).join('');
-        }
+      const data = { name, mision, superpoder, cardId, date: today };
 
-        // QUEDADAS
-        function agregarQuedada() {
-            const titulo = document.getElementById('tituloQuedada').value;
-            const lugar = document.getElementById('lugarQuedada').value;
-            const fecha = document.getElementById('fechaQuedada').value;
-            if(!titulo || !lugar || !fecha) return alert('Por favor rellena todos los datos de la quedada');
+      localStorage.setItem("dni_safico_data", JSON.stringify(data));
+      mostrarCarnetEnPantalla(data);
+    }
 
-            const quedadas = JSON.parse(localStorage.getItem('quedadas') || '[]');
-            quedadas.push({ titulo, lugar, fecha });
-            localStorage.setItem('quedadas', JSON.stringify(quedadas));
-            
-            document.getElementById('tituloQuedada').value = '';
-            document.getElementById('lugarQuedada').value = '';
-            document.getElementById('fechaQuedada').value = '';
-            cargarQuedadas();
-        }
+    function mostrarCarnetEnPantalla(data) {
+      document.getElementById("setup-form-container").classList.add("hidden");
 
-        function cargarQuedadas() {
-            const quedadas = JSON.parse(localStorage.getItem('quedadas') || '[]');
-            const cont = document.getElementById('listaQuedadas');
-            if(quedadas.length === 0) return cont.innerHTML = 'Aún no hay quedadas propuestas.';
-            
-            cont.innerHTML = quedadas.map(q => {
-                const mapUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(q.lugar)}`;
-                return `
-                    <div style="padding:10px 0; border-bottom:1px solid #eee;">
-                        <strong>📍 ${q.titulo}</strong><br>
-                        <small>🏠 Lugar: ${q.lugar}</small><br>
-                        <small>⏰ Fecha/Hora: ${q.fecha.replace('T', ' a las ')}</small><br>
-                        <a href="${mapUrl}" target="_blank" class="btn-mapa">🗺️ Abrir lugar en Google Maps</a>
-                    </div>
-                `;
-            }).join('');
-        }
+      document.getElementById("badge-name-out").innerText = data.name;
+      document.getElementById("badge-id-out").innerText = `#${data.cardId}`;
+      document.getElementById("mini-badge").classList.remove("hidden");
 
-        // BUZÓN SECRETO Y ANIMACIÓN DE MATCH
-        function lanzarAnimacionMatch(nombre1, nombre2) {
-            const overlay = document.getElementById('matchOverlay');
-            const texto = document.getElementById('matchTextoAnimado');
-            
-            // Capitalizar nombres
-            const n1 = nombre1.charAt(0).toUpperCase() + nombre1.slice(1);
-            const n2 = nombre2.charAt(0).toUpperCase() + nombre2.slice(1);
+      document.getElementById("card-name-out").innerText = data.name;
+      document.getElementById("card-mision-out").innerText = data.mision;
+      document.getElementById("card-super-out").innerText = data.superpoder;
+      document.getElementById("card-id-out").innerText = data.cardId;
+      document.getElementById("card-date-out").innerText = data.date;
+    }
 
-            texto.innerHTML = `¡Tú (${n1}) y ${n2} habéis conectado! 💕<br><br>Es el momento perfecto para tomar un café. ☕`;
-            overlay.style.display = 'flex';
-        }
+    function toggleCardModal() {
+      document.getElementById("card-modal").classList.toggle("hidden");
+    }
 
-        function cerrarMatchAnimacion() {
-            document.getElementById('matchOverlay').style.display = 'none';
-        }
+    /* --- LÓGICA DE LOS CUMPLEAÑOS --- */
+    function guardarCumple() {
+      const nombre = document.getElementById("cumple-nombre").value.trim();
+      const fecha = document.getElementById("cumple-fecha").value;
 
-        function enviarFlechazo() {
-            const de = document.getElementById('miNombre').value.trim().toLowerCase();
-            const para = document.getElementById('destinoNombre').value.trim().toLowerCase();
+      if (!nombre || !fecha) {
+        alert("¡Porfa, pon el nombre y la fecha del cumple! 🎈");
+        return;
+      }
 
-            if(!de || !para) return alert('Escribe tu nombre y el de la chica a la que envías el flechazo');
-            if(de === para) return alert('¡No te puedes mandar un flechazo a ti misma! 😉');
+      let cumples = JSON.parse(localStorage.getItem("lista_cumples")) || [];
+      cumples.push({ nombre, fecha });
 
-            const flechazos = JSON.parse(localStorage.getItem('flechazos') || '[]');
-            
-            const existe = flechazos.some(f => f.de === de && f.para === para);
-            if(!existe) {
-                flechazos.push({ de, para });
-                localStorage.setItem('flechazos', JSON.stringify(flechazos));
-            }
+      localStorage.setItem("lista_cumples", JSON.stringify(cumples));
 
-            document.getElementById('destinoNombre').value = '';
-            
-            // Comprobar si al enviar este flechazo se genera un MATCH inmediato
-            const hayMatchMutuo = flechazos.some(f => f.de === para && f.para === de);
-            
-            if(hayMatchMutuo) {
-                lanzarAnimacionMatch(de, para);
-            } else {
-                alert('💘 Flechazo guardado en secreto. Si ella también te elige... ¡habrá match!');
-            }
+      document.getElementById("cumple-nombre").value = "";
+      document.getElementById("cumple-fecha").value = "";
 
-            comprobarMatches();
-        }
+      cargarCumpleanos();
+    }
 
-        function comprobarMatches() {
-            const miNombre = document.getElementById('miNombre').value.trim().toLowerCase();
-            const cont = document.getElementById('misMatches');
+    function cargarCumpleanos() {
+      const contenedor = document.getElementById("lista-cumples");
+      const cumples = JSON.parse(localStorage.getItem("lista_cumples")) || [];
 
-            if(!miNombre) {
-                cont.innerHTML = 'Introduce tu nombre arriba para ver tus matches.';
-                return;
-            }
+      contenedor.innerHTML = "";
 
-            const flechazos = JSON.parse(localStorage.getItem('flechazos') || '[]');
-            
-            const misFlechazosEnviados = flechazos.filter(f => f.de === miNombre).map(f => f.para);
-            const matches = flechazos.filter(f => f.para === miNombre && misFlechazosEnviados.includes(f.de));
+      if (cumples.length === 0) {
+        contenedor.innerHTML = "<p style='color:#aaa; text-align:center; font-size:0.8rem;'>Aún no hay cumpleaños añadidos 🎉</p>";
+        return;
+      }
 
-            if(matches.length === 0) {
-                cont.innerHTML = '<p style="color:#888; font-size:0.9rem;">De momento no hay matches mutuos. ¡Sigue enviando flechazos en secreto! 💌</p>';
-            } else {
-                cont.innerHTML = matches.map(m => `
-                    <div class="match-box">
-                        <h3 style="margin:0; color:#d63384;">¡HAY MATCH MUTUO! 🌸💖</h3>
-                        <p style="margin:5px 0 0 0; font-weight:bold; font-size:1.05rem;">
-                            Tú y <span style="text-transform:capitalize; color:#6c5ce7;">${m.de}</span> os habéis mandado un flechazo. ☕✨
-                        </p>
-                    </div>
-                `).join('');
-            }
-        }
+      cumples.forEach(function(item) {
+        const card = document.createElement("div");
+        card.className = "cumple-card";
+        
+        // Formatear fecha para evitar desfase de zona horaria
+        const partes = item.fecha.split("-");
+        const fechaFormateada = `${partes[2]}/${partes[1]}`;
 
-        document.getElementById('miNombre').addEventListener('input', comprobarMatches);
+        card.innerHTML = `
+          <span class="cumple-nombre">🎂 ${item.nombre}</span>
+          <span class="cumple-fecha">${fechaFormateada}</span>
+        `;
 
-        // MASCOTAS
-        function subirMascota() {
-            const nombre = document.getElementById('nombreMascota').value;
-            const fileInput = document.getElementById('fotoMascota');
-            if(!nombre || fileInput.files.length === 0) return alert('Pon el nombre y selecciona la foto');
-
-            const file = fileInput.files[0];
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                const mascotas = JSON.parse(localStorage.getItem('mascotas') || '[]');
-                mascotas.push({ nombre, foto: e.target.result });
-                localStorage.setItem('mascotas', JSON.stringify(mascotas));
-                document.getElementById('nombreMascota').value = '';
-                fileInput.value = '';
-                cargarMascotas();
-            };
-            reader.readAsDataURL(file);
-        }
-
-        function cargarMascotas() {
-            const mascotas = JSON.parse(localStorage.getItem('mascotas') || '[]');
-            const cont = document.getElementById('galeriaMascotas');
-            if(mascotas.length === 0) return cont.innerHTML = '<p style="grid-column:1/3; color:#888;">No hay fotos de mascotas subidas aún.</p>';
-            cont.innerHTML = mascotas.map(m => `
-                <div class="pet-item">
-                    <img src="${m.foto}">
-                    <p style="text-align:center; font-weight:bold; margin:4px 0;">${m.nombre}</p>
-                </div>
-            `).join('');
-        }
-
-        // SUGERENCIAS
-        function enviarSugerencia() {
-            const texto = document.getElementById('textoSugerencia').value;
-            if(!texto) return;
-
-            const sugs = JSON.parse(localStorage.getItem('sugerencias') || '[]');
-            sugs.push(texto);
-            localStorage.setItem('sugerencias', JSON.stringify(sugs));
-            document.getElementById('textoSugerencia').value = '';
-            cargarSugerencias();
-        }
-
-        function cargarSugerencias() {
-            const sugs = JSON.parse(localStorage.getItem('sugerencias') || '[]');
-            const cont = document.getElementById('listaSugerencias');
-            if(sugs.length === 0) return cont.innerHTML = 'Aún no hay sugerencias.';
-            cont.innerHTML = sugs.map(s => `<div style="padding:8px 0; border-bottom:1px solid #eee;">💡 ${s}</div>`).join('');
-        }
-
-        // FRASES ROTATIVAS
-        const frases = [
-            '✨ "Un espacio donde siempre puedes ser tú misma." ✨',
-            '💖 "Lo bonito de coincidir y quedarnos juntas." 💖',
-            '🌸 "Un día más para cuidar de nuestras chicas." 🌸',
-            '🐾 "Nuestras mascotas son las reinas de este lugar." 🐾'
-        ];
-        let fIdx = 0;
-        setInterval(() => {
-            fIdx = (fIdx + 1) % frases.length;
-            document.getElementById('fraseRotativa').innerText = frases[fIdx];
-        }, 300000);
-
-        // CARGA INICIAL
-        cargarCumples();
-        cargarQuedadas();
-        cargarMascotas();
-        cargarSugerencias();
-    </script>
+        contenedor.appendChild(card);
+      });
+    }
+  </script>
 </body>
 </html>
