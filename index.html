@@ -4,6 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Rincón de Bollolandia</title>
+
+    <!-- Vinculación para App Instalable (PWA) -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#bdb2ff">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Bollolandia">
+
     <!-- Librería para descargar el carnet como imagen PNG -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <!-- Fuente manuscrita para la firma del carnet -->
@@ -107,7 +115,7 @@
             margin-top: 10px;
         }
 
-        /* ANIMACIÓN MÁGICA DE MATCH */
+        /* ANIMACIÓN DE MATCH */
         #matchOverlay {
             display: none;
             position: fixed;
