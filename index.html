@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>República Sáfica de Bollolandia 🌈</title>
-  <!-- Librería externa para poder descargar el carnet como imagen -->
+  <!-- Librería externa para descargar el carnet como imagen -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <style>
     /* === ESTILOS GENERALES === */
@@ -180,7 +180,7 @@
     <div class="badge-avatar">👤</div>
     <div class="badge-info">
       <span class="badge-name" id="badge-name-out">Apodo</span>
-      <span class="badge-id" id="badge-id-out">#BL-0000</span>
+      <span class="badge-id" id="badge-id-out">#BL-0000001</span>
     </div>
   </div>
 
@@ -195,7 +195,7 @@
         <div class="card-photo">👤</div>
         <div class="card-info">
           <div class="info-row main-color">
-            <span>NÚMERO: </span><span id="card-id-out">BL-0000</span>
+            <span>NÚMERO: </span><span id="card-id-out">BL-0000001</span>
           </div>
           <div class="info-row main-color">
             <span>ALTA: </span><span id="card-date-out">00/00/0000</span>
@@ -248,6 +248,24 @@
         <option value="Mandar memes al grupo 24/7">📲 Proveedora de memes 24/7</option>
         <option value="Hacer match y ghostear sin querer">👻 Match y despiste total</option>
         <option value="Ser la madre del grupo">🏼‍🍼 La madre responsable</option>
+        <option value="Comprarme ropa aesthetic que no usaré">🛍️ Coleccionista de ropa aesthetic</option>
+        <option value="Enamorarme en 3 segundos en el metro">💘 Enamoradiza express de transporte público</option>
+        <option value="Subir stories con canciones indirecta">🎶 Creadora de indirectas en Stories</option>
+        <option value="Hacer listas de Spotify para todo">🎧 Listas de Spotify para cada emoción</option>
+        <option value="Ser la psicóloga gratis del grupo">🧠 Psicóloga oficial del grupo</option>
+        <option value="Llegar tarde pero con un café helado">☕ Tarde pero aesthetic</option>
+        <option value="Decir 'literal' en cada frase">💬 Repetidora profesional de 'literal'</option>
+        <option value="Evitar el contacto visual con mi ex">🫣 Experta en esquivar miradas</option>
+        <option value="Planear viajes que nunca se hacen">✈️ Turista de planes hipotéticos</option>
+        <option value="Hacer la croqueta en la pista de baile">💃 Reina indiscutible de la pista</option>
+        <option value="Saber la carta astral de todo el grupo">🔮 Astróloga no oficial</option>
+        <option value="Llorar escuchando a Taylor Swift/Phoebe">🎸 Llorar con música triste</option>
+        <option value="Llevar siempre chicles y goma de pelo">🎒 Proveedora de emergencias de bolso</option>
+        <option value="Meterse en líos por no saber decir no">🤷‍♀️ Experta en compromisos involuntarios</option>
+        <option value="Hacer fotos aesthetic a la comida">📸 Fotógrafa de platillos antes de comer</option>
+        <option value="Desaparecer 3 días y volver como si nada">🪐 Fantasma con lag temporal</option>
+        <option value="Proponer planes locos a última hora">⚡ Impulsiva de planes nocturnos</option>
+        <option value="Hacer un Excel para cualquier tontería">📊 Organizadora compulsiva de eventos</option>
       </select>
 
       <input type="text" id="in-super" placeholder="Tu Superpoder (para la firma)" maxlength="20">
@@ -275,8 +293,14 @@
         return;
       }
 
-      const randomNum = Math.floor(1000 + Math.random() * 9000);
-      const cardId = `BL-${randomNum}`;
+      // Contador secuencial (0000001, 0000002...)
+      let currentCounter = parseInt(localStorage.getItem("dni_counter_number") || "0", 10);
+      currentCounter += 1;
+      localStorage.setItem("dni_counter_number", currentCounter.toString());
+
+      // Formatear a 7 dígitos con ceros a la izquierda
+      const formattedNum = currentCounter.toString().padStart(7, '0');
+      const cardId = `BL-${formattedNum}`;
       const today = new Date().toLocaleDateString();
 
       const data = { name, mision, superpoder, cardId, date: today };
@@ -303,15 +327,13 @@
       document.getElementById("card-modal").classList.toggle("hidden");
     }
 
-    /* --- FUNCIÓN PARA BORRAR Y CREAR DE NUEVO --- */
     function borrarCarnet() {
       if (confirm("¿Segura que quieres borrar tu carnet actual y crear uno nuevo?")) {
-        localStorage.removeItem("dni_safico_data"); // Borra la memoria del carnet
-        location.reload(); // Recarga la página para mostrar el formulario vacio
+        localStorage.removeItem("dni_safico_data");
+        location.reload();
       }
     }
 
-    /* --- FUNCIÓN PARA DESCARGAR EL CARNET COMO IMAGEN --- */
     function descargarCarnet() {
       const cardElement = document.getElementById("mclovin-card");
       html2canvas(cardElement).then(canvas => {
