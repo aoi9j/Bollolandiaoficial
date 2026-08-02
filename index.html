@@ -107,7 +107,7 @@
             margin-top: 10px;
         }
 
-        /* --- ANIMACIÓN MÁGICA DE MATCH --- */
+        /* ANIMACIÓN MÁGICA DE MATCH */
         #matchOverlay {
             display: none;
             position: fixed;
@@ -180,7 +180,7 @@
             text-shadow: 1px 1px 3px rgba(0,0,0,0.1);
         }
 
-        /* --- ESTILOS ESPECÍFICOS DEL CARNET --- */
+        /* ESTILOS DEL CARNET */
         .file-input-label {
             background: #f1f5f9;
             border: 2px dashed var(--morado);
@@ -399,11 +399,11 @@
 
     <div class="container">
 
-        <!-- CARNET SÁFICO -->
+        <!-- REGISTRO Y CARNET -->
         <div id="carnet" class="tab-content active">
-            <div class="card">
-                <h2>💳 Carnet de Bollolandia</h2>
-                <p style="font-size:0.85rem; color:#666; margin-top:-5px;">Rellena tus datos para emitir tu documento de identidad oficial.</p>
+            <div class="card" id="formRegistroCarnet">
+                <h2>💳 Identificación de Bollolandia</h2>
+                <p style="font-size:0.85rem; color:#666; margin-top:-5px;">Ingresa tus datos y el código secreto de la comunidad para obtener tu carnet y desbloquear la web.</p>
                 
                 <input type="text" id="inName" placeholder="Tu Apodo / Nombre" maxlength="15">
                 
@@ -424,11 +424,14 @@
                 <label for="inPhoto" class="file-input-label" id="photoLabel">📷 Subir Foto de Perfil</label>
                 <input type="file" id="inPhoto" accept="image/*" style="display: none;" onchange="procesarFotoCarnet()">
 
-                <button class="btn-principal" onclick="crearCarnet()">✨ Generar Carnet de Identidad</button>
+                <input type="password" id="inCodigo" placeholder="🔒 Código de acceso exclusivo">
+
+                <button class="btn-principal" onclick="crearCarnet()">✨ Validar Código y Crear Carnet</button>
             </div>
 
             <div class="card" id="seccionMiCarnet" style="display: none;">
                 <h2>Acreditación Emitida</h2>
+                <p style="font-size:0.85rem; color:#666; margin-top:-5px;">¡Identificación verificada! Puedes acceder a todas las secciones desde el menú inferior.</p>
                 <div class="mini-badge" onclick="abrirModalCarnet()">
                     <div class="badge-avatar" id="miniAvatarBox">👤</div>
                     <div style="flex:1;">
@@ -519,8 +522,8 @@
         <p id="fraseRotativa">✨ "Un espacio donde siempre puedes ser tú misma." ✨</p>
     </footer>
 
-    <!-- MENÚ NAVEGACIÓN -->
-    <div class="nav-tabs">
+    <!-- MENÚ NAVEGACIÓN (Oculto hasta identificarse) -->
+    <div class="nav-tabs" id="navTabs" style="display: none;">
         <button class="tab-btn active" onclick="cambiarPestana('carnet', this)"><span>💳</span>Carnet</button>
         <button class="tab-btn" onclick="cambiarPestana('cumples', this)"><span>📅</span>Cumples</button>
         <button class="tab-btn" onclick="cambiarPestana('quedadas', this)"><span>📍</span>Quedadas</button>
@@ -530,13 +533,16 @@
     </div>
 
     <script>
+        // CÓDIGO EXCLUSIVO CONFIGURADO
+        const CODIGO_CORRECTO = "BL-VIP-8317";
+
         let carnetFotoBase64 = "";
 
         function cambiarPestana(idPestana, btn) {
             document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
             document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
             document.getElementById(idPestana).classList.add('active');
-            btn.classList.add('active');
+            if(btn) btn.classList.add('active');
         }
 
         /* --- LÓGICA DEL CARNET --- */
@@ -559,9 +565,14 @@
         function crearCarnet() {
             const name = document.getElementById("inName").value.trim();
             const mision = document.getElementById("inMision").value;
+            const codigoIngresado = document.getElementById("inCodigo").value.trim();
 
             if (!name || !mision) {
                 return alert("Por favor escribe tu nombre y elige una misión 🌈");
+            }
+
+            if (codigoIngresado !== CODIGO_CORRECTO) {
+                return alert("🔒 Código de acceso incorrecto. Pídelo a las administradoras de la comunidad.");
             }
 
             let counter = parseInt(localStorage.getItem("dni_counter_num") || "0", 10) + 1;
@@ -575,7 +586,13 @@
             localStorage.setItem("dni_safico_data", JSON.stringify(data));
             
             cargarDatosCarnet(data);
+            desbloquearNavegacion();
             abrirModalCarnet();
+        }
+
+        function desbloquearNavegacion() {
+            document.getElementById("navTabs").style.display = "flex";
+            document.getElementById("formRegistroCarnet").style.display = "none";
         }
 
         function cargarDatosCarnet(data) {
@@ -827,6 +844,7 @@
             const savedCardData = localStorage.getItem("dni_safico_data");
             if (savedCardData) {
                 cargarDatosCarnet(JSON.parse(savedCardData));
+                desbloquearNavegacion();
             }
         });
     </script>
