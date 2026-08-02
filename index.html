@@ -534,7 +534,7 @@
                 <div class="shop-item">
                     <div class="shop-item-info">
                         <h4>💖 Marco Coqueta de Corazones</h4>
-                        <p>Dale un borde brillante y romántico a la foto de tu carnet y perfil.</p>
+                        <p>Dale un borde brillante y romántico a la foto de tuyo carnet y perfil.</p>
                     </div>
                     <button class="btn-buy" onclick="comprarMarco('marco-corazones', 'Marco Corazones', 50)">50 💖</button>
                 </div>
@@ -680,12 +680,17 @@
         let userHearts = parseInt(localStorage.getItem("user_hearts") || "0", 10);
 
         function esFundadoraActiva() {
-            const data = JSON.parse(localStorage.getItem("dni_safico_data") || "{}");
-            return data.isGold === true;
+            const dataStr = localStorage.getItem("dni_safico_data");
+            if (!dataStr) return false;
+            try {
+                const data = JSON.parse(dataStr);
+                return data.isGold === true;
+            } catch (e) {
+                return false;
+            }
         }
 
         function actualizarCorazones(cantidad) {
-            // Si eres fundadora, tus corazones son infinitos y no bajan ni suben de manera limitada
             if (esFundadoraActiva()) {
                 document.getElementById("heartCount").innerText = "∞";
                 return;
@@ -757,7 +762,7 @@
             if (esGold) {
                 localStorage.setItem("user_hearts", "9999");
             } else {
-                actualizarCorazones(100); // Bono de bienvenida para normales
+                actualizarCorazones(100);
             }
 
             cargarDatosCarnet(data);
@@ -846,7 +851,6 @@
                 return alert("✨ ¡Ya tienes este marco en tu inventario! Ve a tu perfil para ponértelo.");
             }
             
-            // Si eres fundadora (infinitos), puedes comprar sin mirar saldo
             if (!esFundadoraActiva() && userHearts < precio) {
                 return alert(`⛔ Te faltan ${precio - userHearts} 💖 para comprar el ${nombreMarco}. ¡Participa más en la web!`);
             }
@@ -869,7 +873,6 @@
             let marcos = JSON.parse(localStorage.getItem("marcos_comprados") || "[]");
             let marcoActivo = localStorage.getItem("marco_activo") || "";
 
-            // Si eres fundadora, desbloqueamos automáticamente todos los marcos de la tienda en tu inventario como privilegio especial
             if (esFundadoraActiva()) {
                 marcos = ["marco-corazones", "marco-neon", "marco-corona"];
             }
@@ -917,7 +920,7 @@
 
             ["marco-corazones", "marco-neon", "marco-corona"].forEach(cls => {
                 if (photoBox) photoBox.classList.remove(cls);
-                if (avatarBox) avatarBox.classList.5?.remove?.(cls) || avatarBox.classList.remove(cls);
+                if (avatarBox) avatarBox.classList.remove(cls);
             });
 
             if (marcoActivo) {
@@ -1017,7 +1020,7 @@
             const para = document.getElementById('destinoNombre').value.trim().toLowerCase();
 
             if(!de || !para) return alert('Escribe tu nombre y el de la chica a la que envías el flechazo');
-            if(de === para) return alert('¡Ne te puedes mandar un flechazo a ti misma! 😉');
+            if(de === para) return alert('¡No te puedes mandar un flechazo a ti misma! 😉');
 
             const flechazos = JSON.parse(localStorage.getItem('flechazos') || '[]');
             const existe = flechazos.some(f => f.de === de && f.para === para);
@@ -1067,7 +1070,10 @@
             }
         }
 
-        document.getElementById('miNombre').addEventListener('input', comprobarMatches);
+        const inputMiNombre = document.getElementById('miNombre');
+        if (inputMiNombre) {
+            inputMiNombre.addEventListener('input', comprobarMatches);
+        }
 
         /* --- MASCOTAS --- */
         function subirMascota() {
@@ -1093,6 +1099,7 @@
         function cargarMascotas() {
             const mascotas = JSON.parse(localStorage.getItem('mascotas') || '[]');
             const cont = document.getElementById('galeriaMascotas');
+            if(!cont) return;
             if(mascotas.length === 0) return cont.innerHTML = '<p style="grid-column:1/3; color:#888;">No hay fotos de mascotas subidas aún.</p>';
             cont.innerHTML = mascotas.map(m => `
                 <div class="pet-item">
@@ -1117,6 +1124,7 @@
         function cargarSugerencias() {
             const sugs = JSON.parse(localStorage.getItem('sugerencias') || '[]');
             const cont = document.getElementById('listaSugerencias');
+            if(!cont) return;
             if(sugs.length === 0) return cont.innerHTML = 'Aún no hay sugerencias.';
             cont.innerHTML = sugs.map(s => `<div style="padding:8px 0; border-bottom:1px solid #eee;">💡 ${s}</div>`).join('');
         }
@@ -1125,9 +1133,13 @@
         window.addEventListener("DOMContentLoaded", function() {
             const savedCardData = localStorage.getItem("dni_safico_data");
             if (savedCardData) {
-                const parsed = JSON.parse(savedCardData);
-                cargarDatosCarnet(parsed);
-                desbloquearNavegacion();
+                try {
+                    const parsed = JSON.parse(savedCardData);
+                    cargarDatosCarnet(parsed);
+                    desbloquearNavegacion();
+                } catch (e) {
+                    localStorage.removeItem("dni_safico_data");
+                }
             } else {
                 document.getElementById("heartCount").innerText = userHearts;
             }
