@@ -6,12 +6,9 @@
     <title>Rincón de Bollolandia</title>
 
     <!-- Icono personalizado desde Imgur -->
-    <!-- Icono para iPhone/iPad al añadir a pantalla de inicio -->
     <link rel="apple-touch-icon" href="https://i.imgur.com/aMNQnO5.png">
-    <!-- Icono de la pestaña en el navegador web -->
     <link rel="icon" type="image/png" href="https://i.imgur.com/aMNQnO5.png">
 
-    <!-- Vinculación para App Instalable (PWA) -->
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#bdb2ff">
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -20,8 +17,8 @@
 
     <!-- Librería para descargar el carnet como imagen PNG -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-    <!-- Fuente manuscrita para la firma del carnet -->
-    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
+    <!-- Fuentes personalizadas -->
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Cinzel:wght@700&display=swap" rel="stylesheet">
 
     <style>
         :root {
@@ -32,6 +29,9 @@
             --texto: #4a3e4e;
             --morado: #6c5ce7;
             --fucsia: #ff85a1;
+            --oro-light: #fff3a0;
+            --oro-main: #ffd700;
+            --oro-dark: #b8860b;
         }
 
         body {
@@ -45,15 +45,33 @@
 
         header {
             background: linear-gradient(135deg, var(--rosa), var(--lila));
-            padding: 22px 15px;
+            padding: 20px 15px;
             text-align: center;
             border-bottom-left-radius: 20px;
             border-bottom-right-radius: 20px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            position: relative;
         }
 
-        h1 { margin: 0; font-size: 1.7rem; color: #fff; }
-        p.subtitulo { margin: 6px 0 0; color: #fff; font-size: 0.9rem; opacity: 0.95; }
+        h1 { margin: 0; font-size: 1.6rem; color: #fff; }
+        p.subtitulo { margin: 4px 0 0; color: #fff; font-size: 0.85rem; opacity: 0.95; }
+
+        /* BANNER DE CORAZONES (PUNTOS) */
+        .hearts-counter {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-weight: bold;
+            color: #d63384;
+            font-size: 0.85rem;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
 
         .container { padding: 15px; max-width: 500px; margin: 0 auto; }
         .tab-content { display: none; }
@@ -121,7 +139,7 @@
             margin-top: 10px;
         }
 
-        /* ANIMACIÓN DE MATCH */
+        /* OVERLAY MATCH */
         #matchOverlay {
             display: none;
             position: fixed;
@@ -133,68 +151,9 @@
             justify-content: center;
             text-align: center;
             padding: 20px;
-            animation: fadeIn 0.4s ease-out;
         }
 
-        .match-animation-container {
-            position: relative;
-            width: 150px;
-            height: 150px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 20px;
-        }
-
-        .big-heart {
-            font-size: 90px;
-            animation: heartbeat 1.2s infinite;
-            filter: drop-shadow(0 0 10px rgba(255, 133, 161, 0.6));
-        }
-
-        .cupid-arrow {
-            position: absolute;
-            font-size: 80px;
-            animation: shootArrow 1s cubic-bezier(0.175, 0.885, 0.32, 1.27) forwards;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        @keyframes heartbeat {
-            0% { transform: scale(1); }
-            25% { transform: scale(1.15); }
-            40% { transform: scale(1); }
-            60% { transform: scale(1.12); }
-            100% { transform: scale(1); }
-        }
-
-        @keyframes shootArrow {
-            0% {
-                transform: translate(-120px, -120px) rotate(45deg) scale(0.5);
-                opacity: 0;
-            }
-            70% {
-                transform: translate(10px, 10px) rotate(45deg) scale(1.2);
-                opacity: 1;
-            }
-            100% {
-                transform: translate(0, 0) rotate(45deg) scale(1);
-                opacity: 1;
-            }
-        }
-
-        .sparkle-text {
-            font-size: 1.8rem;
-            color: var(--fucsia);
-            margin: 10px 0;
-            font-weight: bold;
-            text-shadow: 1px 1px 3px rgba(0,0,0,0.1);
-        }
-
-        /* ESTILOS DEL CARNET */
+        /* ESTILOS DEL CARNET ESTÁNDAR Y DORADO */
         .file-input-label {
             background: #f1f5f9;
             border: 2px dashed var(--morado);
@@ -222,25 +181,26 @@
             box-shadow: 0 2px 8px rgba(0,0,0,0.08);
         }
 
+        .mini-badge.gold-badge {
+            background: linear-gradient(135deg, #fffbeb, #fef3c7);
+            border: 2px solid var(--oro-main);
+            box-shadow: 0 0 10px rgba(255, 215, 0, 0.4);
+        }
+
         .badge-avatar {
-            width: 35px;
-            height: 35px;
+            width: 38px; height: 38px;
             border-radius: 50%;
             border: 1px solid var(--morado);
             background: #e2e8f0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.1rem;
-            overflow: hidden;
-            flex-shrink: 0;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.1rem; overflow: hidden; flex-shrink: 0;
         }
 
         .card-modal {
             display: none;
             position: fixed;
             top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(0, 0, 0, 0.65);
+            background: rgba(0, 0, 0, 0.7);
             z-index: 10000;
             flex-direction: column;
             justify-content: center;
@@ -248,6 +208,7 @@
             padding: 20px;
         }
 
+        /* DISEÑO BASE DEL CARNET */
         .mclovin-card {
             width: 320px;
             background: white;
@@ -259,6 +220,14 @@
             font-family: 'Arial', sans-serif;
             box-sizing: border-box;
             color: #333;
+            position: relative;
+        }
+
+        /* ESTILO DORADO DE FUNDADORA */
+        .mclovin-card.gold-edition {
+            background-image: linear-gradient(135deg, #bf953f 0%, #fcf6ba 25%, #b38728 50%, #fbf5b7 75%, #aa771c 100%);
+            border: 2px solid #ffd700;
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.6);
         }
 
         .card-header {
@@ -267,6 +236,11 @@
             background: #0284c7;
             color: white;
             border-bottom: 2px solid #f59e0b;
+        }
+
+        .mclovin-card.gold-edition .card-header {
+            background: linear-gradient(90deg, #785212, #b8860b, #785212);
+            border-bottom: 2px solid #fff;
         }
 
         .header-main { font-size: 0.8rem; font-weight: 900; color: #fef08a; text-transform: uppercase; }
@@ -287,12 +261,19 @@
             flex-shrink: 0;
         }
 
+        .mclovin-card.gold-edition .card-photo-box {
+            border: 2px solid #b8860b;
+            box-shadow: 0 0 8px rgba(184, 134, 11, 0.5);
+        }
+
         .card-photo-img { width: 100%; height: 100%; object-fit: cover; }
         .card-info { flex: 1; font-size: 0.65rem; color: #1e293b; font-weight: bold; text-align: left; }
         .info-row { margin-bottom: 3px; }
         .label-red { color: #b91c1c; font-size: 0.58rem; text-transform: uppercase; }
+        .mclovin-card.gold-edition .label-red { color: #5c3d00; }
         .val-bold { font-size: 0.8rem; font-weight: 900; color: #000; text-transform: uppercase; }
         .val-mision { font-size: 0.65rem; color: #1e3a8a; line-height: 1.1; display: block; margin-top: 1px; }
+        .mclovin-card.gold-edition .val-mision { color: #3d2700; }
 
         .signature { 
             font-family: 'Great Vibes', cursive; 
@@ -304,10 +285,55 @@
             margin-top: 2px;
         }
 
+        /* SELLO DE CREADORA */
+        .founder-seal {
+            display: none;
+            position: absolute;
+            bottom: 8px;
+            right: 8px;
+            background: #785212;
+            color: #fff3a0;
+            padding: 3px 6px;
+            border-radius: 4px;
+            font-size: 0.55rem;
+            font-weight: 900;
+            border: 1px solid #ffd700;
+            letter-spacing: 0.5px;
+        }
+
+        .gold-edition .founder-seal { display: block; }
+
         .modal-buttons { display: flex; flex-direction: column; gap: 8px; width: 320px; margin-top: 15px; }
         .btn-action { width: 100%; padding: 10px; border: none; border-radius: 8px; font-size: 0.85rem; cursor: pointer; font-weight: bold; text-align: center; }
         .btn-close { background: #333; color: white; }
         .btn-download { background: #10b981; color: white; }
+
+        /* TIENDA DE RECOMPENSAS (RECOMPENSAS INNOVADORAS) */
+        .shop-item {
+            border: 1px solid #e2d4f0;
+            border-radius: 12px;
+            padding: 12px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: #fff;
+        }
+
+        .shop-item-info h4 { margin: 0 0 4px 0; font-size: 0.95rem; color: var(--morado); }
+        .shop-item-info p { margin: 0; font-size: 0.78rem; color: #666; }
+        .btn-buy {
+            background: linear-gradient(135deg, var(--rosa), var(--fucsia));
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 0.8rem;
+            cursor: pointer;
+            width: auto;
+            flex-shrink: 0;
+        }
 
         /* MENÚ NAVEGACIÓN INFERIOR */
         .nav-tabs {
@@ -315,28 +341,17 @@
             justify-content: space-around;
             background: #fff;
             position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
+            bottom: 0; left: 0; right: 0;
             padding: 10px 2px;
             box-shadow: 0 -2px 10px rgba(0,0,0,0.08);
             z-index: 99;
         }
 
         .tab-btn {
-            background: none;
-            border: none;
-            font-size: 0.65rem;
-            color: #888;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 2px;
-            font-weight: bold;
-            flex: 1;
-            padding: 0;
-            margin: 0;
-            cursor: pointer;
+            background: none; border: none;
+            font-size: 0.65rem; color: #888;
+            display: flex; flex-direction: column; align-items: center; gap: 2px;
+            font-weight: bold; flex: 1; padding: 0; margin: 0; cursor: pointer;
         }
 
         .tab-btn.active { color: var(--morado); }
@@ -349,11 +364,8 @@
 
     <!-- OVERLAY ANIMADO DE MATCH -->
     <div id="matchOverlay" onclick="cerrarMatchAnimacion()">
-        <div class="match-animation-container">
-            <div class="big-heart">💖</div>
-            <div class="cupid-arrow">🏹</div>
-        </div>
-        <div class="sparkle-text">¡FLECHAZO MUTUO! 🌸</div>
+        <div style="font-size: 80px;">💖🏹</div>
+        <div style="font-size: 1.6rem; color: var(--fucsia); font-weight: bold; margin-top: 10px;">¡FLECHAZO MUTUO! 🌸</div>
         <p id="matchTextoAnimado" style="font-size:1.1rem; color:var(--texto); font-weight:600;"></p>
         <p style="font-size:0.8rem; color:#888; margin-top:20px;">(Toca la pantalla para cerrar)</p>
     </div>
@@ -362,7 +374,7 @@
     <div id="cardModal" class="card-modal" onclick="cerrarModalCarnet()">
         <div id="mclovin-card" class="mclovin-card" onclick="event.stopPropagation()">
             <div class="card-header">
-                <div class="header-main">HAWAII • BOLLOLANDIA 🌈</div>
+                <div class="header-main" id="cardHeaderTitle">HAWAII • BOLLOLANDIA 🌈</div>
                 <div class="header-sub">DRIVER LICENSE / CARNET SÁFICO</div>
             </div>
             <div class="card-body">
@@ -396,6 +408,7 @@
                     </div>
                 </div>
             </div>
+            <div class="founder-seal">✨ CREADORA VIP ✨</div>
         </div>
 
         <div class="modal-buttons" onclick="event.stopPropagation()">
@@ -405,6 +418,7 @@
     </div>
 
     <header>
+        <div class="hearts-counter">💖 <span id="heartCount">0</span></div>
         <h1>🌸 Rincón de Bollolandia 🌸</h1>
         <p class="subtitulo">Nuestro espacio seguro ✨</p>
     </header>
@@ -415,12 +429,13 @@
         <div id="carnet" class="tab-content active">
             <div class="card" id="formRegistroCarnet">
                 <h2>💳 Identificación de Bollolandia</h2>
-                <p style="font-size:0.85rem; color:#666; margin-top:-5px;">Ingresa tus datos y el código secreto de la comunidad para obtener tu carnet y desbloquear la web.</p>
+                <p style="font-size:0.85rem; color:#666; margin-top:-5px;">Ingresa tus datos y el código exclusivo para obtener tu carnet y desbloquear la web.</p>
                 
                 <input type="text" id="inName" placeholder="Tu Apodo / Nombre" maxlength="15">
                 
                 <select id="inMision">
                     <option value="" disabled selected>Selecciona tu misión principal...</option>
+                    <option value="Fundadora & Creadora de Bollolandia">👑 Fundadora & Creadora Oficial</option>
                     <option value="Traer el chisme fresco">✨ Traer el chisme fresco</option>
                     <option value="Organizar las previas">🍻 Organizar las previas</option>
                     <option value="Dar los mejores abrazos">🫂 Dar los mejores abrazos</option>
@@ -428,9 +443,7 @@
                     <option value="Analizar las red flags">🚩 Analizadora de Red Flags</option>
                     <option value="Ser la DJ oficial del grupo">🎧 DJ oficial del grupo</option>
                     <option value="Crisis existenciales 3 AM">🌙 Crisis existenciales 3 AM</option>
-                    <option value="Buscadora de sitios cute">☕ Buscadora de sitios cute</option>
                     <option value="Adoptar gatitos y llorar">🐱 Adoptar gatitos y llorar</option>
-                    <option value="Mandar memes 24/7">📲 Proveedora de memes 24/7</option>
                 </select>
 
                 <label for="inPhoto" class="file-input-label" id="photoLabel">📷 Subir Foto de Perfil</label>
@@ -444,7 +457,7 @@
             <div class="card" id="seccionMiCarnet" style="display: none;">
                 <h2>Acreditación Emitida</h2>
                 <p style="font-size:0.85rem; color:#666; margin-top:-5px;">¡Identificación verificada! Puedes acceder a todas las secciones desde el menú inferior.</p>
-                <div class="mini-badge" onclick="abrirModalCarnet()">
+                <div class="mini-badge" id="miniBadgeBox" onclick="abrirModalCarnet()">
                     <div class="badge-avatar" id="miniAvatarBox">👤</div>
                     <div style="flex:1;">
                         <div style="font-weight: bold; font-size: 0.9rem; color: var(--morado);" id="badgeNameOut">Apodo</div>
@@ -455,13 +468,55 @@
             </div>
         </div>
 
+        <!-- TIENDA DE RECOMPENSAS / PODERES -->
+        <div id="tienda" class="tab-content">
+            <div class="card">
+                <h2>🛍️ Tienda de Poderes & Favores</h2>
+                <p style="font-size:0.85rem; color:#666; margin-top:-5px;">
+                    Canjea tus 💖 acumulados por dinámicas exclusivas en las quedadas o en la web.
+                </p>
+
+                <div class="shop-item">
+                    <div class="shop-item-info">
+                        <h4>🎲 Misión Secreta para Quedadas</h4>
+                        <p>Recibes un reto secreto en tu pantalla. Si lo cumples sin que lo noten, ganas +100 💖.</p>
+                    </div>
+                    <button class="btn-buy" onclick="comprarItem('Misión Secreta', 40)">40 💖</button>
+                </div>
+
+                <div class="shop-item">
+                    <div class="shop-item-info">
+                        <h4>🔄 Carta Reversa (Joker de Plan)</h4>
+                        <p>Derecho a vetar o reorientar un plan de quedada que no te apetezca nada.</p>
+                    </div>
+                    <button class="btn-buy" onclick="comprarItem('Carta Reversa', 80)">80 💖</button>
+                </div>
+
+                <div class="shop-item">
+                    <div class="shop-item-info">
+                        <h4>🤫 Borrón y Cuenta Nueva</h4>
+                        <p>Silencia un tema embarazoso o metedura de pata. Nadie puede volver a sacarlo.</p>
+                    </div>
+                    <button class="btn-buy" onclick="comprarItem('Borrón y Cuenta Nueva', 60)">60 💖</button>
+                </div>
+
+                <div class="shop-item">
+                    <div class="shop-item-info">
+                        <h4>🤝 Mercadillo de Favores</h4>
+                        <p>Te ayuda el grupo a montar un mueble, mudanza o te prestan ropa para una cita.</p>
+                    </div>
+                    <button class="btn-buy" onclick="comprarItem('Favores del Grupo', 120)">120 💖</button>
+                </div>
+            </div>
+        </div>
+
         <!-- CUMPLEAÑOS -->
         <div id="cumples" class="tab-content">
             <div class="card">
                 <h2>📅 Añadir Cumpleaños</h2>
                 <input type="text" id="nombreCumple" placeholder="Nombre de la cumpleañera">
                 <input type="date" id="fechaCumple">
-                <button class="btn-principal" onclick="agregarCumple()">Añadir a la lista</button>
+                <button class="btn-principal" onclick="agregarCumple()">Añadir a la lista (+15💖)</button>
             </div>
             <div class="card">
                 <h2>🎉 Próximos Cumpleaños</h2>
@@ -476,7 +531,7 @@
                 <input type="text" id="tituloQuedada" placeholder="Plan (ej: Picnic, Café...)">
                 <input type="text" id="lugarQuedada" placeholder="Lugar o Ciudad (ej: Retiro Madrid)">
                 <input type="datetime-local" id="fechaQuedada">
-                <button class="btn-principal" onclick="agregarQuedada()">Publicar Quedada</button>
+                <button class="btn-principal" onclick="agregarQuedada()">Publicar Quedada (+25💖)</button>
             </div>
             <div class="card">
                 <h2>🗺️ Próximos Planes</h2>
@@ -508,7 +563,7 @@
                 <h2>🐾 Subir Foto de Mascota</h2>
                 <input type="text" id="nombreMascota" placeholder="Nombre del animalito">
                 <input type="file" id="fotoMascota" accept="image/*">
-                <button class="btn-principal" onclick="subirMascota()">Publicar Foto</button>
+                <button class="btn-principal" onclick="subirMascota()">Publicar Foto (+20💖)</button>
             </div>
             <div class="card">
                 <h2>📸 Galería de Peludos</h2>
@@ -534,21 +589,29 @@
         <p id="fraseRotativa">✨ "Un espacio donde siempre puedes ser tú misma." ✨</p>
     </footer>
 
-    <!-- MENÚ NAVEGACIÓN (Oculto hasta identificarse) -->
+    <!-- MENÚ NAVEGACIÓN INFERIOR -->
     <div class="nav-tabs" id="navTabs" style="display: none;">
         <button class="tab-btn active" onclick="cambiarPestana('carnet', this)"><span>💳</span>Carnet</button>
+        <button class="tab-btn" onclick="cambiarPestana('tienda', this)"><span>🛍️</span>Tienda</button>
         <button class="tab-btn" onclick="cambiarPestana('cumples', this)"><span>📅</span>Cumples</button>
-        <button class="tab-btn" onclick="cambiarPestana('quedadas', this)"><span>📍</span>Quedadas</button>
+        <button class="tab-btn" onclick="cambiarPestana('quedadas', this)"><span>📍</span>Planes</button>
         <button class="tab-btn" onclick="cambiarPestana('buzon', this)"><span>💌</span>Buzón</button>
-        <button class="tab-btn" onclick="cambiarPestana('mascotas', this)"><span>🐾</span>Mascotas</button>
-        <button class="tab-btn" onclick="cambiarPestana('sugerencias', this)"><span>💡</span>Ideas</button>
+        <button class="tab-btn" onclick="cambiarPestana('mascotas', this)"><span>🐾</span>Peludos</button>
     </div>
 
     <script>
-        // CÓDIGO EXCLUSIVO CONFIGURADO
+        // CÓDIGOS DE ACCESO
         const CODIGO_CORRECTO = "BL-VIP-8317";
+        const CODIGO_FUNDADORA = "BL-FUNDADORA-GOLD"; // CÓDIGO DORADO DE CREADORA
 
         let carnetFotoBase64 = "";
+        let userHearts = parseInt(localStorage.getItem("user_hearts") || "0", 10);
+
+        function actualizarCorazones(cantidad) {
+            userHearts += cantidad;
+            localStorage.setItem("user_hearts", userHearts.toString());
+            document.getElementById("heartCount").innerText = userHearts;
+        }
 
         function cambiarPestana(idPestana, btn) {
             document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
@@ -575,9 +638,8 @@
         }
 
         function crearCarnet() {
-            // VERIFICACIÓN DE DISPOSITIVO REGISTRADO
             if (localStorage.getItem("dispositivo_registrado")) {
-                return alert("⛔ Ya has emitido un carnet desde este dispositivo. Cada chica solo puede tener una identificación.");
+                return alert("⛔ Ya has emitido un carnet desde este dispositivo.");
             }
 
             const name = document.getElementById("inName").value.trim();
@@ -588,22 +650,26 @@
                 return alert("Por favor escribe tu nombre y elige una misión 🌈");
             }
 
-            if (codigoIngresado !== CODIGO_CORRECTO) {
-                return alert("🔒 Código de acceso incorrecto. Pídelo a las administradoras de la comunidad.");
+            let esGold = false;
+            if (codigoIngresado === CODIGO_FUNDADORA) {
+                esGold = true;
+            } else if (codigoIngresado !== CODIGO_CORRECTO) {
+                return alert("🔒 Código de acceso incorrecto. Pídelo a las administradoras.");
             }
 
             let counter = parseInt(localStorage.getItem("dni_counter_num") || "0", 10) + 1;
             localStorage.setItem("dni_counter_num", counter.toString());
 
             const formattedNum = counter.toString().padStart(7, '0');
-            const cardId = `BL-${formattedNum}`;
+            const cardId = esGold ? `BL-GOLD-001` : `BL-${formattedNum}`;
             const today = new Date().toLocaleDateString();
 
-            const data = { name, mision, cardId, date: today, photo: carnetFotoBase64 };
+            const data = { name, mision, cardId, date: today, photo: carnetFotoBase64, isGold: esGold };
             localStorage.setItem("dni_safico_data", JSON.stringify(data));
-            
-            // MARCAR DISPOSITIVO COMO PERMANENTEMENTE REGISTRADO
             localStorage.setItem("dispositivo_registrado", "true");
+
+            // Bonificación de bienvenida
+            actualizarCorazones(esGold ? 200 : 100);
 
             cargarDatosCarnet(data);
             desbloquearNavegacion();
@@ -626,12 +692,20 @@
             document.getElementById("cardIdOut").innerText = data.cardId;
             document.getElementById("cardDateOut").innerText = data.date;
 
+            const cardElement = document.getElementById("mclovin-card");
+            const badgeBox = document.getElementById("miniBadgeBox");
+
+            if (data.isGold) {
+                cardElement.classList.add("gold-edition");
+                badgeBox.classList.add("gold-badge");
+                document.getElementById("cardHeaderTitle").innerText = "GOLD • FUNDADORA 👑";
+            }
+
             if (data.photo) {
                 document.getElementById("cardPhotoBox").innerHTML = `<img src="${data.photo}" class="card-photo-img">`;
                 document.getElementById("miniAvatarBox").innerHTML = `<img src="${data.photo}" style="width:100%;height:100%;object-fit:cover;">`;
             }
             
-            // Sincronizar el nombre en el buzón
             document.getElementById("miNombre").value = data.name;
             comprobarMatches();
         }
@@ -654,7 +728,16 @@
             });
         }
 
-        // CUMPLEAÑOS
+        /* --- TIENDA DE CANJE --- */
+        function comprarItem(itemNombre, precio) {
+            if (userHearts < precio) {
+                return alert(`⛔ Necesitas ${precio} 💖 para canjear esto. ¡Sigue participando para ganar más!`);
+            }
+            actualizarCorazones(-precio);
+            alert(`🎉 ¡Has canjeado "${itemNombre}" con éxito! Muestra esta pantalla al grupo en la próxima quedada.`);
+        }
+
+        /* --- CUMPLEAÑOS --- */
         function agregarCumple() {
             const nombre = document.getElementById('nombreCumple').value;
             const fecha = document.getElementById('fechaCumple').value;
@@ -665,6 +748,8 @@
             localStorage.setItem('cumples', JSON.stringify(cumples));
             document.getElementById('nombreCumple').value = '';
             document.getElementById('fechaCumple').value = '';
+            
+            actualizarCorazones(15);
             cargarCumples();
         }
 
@@ -675,12 +760,12 @@
             cont.innerHTML = cumples.map(c => `<div style="padding:10px 0; border-bottom:1px solid #eee;">🎂 <strong>${c.nombre}</strong> - ${c.fecha}</div>`).join('');
         }
 
-        // QUEDADAS
+        /* --- QUEDADAS --- */
         function agregarQuedada() {
             const titulo = document.getElementById('tituloQuedada').value;
             const lugar = document.getElementById('lugarQuedada').value;
             const fecha = document.getElementById('fechaQuedada').value;
-            if(!titulo || !lugar || !fecha) return alert('Por favor rellena todos los datos de la quedada');
+            if(!titulo || !lugar || !fecha) return alert('Por favor rellena todos los datos');
 
             const quedadas = JSON.parse(localStorage.getItem('quedadas') || '[]');
             quedadas.push({ titulo, lugar, fecha });
@@ -689,6 +774,8 @@
             document.getElementById('tituloQuedada').value = '';
             document.getElementById('lugarQuedada').value = '';
             document.getElementById('fechaQuedada').value = '';
+
+            actualizarCorazones(25);
             cargarQuedadas();
         }
 
@@ -710,15 +797,14 @@
             }).join('');
         }
 
-        // BUZÓN SECRETO Y ANIMACIÓN DE MATCH
+        /* --- BUZÓN SECRETO & MATCH --- */
         function lanzarAnimacionMatch(nombre1, nombre2) {
             const overlay = document.getElementById('matchOverlay');
             const texto = document.getElementById('matchTextoAnimado');
-            
             const n1 = nombre1.charAt(0).toUpperCase() + nombre1.slice(1);
             const n2 = nombre2.charAt(0).toUpperCase() + nombre2.slice(1);
 
-            texto.innerHTML = `¡Tú (${n1}) y ${n2} habéis conectado! 💕<br><br>Es el momento perfecto para tomar un café. ☕`;
+            texto.innerHTML = `¡Tú (${n1}) y ${n2} habéis conectado! 💕<br><br>Es el momento perfecto para un café. ☕`;
             overlay.style.display = 'flex';
         }
 
@@ -734,21 +820,21 @@
             if(de === para) return alert('¡No te puedes mandar un flechazo a ti misma! 😉');
 
             const flechazos = JSON.parse(localStorage.getItem('flechazos') || '[]');
-            
             const existe = flechazos.some(f => f.de === de && f.para === para);
+
             if(!existe) {
                 flechazos.push({ de, para });
                 localStorage.setItem('flechazos', JSON.stringify(flechazos));
             }
 
             document.getElementById('destinoNombre').value = '';
-            
             const hayMatchMutuo = flechazos.some(f => f.de === para && f.para === de);
             
             if(hayMatchMutuo) {
+                actualizarCorazones(50);
                 lanzarAnimacionMatch(de, para);
             } else {
-                alert('💘 Flechazo guardado en secreto. Si ella también te elige... ¡habrá match!');
+                alert('💘 Flechazo guardado en secreto.');
             }
 
             comprobarMatches();
@@ -764,7 +850,6 @@
             }
 
             const flechazos = JSON.parse(localStorage.getItem('flechazos') || '[]');
-            
             const misFlechazosEnviados = flechazos.filter(f => f.de === miNombre).map(f => f.para);
             const matches = flechazos.filter(f => f.para === miNombre && misFlechazosEnviados.includes(f.de));
 
@@ -784,7 +869,7 @@
 
         document.getElementById('miNombre').addEventListener('input', comprobarMatches);
 
-        // MASCOTAS
+        /* --- MASCOTAS --- */
         function subirMascota() {
             const nombre = document.getElementById('nombreMascota').value;
             const fileInput = document.getElementById('fotoMascota');
@@ -798,6 +883,8 @@
                 localStorage.setItem('mascotas', JSON.stringify(mascotas));
                 document.getElementById('nombreMascota').value = '';
                 fileInput.value = '';
+                
+                actualizarCorazones(20);
                 cargarMascotas();
             };
             reader.readAsDataURL(file);
@@ -815,7 +902,7 @@
             `).join('');
         }
 
-        // SUGERENCIAS
+        /* --- SUGERENCIAS --- */
         function enviarSugerencia() {
             const texto = document.getElementById('textoSugerencia').value;
             if(!texto) return;
@@ -834,21 +921,9 @@
             cont.innerHTML = sugs.map(s => `<div style="padding:8px 0; border-bottom:1px solid #eee;">💡 ${s}</div>`).join('');
         }
 
-        // FRASES ROTATIVAS
-        const frases = [
-            '✨ "Un espacio donde siempre puedes ser tú misma." ✨',
-            '💖 "Lo bonito de coincidir y quedarnos juntas." 💖',
-            '🌸 "Un día más para cuidar de nuestras chicas." 🌸',
-            '🐾 "Nuestras mascotas son las reinas de este lugar." 🐾'
-        ];
-        let fIdx = 0;
-        setInterval(() => {
-            fIdx = (fIdx + 1) % frases.length;
-            document.getElementById('fraseRotativa').innerText = frases[fIdx];
-        }, 300000);
-
         // CARGA INICIAL
         window.addEventListener("DOMContentLoaded", function() {
+            document.getElementById("heartCount").innerText = userHearts;
             cargarCumples();
             cargarQuedadas();
             cargarMascotas();
