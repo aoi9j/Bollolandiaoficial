@@ -338,17 +338,14 @@
         .btn-download { background: #10b981; color: white; }
 
         /* SISTEMA DE MARCOS APLICADOS */
-        /* Marco Corazones */
         .marco-corazones {
             border: 3px solid var(--fucsia) !important;
             box-shadow: 0 0 8px var(--fucsia);
         }
-        /* Marco Neón */
         .marco-neon {
             border: 3px solid #00f3ff !important;
             box-shadow: 0 0 10px #00f3ff;
         }
-        /* Marco Corona/Oro */
         .marco-corona {
             border: 3px solid var(--oro-main) !important;
             box-shadow: 0 0 10px var(--oro-main);
@@ -682,8 +679,20 @@
         let carnetFotoBase64 = "";
         let userHearts = parseInt(localStorage.getItem("user_hearts") || "0", 10);
 
+        function esFundadoraActiva() {
+            const data = JSON.parse(localStorage.getItem("dni_safico_data") || "{}");
+            return data.isGold === true;
+        }
+
         function actualizarCorazones(cantidad) {
+            // Si eres fundadora, tus corazones son infinitos y no bajan ni suben de manera limitada
+            if (esFundadoraActiva()) {
+                document.getElementById("heartCount").innerText = "∞";
+                return;
+            }
+
             userHearts += cantidad;
+            if (userHearts < 0) userHearts = 0;
             localStorage.setItem("user_hearts", userHearts.toString());
             document.getElementById("heartCount").innerText = userHearts;
         }
@@ -729,7 +738,7 @@
             if (codigoIngresado === CODIGO_FUNDADORA) {
                 esGold = true;
             } else if (codigoIngresado === CODIGO_CORRECTO) {
-                esGold = false; // El código VIP ahora otorga carnet normal, no fundadora
+                esGold = false;
             } else {
                 return alert("🔒 Código de acceso incorrecto. Pídelo a las administradoras.");
             }
@@ -745,7 +754,11 @@
             localStorage.setItem("dni_safico_data", JSON.stringify(data));
             localStorage.setItem("dispositivo_registrado", "true");
 
-            actualizarCorazones(esGold ? 200 : 100);
+            if (esGold) {
+                localStorage.setItem("user_hearts", "9999");
+            } else {
+                actualizarCorazones(100); // Bono de bienvenida para normales
+            }
 
             cargarDatosCarnet(data);
             desbloquearNavegacion();
@@ -776,10 +789,12 @@
                 cardElement.classList.add("gold-edition");
                 badgeBox.classList.add("gold-badge");
                 document.getElementById("cardHeaderTitle").innerText = "GOLD • ESPAÑA 👑";
+                document.getElementById("heartCount").innerText = "∞";
             } else {
                 cardElement.classList.remove("gold-edition");
                 badgeBox.classList.remove("gold-badge");
                 document.getElementById("cardHeaderTitle").innerText = "ESPAÑA • BOLLOLANDIA 🌈";
+                document.getElementById("heartCount").innerText = userHearts;
             }
 
             if (data.photo) {
@@ -801,6 +816,7 @@
                 localStorage.removeItem("dispositivo_registrado");
                 localStorage.removeItem("marcos_comprados");
                 localStorage.removeItem("marco_activo");
+                localStorage.removeItem("user_hearts");
                 location.reload();
             }
         }
@@ -829,16 +845,21 @@
             if (marcos.includes(idMarco)) {
                 return alert("✨ ¡Ya tienes este marco en tu inventario! Ve a tu perfil para ponértelo.");
             }
-            if (userHearts < precio) {
+            
+            // Si eres fundadora (infinitos), puedes comprar sin mirar saldo
+            if (!esFundadoraActiva() && userHearts < precio) {
                 return alert(`⛔ Te faltan ${precio - userHearts} 💖 para comprar el ${nombreMarco}. ¡Participa más en la web!`);
             }
 
-            actualizarCorazones(-precio);
+            if (!esFundadoraActiva()) {
+                actualizarCorazones(-precio);
+            }
+
             marcos.push(idMarco);
             localStorage.setItem("marcos_comprados", JSON.stringify(marcos));
             
             renderizarInventarioMarcos();
-            alert(`🎉 ¡Has comprado con éxito el ${nombreMarco}! Ya puedes ponértelo desde tu sección de perfil en el carnet.`);
+            alert(`🎉 ¡Has obtenido con éxito el ${nombreMarco}! Ya puedes ponértelo desde tu sección de perfil en el carnet.`);
         }
 
         function renderizarInventarioMarcos() {
@@ -847,6 +868,11 @@
 
             let marcos = JSON.parse(localStorage.getItem("marcos_comprados") || "[]");
             let marcoActivo = localStorage.getItem("marco_activo") || "";
+
+            // Si eres fundadora, desbloqueamos automáticamente todos los marcos de la tienda en tu inventario como privilegio especial
+            if (esFundadoraActiva()) {
+                marcos = ["marco-corazones", "marco-neon", "marco-corona"];
+            }
 
             if (marcos.length === 0) {
                 contenedor.innerHTML = `<span style="font-size: 0.8rem; color: #888;">Aún no tienes marcos comprados. ¡Visita la tienda!</span>`;
@@ -889,10 +915,9 @@
             const photoBox = document.getElementById("cardPhotoBox");
             const avatarBox = document.getElementById("miniAvatarBox");
 
-            // Limpiar clases anteriores de marcos
             ["marco-corazones", "marco-neon", "marco-corona"].forEach(cls => {
                 if (photoBox) photoBox.classList.remove(cls);
-                if (avatarBox) avatarBox.classList.remove(cls);
+                if (avatarBox) avatarBox.classList.5?.remove?.(cls) || avatarBox.classList.remove(cls);
             });
 
             if (marcoActivo) {
@@ -903,10 +928,12 @@
 
         /* --- TIENDA DE CANJE (DINÁMICAS) --- */
         function comprarItem(itemNombre, precio) {
-            if (userHearts < precio) {
+            if (!esFundadoraActiva() && userHearts < precio) {
                 return alert(`⛔ Necesitas ${precio} 💖 para canjear esto. ¡Sigue participando para ganar más!`);
             }
-            actualizarCorazones(-precio);
+            if (!esFundadoraActiva()) {
+                actualizarCorazones(-precio);
+            }
             alert(`🎉 ¡Has canjeado "${itemNombre}" con éxito! Muestra esta pantalla al grupo en la próxima quedada.`);
         }
 
@@ -990,7 +1017,7 @@
             const para = document.getElementById('destinoNombre').value.trim().toLowerCase();
 
             if(!de || !para) return alert('Escribe tu nombre y el de la chica a la que envías el flechazo');
-            if(de === para) return alert('¡No te puedes mandar un flechazo a ti misma! 😉');
+            if(de === para) return alert('¡Ne te puedes mandar un flechazo a ti misma! 😉');
 
             const flechazos = JSON.parse(localStorage.getItem('flechazos') || '[]');
             const existe = flechazos.some(f => f.de === de && f.para === para);
@@ -1096,17 +1123,18 @@
 
         // CARGA INICIAL
         window.addEventListener("DOMContentLoaded", function() {
-            document.getElementById("heartCount").innerText = userHearts;
+            const savedCardData = localStorage.getItem("dni_safico_data");
+            if (savedCardData) {
+                const parsed = JSON.parse(savedCardData);
+                cargarDatosCarnet(parsed);
+                desbloquearNavegacion();
+            } else {
+                document.getElementById("heartCount").innerText = userHearts;
+            }
             cargarCumples();
             cargarQuedadas();
             cargarMascotas();
             cargarSugerencias();
-
-            const savedCardData = localStorage.getItem("dni_safico_data");
-            if (savedCardData) {
-                cargarDatosCarnet(JSON.parse(savedCardData));
-                desbloquearNavegacion();
-            }
         });
     </script>
 </body>
