@@ -5,6 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Rincón de Bollolandia</title>
 
+    <!-- ⚠️ CAMBIA ESTA URL POR TU NUEVO ICONO BONITO (.png o .jpg) -->
+    <!-- Icono para iPhone/iPad al añadir a pantalla de inicio -->
+    <link rel="apple-touch-icon" href="https://imgur.com/a/Cmgp3CN">
+    <!-- Icono de la pestaña en el navegador web -->
+    <link rel="icon" type="image/png" href="https://imgur.com/a/Cmgp3CN">
+
     <!-- Vinculación para App Instalable (PWA) -->
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#bdb2ff">
@@ -301,7 +307,6 @@
         .modal-buttons { display: flex; flex-direction: column; gap: 8px; width: 320px; margin-top: 15px; }
         .btn-action { width: 100%; padding: 10px; border: none; border-radius: 8px; font-size: 0.85rem; cursor: pointer; font-weight: bold; text-align: center; }
         .btn-close { background: #333; color: white; }
-        .btn-reset { background: #ef4444; color: white; }
         .btn-download { background: #10b981; color: white; }
 
         /* MENÚ NAVEGACIÓN INFERIOR */
@@ -395,7 +400,6 @@
 
         <div class="modal-buttons" onclick="event.stopPropagation()">
             <button class="btn-action btn-download" onclick="descargarCarnet()">📸 Descargar Carnet</button>
-
             <button class="btn-action btn-close" onclick="cerrarModalCarnet()">Cerrar</button>
         </div>
     </div>
