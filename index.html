@@ -181,7 +181,7 @@
             padding: 20px;
         }
 
-        /* ESTILOS DEL CARNET ESTÁNDAR Y DORADO */
+        /* ESTILOS DEL CARNET */
         .file-input-label {
             background: #f1f5f9;
             border: 2px dashed var(--morado);
@@ -237,7 +237,6 @@
             padding: 20px;
         }
 
-        /* DISEÑO BASE DEL CARNET */
         .mclovin-card {
             width: 320px;
             background: white;
@@ -252,7 +251,6 @@
             position: relative;
         }
 
-        /* ESTILO DORADO */
         .mclovin-card.gold-edition {
             background-image: linear-gradient(135deg, #bf953f 0%, #fcf6ba 25%, #b38728 50%, #fbf5b7 75%, #aa771c 100%);
             border: 2px solid #ffd700;
@@ -337,18 +335,54 @@
         .btn-close { background: #333; color: white; }
         .btn-download { background: #10b981; color: white; }
 
-        /* SISTEMA DE MARCOS APLICADOS */
-        .marco-corazones {
-            border: 3px solid var(--fucsia) !important;
-            box-shadow: 0 0 8px var(--fucsia);
+        /* --- MARCOS ARTÍSTICOS ANIMADOS --- */
+        @keyframes gLowVanGogh {
+            0% { border-color: #ffd700; box-shadow: 0 0 8px #ff8c00; }
+            50% { border-color: #ff8c00; box-shadow: 0 0 16px #ffd700; }
+            100% { border-color: #ffd700; box-shadow: 0 0 8px #ff8c00; }
         }
-        .marco-neon {
-            border: 3px solid #00f3ff !important;
-            box-shadow: 0 0 10px #00f3ff;
+        @keyframes gFlowMonet {
+            0% { border-color: #38bdf8; box-shadow: 0 0 8px #bae6fd; }
+            50% { border-color: #a7f3d0; box-shadow: 0 0 16px #38bdf8; }
+            100% { border-color: #38bdf8; box-shadow: 0 0 8px #bae6fd; }
         }
-        .marco-corona {
-            border: 3px solid var(--oro-main) !important;
-            box-shadow: 0 0 10px var(--oro-main);
+        @keyframes gPulseDali {
+            0% { border-color: #f43f5e; box-shadow: 0 0 8px #fb7185; transform: scale(1); }
+            50% { border-color: #fbbf24; box-shadow: 0 0 16px #f43f5e; transform: scale(1.01); }
+            100% { border-color: #f43f5e; box-shadow: 0 0 8px #fb7185; transform: scale(1); }
+        }
+
+        .marco-vangogh {
+            border: 3px solid #ffd700 !important;
+            animation: gLowVanGogh 3s infinite;
+        }
+        .marco-monet {
+            border: 3px solid #38bdf8 !important;
+            animation: gFlowMonet 4s infinite;
+        }
+        .marco-dali {
+            border: 3px solid #f43f5e !important;
+            animation: gPulseDali 2.5s infinite;
+        }
+
+        /* --- RULETA DE PREMIOS --- */
+        .ruleta-box {
+            background: linear-gradient(135deg, #fdf4ff, #fae8ff);
+            border: 2px dashed #d946ef;
+            border-radius: 14px;
+            padding: 15px;
+            text-align: center;
+            margin-bottom: 15px;
+        }
+        .ruleta-wheel {
+            width: 100px; height: 100px;
+            margin: 10px auto;
+            border-radius: 50%;
+            background: conic-gradient(#f43f5e 0deg 90deg, #fbbf24 90deg 180deg, #38bdf8 180deg 270deg, #a855f7 270deg 360deg);
+            display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+            font-size: 1.8rem;
+            transition: transform 3s cubic-bezier(0.15, 0.9, 0.2, 1);
         }
 
         /* TIENDA DE RECOMPENSAS */
@@ -512,9 +546,9 @@
                 <!-- SECCIÓN DE INVENTARIO Y MARCOS -->
                 <div style="margin-top: 15px; border-top: 1px solid #eee; padding-top: 12px;">
                     <h3 style="font-size: 1rem; color: var(--morado); margin-bottom: 5px;">🖼️ Tus Marcos de Perfil</h3>
-                    <p style="font-size: 0.78rem; color: #666; margin-bottom: 8px;">Selecciona un marco que hayas comprado en la tienda para ponértelo:</p>
+                    <p style="font-size: 0.78rem; color: #666; margin-bottom: 8px;">Selecciona un marco que hayas desbloqueado para ponértelo:</p>
                     <div id="inventarioMarcos" style="display: flex; gap: 8px; flex-wrap: wrap;">
-                        <span style="font-size: 0.8rem; color: #888;">Aún no tienes marcos comprados. ¡Visita la tienda!</span>
+                        <span style="font-size: 0.8rem; color: #888;">Aún no tienes marcos. ¡Gánalos en la ruleta o tienda!</span>
                     </div>
                 </div>
 
@@ -522,37 +556,45 @@
             </div>
         </div>
 
-        <!-- TIENDA DE RECOMPENSAS -->
+        <!-- TIENDA Y RULETA DE PREMIOS -->
         <div id="tienda" class="tab-content">
+            <!-- RULETA DE PREMIOS -->
+            <div class="ruleta-box">
+                <h2 style="margin-top:0; color:#c026d3;">🎡 La Ruleta de Pintores & Premios</h2>
+                <p style="font-size:0.8rem; color:#666;">¡Prueba tu suerte! Gira la ruleta para conseguir corazones o marcos artísticos animados exclusivos (Cuesta 20 💖).</p>
+                <div class="ruleta-wheel" id="ruletaWheel">🎨</div>
+                <button class="btn-principal" style="background: linear-gradient(135deg, #ec4899, #8b5cf6);" onclick="girarRuleta()">🎯 ¡Girar Ruleta (20 💖)!</button>
+            </div>
+
             <div class="card">
-                <h2>🛍️ Tienda de Poderes & Marcos</h2>
+                <h2>🛍️ Tienda de Arte & Poderes</h2>
                 <p style="font-size:0.85rem; color:#666; margin-top:-5px;">
-                    Canjea tus 💖 acumulados por marcos exclusivos para tu perfil o dinámicas de grupo.
+                    Desbloquea marcos animados inspirados en obras maestras de pintores famosos o dinámicas de grupo.
                 </p>
 
-                <!-- MARCOS -->
+                <!-- MARCOS ANIMADOS DE PINTORES -->
                 <div class="shop-item">
                     <div class="shop-item-info">
-                        <h4>💖 Marco Coqueta de Corazones</h4>
-                        <p>Dale un borde brillante y romántico a la foto de tuyo carnet y perfil.</p>
+                        <h4>🌻 Van Gogh (Girasoles Dorados)</h4>
+                        <p>Marco animado con brillo vibrante al estilo postimpresionista.</p>
                     </div>
-                    <button class="btn-buy" onclick="comprarMarco('marco-corazones', 'Marco Corazones', 50)">50 💖</button>
+                    <button class="btn-buy" onclick="comprarMarco('marco-vangogh', 'Van Gogh', 60)">60 💖</button>
                 </div>
 
                 <div class="shop-item">
                     <div class="shop-item-info">
-                        <h4>⚡ Marco Neón Cyber</h4>
-                        <p>Ilumina tu perfil con un toque eléctrico y moderno estilo neón.</p>
+                        <h4>🌊 Monet (Impresión Acuática)</h4>
+                        <p>Marco animado con tonos fluidos inspirado en los nenúfares.</p>
                     </div>
-                    <button class="btn-buy" onclick="comprarMarco('marco-neon', 'Marco Neón', 75)">75 💖</button>
+                    <button class="btn-buy" onclick="comprarMarco('marco-monet', 'Monet', 75)">75 💖</button>
                 </div>
 
                 <div class="shop-item">
                     <div class="shop-item-info">
-                        <h4>👑 Marco Corona Dorada</h4>
-                        <p>Un marco de alta distinción digno de la realeza sáfica de Bollolandia.</p>
+                        <h4>🕰️ Dalí (Surrealismo Mágico)</h4>
+                        <p>Marco animado con sutil pulso onírico y misterioso.</p>
                     </div>
-                    <button class="btn-buy" onclick="comprarMarco('marco-corona', 'Marco Corona', 100)">100 💖</button>
+                    <button class="btn-buy" onclick="comprarMarco('marco-dali', 'Dalí', 90)">90 💖</button>
                 </div>
 
                 <!-- DINÁMICAS -->
@@ -570,14 +612,6 @@
                         <p>Derecho a vetar o reorientar un plan de quedada que no te apetezca nada.</p>
                     </div>
                     <button class="btn-buy" onclick="comprarItem('Carta Reversa', 80)">80 💖</button>
-                </div>
-
-                <div class="shop-item">
-                    <div class="shop-item-info">
-                        <h4>🤫 Borrón y Cuenta Nueva</h4>
-                        <p>Silencia un tema embarazoso o metedura de pata. Nadie puede volver a sacarlo.</p>
-                    </div>
-                    <button class="btn-buy" onclick="comprarItem('Borrón y Cuenta Nueva', 60)">60 💖</button>
                 </div>
             </div>
         </div>
@@ -672,7 +706,6 @@
     </div>
 
     <script>
-        // CÓDIGOS DE ACCESO
         const CODIGO_CORRECTO = "BL-VIP-8317";
         const CODIGO_FUNDADORA = "BL-FUNDADORA-GOLD";
 
@@ -844,6 +877,48 @@
             });
         }
 
+        /* --- LÓGICA DE LA RULETA --- */
+        function girarRuleta() {
+            const costo = 20;
+            if (!esFundadoraActiva() && userHearts < costo) {
+                return alert(`⛔ Necesitas al menos ${costo} 💖 para girar la ruleta.`);
+            }
+
+            if (!esFundadoraActiva()) {
+                actualizarCorazones(-costo);
+            }
+
+            const wheel = document.getElementById("ruletaWheel");
+            const randomDeg = Math.floor(1440 + Math.random() * 1080); // Vueltas aleatorias
+            wheel.style.transform = `rotate(${randomDeg}deg)`;
+
+            setTimeout(() => {
+                const premios = [
+                    { tipo: 'corazones', valor: 30, texto: '¡Has ganado +30 💖 extra!' },
+                    { tipo: 'marco', id: 'marco-vangogh', nombre: 'Van Gogh', texto: '¡Felicidades! Ganaste el marco animado de Van Gogh 🌻' },
+                    { tipo: 'corazones', valor: 50, texto: '¡Premio gordo! +50 💖 para tu cuenta 🎉' },
+                    { tipo: 'marco', id: 'marco-monet', nombre: 'Monet', texto: '¡Increíble! Ganaste el marco animado de Monet 🌊' },
+                    { tipo: 'corazones', valor: 10, texto: 'Has ganado +10 💖.' },
+                    { tipo: 'marco', id: 'marco-dali', nombre: 'Dalí', texto: '¡Arte puro! Ganaste el marco animado de Dalí 🕰️' }
+                ];
+                
+                const premioObtenido = premios[Math.floor(Math.random() * premios.length)];
+
+                if (premioObtenido.tipo === 'corazones') {
+                    actualizarCorazones(premioObtenido.valor);
+                    alert(premioObtenido.texto);
+                } else {
+                    let marcos = JSON.parse(localStorage.getItem("marcos_comprados") || "[]");
+                    if (!marcos.includes(premioObtenido.id)) {
+                        marcos.push(premioObtenido.id);
+                        localStorage.setItem("marcos_comprados", JSON.stringify(marcos));
+                        renderizarInventarioMarcos();
+                    }
+                    alert(premioObtenido.texto + " ¡Ya puedes ponértelo en tu perfil!");
+                }
+            }, 3000);
+        }
+
         /* --- GESTIÓN DE MARCOS E INVENTARIO --- */
         function comprarMarco(idMarco, nombreMarco, precio) {
             let marcos = JSON.parse(localStorage.getItem("marcos_comprados") || "[]");
@@ -852,7 +927,7 @@
             }
             
             if (!esFundadoraActiva() && userHearts < precio) {
-                return alert(`⛔ Te faltan ${precio - userHearts} 💖 para comprar el ${nombreMarco}. ¡Participa más en la web!`);
+                return alert(`⛔ Te faltan ${precio - userHearts} 💖 para comprar el marco de ${nombreMarco}.`);
             }
 
             if (!esFundadoraActiva()) {
@@ -863,7 +938,7 @@
             localStorage.setItem("marcos_comprados", JSON.stringify(marcos));
             
             renderizarInventarioMarcos();
-            alert(`🎉 ¡Has obtenido con éxito el ${nombreMarco}! Ya puedes ponértelo desde tu sección de perfil en el carnet.`);
+            alert(`🎉 ¡Has desbloqueado el marco de ${nombreMarco}! Ya puedes ponértelo desde tu carnet.`);
         }
 
         function renderizarInventarioMarcos() {
@@ -874,18 +949,18 @@
             let marcoActivo = localStorage.getItem("marco_activo") || "";
 
             if (esFundadoraActiva()) {
-                marcos = ["marco-corazones", "marco-neon", "marco-corona"];
+                marcos = ["marco-vangogh", "marco-monet", "marco-dali"];
             }
 
             if (marcos.length === 0) {
-                contenedor.innerHTML = `<span style="font-size: 0.8rem; color: #888;">Aún no tienes marcos comprados. ¡Visita la tienda!</span>`;
+                contenedor.innerHTML = `<span style="font-size: 0.8rem; color: #888;">Aún no tienes marcos. ¡Gánalos en la ruleta o tienda!</span>`;
                 return;
             }
 
             const nombresMap = {
-                "marco-corazones": "💖 Corazones",
-                "marco-neon": "⚡ Neón",
-                "marco-corona": "👑 Corona"
+                "marco-vangogh": "🌻 Van Gogh",
+                "marco-monet": "🌊 Monet",
+                "marco-dali": "🕰️ Dalí"
             };
 
             let html = `<button onclick="quitarMarco()" style="padding:6px 10px; font-size:0.75rem; border-radius:6px; background:#e2e8f0; border:none; cursor:pointer; font-weight:bold;">Sin Marco</button>`;
@@ -903,7 +978,7 @@
             localStorage.setItem("marco_activo", idMarco);
             aplicarMarcoGuardado();
             renderizarInventarioMarcos();
-            alert("✨ ¡Marco aplicado con éxito a tu carnet y perfil!");
+            alert("✨ ¡Marco artístico aplicado con éxito!");
         }
 
         function quitarMarco() {
@@ -918,7 +993,7 @@
             const photoBox = document.getElementById("cardPhotoBox");
             const avatarBox = document.getElementById("miniAvatarBox");
 
-            ["marco-corazones", "marco-neon", "marco-corona"].forEach(cls => {
+            ["marco-vangogh", "marco-monet", "marco-dali"].forEach(cls => {
                 if (photoBox) photoBox.classList.remove(cls);
                 if (avatarBox) avatarBox.classList.remove(cls);
             });
@@ -932,12 +1007,12 @@
         /* --- TIENDA DE CANJE (DINÁMICAS) --- */
         function comprarItem(itemNombre, precio) {
             if (!esFundadoraActiva() && userHearts < precio) {
-                return alert(`⛔ Necesitas ${precio} 💖 para canjear esto. ¡Sigue participando para ganar más!`);
+                return alert(`⛔ Necesitas ${precio} 💖 para canjear esto.`);
             }
             if (!esFundadoraActiva()) {
                 actualizarCorazones(-precio);
             }
-            alert(`🎉 ¡Has canjeado "${itemNombre}" con éxito! Muestra esta pantalla al grupo en la próxima quedada.`);
+            alert(`🎉 ¡Has canjeado "${itemNombre}" con éxito! Muestra esta pantalla al grupo.`);
         }
 
         /* --- CUMPLEAÑOS --- */
