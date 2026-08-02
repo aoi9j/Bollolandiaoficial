@@ -4,8 +4,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>República Sáfica de Bollolandia 🌈</title>
-  <!-- Librería externa para descargar el carnet como imagen -->
+  <!-- Librería para descargar carnet -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <!-- Fuente manuscrita bonita para la firma (Great Vibes) -->
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
+
   <style>
     /* === ESTILOS GENERALES === */
     body {
@@ -18,7 +21,7 @@
 
     .hidden { display: none !important; }
 
-    /* === MINI CARNET FLOTANTE (Arriba a la derecha) === */
+    /* === MINI CARNET FLOTANTE === */
     .mini-badge {
       position: fixed;
       top: 15px;
@@ -100,8 +103,8 @@
       border-bottom: 1px solid #ddd;
     }
 
-    .header-main { font-size: 0.9rem; font-weight: bold; color: #222; }
-    .header-sub { font-size: 0.7rem; color: #666; }
+    .header-main { font-size: 0.85rem; font-weight: bold; color: #222; }
+    .header-sub { font-size: 0.65rem; color: #666; }
 
     .card-body { display: flex; padding: 12px; gap: 10px; }
     .card-photo {
@@ -114,7 +117,17 @@
     .card-info { flex: 1; font-size: 0.7rem; }
     .main-color { color: #b00; font-weight: bold; margin-bottom: 4px; }
     .large { font-size: 1.1rem; font-weight: bold; color: #000; }
-    .signature { font-family: 'Brush Script MT', cursive; font-size: 1.1rem; color: #333; }
+    
+    /* FIRMA ESTILIZADA EN CURSIVA */
+    .signature { 
+      font-family: 'Great Vibes', cursive; 
+      font-size: 1.5rem; 
+      color: #1a2a3a;
+      line-height: 1.1;
+      transform: rotate(-3deg);
+      display: inline-block;
+      margin-top: 2px;
+    }
 
     .modal-buttons {
       display: flex;
@@ -150,14 +163,14 @@
     .card-form {
       background: #fff; padding: 25px; border-radius: 12px;
       box-shadow: 0 4px 15px rgba(0,0,0,0.08); display: flex;
-      flex-direction: column; gap: 12px; width: 310px; text-align: center;
+      flex-direction: column; gap: 14px; width: 310px; text-align: center;
     }
 
     .card-form h3 { margin: 0; color: #FFB6C1; font-size: 1.4rem; }
     .card-form p { font-size: 0.85rem; color: #666; margin-bottom: 5px; }
 
     .card-form input, .card-form select {
-      padding: 10px; border: 1px solid #ddd; border-radius: 6px; font-size: 0.9rem;
+      padding: 12px; border: 1px solid #ddd; border-radius: 6px; font-size: 0.9rem;
       background: white;
     }
 
@@ -175,7 +188,7 @@
 </head>
 <body>
 
-  <!-- 1. MINI CARNET FLOTANTE (Arriba a la derecha) -->
+  <!-- 1. MINI CARNET FLOTANTE -->
   <div id="mini-badge" class="mini-badge hidden" onclick="toggleCardModal()">
     <div class="badge-avatar">👤</div>
     <div class="badge-info">
@@ -209,9 +222,9 @@
               <span style="font-weight:bold;">MISIÓN:</span><br>
               <span id="card-mision-out">---</span>
             </div>
-            <div style="margin-top:4px;">
-              <span style="font-weight:bold;">SUPERPODER:</span><br>
-              <span class="signature" id="card-super-out">---</span>
+            <div style="margin-top:6px;">
+              <span style="font-weight:bold;">FIRMA TITULAR:</span><br>
+              <span class="signature" id="card-signature-out">---</span>
             </div>
           </div>
         </div>
@@ -268,8 +281,6 @@
         <option value="Hacer un Excel para cualquier tontería">📊 Organizadora compulsiva de eventos</option>
       </select>
 
-      <input type="text" id="in-super" placeholder="Tu Superpoder (para la firma)" maxlength="20">
-      
       <button onclick="crearYGuardarCarnet()">¡Entrar a la Web!</button>
     </div>
   </div>
@@ -286,24 +297,22 @@
     function crearYGuardarCarnet() {
       const name = document.getElementById("in-name").value.trim();
       const mision = document.getElementById("in-mision").value;
-      const superpoder = document.getElementById("in-super").value.trim();
 
-      if (!name || !mision || !superpoder) {
-        alert("¡Porfa, rellena tu apodo, elige una misión y pon tu superpoder! 🌈");
+      if (!name || !mision) {
+        alert("¡Porfa, escribe tu nombre/apodo y elige una misión! 🌈");
         return;
       }
 
-      // Contador secuencial (0000001, 0000002...)
+      // Contador de ID (0000001, 0000002...)
       let currentCounter = parseInt(localStorage.getItem("dni_counter_number") || "0", 10);
       currentCounter += 1;
       localStorage.setItem("dni_counter_number", currentCounter.toString());
 
-      // Formatear a 7 dígitos con ceros a la izquierda
       const formattedNum = currentCounter.toString().padStart(7, '0');
       const cardId = `BL-${formattedNum}`;
       const today = new Date().toLocaleDateString();
 
-      const data = { name, mision, superpoder, cardId, date: today };
+      const data = { name, mision, cardId, date: today };
 
       localStorage.setItem("dni_safico_data", JSON.stringify(data));
       mostrarCarnetEnPantalla(data);
@@ -318,7 +327,10 @@
 
       document.getElementById("card-name-out").innerText = data.name;
       document.getElementById("card-mision-out").innerText = data.mision;
-      document.getElementById("card-super-out").innerText = data.superpoder;
+      
+      // La firma usa el mismo nombre pero con la fuente Great Vibes en cursiva
+      document.getElementById("card-signature-out").innerText = data.name;
+      
       document.getElementById("card-id-out").innerText = data.cardId;
       document.getElementById("card-date-out").innerText = data.date;
     }
