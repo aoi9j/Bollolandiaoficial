@@ -45,7 +45,7 @@
 
         header {
             background: linear-gradient(135deg, var(--rosa), var(--lila));
-            padding: 20px 15px;
+            padding: 22px 15px 18px 15px;
             text-align: center;
             border-bottom-left-radius: 20px;
             border-bottom-right-radius: 20px;
@@ -53,24 +53,36 @@
             position: relative;
         }
 
-        h1 { margin: 0; font-size: 1.6rem; color: #fff; }
-        p.subtitulo { margin: 4px 0 0; color: #fff; font-size: 0.85rem; opacity: 0.95; }
+        h1 { 
+            margin: 0; 
+            font-size: 1.5rem; 
+            color: #fff; 
+            padding-right: 75px; /* Evita que el título tape los corazones */
+        }
+        p.subtitulo { 
+            margin: 4px 0 0; 
+            color: #fff; 
+            font-size: 0.85rem; 
+            opacity: 0.95; 
+            padding-right: 75px;
+        }
 
-        /* BANNER DE CORAZONES (PUNTOS) */
+        /* BANNER DE CORAZONES (AJUSTADO PARA NO MOLESTAR) */
         .hearts-counter {
             position: absolute;
-            top: 15px;
-            right: 15px;
-            background: rgba(255, 255, 255, 0.9);
-            padding: 5px 12px;
+            top: 25px;
+            right: 12px;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 6px 12px;
             border-radius: 20px;
             font-weight: bold;
             color: #d63384;
             font-size: 0.85rem;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+            box-shadow: 0 3px 8px rgba(0,0,0,0.12);
             display: flex;
             align-items: center;
             gap: 5px;
+            z-index: 10;
         }
 
         .container { padding: 15px; max-width: 500px; margin: 0 auto; }
@@ -112,6 +124,22 @@
             font-weight: bold;
             border: none;
             cursor: pointer;
+        }
+
+        .btn-logout {
+            background: #fee2e2;
+            color: #dc2626;
+            border: 1px solid #fca5a5;
+            padding: 10px;
+            border-radius: 10px;
+            font-weight: bold;
+            font-size: 0.85rem;
+            cursor: pointer;
+            margin-top: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
         }
 
         .btn-mapa {
@@ -308,7 +336,7 @@
         .btn-close { background: #333; color: white; }
         .btn-download { background: #10b981; color: white; }
 
-        /* TIENDA DE RECOMPENSAS (RECOMPENSAS INNOVADORAS) */
+        /* TIENDA DE RECOMPENSAS */
         .shop-item {
             border: 1px solid #e2d4f0;
             border-radius: 12px;
@@ -457,6 +485,7 @@
             <div class="card" id="seccionMiCarnet" style="display: none;">
                 <h2>Acreditación Emitida</h2>
                 <p style="font-size:0.85rem; color:#666; margin-top:-5px;">¡Identificación verificada! Puedes acceder a todas las secciones desde el menú inferior.</p>
+                
                 <div class="mini-badge" id="miniBadgeBox" onclick="abrirModalCarnet()">
                     <div class="badge-avatar" id="miniAvatarBox">👤</div>
                     <div style="flex:1;">
@@ -465,6 +494,8 @@
                     </div>
                     <span style="font-size: 0.8rem; color: var(--morado); font-weight: bold;">Ver Carnet 👁️</span>
                 </div>
+
+                <button class="btn-logout" onclick="cerrarSesion()">🚪 Cerrar Sesión / Regenerar Carnet</button>
             </div>
         </div>
 
@@ -639,7 +670,7 @@
 
         function crearCarnet() {
             if (localStorage.getItem("dispositivo_registrado")) {
-                return alert("⛔ Ya has emitido un carnet desde este dispositivo.");
+                return alert("⛔ Ya has emitido un carnet en este dispositivo. Usa 'Cerrar Sesión' si deseas cambiarlo.");
             }
 
             const name = document.getElementById("inName").value.trim();
@@ -679,12 +710,12 @@
         function desbloquearNavegacion() {
             document.getElementById("navTabs").style.display = "flex";
             document.getElementById("formRegistroCarnet").style.display = "none";
+            document.getElementById("seccionMiCarnet").style.display = "block";
         }
 
         function cargarDatosCarnet(data) {
             document.getElementById("badgeNameOut").innerText = data.name;
             document.getElementById("badgeIdOut").innerText = `#${data.cardId}`;
-            document.getElementById("seccionMiCarnet").style.display = "block";
 
             document.getElementById("cardNameOut").innerText = data.name;
             document.getElementById("cardMisionOut").innerText = data.mision;
@@ -699,15 +730,30 @@
                 cardElement.classList.add("gold-edition");
                 badgeBox.classList.add("gold-badge");
                 document.getElementById("cardHeaderTitle").innerText = "GOLD • FUNDADORA 👑";
+            } else {
+                cardElement.classList.remove("gold-edition");
+                badgeBox.classList.remove("gold-badge");
+                document.getElementById("cardHeaderTitle").innerText = "HAWAII • BOLLOLANDIA 🌈";
             }
 
             if (data.photo) {
                 document.getElementById("cardPhotoBox").innerHTML = `<img src="${data.photo}" class="card-photo-img">`;
                 document.getElementById("miniAvatarBox").innerHTML = `<img src="${data.photo}" style="width:100%;height:100%;object-fit:cover;">`;
+            } else {
+                document.getElementById("cardPhotoBox").innerHTML = `<span style="font-size: 2.2rem;">👤</span>`;
+                document.getElementById("miniAvatarBox").innerHTML = `👤`;
             }
             
             document.getElementById("miNombre").value = data.name;
             comprobarMatches();
+        }
+
+        function cerrarSesion() {
+            if (confirm("¿Quieres cerrar sesión para cambiar tu carnet o introducir el código de Fundadora?")) {
+                localStorage.removeItem("dni_safico_data");
+                localStorage.removeItem("dispositivo_registrado");
+                location.reload();
+            }
         }
 
         function abrirModalCarnet() {
