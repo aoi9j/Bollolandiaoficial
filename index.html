@@ -124,87 +124,33 @@
       font-weight: bold;
     }
 
-    /* === FORMULARIO DE REGISTRO DE CARNET === */
+    /* === FORMULARIO DE REGISTRO === */
     .card-form-container {
-      display: flex; justify-content: center; margin: 20px 0;
+      display: flex; 
+      justify-content: center; 
+      align-items: center;
+      min-height: 80vh;
     }
 
     .card-form {
-      background: #fff; padding: 20px; border-radius: 12px;
+      background: #fff; padding: 25px; border-radius: 12px;
       box-shadow: 0 4px 15px rgba(0,0,0,0.08); display: flex;
-      flex-direction: column; gap: 10px; width: 290px; text-align: center;
+      flex-direction: column; gap: 12px; width: 310px; text-align: center;
     }
 
-    .card-form h3 { margin: 0; color: #FFB6C1; }
-    .card-form p { font-size: 0.8rem; color: #666; margin-bottom: 5px; }
+    .card-form h3 { margin: 0; color: #FFB6C1; font-size: 1.4rem; }
+    .card-form p { font-size: 0.85rem; color: #666; margin-bottom: 5px; }
 
-    .card-form input {
+    .card-form input, .card-form select {
       padding: 10px; border: 1px solid #ddd; border-radius: 6px; font-size: 0.9rem;
+      background: white;
     }
 
     .card-form button {
       padding: 12px; background: #FFB6C1; color: white;
       border: none; border-radius: 6px; font-weight: bold; cursor: pointer;
+      font-size: 1rem; margin-top: 5px;
     }
-
-    /* === SECCIÓN DE CUMPLEAÑOS === */
-    .cumples-container {
-      background: white;
-      padding: 20px;
-      border-radius: 12px;
-      max-width: 320px;
-      margin: 30px auto;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.08);
-    }
-
-    .cumples-container h3 {
-      color: #FFB6C1;
-      margin-top: 0;
-      text-align: center;
-    }
-
-    .cumple-form {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-      margin-bottom: 15px;
-    }
-
-    .cumple-form input {
-      padding: 8px;
-      border: 1px solid #ddd;
-      border-radius: 6px;
-    }
-
-    .cumple-form button {
-      padding: 9px;
-      background: #FFB6C1;
-      color: white;
-      border: none;
-      border-radius: 6px;
-      font-weight: bold;
-      cursor: pointer;
-    }
-
-    .lista-cumples {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-
-    .cumple-card {
-      background: #FFF0F5;
-      border-left: 4px solid #FFB6C1;
-      padding: 8px 12px;
-      border-radius: 4px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 0.9rem;
-    }
-
-    .cumple-nombre { font-weight: bold; color: #333; }
-    .cumple-fecha { color: #d10056; font-size: 0.8rem; font-weight: bold; }
 
     @keyframes popIn {
       0% { transform: scale(0); opacity: 0; }
@@ -259,54 +205,54 @@
     </div>
   </div>
 
-  <!-- 3. FORMULARIO CARNET (Solo sale si NO tienen carnet) -->
+  <!-- 3. FORMULARIO CARNET DE ENTRADA -->
   <div id="setup-form-container" class="card-form-container">
     <div class="card-form">
       <h3>Obtén tu DNI Sáfico 💳</h3>
-      <p>Crea tu carnet oficial para estar identificada en la web.</p>
+      <p>Identifícate para entrar a la web oficial.</p>
+      
       <input type="text" id="in-name" placeholder="Tu Apodo / Nombre" maxlength="15">
-      <input type="text" id="in-mision" placeholder="Tu Misión en el grupo" maxlength="25">
-      <input type="text" id="in-super" placeholder="Tu Superpoder (firma)" maxlength="20">
-      <button onclick="crearYGuardarCarnet()">¡Generar mi Carnet!</button>
-    </div>
-  </div>
+      
+      <!-- DESPLEGABLE CON OPCIONES DE MISIÓN -->
+      <select id="in-mision">
+        <option value="" disabled selected>Selecciona tu misión principal...</option>
+        <option value="Traer el chisme fresco">✨ Traer el chisme fresco</option>
+        <option value="Organizar las previas">🍻 Organizar las previas</option>
+        <option value="Dar los mejores abrazos">🫂 Dar los mejores abrazos</option>
+        <option value="Servir drama libre">Aesthetic & Drama Libre</option>
+        <option value="Analizar las red flags de todas">🚩 Analizadora de Red Flags</option>
+        <option value="Ser la DJ oficial del grupo">🎧 DJ oficial del grupo</option>
+        <option value="Tener crisis existenciales a las 3 AM">🌙 Crisis existenciales 3 AM</option>
+        <option value="Buscadora oficial de bares cute">☕ Buscadora de sitios cute</option>
+        <option value="Adoptar gatitos y llorar">🐱 Adoptar gatitos y llorar</option>
+        <option value="Mandar memes al grupo 24/7">📲 Proveedora de memes 24/7</option>
+        <option value="Hacer match y ghostear sin querer">👻 Match y despiste total</option>
+        <option value="Ser la madre del grupo">🏼‍🍼 La madre responsable</option>
+      </select>
 
-  <!-- 4. SECCIÓN DE CUMPLEAÑOS -->
-  <div class="cumples-container">
-    <h3>🎂 Cumpleaños del Grupo</h3>
-    
-    <div class="cumple-form">
-      <input type="text" id="cumple-nombre" placeholder="Nombre / Apodo" maxlength="15">
-      <input type="date" id="cumple-fecha">
-      <button onclick="guardarCumple()">Añadir Cumple ✨</button>
-    </div>
-
-    <div id="lista-cumples" class="lista-cumples">
-      <!-- Se dibuja automáticamente aquí -->
+      <input type="text" id="in-super" placeholder="Tu Superpoder (para la firma)" maxlength="20">
+      
+      <button onclick="crearYGuardarCarnet()">¡Entrar a la Web!</button>
     </div>
   </div>
 
   <!-- LÓGICA JAVASCRIPT -->
   <script>
     document.addEventListener("DOMContentLoaded", function() {
-      // 1. Cargar carnet si existe
+      // Cargar carnet si ya se creó antes
       const savedCardData = localStorage.getItem("dni_safico_data");
       if (savedCardData) {
         mostrarCarnetEnPantalla(JSON.parse(savedCardData));
       }
-
-      // 2. Cargar lista de cumpleaños
-      cargarCumpleanos();
     });
 
-    /* --- LÓGICA DEL CARNET --- */
     function crearYGuardarCarnet() {
       const name = document.getElementById("in-name").value.trim();
-      const mision = document.getElementById("in-mision").value.trim();
+      const mision = document.getElementById("in-mision").value;
       const superpoder = document.getElementById("in-super").value.trim();
 
       if (!name || !mision || !superpoder) {
-        alert("¡Porfa, rellena todos los campos para tu DNI oficial! 🌈");
+        alert("¡Porfa, rellena tu apodo, elige una misión y pon tu superpoder! 🌈");
         return;
       }
 
@@ -336,55 +282,6 @@
 
     function toggleCardModal() {
       document.getElementById("card-modal").classList.toggle("hidden");
-    }
-
-    /* --- LÓGICA DE LOS CUMPLEAÑOS --- */
-    function guardarCumple() {
-      const nombre = document.getElementById("cumple-nombre").value.trim();
-      const fecha = document.getElementById("cumple-fecha").value;
-
-      if (!nombre || !fecha) {
-        alert("¡Porfa, pon el nombre y la fecha del cumple! 🎈");
-        return;
-      }
-
-      let cumples = JSON.parse(localStorage.getItem("lista_cumples")) || [];
-      cumples.push({ nombre, fecha });
-
-      localStorage.setItem("lista_cumples", JSON.stringify(cumples));
-
-      document.getElementById("cumple-nombre").value = "";
-      document.getElementById("cumple-fecha").value = "";
-
-      cargarCumpleanos();
-    }
-
-    function cargarCumpleanos() {
-      const contenedor = document.getElementById("lista-cumples");
-      const cumples = JSON.parse(localStorage.getItem("lista_cumples")) || [];
-
-      contenedor.innerHTML = "";
-
-      if (cumples.length === 0) {
-        contenedor.innerHTML = "<p style='color:#aaa; text-align:center; font-size:0.8rem;'>Aún no hay cumpleaños añadidos 🎉</p>";
-        return;
-      }
-
-      cumples.forEach(function(item) {
-        const card = document.createElement("div");
-        card.className = "cumple-card";
-        
-        // Formatear fecha para evitar desfase de zona horaria
-        const partes = item.fecha.split("-");
-        const fechaFormateada = `${partes[2]}/${partes[1]}`;
-
-        card.innerHTML = `
-          <span class="cumple-nombre">🎂 ${item.nombre}</span>
-          <span class="cumple-fecha">${fechaFormateada}</span>
-        `;
-
-        contenedor.appendChild(card);
-      });
     }
   </script>
 </body>
