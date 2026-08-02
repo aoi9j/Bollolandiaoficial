@@ -395,7 +395,7 @@
 
         <div class="modal-buttons" onclick="event.stopPropagation()">
             <button class="btn-action btn-download" onclick="descargarCarnet()">📸 Descargar Carnet</button>
-            <button class="btn-action btn-reset" onclick="borrarCarnet()">🗑️ Borrar Carnet</button>
+
             <button class="btn-action btn-close" onclick="cerrarModalCarnet()">Cerrar</button>
         </div>
     </div>
@@ -571,6 +571,11 @@
         }
 
         function crearCarnet() {
+            // VERIFICACIÓN DE DISPOSITIVO REGISTRADO
+            if (localStorage.getItem("dispositivo_registrado")) {
+                return alert("⛔ Ya has emitido un carnet desde este dispositivo. Cada chica solo puede tener una identificación.");
+            }
+
             const name = document.getElementById("inName").value.trim();
             const mision = document.getElementById("inMision").value;
             const codigoIngresado = document.getElementById("inCodigo").value.trim();
@@ -593,6 +598,9 @@
             const data = { name, mision, cardId, date: today, photo: carnetFotoBase64 };
             localStorage.setItem("dni_safico_data", JSON.stringify(data));
             
+            // MARCAR DISPOSITIVO COMO PERMANENTEMENTE REGISTRADO
+            localStorage.setItem("dispositivo_registrado", "true");
+
             cargarDatosCarnet(data);
             desbloquearNavegacion();
             abrirModalCarnet();
@@ -630,13 +638,6 @@
 
         function cerrarModalCarnet() {
             document.getElementById("cardModal").style.display = "none";
-        }
-
-        function borrarCarnet() {
-            if (confirm("¿Segura que quieres borrar tu carnet de este navegador?")) {
-                localStorage.removeItem("dni_safico_data");
-                location.reload();
-            }
         }
 
         function descargarCarnet() {
