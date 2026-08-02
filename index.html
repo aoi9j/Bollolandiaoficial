@@ -317,29 +317,12 @@
         .btn-close { background: #333; color: white; }
         .btn-download { background: #10b981; color: white; }
 
-        /* --- MARCO ANIMADO CSS PURO (BRILLO NEÓN MÍSTICO FLUIDO) --- */
-        @keyframes animacionMarcoMistico {
-            0% {
-                box-shadow: inset 0 0 10px rgba(255, 255, 255, 0.9), 0 0 12px #38bdf8, 0 0 20px #8b5cf6;
-                border-color: #38bdf8;
-            }
-            50% {
-                box-shadow: inset 0 0 18px rgba(255, 255, 255, 1), 0 0 20px #f43f5e, 0 0 30px #fbbf24;
-                border-color: #f43f5e;
-            }
-            100% {
-                box-shadow: inset 0 0 10px rgba(255, 255, 255, 0.9), 0 0 12px #38bdf8, 0 0 20px #8b5cf6;
-                border-color: #38bdf8;
-            }
-        }
-
-        .marco-mistico-css {
+        /* --- MARCO DE HUMO REAL (GIF INTEGRADO CON FONDO TRANSPARENTE) --- */
+        .marco-humo-gif {
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
-            border: 4px solid #38bdf8;
-            border-radius: 6px;
-            box-sizing: border-box;
-            animation: animacionMarcoMistico 3s infinite ease-in-out;
+            object-fit: cover;
+            mix-blend-mode: screen; /* Elimina automáticamente el fondo negro del GIF */
             pointer-events: none;
             z-index: 5;
         }
@@ -534,7 +517,7 @@
         <div id="tienda" class="tab-content">
             <div class="ruleta-box">
                 <h2 style="margin-top:0; color:#c026d3;">🎡 La Ruleta de la Suerte</h2>
-                <p style="font-size:0.8rem; color:#666;">¡Gira la ruleta para conseguir corazones o el Anillo Místico animado (Cuesta 20 💖).</p>
+                <p style="font-size:0.8rem; color:#666;">¡Gira la ruleta para conseguir corazones o el Anillo de Humo Místico (Cuesta 20 💖).</p>
                 <div class="ruleta-wheel" id="ruletaWheel">🎨</div>
                 <button class="btn-principal" style="background: linear-gradient(135deg, #ec4899, #8b5cf6);" onclick="girarRuleta()">🎯 ¡Girar Ruleta (20 💖)!</button>
             </div>
@@ -547,10 +530,10 @@
 
                 <div class="shop-item">
                     <div class="shop-item-info">
-                        <h4>🔮 Anillo Místico Animado</h4>
-                        <p>Efecto de energía de luz fluida brillando alrededor de tu foto.</p>
+                        <h4>🔮 Anillo de Humo Místico</h4>
+                        <p>Efecto de onda circular brillante girando alrededor de tu foto.</p>
                     </div>
-                    <button class="btn-buy" onclick="comprarMarco('marco-mistico', 'Anillo Místico', 50)">50 💖</button>
+                    <button class="btn-buy" onclick="comprarMarco('marco-mistico', 'Anillo de Humo Místico', 50)">50 💖</button>
                 </div>
 
                 <div class="shop-item" style="margin-top: 15px;">
@@ -637,6 +620,8 @@
     <script>
         const CODIGO_CORRECTO = "BL-VIP-8317";
         const CODIGO_FUNDADORA = "BL-FUNDADORA-GOLD";
+        // Enlace directo optimizado al GIF exacto de humo circular que pasaste
+        const GIF_HUMO_URL = "https://i.imgur.com/eQ4L582.gif";
 
         let carnetFotoBase64 = "";
         let userHearts = parseInt(localStorage.getItem("user_hearts") || "0", 10);
@@ -822,7 +807,7 @@
             setTimeout(() => {
                 const premios = [
                     { tipo: 'corazones', valor: 30, texto: '¡Has ganado +30 💖 extra!' },
-                    { tipo: 'marco', id: 'marco-mistico', nombre: 'Anillo Místico', texto: '¡Felicidades! Ganaste el Anillo Místico animado 🔮' },
+                    { tipo: 'marco', id: 'marco-mistico', nombre: 'Anillo de Humo Místico', texto: '¡Felicidades! Ganaste el Anillo de Humo Místico 🔮' },
                     { tipo: 'corazones', valor: 50, texto: '¡Premio gordo! +50 💖 para tu cuenta 🎉' },
                     { tipo: 'corazones', valor: 10, texto: 'Has ganado +10 💖.' }
                 ];
@@ -886,7 +871,7 @@
             marcos.forEach(m => {
                 let activo = marcoActivo === m;
                 let btnStyle = activo ? "background:var(--morado); color:white;" : "background:#fff; color:var(--morado); border:1px solid var(--morado);";
-                html += `<button onclick="equiparMarco('${m}')" style="padding:6px 10px; font-size:0.75rem; border-radius:6px; cursor:pointer; font-weight:bold; ${btnStyle}">🔮 Anillo Místico ${activo ? '✓' : ''}</button>`;
+                html += `<button onclick="equiparMarco('${m}')" style="padding:6px 10px; font-size:0.75rem; border-radius:6px; cursor:pointer; font-weight:bold; ${btnStyle}">🔮 Anillo de Humo ${activo ? '✓' : ''}</button>`;
             });
 
             contenedor.innerHTML = html;
@@ -915,8 +900,8 @@
             if (miniMarcoLayer) miniMarcoLayer.innerHTML = "";
 
             if (marcoActivo === "marco-mistico") {
-                if (marcoLayer) marcoLayer.innerHTML = `<div class="marco-mistico-css"></div>`;
-                if (miniMarcoLayer) miniMarcoLayer.innerHTML = `<div class="marco-mistico-css" style="border-radius: 50%;"></div>`;
+                if (marcoLayer) marcoLayer.innerHTML = `<img src="${GIF_HUMO_URL}" class="marco-humo-gif">`;
+                if (miniMarcoLayer) miniMarcoLayer.innerHTML = `<img src="${GIF_HUMO_URL}" class="marco-humo-gif" style="border-radius: 50%;">`;
             }
         }
 
