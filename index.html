@@ -4,6 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>República Sáfica de Bollolandia 🌈</title>
+  <!-- Librería externa para poder descargar el carnet como imagen -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <style>
     /* === ESTILOS GENERALES === */
     body {
@@ -74,6 +76,7 @@
       background: rgba(0, 0, 0, 0.6);
       z-index: 2000;
       display: flex;
+      flex-direction: column;
       justify-content: center;
       align-items: center;
       padding: 20px;
@@ -113,16 +116,28 @@
     .large { font-size: 1.1rem; font-weight: bold; color: #000; }
     .signature { font-family: 'Brush Script MT', cursive; font-size: 1.1rem; color: #333; }
 
-    .close-btn {
+    .modal-buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      width: 320px;
+      margin-top: 15px;
+    }
+
+    .btn-action {
       width: 100%;
       padding: 10px;
-      background: #333;
-      color: white;
       border: none;
-      font-size: 0.8rem;
+      border-radius: 6px;
+      font-size: 0.85rem;
       cursor: pointer;
       font-weight: bold;
+      text-align: center;
     }
+
+    .btn-close { background: #333; color: white; }
+    .btn-reset { background: #ff4d4d; color: white; }
+    .btn-download { background: #4CAF50; color: white; }
 
     /* === FORMULARIO DE REGISTRO === */
     .card-form-container {
@@ -171,7 +186,7 @@
 
   <!-- 2. MODAL CARNET GRANDE (Desplegable) -->
   <div id="card-modal" class="card-modal hidden" onclick="toggleCardModal()">
-    <div class="mclovin-card" onclick="event.stopPropagation()">
+    <div id="mclovin-card" class="mclovin-card" onclick="event.stopPropagation()">
       <div class="card-header">
         <div class="header-main">REPÚBLICA SÁFICA DE BOLLOLANDIA 🌈</div>
         <div class="header-sub">CARNET DE IDENTIDAD OFICIAL</div>
@@ -201,7 +216,13 @@
           </div>
         </div>
       </div>
-      <button class="close-btn" onclick="toggleCardModal()">Cerrar / Ocultar</button>
+    </div>
+
+    <!-- BOTONES DE ACCIÓN DENTRO DEL DESPLEGABLE -->
+    <div class="modal-buttons" onclick="event.stopPropagation()">
+      <button class="btn-action btn-download" onclick="descargarCarnet()">📸 Descargar Carnet</button>
+      <button class="btn-action btn-reset" onclick="borrarCarnet()">🗑️ Borrar y empezar de cero</button>
+      <button class="btn-action btn-close" onclick="toggleCardModal()">Cerrar / Ocultar</button>
     </div>
   </div>
 
@@ -213,7 +234,6 @@
       
       <input type="text" id="in-name" placeholder="Tu Apodo / Nombre" maxlength="15">
       
-      <!-- DESPLEGABLE CON OPCIONES DE MISIÓN -->
       <select id="in-mision">
         <option value="" disabled selected>Selecciona tu misión principal...</option>
         <option value="Traer el chisme fresco">✨ Traer el chisme fresco</option>
@@ -239,7 +259,6 @@
   <!-- LÓGICA JAVASCRIPT -->
   <script>
     document.addEventListener("DOMContentLoaded", function() {
-      // Cargar carnet si ya se creó antes
       const savedCardData = localStorage.getItem("dni_safico_data");
       if (savedCardData) {
         mostrarCarnetEnPantalla(JSON.parse(savedCardData));
@@ -282,6 +301,25 @@
 
     function toggleCardModal() {
       document.getElementById("card-modal").classList.toggle("hidden");
+    }
+
+    /* --- FUNCIÓN PARA BORRAR Y CREAR DE NUEVO --- */
+    function borrarCarnet() {
+      if (confirm("¿Segura que quieres borrar tu carnet actual y crear uno nuevo?")) {
+        localStorage.removeItem("dni_safico_data"); // Borra la memoria del carnet
+        location.reload(); // Recarga la página para mostrar el formulario vacio
+      }
+    }
+
+    /* --- FUNCIÓN PARA DESCARGAR EL CARNET COMO IMAGEN --- */
+    function descargarCarnet() {
+      const cardElement = document.getElementById("mclovin-card");
+      html2canvas(cardElement).then(canvas => {
+        const link = document.createElement("a");
+        link.download = "mi-dni-safico.png";
+        link.href = canvas.toDataURL("image/png");
+        link.click();
+      });
     }
   </script>
 </body>
