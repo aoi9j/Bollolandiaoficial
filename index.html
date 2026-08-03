@@ -187,7 +187,9 @@
 
         .hero-card h2 { margin: 0; font-size: 1.15rem; color: #4a3e3a; font-weight: 800; }
         .hero-card p { margin: 6px 0 0 0; font-size: 0.78rem; color: #7a6e67; line-height: 1.4; }
-        .hero-bio-display { margin-top: 8px; font-size: 0.8rem; color: var(--accent-coral); font-weight: 700; }
+        .hero-bio-container { margin-top: 8px; }
+        .hero-bio-label { font-size: 0.65rem; color: #b94a48; text-transform: uppercase; font-weight: bold; display: block; margin-bottom: 2px; }
+        .hero-bio-display { font-size: 0.8rem; color: var(--accent-coral); font-weight: 700; }
 
         .hero-profile-avatar {
             width: 60px;
@@ -841,7 +843,10 @@
         <div class="hero-card">
             <div>
                 <h2>Hola de nuevo, <span id="dashboardUserName">Mia</span>! ✨</h2>
-                <div class="hero-bio-display" id="heroBioDisplay"></div>
+                <div class="hero-bio-container" id="heroBioContainer" style="display: none;">
+                    <span class="hero-bio-label">Bio:</span>
+                    <div class="hero-bio-display" id="heroBioDisplay"></div>
+                </div>
                 <p>Disfruta de tu espacio seguro y conecta con tus amigas hoy.</p>
             </div>
             <div class="hero-profile-avatar" id="heroProfileAvatarBox">
@@ -1038,10 +1043,6 @@
                         <h4 style="font-size: 0.8rem; color: var(--text-main); margin-bottom: 4px;">💬 Actualizar Nota del Carnet</h4>
                         <input type="text" id="inputEditarNote" placeholder="Tu nota actual..." maxlength="30" style="margin-bottom:6px;">
                         <button class="btn-principal" style="padding: 8px; font-size: 0.78rem; margin-bottom: 10px;" onclick="guardarNotaEditada()">Guardar Nota</button>
-
-                        <h4 style="font-size: 0.8rem; color: var(--text-main); margin-bottom: 4px;">✏️ Actualizar Biografía</h4>
-                        <textarea id="inputEditarBio" placeholder="Tu biografía..." rows="2" maxlength="80" style="margin-bottom:6px;"></textarea>
-                        <button class="btn-principal" style="padding: 8px; font-size: 0.78rem;" onclick="guardarBioEditada()">Actualizar Bio</button>
                     </div>
 
                     <div style="margin-top: 16px; border-top: 1px solid var(--border-soft); padding-top: 12px;">
@@ -1204,15 +1205,12 @@
                     const inputNoteEdit = document.getElementById("inputEditarNote");
                     if(inputNoteEdit) inputNoteEdit.value = userData.note;
                 }
-                if(userData.bio) {
-                    const inputBioEdit = document.getElementById("inputEditarBio");
-                    if(inputBioEdit) inputBioEdit.value = userData.bio;
-                }
             } else {
                 document.getElementById("formRegistroCarnet").style.display = "block";
                 document.getElementById("seccionMiCarnet").style.display = "none";
                 document.getElementById("heartCount").innerText = "0";
                 document.getElementById("statHearts").innerText = "0";
+                document.getElementById("heroBioContainer").style.display = "none";
                 document.getElementById("heroBioDisplay").innerText = "";
             }
             comprobarMatches();
@@ -1301,14 +1299,6 @@
             const userData = obtenerDatosActuales();
             cargarDatosCarnet(userData);
             alert("✨ ¡Nota actualizada en tu carnet!");
-        }
-
-        function guardarBioEditada() {
-            const nuevaBio = document.getElementById("inputEditarBio").value.trim();
-            actualizarDatosActuales({ bio: nuevaBio });
-            const userData = obtenerDatosActuales();
-            cargarDatosCarnet(userData);
-            alert("✨ ¡Biografía actualizada!");
         }
 
         // Modificación interactiva de nota haciendo clic y opción de añadir nota de voz
@@ -1442,14 +1432,15 @@
                 sidebarNoteBubble.style.display = "none";
             }
 
-            // Cabecera: Biografía debajo del saludo y foto de perfil en lugar de la flor de cerezo
+            // Cabecera: Biografía debajo del saludo con etiqueta "Bio:" y foto de perfil
+            const heroBioContainer = document.getElementById("heroBioContainer");
             const heroBioDisplay = document.getElementById("heroBioDisplay");
             if (data.bio) {
                 heroBioDisplay.innerText = `"${data.bio}"`;
-                heroBioDisplay.style.display = "block";
+                heroBioContainer.style.display = "block";
             } else {
                 heroBioDisplay.innerText = "";
-                heroBioDisplay.style.display = "none";
+                heroBioContainer.style.display = "none";
             }
 
             document.getElementById("cardMisionOut").innerText = data.mision;
