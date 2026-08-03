@@ -348,10 +348,18 @@
             position: relative;
         }
 
+        /* EDICIÓN GOLD / FUNDADORA (ÚNICA) */
         .mclovin-card.gold-edition {
             background-image: linear-gradient(135deg, #bf953f 0%, #fcf6ba 25%, #b38728 50%, #fbf5b7 75%, #aa771c 100%);
             border: 2px solid #ffd700;
             box-shadow: 0 0 25px rgba(255, 215, 0, 0.7);
+        }
+
+        /* EDICIÓN SILVER / CARNET NORMAL (CÓDIGO BL-VIP-8317) */
+        .mclovin-card.silver-edition {
+            background-image: linear-gradient(135deg, #e0e0e0 0%, #f5f5f5 50%, #cccccc 100%);
+            border: 2px solid #a6a6a6;
+            box-shadow: 0 0 20px rgba(166, 166, 166, 0.5);
         }
 
         .card-header {
@@ -364,6 +372,11 @@
 
         .mclovin-card.gold-edition .card-header {
             background: linear-gradient(90deg, #785212, #b8860b, #785212);
+            border-bottom: 2px solid #fff;
+        }
+
+        .mclovin-card.silver-edition .card-header {
+            background: linear-gradient(90deg, #595959, #8c8c8c, #595959);
             border-bottom: 2px solid #fff;
         }
 
@@ -429,6 +442,21 @@
             border: 1px solid #ffd700;
         }
         .gold-edition .founder-seal { display: block; }
+
+        .silver-seal {
+            display: none;
+            position: absolute;
+            bottom: 8px;
+            right: 8px;
+            background: #595959;
+            color: #f2f2f2;
+            padding: 3px 6px;
+            border-radius: 6px;
+            font-size: 0.55rem;
+            font-weight: 900;
+            border: 1px solid #cccccc;
+        }
+        .silver-edition .silver-seal { display: block; }
 
         .modal-buttons { display: flex; flex-direction: column; gap: 8px; width: 320px; margin-top: 14px; }
         .btn-action { width: 100%; padding: 10px; border: none; border-radius: 14px; font-size: 0.85rem; cursor: pointer; font-weight: bold; text-align: center; }
@@ -558,7 +586,7 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 </head>
-<body>
+<body onload="inicializacionUnicaLimpieza()">
 
     <div id="cartaFlotanteBox" onclick="abrirBuzonDesdeFlotante()">
         <div style="display:flex; align-items:center; gap:10px;">
@@ -619,6 +647,7 @@
                 </div>
             </div>
             <div class="founder-seal">✨ CREADORA VIP ✨</div>
+            <div class="silver-seal">🌟 MIEMBRO VIP 🌟</div>
         </div>
 
         <div class="modal-buttons" onclick="event.stopPropagation()">
@@ -688,7 +717,7 @@
             </div>
             <div class="stat-card">
                 <div class="icon-box">🔥</div>
-                <div class="val">VIP</div>
+                <div class="val" id="statEstadoBadge">VIP</div>
                 <div class="label">Estado</div>
             </div>
         </div>
@@ -777,6 +806,13 @@
 
                     <h4 style="font-size:0.8rem; color:var(--accent-green); margin:12px 0 4px 0;">🎉 Lista de Planes:</h4>
                     <div id="listaQuedadas" style="font-size:0.8rem;">Aún no hay planes.</div>
+
+                    <!-- NUEVA SECCIÓN DE VIDEOLLAMADA GRUPAL -->
+                    <div style="margin-top: 18px; border-top: 1px solid var(--border-soft); padding-top: 14px;">
+                        <h4 style="font-size: 0.85rem; color: var(--text-main); margin-bottom: 6px;">📹 Sala de Videollamada Grupal</h4>
+                        <p style="font-size: 0.75rem; color: #8c827b; margin-bottom: 10px;">Conéctate con tus amigas al instante mediante una sala segura y gratuita:</p>
+                        <button class="btn-flechazo" style="background: linear-gradient(135deg, #4a90e2, #50e3c2);" onclick="abrirVideollamada()">🎥 Entrar a la Sala de Videollamada</button>
+                    </div>
 
                     <!-- MAPA CON CHINCHETAS -->
                     <h4 style="font-size:0.8rem; color:var(--accent-green); margin:14px 0 4px 0;">🗺️ Mapa Interactivo con Chinchetas:</h4>
@@ -899,7 +935,7 @@
     </div>
 
     <script>
-        const CODIGO_CORRECTO = "BL-VIP-8317";
+        const CODIGO_VIP = "BL-VIP-8317";
         const CODIGO_FUNDADORA = "BL-FUNDADORA-GOLD";
 
         let carnetFotoBase64 = "";
@@ -927,6 +963,55 @@
                 db[perfilActivo] = { ...db[perfilActivo], ...nuevosDatos };
                 guardarBaseDatosGlobal(db);
             }
+        }
+
+        /* LIMPIEZA INICIAL: BORRA A TODO EL MUNDO MENOS A TI COMO FUNDADORA */
+        function inicializacionUnicaLimpieza() {
+            const db = obtenerBaseDatosGlobal();
+            const nombres = Object.keys(db);
+
+            if (nombres.length > 0) {
+                // Buscamos si existe tu perfil de fundadora (Gold o creada primero)
+                let nombreFundadora = "";
+                for (let n of nombres) {
+                    if (db[n].isGold) {
+                        nombreFundadora = n;
+                        break;
+                    }
+                }
+                // Si no hay marcada una gold explícita pero hay registros, tomamos el primero o el activo
+                if (!nombreFundadora && nombres.length > 0) {
+                    nombreFundadora = perfilActivo && db[perfilActivo] ? perfilActivo : nombres[0];
+                }
+
+                if (nombreFundadora && db[nombreFundadora]) {
+                    const datosMia = db[nombreFundadora];
+                    // Forzamos que tu cuenta sea la única superviviente y mantenga su rango Gold de Fundadora
+                    datosMia.isGold = true; 
+                    const nuevaDb = {};
+                    nuevaDb[nombreFundadora] = datosMia;
+                    guardarBaseDatosGlobal(nuevaDb);
+                    perfilActivo = nombreFundadora;
+                    localStorage.setItem("perfil_activo", perfilActivo);
+                } else {
+                    localStorage.removeItem("bollolandia_usuarios");
+                    localStorage.removeItem("perfil_activo");
+                    perfilActivo = "";
+                }
+            } else {
+                localStorage.removeItem("bollolandia_usuarios");
+                localStorage.removeItem("perfil_activo");
+                perfilActivo = "";
+            }
+
+            // Limpiamos flechazos y buzones cruzados antiguos de cuentas borradas
+            localStorage.removeItem("flechazos");
+
+            sincronizarInterfazUsuario();
+            cargarQuedadas();
+            cargarMascotas();
+            inicializarCalendarioYMapa();
+            setInterval(comprobarNotificacionesBuzon, 3000);
         }
 
         function cambiarPerfilActivo(nombre) {
@@ -1079,12 +1164,14 @@
             if (!name || !mision) return alert("Por favor escribe tu nombre y elige una misión 🌈");
 
             let esGold = false;
+            let esSilver = false;
+
             if (codigoIngresado === CODIGO_FUNDADORA) {
                 esGold = true;
-            } else if (codigoIngresado === CODIGO_CORRECTO) {
-                esGold = false;
+            } else if (codigoIngresado === CODIGO_VIP) {
+                esSilver = true; // El código BL-VIP-8317 genera carnet plateado para las demás usuarias
             } else {
-                return alert("🔒 Código de acceso incorrecto.");
+                return alert("🔒 Código de acceso incorrecto. Usa el código VIP autorizado.");
             }
 
             let counter = parseInt(localStorage.getItem("dni_counter_num") || "0", 10) + 1;
@@ -1095,7 +1182,7 @@
             const today = new Date().toLocaleDateString();
 
             const nuevoUsuario = {
-                name, mision, cardId, date: today, photo: carnetFotoBase64, isGold: esGold,
+                name, mision, cardId, date: today, photo: carnetFotoBase64, isGold: esGold, isSilver: esSilver,
                 hearts: esGold ? 9999 : 100,
                 marcosComprados: esGold ? ["marco-plasma", "marco-neondark", "marco-goldglow", "marco-cyberpunk"] : [],
                 marcoActivo: "",
@@ -1123,15 +1210,23 @@
             document.getElementById("cardDateOut").innerText = data.date;
 
             const cardElement = document.getElementById("mclovin-card");
+            cardElement.classList.remove("gold-edition", "silver-edition");
 
             if (data.isGold) {
                 cardElement.classList.add("gold-edition");
                 document.getElementById("cardHeaderTitle").innerText = "GOLD • ESPAÑA 👑";
+                document.getElementById("statEstadoBadge").innerText = "CREADORA";
                 document.getElementById("heartCount").innerText = "∞";
                 document.getElementById("statHearts").innerText = "∞";
+            } else if (data.isSilver) {
+                cardElement.classList.add("silver-edition");
+                document.getElementById("cardHeaderTitle").innerText = "SILVER • ESPAÑA 🌟";
+                document.getElementById("statEstadoBadge").innerText = "VIP";
+                document.getElementById("heartCount").innerText = data.hearts || 0;
+                document.getElementById("statHearts").innerText = data.hearts || 0;
             } else {
-                cardElement.classList.remove("gold-edition");
                 document.getElementById("cardHeaderTitle").innerText = "ESPAÑA • BOLLOLANDIA 🌈";
+                document.getElementById("statEstadoBadge").innerText = "MIEMBRO";
                 document.getElementById("heartCount").innerText = data.hearts || 0;
                 document.getElementById("statHearts").innerText = data.hearts || 0;
             }
@@ -1371,6 +1466,10 @@
             cambiarPestana('buzon', document.querySelectorAll('.nav-icon-btn')[2]);
         }
 
+        function abrirVideollamada() {
+            window.open("https://meet.jit.si/BollolandiaReunionSeguraChicas", "_blank");
+        }
+
         /* INICIALIZACIÓN DE CALENDARIO Y MAPA CON CHINCHETAS */
         function inicializarCalendarioYMapa() {
             const calendarEl = document.getElementById('calendar');
@@ -1386,7 +1485,6 @@
                     },
                     events: obtenerEventosCalendario(),
                     datesSet: function() {
-                        // Asignar evento al título del calendario superior para abrir el selector de fecha/año rápido
                         const titleEl = document.querySelector('.fc-toolbar-title');
                         if (titleEl && !titleEl.hasAttribute('data-custom-click')) {
                             titleEl.setAttribute('data-custom-click', 'true');
@@ -1412,7 +1510,6 @@
                 calendarInstance.render();
             }
 
-            // Llenar select de años del modal rápido
             const selectAnio = document.getElementById('selectAnioModal');
             if(selectAnio && selectAnio.options.length === 0) {
                 const anioActual = new Date().getFullYear();
@@ -1425,7 +1522,7 @@
 
             const mapEl = document.getElementById('mapContainer');
             if (mapEl && !mapInstance) {
-                mapInstance = L.map('mapContainer').setView([40.4168, -3.7038], 6); // Centrado en España
+                mapInstance = L.map('mapContainer').setView([40.4168, -3.7038], 6);
                 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                     attribution: '© OpenStreetMap'
                 }).addTo(mapInstance);
@@ -1467,13 +1564,10 @@
         function actualizarPuntosMapa() {
             if (!mapInstance) return;
 
-            // Limpiar marcadores anteriores para evitar duplicados
             marcadoresMapa.forEach(m => mapInstance.removeLayer(m));
             marcadoresMapa = [];
 
             const quedadas = JSON.parse(localStorage.getItem('quedadas') || '[]');
-            
-            // Coordenadas ampliadas para ciudades de referencia con chinchetas visuales
             const coordenadasCiudades = {
                 'madrid': [40.4168, -3.7038],
                 'barcelona': [41.3851, 2.1734],
@@ -1488,7 +1582,7 @@
 
             quedadas.forEach(q => {
                 let lugarLower = q.lugar.toLowerCase().trim();
-                let coords = [40.4168, -3.7038]; // por defecto Madrid si no coincide exacto
+                let coords = [40.4168, -3.7038];
                 for (let ciudad in coordenadasCiudades) {
                     if (lugarLower.includes(ciudad)) {
                         coords = coordenadasCiudades[ciudad];
@@ -1496,7 +1590,6 @@
                     }
                 }
 
-                // Crear pin / chincheta personalizada con Leaflet
                 const marcador = L.marker(coords).addTo(mapInstance)
                     .bindPopup(`<b>📍 ${q.titulo}</b><br>Lugar: ${q.lugar}<br>Fecha: ${q.fecha.replace('T', ' ')}`);
                 
@@ -1623,18 +1716,6 @@
                 </div>
             `).join('');
         }
-
-        window.addEventListener("DOMContentLoaded", function() {
-            // Limpiar datos de prueba anteriores para dejarlo completamente limpio
-            localStorage.removeItem('cumples');
-            localStorage.removeItem('quedadas');
-
-            sincronizarInterfazUsuario();
-            cargarQuedadas();
-            cargarMascotas();
-            inicializarCalendarioYMapa();
-            setInterval(comprobarNotificacionesBuzon, 3000);
-        });
     </script>
 </body>
 </html>
