@@ -646,26 +646,8 @@
             gap: 8px;
             margin-top: 10px;
         }
-        .frame-option {
-            background: #f7f5f0;
-            color: #4a453e;
-            border: 1px solid #eae5dc;
-        }
-        .frame-option:hover { background: #f0ebe1; }
-        .frame-option.active {
-            background: linear-gradient(135deg, var(--accent-coral), var(--accent-peach));
-            color: #ffffff;
-            box-shadow: 0 6px 15px rgba(242, 139, 114, 0.3);
-            border: none;
-        }
 
-        /* --- EFECTOS DE MARCOS DE NEÓN Y HUMOS CIRCULARES --- */
-        @keyframes neonGlow {
-            0% { box-shadow: 0 0 5px #ff007f, 0 0 10px #ff007f, 0 0 20px #7928ca, 0 0 30px #7928ca; border-color: #ff007f; }
-            50% { box-shadow: 0 0 10px #00f2fe, 0 0 20px #4facfe, 0 0 30px #00f2fe, 0 0 40px #4facfe; border-color: #00f2fe; }
-            100% { box-shadow: 0 0 5px #ff007f, 0 0 10px #ff007f, 0 0 20px #7928ca, 0 0 30px #7928ca; border-color: #ff007f; }
-        }
-
+        /* --- EFECTOS DE MARCOS DE NEÓN Y HUMOS CIRCULARES CON COLORES SELECCIONABLES --- */
         @keyframes smokeRotate {
             0% { transform: rotate(0deg) scale(1); filter: hue-rotate(0deg); opacity: 0.8; }
             50% { transform: rotate(180deg) scale(1.08); filter: hue-rotate(180deg); opacity: 1; }
@@ -677,11 +659,42 @@
             inset: -6px;
             border-radius: 50%;
             border: 3px solid transparent;
-            animation: neonGlow 3s infinite alternate, smokeRotate 6s linear infinite;
+            animation: smokeRotate 6s linear infinite;
             pointer-events: none;
             z-index: 5;
-            background: radial-gradient(circle, rgba(255,0,127,0.15) 0%, rgba(79,172,254,0.15) 70%, transparent 100%);
             box-shadow: inset 0 0 10px rgba(255,255,255,0.5);
+        }
+
+        /* Variantes de colores para el marco */
+        .marco-multicolor {
+            background: radial-gradient(circle, rgba(255,0,127,0.15) 0%, rgba(79,172,254,0.15) 70%, transparent 100%);
+            box-shadow: 0 0 15px #ff007f, 0 0 25px #00f2fe;
+            border-color: #ff007f;
+        }
+        .marco-rosa {
+            background: radial-gradient(circle, rgba(255,105,180,0.2) 0%, rgba(255,20,147,0.1) 70%, transparent 100%);
+            box-shadow: 0 0 15px #ff69b4, 0 0 25px #ff1493;
+            border-color: #ff69b4;
+        }
+        .marco-azul {
+            background: radial-gradient(circle, rgba(0,242,254,0.2) 0%, rgba(79,172,254,0.1) 70%, transparent 100%);
+            box-shadow: 0 0 15px #00f2fe, 0 0 25px #4facfe;
+            border-color: #00f2fe;
+        }
+        .marco-morado {
+            background: radial-gradient(circle, rgba(161,100,255,0.2) 0%, rgba(121,40,202,0.1) 70%, transparent 100%);
+            box-shadow: 0 0 15px #a164ff, 0 0 25px #7928ca;
+            border-color: #a164ff;
+        }
+        .marco-dorado {
+            background: radial-gradient(circle, rgba(255,215,0,0.2) 0%, rgba(218,165,32,0.1) 70%, transparent 100%);
+            box-shadow: 0 0 15px #ffd700, 0 0 25px #daa520;
+            border-color: #ffd700;
+        }
+        .marco-verde {
+            background: radial-gradient(circle, rgba(0,255,127,0.2) 0%, rgba(46,139,87,0.1) 70%, transparent 100%);
+            box-shadow: 0 0 15px #00ff7f, 0 0 25px #2e8b57;
+            border-color: #00ff7f;
         }
 
         .chat-box-container {
@@ -776,7 +789,7 @@
                     <div class="card-note-box" id="cardNoteOut" onclick="modificarNotaInteractiva()" title="Haz clic para modificar la nota">Nota...</div>
                     <div class="card-photo-box" id="cardPhotoBox" onclick="dispararCambioFotoDirecto()" title="Pincha aquí para cambiar tu foto">
                         <span style="font-size: 2rem;">👤</span>
-                        <div id="marcoLayer"></div>
+                        <div id="marcoLayer" class="marco-neon-humo marco-multicolor"></div>
                     </div>
                 </div>
                 <div class="card-info">
@@ -823,7 +836,7 @@
     <div class="sidebar-left">
         <div class="sidebar-avatar-container">
             <div class="sidebar-avatar" id="btnMochilaHeader" onclick="abrirModalCarnet()" title="Ver mi Carnet">
-                👤<div id="miniMarcoLayer"></div>
+                👤<div id="miniMarcoLayer" class="marco-neon-humo marco-multicolor"></div>
             </div>
             <div class="sidebar-note-bubble" id="sidebarNoteBubble" onclick="modificarNotaInteractiva()" style="display: none;" title="Haz clic para modificar la nota"></div>
         </div>
@@ -858,7 +871,7 @@
             </div>
             <div class="hero-profile-avatar" id="heroProfileAvatarBox">
                 <span style="font-size: 2rem;">👤</span>
-                <div id="heroMarcoLayer" class="marco-neon-humo"></div>
+                <div id="heroMarcoLayer" class="marco-neon-humo marco-multicolor"></div>
             </div>
         </div>
 
@@ -891,7 +904,7 @@
                 <div class="card" style="background: linear-gradient(135deg, #fef9e7, #fcf4db); border: 1.5px solid #f3e5ab;">
                     <h3 style="color: #8c6d1f; display:flex; align-items:center; gap:6px;">📢 Buzón de Actualizaciones</h3>
                     <p style="font-size:0.78rem; color:#6b5314; line-height:1.4; margin:0;">
-                        <strong>¡Novedades en Bollolandia!</strong> Se han añadido efectos visuales de neón y humo circular alrededor de tu foto de perfil. ✨
+                        <strong>¡Novedades en Bollolandia!</strong> Ya puedes elegir el color favorito de tu marco de neón y humo desde la pestaña de Perfil y Marcos. ✨
                     </p>
                 </div>
 
@@ -910,9 +923,14 @@
 
                 <div class="card">
                     <h3>🛍️ Boutique de Marcos</h3>
-                    <p style="font-size:0.75rem; color:#8c827b; margin-top:-4px;">Marcos de neón y humo activos permanentemente.</p>
+                    <p style="font-size:0.75rem; color:#8c827b; margin-top:-4px;">Elige tu color favorito de neón y humo para tu perfil.</p>
                     <div class="grid-shop" id="tiendaMarcosGrid">
-                        <span style="font-size:0.8rem; color:#8c827b; grid-column:span 2;">Efecto de neón y humo aplicado correctamente en tu perfil.</span>
+                        <button class="frame-option btn-action" onclick="cambiarColorMarco('marco-multicolor')">🌈 Multicolour</button>
+                        <button class="frame-option btn-action" onclick="cambiarColorMarco('marco-rosa')">🌸 Rosa Neón</button>
+                        <button class="frame-option btn-action" onclick="cambiarColorMarco('marco-azul')">💧 Azul Eléctrico</button>
+                        <button class="frame-option btn-action" onclick="cambiarColorMarco('marco-morado')">🔮 Morado Místico</button>
+                        <button class="frame-option btn-action" onclick="cambiarColorMarco('marco-dorado')">✨ Oro Sáfico</button>
+                        <button class="frame-option btn-action" onclick="cambiarColorMarco('marco-verde')">🌿 Verde Esmeralda</button>
                     </div>
                 </div>
             </div>
@@ -1002,11 +1020,16 @@
                 </div>
 
                 <div class="card" id="seccionMiCarnet" style="display: none;">
-                    <h3 style="margin-bottom: 8px;">🖼️ Tus Marcos</h3>
-                    <p style="font-size: 0.75rem; color: #8c827b; margin-top: -4px;">Efectos de neón y humo aplicados en tu perfil:</p>
+                    <h3 style="margin-bottom: 8px;">🖼️ Tus Marcos y Colores</h3>
+                    <p style="font-size: 0.75rem; color: #8c827b; margin-top: -4px;">Elige el color favorito para tu marco de neón:</p>
 
-                    <div id="inventarioMarcos" class="boutique-frames-list">
-                        <div style="font-size:0.8rem; color:var(--accent-coral); font-weight:bold;">✨ Marco Neón & Humo Circular (Activo)</div>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 14px;">
+                        <button class="btn-principal" style="background:#ff007f; font-size:0.75rem;" onclick="cambiarColorMarco('marco-rosa')">🌸 Rosa</button>
+                        <button class="btn-principal" style="background:#00f2fe; color:#333; font-size:0.75rem;" onclick="cambiarColorMarco('marco-azul')">💧 Azul</button>
+                        <button class="btn-principal" style="background:#a164ff; font-size:0.75rem;" onclick="cambiarColorMarco('marco-morado')">🔮 Morado</button>
+                        <button class="btn-principal" style="background:#ffd700; color:#333; font-size:0.75rem;" onclick="cambiarColorMarco('marco-dorado')">✨ Dorado</button>
+                        <button class="btn-principal" style="background:#00ff7f; color:#333; font-size:0.75rem;" onclick="cambiarColorMarco('marco-verde')">🌿 Verde</button>
+                        <button class="btn-principal" style="background:linear-gradient(135deg, #ff007f, #00f2fe); font-size:0.75rem;" onclick="cambiarColorMarco('marco-multicolor')">🌈 Multicolour</button>
                     </div>
 
                     <div style="margin-top: 16px; border-top: 1px solid var(--border-soft); padding-top: 12px;">
@@ -1218,6 +1241,14 @@
             if(el) el.classList.toggle('open');
         }
 
+        function cambiarColorMarco(claseColor) {
+            const data = obtenerDatosActuales();
+            if (!data) return alert("Crea un perfil primero 🎒");
+            actualizarDatosActuales({ marcoColor: claseColor });
+            cargarDatosCarnet(obtenerDatosActuales());
+            alert("✨ ¡Color de marco actualizado con éxito!");
+        }
+
         function procesarFotoCarnet() {
             const file = document.getElementById('inPhoto').files[0];
             const label = document.getElementById('photoLabel');
@@ -1334,6 +1365,7 @@
 
             const nuevoUsuario = {
                 name, note: note || "", noteTimestamp: timestamp, noteAudio: null, bio: bio || "", mision, cardId, date: today, photo: carnetFotoBase64, isGold: esGold, isSilver: esSilver,
+                marcoColor: "marco-multicolor",
                 hearts: esGold ? 9999 : 100,
                 buzonCartas: []
             };
@@ -1418,15 +1450,16 @@
                 if(sealNormal) sealNormal.style.display = "block";
             }
 
+            const colorClase = data.marcoColor || "marco-multicolor";
             const heroAvatarBox = document.getElementById("heroProfileAvatarBox");
             if (data.photo) {
-                document.getElementById("cardPhotoBox").innerHTML = `<img src="${data.photo}" class="card-photo-img"><div id="marcoLayer" class="marco-neon-humo"></div>`;
-                document.getElementById("btnMochilaHeader").innerHTML = `<img src="${data.photo}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;"><div id="miniMarcoLayer" class="marco-neon-humo"></div>`;
-                heroAvatarBox.innerHTML = `<img src="${data.photo}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;"><div id="heroMarcoLayer" class="marco-neon-humo"></div>`;
+                document.getElementById("cardPhotoBox").innerHTML = `<img src="${data.photo}" class="card-photo-img"><div id="marcoLayer" class="marco-neon-humo ${colorClase}"></div>`;
+                document.getElementById("btnMochilaHeader").innerHTML = `<img src="${data.photo}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;"><div id="miniMarcoLayer" class="marco-neon-humo ${colorClase}"></div>`;
+                heroAvatarBox.innerHTML = `<img src="${data.photo}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;"><div id="heroMarcoLayer" class="marco-neon-humo ${colorClase}"></div>`;
             } else {
-                document.getElementById("cardPhotoBox").innerHTML = `<span style="font-size: 2rem;">👤</span><div id="marcoLayer" class="marco-neon-humo"></div>`;
-                document.getElementById("btnMochilaHeader").innerHTML = `👤<div id="miniMarcoLayer" class="marco-neon-humo"></div>`;
-                heroAvatarBox.innerHTML = `<span style="font-size: 2rem;">👤</span><div id="heroMarcoLayer" class="marco-neon-humo"></div>`;
+                document.getElementById("cardPhotoBox").innerHTML = `<span style="font-size: 2rem;">👤</span><div id="marcoLayer" class="marco-neon-humo ${colorClase}"></div>`;
+                document.getElementById("btnMochilaHeader").innerHTML = `👤<div id="miniMarcoLayer" class="marco-neon-humo ${colorClase}"></div>`;
+                heroAvatarBox.innerHTML = `<span style="font-size: 2rem;">👤</span><div id="heroMarcoLayer" class="marco-neon-humo ${colorClase}"></div>`;
             }
         }
 
