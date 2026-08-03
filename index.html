@@ -460,58 +460,118 @@
         .btn-close { background: #4a403b; color: white; }
         .btn-download { background: var(--accent-green); color: white; box-shadow: 0 4px 12px rgba(135, 163, 138, 0.3); }
 
-        /* MARCOS 100% ULTRA PREMIUM EXCLUSIVOS Y VARIADOS - REDISEÑADOS MUY PREMIUM */
+        /* MARCOS CON MENOS OPACIDAD PARA VER BIEN LA FOTO */
         .marco-plasma {
-            position: absolute; inset: -6px; border-radius: 16px; z-index: 2; pointer-events: none;
-            background: linear-gradient(135deg, #ff0055, #ff5e00, #ffb703);
-            box-shadow: 0 0 25px rgba(255, 0, 85, 0.8), inset 0 0 12px rgba(255, 183, 3, 0.8);
+            position: absolute; inset: -5px; border-radius: 14px; z-index: 2; pointer-events: none;
+            background: linear-gradient(135deg, rgba(255,0,85,0.45), rgba(255,94,0,0.45), rgba(255,183,3,0.45));
+            box-shadow: 0 0 15px rgba(255, 0, 85, 0.4), inset 0 0 8px rgba(255, 183, 3, 0.4);
             animation: pulseGlow 1.4s ease-in-out infinite alternate;
         }
         .marco-neondark {
-            position: absolute; inset: -6px; border-radius: 16px; z-index: 2; pointer-events: none;
-            background: linear-gradient(135deg, #4cc9f0, #4361ee, #7209b7);
-            box-shadow: 0 0 25px rgba(67, 97, 238, 0.8), inset 0 0 12px rgba(114, 9, 183, 0.8);
+            position: absolute; inset: -5px; border-radius: 14px; z-index: 2; pointer-events: none;
+            background: linear-gradient(135deg, rgba(76,201,240,0.45), rgba(67,97,238,0.45), rgba(114,9,183,0.45));
+            box-shadow: 0 0 15px rgba(67, 97, 238, 0.4), inset 0 0 8px rgba(114, 9, 183, 0.4);
             animation: pulseGlow 1.6s ease-in-out infinite alternate;
         }
         .marco-goldglow {
-            position: absolute; inset: -6px; border-radius: 16px; z-index: 2; pointer-events: none;
-            background: linear-gradient(135deg, #bf953f, #fcf6ba, #b38728, #aa771c);
-            box-shadow: 0 0 25px rgba(252, 246, 186, 0.9), inset 0 0 12px rgba(191, 149, 63, 0.9);
+            position: absolute; inset: -5px; border-radius: 14px; z-index: 2; pointer-events: none;
+            background: linear-gradient(135deg, rgba(191,149,63,0.45), rgba(252,246,186,0.45), rgba(179,135,40,0.45), rgba(170,119,28,0.45));
+            box-shadow: 0 0 15px rgba(252, 246, 186, 0.5), inset 0 0 8px rgba(191, 149, 63, 0.5);
             animation: pulseGlow 2s ease-in-out infinite alternate;
         }
         .marco-cyberpunk {
-            position: absolute; inset: -6px; border-radius: 16px; z-index: 2; pointer-events: none;
-            background: linear-gradient(135deg, #f72585, #b5179e, #7209b7, #3a0ca3);
-            box-shadow: 0 0 25px rgba(247, 37, 133, 0.8), inset 0 0 12px rgba(58, 12, 163, 0.8);
+            position: absolute; inset: -5px; border-radius: 14px; z-index: 2; pointer-events: none;
+            background: linear-gradient(135deg, rgba(247,37,133,0.45), rgba(181,23,158,0.45), rgba(114,9,183,0.45), rgba(58,12,163,0.45));
+            box-shadow: 0 0 15px rgba(247, 37, 133, 0.4), inset 0 0 8px rgba(58, 12, 163, 0.4);
             animation: pulseGlow 1.5s ease-in-out infinite alternate;
         }
         .marco-amethyst {
-            position: absolute; inset: -6px; border-radius: 16px; z-index: 2; pointer-events: none;
-            background: linear-gradient(135deg, #06d6a0, #118ab2, #073b4c, #ef476f);
-            box-shadow: 0 0 25px rgba(6, 214, 160, 0.8), inset 0 0 12px rgba(239, 71, 111, 0.8);
+            position: absolute; inset: -5px; border-radius: 14px; z-index: 2; pointer-events: none;
+            background: linear-gradient(135deg, rgba(6,214,160,0.45), rgba(17,138,178,0.45), rgba(7,59,76,0.45), rgba(239,71,111,0.45));
+            box-shadow: 0 0 15px rgba(6, 214, 160, 0.4), inset 0 0 8px rgba(239, 71, 111, 0.4);
             animation: pulseGlow 1.8s ease-in-out infinite alternate;
         }
 
         @keyframes pulseGlow {
-            0% { transform: scale(0.98); opacity: 0.85; filter: brightness(0.95); }
-            100% { transform: scale(1.02); opacity: 1; filter: brightness(1.25); }
+            0% { transform: scale(0.98); opacity: 0.75; filter: brightness(0.95); }
+            100% { transform: scale(1.02); opacity: 0.95; filter: brightness(1.15); }
         }
 
+        /* RULETA INTEGRADA CON SECTORES VISUALES */
         .ruleta-container {
             background: linear-gradient(135deg, #fff3ee, #faebd7);
-            border: 2px dashed var(--accent-coral); border-radius: 18px; padding: 16px; text-align: center; margin-bottom: 14px;
+            border: 2px dashed var(--accent-coral); 
+            border-radius: 18px; 
+            padding: 16px; 
+            text-align: center; 
+            margin-bottom: 14px;
         }
-        .ruleta-premios-grid {
-            display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin: 12px 0;
+        .ruleta-wrapper-visual {
+            position: relative;
+            width: 150px;
+            height: 150px;
+            margin: 12px auto;
         }
-        .premio-card-visual {
-            background: #fff; border: 1px solid var(--border-soft); border-radius: 12px; padding: 8px; font-size: 0.75rem; font-weight: bold; color: var(--text-main); display: flex; align-items: center; gap: 6px; box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+        .ruleta-puntero {
+            position: absolute;
+            top: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 0;
+            border-left: 8px solid transparent;
+            border-right: 8px solid transparent;
+            border-top: 16px solid var(--accent-coral);
+            z-index: 10;
+            filter: drop-shadow(0 2px 2px rgba(0,0,0,0.2));
         }
         .ruleta-wheel {
-            width: 70px; height: 70px; margin: 8px auto; border-radius: 50%;
-            background: conic-gradient(#f28b72 0deg 90deg, #ff4500 90deg 180deg, #ffb396 180deg 270deg, #87a38a 270deg 360deg);
-            display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 12px rgba(0,0,0,0.15); font-size: 1.4rem; transition: transform 3s cubic-bezier(0.15, 0.9, 0.2, 1);
+            width: 150px; 
+            height: 150px; 
+            border-radius: 50%;
+            /* 4 sectores con colores y gradientes limpios */
+            background: conic-gradient(
+                #ffb396 0deg 90deg, 
+                #fce38a 90deg 180deg, 
+                #87a38a 180deg 270deg, 
+                #f28b72 270deg 360deg
+            );
+            border: 4px solid #fff;
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            box-shadow: 0 6px 18px rgba(0,0,0,0.15); 
+            transition: transform 3s cubic-bezier(0.15, 0.9, 0.2, 1);
+            position: relative;
         }
+        .ruleta-centro-inner {
+            position: absolute;
+            width: 38px;
+            height: 38px;
+            background: #fff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+            z-index: 5;
+        }
+        /* Textos orientados dentro de la rueda de la fortuna */
+        .ruleta-label {
+            position: absolute;
+            font-size: 0.6rem;
+            font-weight: 900;
+            color: #fff;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.8);
+            pointer-events: none;
+            width: 50px;
+            text-align: center;
+        }
+        .lbl-1 { top: 22px; right: 20px; transform: rotate(45deg); }
+        .lbl-2 { bottom: 22px; right: 20px; transform: rotate(135deg); }
+        .lbl-3 { bottom: 22px; left: 20px; transform: rotate(225deg); }
+        .lbl-4 { top: 22px; left: 20px; transform: rotate(315deg); }
 
         .shop-item { border: 1.5px solid var(--border-soft); border-radius: 16px; padding: 12px; background: #fff; display: flex; flex-direction: column; justify-content: space-between; box-shadow: 0 4px 12px rgba(0,0,0,0.02); }
         .shop-flex { display: flex; align-items: center; gap: 10px; }
@@ -598,7 +658,6 @@
             border: none;
         }
 
-        /* CHAT ESTILO WHATSAPP/INSTAGRAM MODERNO */
         .chat-box-container {
             background: #fbf9f6;
             border: 1.5px solid var(--border-soft);
@@ -730,7 +789,6 @@
         <div class="top-header">
             <div class="top-search">
                 <span>🔍</span>
-                <!-- Barra de búsqueda funcional para buscar usuarias o filtrar la app -->
                 <input type="text" id="inputBusquedaGlobal" placeholder="Buscar usuarias, chismes..." oninput="ejecutarBusquedaGlobal(this.value)">
             </div>
             <div class="header-pill-badge">
@@ -772,27 +830,30 @@
         <div class="container-contenido">
 
             <div id="tienda" class="tab-content">
-                <!-- BUZÓN DE ACTUALIZACIONES (Punto 7) -->
                 <div class="card" style="background: linear-gradient(135deg, #fef9e7, #fcf4db); border: 1.5px solid #f3e5ab;">
                     <h3 style="color: #8c6d1f; display:flex; align-items:center; gap:6px;">📢 Buzón de Actualizaciones</h3>
                     <p style="font-size:0.78rem; color:#6b5314; line-height:1.4; margin:0;">
-                        <strong>¡Novedades en Bollolandia!</strong> Se ha actualizado el mapa interactivo y la sincronización de caché a 0, se han añadido notificaciones automáticas de cumpleaños, chat en directo tras hacer match y marcos ultra prémium renovados en la boutique. ✨
+                        <strong>¡Novedades en Bollolandia!</strong> Se han integrado los premios visualmente dentro de la ruleta optimizando espacio[cite: 1], y se ha ajustado la opacidad de los marcos para que tu foto luzca perfecta. ✨
                     </p>
                 </div>
 
+                <!-- RULETA INTEGRADA Y OPTIMIZADA -->
                 <div class="ruleta-container">
                     <h3 style="margin-top:0; color:var(--accent-coral); font-size:0.95rem;">🎡 La Ruleta de Premios Sáfica</h3>
-                    <p style="font-size:0.75rem; color:#8c827b; margin-bottom: 8px;">Gira para conseguir cualquiera de estos tesoros:</p>
+                    <p style="font-size:0.75rem; color:#8c827b; margin-bottom: 4px;">Gira para conseguir tesoros integrados:</p>
                     
-                    <div class="ruleta-premios-grid">
-                        <div class="premio-card-visual">✨ <span>+30 Puntos Extra</span></div>
-                        <div class="premio-card-visual">🔥 <span>Marco Plasma Fire</span></div>
-                        <div class="premio-card-visual">💜 <span>Marco Neon Dark</span></div>
-                        <div class="premio-card-visual">💖 <span>+50 Premios Gordos</span></div>
+                    <div class="ruleta-wrapper-visual">
+                        <div class="ruleta-puntero"></div>
+                        <div class="ruleta-wheel" id="ruletaWheel">
+                            <div class="ruleta-centro-inner">🎯</div>
+                            <span class="ruleta-label lbl-1">+30 💖</span>
+                            <span class="ruleta-label lbl-2">Plasma</span>
+                            <span class="ruleta-label lbl-3">Neon</span>
+                            <span class="ruleta-label lbl-4">+50 💖</span>
+                        </div>
                     </div>
 
-                    <div class="ruleta-wheel" id="ruletaWheel">🎯</div>
-                    <button class="btn-principal" style="background: linear-gradient(135deg, var(--accent-coral), var(--accent-peach)); font-size:0.8rem; margin-top:8px;" onclick="girarRuleta()">🎯 Girar Ruleta (20 💖)</button>
+                    <button class="btn-principal" style="background: linear-gradient(135deg, var(--accent-coral), var(--accent-peach)); font-size:0.8rem; margin-top:4px;" onclick="girarRuleta()">🎯 Girar Ruleta (20 💖)</button>
                 </div>
 
                 <div class="card">
@@ -853,7 +914,6 @@
                 </div>
 
                 <div class="card">
-                    <!-- Título modificado únicamente a Quedadas con emoji (Punto 2) -->
                     <h3>📍 Quedadas</h3>
                     
                     <div class="accordion-header" onclick="toggleAccordion('accQuedada')"><span>📍 Proponer Plan / Quedada (+25💖)</span> <span>▼</span></div>
@@ -931,7 +991,6 @@
 
                     <div id="inventarioMarcos" class="boutique-frames-list"></div>
 
-                    <!-- GESTIÓN DE PERFIL UBICADA DEBAJO DEL CARNET PARA MÁS ESPACIO EN LA MOCHILA (Punto 5) -->
                     <div style="margin-top: 16px; border-top: 1px solid var(--border-soft); padding-top: 12px;">
                         <h4 style="font-size: 0.8rem; color: var(--text-main); margin-bottom: 6px;">⚙️ Gestión de Perfiles</h4>
                         <select id="selectPerfilActivo" style="margin-bottom: 8px;" onchange="cambiarPerfilActivo(this.value)">
@@ -1004,7 +1063,6 @@
         }
 
         function inicializarAppSegura() {
-            // BORRAR CACHÉ DE QUEDADAS Y CALENDARIO A 0 (Punto 1)
             localStorage.removeItem("quedadas");
             localStorage.removeItem("cumples");
 
@@ -1186,7 +1244,6 @@
             } else if (codigoIngresado === CODIGO_VIP) {
                 esSilver = true;
             } else {
-                // Código normal u otro: se otorga carnet normal, manteniendo el estatus de Fundadora único para ti
                 esGold = false;
                 esSilver = false;
             }
@@ -1241,14 +1298,12 @@
             } else if (data.isSilver) {
                 cardElement.classList.add("silver-edition");
                 document.getElementById("cardHeaderTitle").innerText = "VIP • ESPAÑA 🌟";
-                // Estado asignado para las demás chicas con VIP
                 document.getElementById("statEstadoBadge").innerText = "MIEMBRO VIP";
                 document.getElementById("heartCount").innerText = data.hearts || 0;
                 document.getElementById("statHearts").innerText = data.hearts || 0;
                 if(sealNormal) sealNormal.style.display = "none";
             } else {
                 document.getElementById("cardHeaderTitle").innerText = "ESPAÑA • BOLLOLANDIA 🌈";
-                // Estado asignado para las demás chicas estándar
                 document.getElementById("statEstadoBadge").innerText = "MIEMBRO SÁFICO";
                 document.getElementById("heartCount").innerText = data.hearts || 0;
                 document.getElementById("statHearts").innerText = data.hearts || 0;
@@ -1546,7 +1601,6 @@
                     attribution: '© OpenStreetMap'
                 }).addTo(mapInstance);
                 
-                // Forzar renderizado correcto de Leaflet para evitar problemas de visualización
                 setTimeout(() => { mapInstance.invalidateSize(); }, 300);
                 actualizarPuntosMapa();
             }
@@ -1603,4 +1657,185 @@
             marcadoresMapa = [];
 
             const quedadas = JSON.parse(localStorage.getItem('quedadas') || '[]');
-            const coordenadasCiudades
+            const coordenadasCiudades = {
+                'madrid': [40.4168, -3.7038],
+                'barcelona': [41.3851, 2.1734],
+                'valencia': [39.4699, -0.3763],
+                'sevilla': [37.3891, -5.9845],
+                'bilbao': [43.2630, -2.9350],
+                'malaga': [36.7213, -4.4214],
+                'zaragoza': [41.6488, -0.8891],
+                'granada': [37.1773, -3.5986],
+                'alicante': [38.3452, -0.4810]
+            };
+
+            quedadas.forEach(q => {
+                let lugarLower = q.lugar.toLowerCase().trim();
+                let coords = [40.4168, -3.7038];
+                for (let ciudad in coordenadasCiudades) {
+                    if (lugarLower.includes(ciudad)) {
+                        coords = coordenadasCiudades[ciudad];
+                        break;
+                    }
+                }
+
+                const marcador = L.marker(coords).addTo(mapInstance)
+                    .bindPopup(`<b>📍 ${q.titulo}</b><br>Lugar: ${q.lugar}<br>Fecha: ${q.fecha.replace('T', ' ')}`);
+                
+                marcadoresMapa.push(marcador);
+            });
+        }
+
+        function agregarQuedada() {
+            const data = obtenerDatosActuales();
+            if (!data) return alert("Crea un perfil primero 🎒");
+            const titulo = document.getElementById('tituloQuedada').value;
+            const lugar = document.getElementById('lugarQuedada').value;
+            const fecha = document.getElementById('fechaQuedada').value;
+            if(!titulo || !lugar || !fecha) return alert('Rellena todos los datos de la quedada');
+            
+            const quedadas = JSON.parse(localStorage.getItem('quedadas') || '[]');
+            quedadas.push({ titulo, lugar, fecha });
+            localStorage.setItem('quedadas', JSON.stringify(quedadas));
+            
+            document.getElementById('tituloQuedada').value = '';
+            document.getElementById('lugarQuedada').value = '';
+            document.getElementById('fechaQuedada').value = '';
+            
+            actualizarCorazones(25);
+            cargarQuedadas();
+            document.getElementById("statQuedadas").innerText = quedadas.length;
+            
+            if(calendarInstance) {
+                calendarInstance.addEvent({ title: `📍 ${titulo}`, start: fecha, color: '#87a38a' });
+            }
+            
+            setTimeout(() => {
+                if (mapInstance) {
+                    mapInstance.invalidateSize();
+                    actualizarPuntosMapa();
+                }
+            }, 100);
+
+            alert('📍 ¡Plan publicado y chincheta añadida al mapa (+25 💖)!');
+        }
+
+        function cargarQuedadas() {
+            const quedadas = JSON.parse(localStorage.getItem('quedadas') || '[]');
+            const cont = document.getElementById('listaQuedadas');
+            document.getElementById("statQuedadas").innerText = quedadas.length;
+            if(!cont) return;
+            if(quedadas.length === 0) return cont.innerHTML = 'Aún no hay planes.';
+            cont.innerHTML = quedadas.map(q => {
+                const mapUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(q.lugar)}`;
+                return `📍 <strong>${q.titulo}</strong> (${q.lugar})<br><a href="${mapUrl}" target="_blank" class="btn-mapa">🗺️ Abrir en Google Maps</a><br>`;
+            }).join('');
+        }
+
+        function enviarFlechazo() {
+            const data = obtenerDatosActuales();
+            if (!data) return alert("Crea un perfil primero 🎒");
+            const para = document.getElementById('destinoFlechazo').value.trim().toLowerCase();
+            if(!para) return alert('Escribe el nombre de la chica');
+            if(para === perfilActivo.toLowerCase()) return alert('No te puedes mandar un flechazo a ti misma');
+
+            const flechazos = JSON.parse(localStorage.getItem('flechazos') || '[]');
+            const de = perfilActivo.toLowerCase();
+            if(!flechazos.some(f => f.de === de && f.para === para)) {
+                flechazos.push({ de, para });
+                localStorage.setItem('flechazos', JSON.stringify(flechazos));
+            }
+            document.getElementById('destinoFlechazo').value = '';
+            alert('💘 Flechazo enviado con éxito.');
+            comprobarMatches();
+        }
+
+        function comprobarMatches() {
+            const cont = document.getElementById('misMatches');
+            if(!cont || !perfilActivo) return;
+            const miNombre = perfilActivo.toLowerCase();
+            const flechazos = JSON.parse(localStorage.getItem('flechazos') || '[]');
+            const misEnviados = flechazos.filter(f => f.de === miNombre).map(f => f.para);
+            const matches = flechazos.filter(f => f.para === miNombre && misEnviados.includes(f.de));
+
+            if(matches.length > 0) {
+                cont.innerHTML = matches.map(m => {
+                    const matchNombre = m.de;
+                    const chatKey = `chat_${[miNombre, matchNombre].sort().join('_')}`;
+                    const mensajesChat = JSON.parse(localStorage.getItem(chatKey) || '[]');
+
+                    let htmlMensajes = mensajesChat.map(msg => `
+                        <div class="chat-burbuja ${msg.de === miNombre ? 'mio' : 'suyo'}">
+                            <b>${msg.de === miNombre ? 'Tú' : msg.de}:</b> ${msg.texto}
+                        </div>
+                    `).join('');
+
+                    return `
+                        <div style="background:#fff3ee; border:1.5px dashed var(--accent-coral); border-radius:14px; padding:12px; margin-top:10px;">
+                            <strong style="color:var(--accent-coral); font-size:0.85rem; display:block; text-align:center;">¡HAY FLECHAZO MUTUO CON ${matchNombre.toUpperCase()}! 🌸💖</strong>
+                            
+                            <div class="chat-box-container">
+                                <div class="chat-mensajes-scroll" id="scrollChat_${matchNombre}">
+                                    ${htmlMensajes || '<span style="color:#8c827b; font-size:0.75rem; text-align:center; margin:auto;">¡Escríbele vuestro primer mensaje!</span>'}
+                                </div>
+                                <div style="display:flex; gap:6px; margin-top:8px;">
+                                    <input type="text" id="inputChat_${matchNombre}" placeholder="Escribe un mensaje..." style="margin:0; font-size:0.78rem;" onkeypress="if(event.key==='Enter') enviarMensajeChat('${matchNombre}')">
+                                    <button class="btn-flechazo" style="width:70px; margin:0; padding:8px; font-size:0.75rem;" onclick="enviarMensajeChat('${matchNombre}')">Enviar</button>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+
+                matches.forEach(m => {
+                    const scrollDiv = document.getElementById(`scrollChat_${m.de}`);
+                    if(scrollDiv) scrollDiv.scrollTop = scrollDiv.scrollHeight;
+                });
+
+                const overlay = document.getElementById('matchOverlay');
+                if(overlay && overlay.style.display !== 'flex' && !window.matchAnimShown) {
+                    document.getElementById('matchTextoAnimado').innerText = `¡Se gustan mutuamente en Bollolandia! 💖`;
+                    overlay.style.display = 'flex';
+                    window.matchAnimShown = true;
+                }
+            } else {
+                cont.innerHTML = '';
+            }
+        }
+
+        function enviarMensajeChat(matchNombre) {
+            const input = document.getElementById(`inputChat_${matchNombre}`);
+            if(!input) return;
+            const texto = input.value.trim();
+            if(!texto) return;
+
+            const miNombre = perfilActivo.toLowerCase();
+            const chatKey = `chat_${[miNombre, matchNombre].sort().join('_')}`;
+            const mensajesChat = JSON.parse(localStorage.getItem(chatKey) || '[]');
+
+            mensajesChat.push({ de: miNombre, texto: texto, tiempo: new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) });
+            localStorage.setItem(chatKey, JSON.stringify(mensajesChat));
+
+            input.value = '';
+            comprobarMatches();
+        }
+
+        function cerrarMatchAnimacion() {
+            const overlay = document.getElementById('matchOverlay');
+            if(overlay) overlay.style.display = 'none';
+        }
+
+        function ejecutarBusquedaGlobal(query) {
+            query = query.toLowerCase().trim();
+            if(!query) return;
+            if(query.includes('tienda') || query.includes('marco')) {
+                cambiarPestana('tienda', document.querySelectorAll('.nav-icon-btn')[0]);
+            } else if(query.includes('agenda') || query.includes('plan') || query.includes('mapa')) {
+                cambiarPestana('agenda', document.querySelectorAll('.nav-icon-btn')[1]);
+            } else if(query.includes('buzon') || query.includes('carta')) {
+                cambiarPestana('buzon', document.querySelectorAll('.nav-icon-btn')[2]);
+            }
+        }
+    </script>
+</body>
+</html>
