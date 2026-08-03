@@ -382,8 +382,31 @@
 
         .card-body { display: flex; padding: 12px; gap: 12px; align-items: flex-start; }
 
+        /* Contenedor adaptado para incluir la biografía justo encima de la foto */
+        .card-left-column {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            flex-shrink: 0;
+            width: 85px;
+        }
+
+        .card-bio-box {
+            font-size: 0.62rem;
+            color: #554b45;
+            background: rgba(255, 255, 255, 0.65);
+            border: 1px dashed var(--border-soft);
+            border-radius: 8px;
+            padding: 4px 6px;
+            text-align: center;
+            word-break: break-word;
+            line-height: 1.1;
+            max-height: 45px;
+            overflow: hidden;
+        }
+
         .card-photo-box {
-            width: 85px; height: 105px;
+            width: 85px; height: 95px;
             background: #e2dcd3;
             border: 2px solid var(--accent-green);
             border-radius: 10px;
@@ -460,118 +483,58 @@
         .btn-close { background: #4a403b; color: white; }
         .btn-download { background: var(--accent-green); color: white; box-shadow: 0 4px 12px rgba(135, 163, 138, 0.3); }
 
-        /* MARCOS CON MENOS OPACIDAD PARA VER BIEN LA FOTO */
+        /* MARCOS 100% ULTRA PREMIUM EXCLUSIVOS Y VARIADOS */
         .marco-plasma {
-            position: absolute; inset: -5px; border-radius: 14px; z-index: 2; pointer-events: none;
-            background: linear-gradient(135deg, rgba(255,0,85,0.45), rgba(255,94,0,0.45), rgba(255,183,3,0.45));
-            box-shadow: 0 0 15px rgba(255, 0, 85, 0.4), inset 0 0 8px rgba(255, 183, 3, 0.4);
+            position: absolute; inset: -6px; border-radius: 16px; z-index: 2; pointer-events: none;
+            background: linear-gradient(135deg, #ff0055, #ff5e00, #ffb703);
+            box-shadow: 0 0 25px rgba(255, 0, 85, 0.8), inset 0 0 12px rgba(255, 183, 3, 0.8);
             animation: pulseGlow 1.4s ease-in-out infinite alternate;
         }
         .marco-neondark {
-            position: absolute; inset: -5px; border-radius: 14px; z-index: 2; pointer-events: none;
-            background: linear-gradient(135deg, rgba(76,201,240,0.45), rgba(67,97,238,0.45), rgba(114,9,183,0.45));
-            box-shadow: 0 0 15px rgba(67, 97, 238, 0.4), inset 0 0 8px rgba(114, 9, 183, 0.4);
+            position: absolute; inset: -6px; border-radius: 16px; z-index: 2; pointer-events: none;
+            background: linear-gradient(135deg, #4cc9f0, #4361ee, #7209b7);
+            box-shadow: 0 0 25px rgba(67, 97, 238, 0.8), inset 0 0 12px rgba(114, 9, 183, 0.8);
             animation: pulseGlow 1.6s ease-in-out infinite alternate;
         }
         .marco-goldglow {
-            position: absolute; inset: -5px; border-radius: 14px; z-index: 2; pointer-events: none;
-            background: linear-gradient(135deg, rgba(191,149,63,0.45), rgba(252,246,186,0.45), rgba(179,135,40,0.45), rgba(170,119,28,0.45));
-            box-shadow: 0 0 15px rgba(252, 246, 186, 0.5), inset 0 0 8px rgba(191, 149, 63, 0.5);
+            position: absolute; inset: -6px; border-radius: 16px; z-index: 2; pointer-events: none;
+            background: linear-gradient(135deg, #bf953f, #fcf6ba, #b38728, #aa771c);
+            box-shadow: 0 0 25px rgba(252, 246, 186, 0.9), inset 0 0 12px rgba(191, 149, 63, 0.9);
             animation: pulseGlow 2s ease-in-out infinite alternate;
         }
         .marco-cyberpunk {
-            position: absolute; inset: -5px; border-radius: 14px; z-index: 2; pointer-events: none;
-            background: linear-gradient(135deg, rgba(247,37,133,0.45), rgba(181,23,158,0.45), rgba(114,9,183,0.45), rgba(58,12,163,0.45));
-            box-shadow: 0 0 15px rgba(247, 37, 133, 0.4), inset 0 0 8px rgba(58, 12, 163, 0.4);
+            position: absolute; inset: -6px; border-radius: 16px; z-index: 2; pointer-events: none;
+            background: linear-gradient(135deg, #f72585, #b5179e, #7209b7, #3a0ca3);
+            box-shadow: 0 0 25px rgba(247, 37, 133, 0.8), inset 0 0 12px rgba(58, 12, 163, 0.8);
             animation: pulseGlow 1.5s ease-in-out infinite alternate;
         }
         .marco-amethyst {
-            position: absolute; inset: -5px; border-radius: 14px; z-index: 2; pointer-events: none;
-            background: linear-gradient(135deg, rgba(6,214,160,0.45), rgba(17,138,178,0.45), rgba(7,59,76,0.45), rgba(239,71,111,0.45));
-            box-shadow: 0 0 15px rgba(6, 214, 160, 0.4), inset 0 0 8px rgba(239, 71, 111, 0.4);
+            position: absolute; inset: -6px; border-radius: 16px; z-index: 2; pointer-events: none;
+            background: linear-gradient(135deg, #06d6a0, #118ab2, #073b4c, #ef476f);
+            box-shadow: 0 0 25px rgba(6, 214, 160, 0.8), inset 0 0 12px rgba(239, 71, 111, 0.8);
             animation: pulseGlow 1.8s ease-in-out infinite alternate;
         }
 
         @keyframes pulseGlow {
-            0% { transform: scale(0.98); opacity: 0.75; filter: brightness(0.95); }
-            100% { transform: scale(1.02); opacity: 0.95; filter: brightness(1.15); }
+            0% { transform: scale(0.98); opacity: 0.85; filter: brightness(0.95); }
+            100% { transform: scale(1.02); opacity: 1; filter: brightness(1.25); }
         }
 
-        /* RULETA INTEGRADA CON SECTORES VISUALES */
         .ruleta-container {
             background: linear-gradient(135deg, #fff3ee, #faebd7);
-            border: 2px dashed var(--accent-coral); 
-            border-radius: 18px; 
-            padding: 16px; 
-            text-align: center; 
-            margin-bottom: 14px;
+            border: 2px dashed var(--accent-coral); border-radius: 18px; padding: 16px; text-align: center; margin-bottom: 14px;
         }
-        .ruleta-wrapper-visual {
-            position: relative;
-            width: 150px;
-            height: 150px;
-            margin: 12px auto;
+        .ruleta-premios-grid {
+            display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin: 12px 0;
         }
-        .ruleta-puntero {
-            position: absolute;
-            top: -10px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 0;
-            height: 0;
-            border-left: 8px solid transparent;
-            border-right: 8px solid transparent;
-            border-top: 16px solid var(--accent-coral);
-            z-index: 10;
-            filter: drop-shadow(0 2px 2px rgba(0,0,0,0.2));
+        .premio-card-visual {
+            background: #fff; border: 1px solid var(--border-soft); border-radius: 12px; padding: 8px; font-size: 0.75rem; font-weight: bold; color: var(--text-main); display: flex; align-items: center; gap: 6px; box-shadow: 0 2px 6px rgba(0,0,0,0.02);
         }
         .ruleta-wheel {
-            width: 150px; 
-            height: 150px; 
-            border-radius: 50%;
-            /* 4 sectores con colores y gradientes limpios */
-            background: conic-gradient(
-                #ffb396 0deg 90deg, 
-                #fce38a 90deg 180deg, 
-                #87a38a 180deg 270deg, 
-                #f28b72 270deg 360deg
-            );
-            border: 4px solid #fff;
-            display: flex; 
-            align-items: center; 
-            justify-content: center; 
-            box-shadow: 0 6px 18px rgba(0,0,0,0.15); 
-            transition: transform 3s cubic-bezier(0.15, 0.9, 0.2, 1);
-            position: relative;
+            width: 70px; height: 70px; margin: 8px auto; border-radius: 50%;
+            background: conic-gradient(#f28b72 0deg 90deg, #ff4500 90deg 180deg, #ffb396 180deg 270deg, #87a38a 270deg 360deg);
+            display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 12px rgba(0,0,0,0.15); font-size: 1.4rem; transition: transform 3s cubic-bezier(0.15, 0.9, 0.2, 1);
         }
-        .ruleta-centro-inner {
-            position: absolute;
-            width: 38px;
-            height: 38px;
-            background: #fff;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.1rem;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.15);
-            z-index: 5;
-        }
-        /* Textos orientados dentro de la rueda de la fortuna */
-        .ruleta-label {
-            position: absolute;
-            font-size: 0.6rem;
-            font-weight: 900;
-            color: #fff;
-            text-shadow: 0 1px 2px rgba(0,0,0,0.8);
-            pointer-events: none;
-            width: 50px;
-            text-align: center;
-        }
-        .lbl-1 { top: 22px; right: 20px; transform: rotate(45deg); }
-        .lbl-2 { bottom: 22px; right: 20px; transform: rotate(135deg); }
-        .lbl-3 { bottom: 22px; left: 20px; transform: rotate(225deg); }
-        .lbl-4 { top: 22px; left: 20px; transform: rotate(315deg); }
 
         .shop-item { border: 1.5px solid var(--border-soft); border-radius: 16px; padding: 12px; background: #fff; display: flex; flex-direction: column; justify-content: space-between; box-shadow: 0 4px 12px rgba(0,0,0,0.02); }
         .shop-flex { display: flex; align-items: center; gap: 10px; }
@@ -658,6 +621,7 @@
             border: none;
         }
 
+        /* CHAT ESTILO WHATSAPP/INSTAGRAM MODERNO */
         .chat-box-container {
             background: #fbf9f6;
             border: 1.5px solid var(--border-soft);
@@ -728,8 +692,12 @@
                 <div class="header-sub">DRIVER LICENSE / CARNET SÁFICO</div>
             </div>
             <div class="card-body">
-                <div class="card-photo-box" id="cardPhotoBox" onclick="dispararCambioFotoDirecto()" title="Pincha aquí para cambiar tu foto">
-                    <span style="font-size: 2rem;">👤</span>
+                <!-- Columna izquierda: Biografía justo encima de la foto -->
+                <div class="card-left-column">
+                    <div class="card-bio-box" id="cardBioOut" title="Biografía">Sin bio...</div>
+                    <div class="card-photo-box" id="cardPhotoBox" onclick="dispararCambioFotoDirecto()" title="Pincha aquí para cambiar tu foto">
+                        <span style="font-size: 2rem;">👤</span>
+                    </div>
                 </div>
                 <div class="card-info">
                     <div class="info-row">
@@ -833,27 +801,23 @@
                 <div class="card" style="background: linear-gradient(135deg, #fef9e7, #fcf4db); border: 1.5px solid #f3e5ab;">
                     <h3 style="color: #8c6d1f; display:flex; align-items:center; gap:6px;">📢 Buzón de Actualizaciones</h3>
                     <p style="font-size:0.78rem; color:#6b5314; line-height:1.4; margin:0;">
-                        <strong>¡Novedades en Bollolandia!</strong> Se han integrado los premios visualmente dentro de la ruleta optimizando espacio[cite: 1], y se ha ajustado la opacidad de los marcos para que tu foto luzca perfecta. ✨
+                        <strong>¡Novedades en Bollolandia!</strong> Se ha actualizado el mapa interactivo, la sincronización de caché a 0, notificaciones de cumpleaños, chat en directo tras hacer match y la opción para añadir biografía en tu carnet. ✨
                     </p>
                 </div>
 
-                <!-- RULETA INTEGRADA Y OPTIMIZADA -->
                 <div class="ruleta-container">
                     <h3 style="margin-top:0; color:var(--accent-coral); font-size:0.95rem;">🎡 La Ruleta de Premios Sáfica</h3>
-                    <p style="font-size:0.75rem; color:#8c827b; margin-bottom: 4px;">Gira para conseguir tesoros integrados:</p>
+                    <p style="font-size:0.75rem; color:#8c827b; margin-bottom: 8px;">Gira para conseguir cualquiera de estos tesoros:</p>
                     
-                    <div class="ruleta-wrapper-visual">
-                        <div class="ruleta-puntero"></div>
-                        <div class="ruleta-wheel" id="ruletaWheel">
-                            <div class="ruleta-centro-inner">🎯</div>
-                            <span class="ruleta-label lbl-1">+30 💖</span>
-                            <span class="ruleta-label lbl-2">Plasma</span>
-                            <span class="ruleta-label lbl-3">Neon</span>
-                            <span class="ruleta-label lbl-4">+50 💖</span>
-                        </div>
+                    <div class="ruleta-premios-grid">
+                        <div class="premio-card-visual">✨ <span>+30 Puntos Extra</span></div>
+                        <div class="premio-card-visual">🔥 <span>Marco Plasma Fire</span></div>
+                        <div class="premio-card-visual">💜 <span>Marco Neon Dark</span></div>
+                        <div class="premio-card-visual">💖 <span>+50 Premios Gordos</span></div>
                     </div>
 
-                    <button class="btn-principal" style="background: linear-gradient(135deg, var(--accent-coral), var(--accent-peach)); font-size:0.8rem; margin-top:4px;" onclick="girarRuleta()">🎯 Girar Ruleta (20 💖)</button>
+                    <div class="ruleta-wheel" id="ruletaWheel">🎯</div>
+                    <button class="btn-principal" style="background: linear-gradient(135deg, var(--accent-coral), var(--accent-peach)); font-size:0.8rem; margin-top:8px;" onclick="girarRuleta()">🎯 Girar Ruleta (20 💖)</button>
                 </div>
 
                 <div class="card">
@@ -967,6 +931,9 @@
                     
                     <input type="text" id="inName" placeholder="Tu Apodo / Nombre" maxlength="15">
                     
+                    <!-- Campo añadido para la Biografía -->
+                    <textarea id="inBio" placeholder="Escribe tu biografía corta..." rows="2" maxlength="60"></textarea>
+                    
                     <select id="inMision">
                         <option value="" disabled selected>Selecciona tu misión...</option>
                         <option value="Traer el chisme fresco">✨ Traer el chisme fresco</option>
@@ -990,6 +957,13 @@
                     <p style="font-size: 0.75rem; color: #8c827b; margin-top: -4px;">Elige el marco que lucirá en tu carnet y en tu perfil:</p>
 
                     <div id="inventarioMarcos" class="boutique-frames-list"></div>
+
+                    <!-- Edición rápida de biografía desde la mochila -->
+                    <div style="margin-top: 14px; border-top: 1px solid var(--border-soft); padding-top: 10px;">
+                        <h4 style="font-size: 0.8rem; color: var(--text-main); margin-bottom: 4px;">✏️ Editar Biografía</h4>
+                        <input type="text" id="inputEditarBio" placeholder="Actualiza tu biografía..." maxlength="60" style="margin-bottom:6px;">
+                        <button class="btn-principal" style="padding: 8px; font-size: 0.78rem;" onclick="guardarBioEditada()">Actualizar Bio</button>
+                    </div>
 
                     <div style="margin-top: 16px; border-top: 1px solid var(--border-soft); padding-top: 12px;">
                         <h4 style="font-size: 0.8rem; color: var(--text-main); margin-bottom: 6px;">⚙️ Gestión de Perfiles</h4>
@@ -1144,6 +1118,10 @@
                 renderizarInventarioMarcos();
                 cargarBuzonPersonal();
                 comprobarNotificacionesBuzon();
+                if(userData.bio) {
+                    const inputBioEdit = document.getElementById("inputEditarBio");
+                    if(inputBioEdit) inputBioEdit.value = userData.bio;
+                }
             } else {
                 document.getElementById("formRegistroCarnet").style.display = "block";
                 document.getElementById("seccionMiCarnet").style.display = "none";
@@ -1229,8 +1207,17 @@
             }
         }
 
+        function guardarBioEditada() {
+            const nuevaBio = document.getElementById("inputEditarBio").value.trim();
+            actualizarDatosActuales({ bio: nuevaBio });
+            const userData = obtenerDatosActuales();
+            cargarDatosCarnet(userData);
+            alert("✨ ¡Biografía actualizada en tu carnet!");
+        }
+
         function crearCarnet() {
             const name = document.getElementById("inName").value.trim();
+            const bio = document.getElementById("inBio").value.trim();
             const mision = document.getElementById("inMision").value;
             const codigoIngresado = document.getElementById("inCodigo").value.trim();
 
@@ -1243,9 +1230,6 @@
                 esGold = true;
             } else if (codigoIngresado === CODIGO_VIP) {
                 esSilver = true;
-            } else {
-                esGold = false;
-                esSilver = false;
             }
 
             let counter = parseInt(localStorage.getItem("dni_counter_num") || "0", 10) + 1;
@@ -1256,7 +1240,7 @@
             const today = new Date().toLocaleDateString();
 
             const nuevoUsuario = {
-                name, mision, cardId, date: today, photo: carnetFotoBase64, isGold: esGold, isSilver: esSilver,
+                name, bio: bio || "Sin bio...", mision, cardId, date: today, photo: carnetFotoBase64, isGold: esGold, isSilver: esSilver,
                 hearts: esGold ? 9999 : 100,
                 marcosComprados: esGold ? ["marco-plasma", "marco-neondark", "marco-goldglow", "marco-cyberpunk", "marco-amethyst"] : [],
                 marcoActivo: "",
@@ -1278,6 +1262,7 @@
         function cargarDatosCarnet(data) {
             document.getElementById("dashboardUserName").innerText = data.name;
             document.getElementById("cardNameOut").innerText = data.name;
+            document.getElementById("cardBioOut").innerText = data.bio || "Sin bio...";
             document.getElementById("cardMisionOut").innerText = data.mision;
             document.getElementById("cardSignatureOut").innerText = data.name;
             document.getElementById("cardIdOut").innerText = data.cardId;
