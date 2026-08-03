@@ -348,14 +348,12 @@
             position: relative;
         }
 
-        /* EDICIÓN GOLD / FUNDADORA (ÚNICA) */
         .mclovin-card.gold-edition {
             background-image: linear-gradient(135deg, #bf953f 0%, #fcf6ba 25%, #b38728 50%, #fbf5b7 75%, #aa771c 100%);
             border: 2px solid #ffd700;
             box-shadow: 0 0 25px rgba(255, 215, 0, 0.7);
         }
 
-        /* EDICIÓN SILVER / CARNET NORMAL (CÓDIGO BL-VIP-8317) */
         .mclovin-card.silver-edition {
             background-image: linear-gradient(135deg, #e0e0e0 0%, #f5f5f5 50%, #cccccc 100%);
             border: 2px solid #a6a6a6;
@@ -463,7 +461,7 @@
         .btn-close { background: #4a403b; color: white; }
         .btn-download { background: var(--accent-green); color: white; box-shadow: 0 4px 12px rgba(135, 163, 138, 0.3); }
 
-        /* MARCOS ANIMADOS ESTILO PLASMA PROFESIONAL */
+        /* MARCOS ANIMADOS */
         .marco-plasma {
             position: absolute; inset: -4px; border-radius: 14px; z-index: 2; pointer-events: none;
             background: conic-gradient(from 0deg, #ff2200, #ff7700, #ffcc00, #ff2200);
@@ -502,7 +500,6 @@
             100% { transform: scale(1.03); opacity: 1; }
         }
 
-        /* RULETA VISUAL DE PREMIOS MEJORADA */
         .ruleta-container {
             background: linear-gradient(135deg, #fff3ee, #faebd7);
             border: 2px dashed var(--accent-coral); border-radius: 18px; padding: 16px; text-align: center; margin-bottom: 14px;
@@ -556,7 +553,6 @@
             text-align: center;
         }
 
-        /* ESTILOS PARA MAPA Y CALENDARIO INTEGRADOS */
         #calendarContainer {
             background: #fff;
             border-radius: 14px;
@@ -582,11 +578,11 @@
             overflow: hidden;
         }
     </style>
-    <!-- Leaflet CSS y JS para mapas funcionales con chinchetas -->
+    <!-- Leaflet CSS y JS -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 </head>
-<body onload="inicializacionUnicaLimpieza()">
+<body onload="inicializarAppSegura()">
 
     <div id="cartaFlotanteBox" onclick="abrirBuzonDesdeFlotante()">
         <div style="display:flex; align-items:center; gap:10px;">
@@ -678,7 +674,6 @@
     </div>
 
     <div class="main-wrapper">
-        <!-- TOP HEADER -->
         <div class="top-header">
             <div class="top-search">
                 <span>🔍</span>
@@ -689,7 +684,6 @@
             </div>
         </div>
 
-        <!-- HERO BANNER -->
         <div class="hero-card">
             <div>
                 <h2>Hola de nuevo, <span id="dashboardUserName">Mia</span>! ✨</h2>
@@ -698,7 +692,6 @@
             <div style="font-size: 3.2rem;">🌸</div>
         </div>
 
-        <!-- ESTADÍSTICAS -->
         <div class="stats-grid">
             <div class="stat-card">
                 <div class="icon-box">💖</div>
@@ -717,15 +710,14 @@
             </div>
             <div class="stat-card">
                 <div class="icon-box">🔥</div>
-                <div class="val" id="statEstadoBadge">VIP</div>
+                <div class="val" id="statEstadoBadge">FUNDADORA</div>
                 <div class="label">Estado</div>
             </div>
         </div>
 
-        <!-- PESTAÑAS CONTENIDO -->
         <div class="container-contenido">
 
-            <!-- PESTAÑA 1: TIENDA Y RULETA VISUAL -->
+            <!-- PESTAÑA 1: TIENDA Y RULETA -->
             <div id="tienda" class="tab-content">
                 <div class="ruleta-container">
                     <h3 style="margin-top:0; color:var(--accent-coral); font-size:0.95rem;">🎡 La Ruleta de Premios Sáfica</h3>
@@ -781,13 +773,12 @@
                 </div>
             </div>
 
-            <!-- PESTAÑA 2: AGENDA Y PLANES -->
+            <!-- PESTAÑA 2: AGENDA Y MAPA -->
             <div id="agenda" class="tab-content" style="display:none;">
                 <div class="card">
                     <h3>📅 Calendario</h3>
                     <p style="font-size:0.75rem; color:#8c827b; margin-top:-4px;">💡 <em>Consejo: Pincha arriba en el mes y año para saltar rápidamente a tu fecha de nacimiento o cualquier otro mes. Pincha en cualquier día para anotar tu cumpleaños y ganar +15 💖 automático.</em></p>
                     
-                    <!-- CALENDARIO FUNCIONAL -->
                     <div id="calendarContainer">
                         <div id="calendar"></div>
                     </div>
@@ -807,20 +798,18 @@
                     <h4 style="font-size:0.8rem; color:var(--accent-green); margin:12px 0 4px 0;">🎉 Lista de Planes:</h4>
                     <div id="listaQuedadas" style="font-size:0.8rem;">Aún no hay planes.</div>
 
-                    <!-- NUEVA SECCIÓN DE VIDEOLLAMADA GRUPAL -->
                     <div style="margin-top: 18px; border-top: 1px solid var(--border-soft); padding-top: 14px;">
                         <h4 style="font-size: 0.85rem; color: var(--text-main); margin-bottom: 6px;">📹 Sala de Videollamada Grupal</h4>
                         <p style="font-size: 0.75rem; color: #8c827b; margin-bottom: 10px;">Conéctate con tus amigas al instante mediante una sala segura y gratuita:</p>
                         <button class="btn-flechazo" style="background: linear-gradient(135deg, #4a90e2, #50e3c2);" onclick="abrirVideollamada()">🎥 Entrar a la Sala de Videollamada</button>
                     </div>
 
-                    <!-- MAPA CON CHINCHETAS -->
                     <h4 style="font-size:0.8rem; color:var(--accent-green); margin:14px 0 4px 0;">🗺️ Mapa Interactivo con Chinchetas:</h4>
                     <div id="mapContainer"></div>
                 </div>
             </div>
 
-            <!-- PESTAÑA 3: BUZÓN Y FLECHAZOS -->
+            <!-- PESTAÑA 3: BUZÓN -->
             <div id="buzon" class="tab-content" style="display:none;">
                 <div class="card">
                     <h3>💌 Buzón y Conexiones</h3>
@@ -849,7 +838,7 @@
                 </div>
             </div>
 
-            <!-- PESTAÑA 4: EXTRAS (PERFIL, FOTO ILIMITADA Y MASCOTAS) -->
+            <!-- PESTAÑA 4: EXTRAS -->
             <div id="extras" class="tab-content" style="display:none;">
                 <div class="card" id="formRegistroCarnet">
                     <h3>🎒 Crear Carnet y Mochila</h3>
@@ -905,7 +894,7 @@
         </div>
     </div>
 
-    <!-- MODAL SELECTOR DE FECHA / CUMPLEAÑOS -->
+    <!-- MODAL SELECTOR DE FECHA -->
     <div id="modalSelectorFecha" class="card-modal" onclick="cerrarModalFechaCustom()">
         <div style="background:#fff; padding:20px; border-radius:18px; width:280px; text-align:center; border:2px solid var(--accent-green); box-shadow:0 10px 25px rgba(0,0,0,0.2);" onclick="event.stopPropagation()">
             <h3 style="color:var(--text-main); font-size:0.95rem; margin-bottom:8px;">📅 Seleccionar Mes y Año</h3>
@@ -926,7 +915,6 @@
                     <option value="11">Diciembre</option>
                 </select>
                 <select id="selectAnioModal" style="width:90px; margin:0;">
-                    <!-- Se llena por JS -->
                 </select>
             </div>
             <button class="btn-principal" onclick="irAFechaSeleccionada()">✨ Ir a la Fecha</button>
@@ -965,13 +953,12 @@
             }
         }
 
-        /* LIMPIEZA INICIAL: BORRA A TODO EL MUNDO MENOS A TI COMO FUNDADORA */
-        function inicializacionUnicaLimpieza() {
+        /* INICIALIZACIÓN SEGURA: MANTIENE CUMPLES, QUEDADAS Y USUARIOS, LIMPIANDO SOLO CACHÉ TÉCNICA */
+        function inicializarAppSegura() {
             const db = obtenerBaseDatosGlobal();
             const nombres = Object.keys(db);
 
             if (nombres.length > 0) {
-                // Buscamos si existe tu perfil de fundadora (Gold o creada primero)
                 let nombreFundadora = "";
                 for (let n of nombres) {
                     if (db[n].isGold) {
@@ -979,33 +966,20 @@
                         break;
                     }
                 }
-                // Si no hay marcada una gold explícita pero hay registros, tomamos el primero o el activo
                 if (!nombreFundadora && nombres.length > 0) {
                     nombreFundadora = perfilActivo && db[perfilActivo] ? perfilActivo : nombres[0];
                 }
 
                 if (nombreFundadora && db[nombreFundadora]) {
                     const datosMia = db[nombreFundadora];
-                    // Forzamos que tu cuenta sea la única superviviente y mantenga su rango Gold de Fundadora
                     datosMia.isGold = true; 
                     const nuevaDb = {};
                     nuevaDb[nombreFundadora] = datosMia;
                     guardarBaseDatosGlobal(nuevaDb);
                     perfilActivo = nombreFundadora;
                     localStorage.setItem("perfil_activo", perfilActivo);
-                } else {
-                    localStorage.removeItem("bollolandia_usuarios");
-                    localStorage.removeItem("perfil_activo");
-                    perfilActivo = "";
                 }
-            } else {
-                localStorage.removeItem("bollolandia_usuarios");
-                localStorage.removeItem("perfil_activo");
-                perfilActivo = "";
             }
-
-            // Limpiamos flechazos y buzones cruzados antiguos de cuentas borradas
-            localStorage.removeItem("flechazos");
 
             sincronizarInterfazUsuario();
             cargarQuedadas();
@@ -1095,7 +1069,10 @@
             if(idPestana === 'agenda') {
                 setTimeout(() => {
                     if (calendarInstance) calendarInstance.updateSize();
-                    if (mapInstance) mapInstance.invalidateSize();
+                    if (mapInstance) {
+                        mapInstance.invalidateSize();
+                        actualizarPuntosMapa(); // Refresca chinchetas al abrir la pestaña
+                    }
                 }, 200);
             }
         }
@@ -1169,7 +1146,7 @@
             if (codigoIngresado === CODIGO_FUNDADORA) {
                 esGold = true;
             } else if (codigoIngresado === CODIGO_VIP) {
-                esSilver = true; // El código BL-VIP-8317 genera carnet plateado para las demás usuarias
+                esSilver = true;
             } else {
                 return alert("🔒 Código de acceso incorrecto. Usa el código VIP autorizado.");
             }
@@ -1215,7 +1192,7 @@
             if (data.isGold) {
                 cardElement.classList.add("gold-edition");
                 document.getElementById("cardHeaderTitle").innerText = "GOLD • ESPAÑA 👑";
-                document.getElementById("statEstadoBadge").innerText = "CREADORA";
+                document.getElementById("statEstadoBadge").innerText = "FUNDADORA";
                 document.getElementById("heartCount").innerText = "∞";
                 document.getElementById("statHearts").innerText = "∞";
             } else if (data.isSilver) {
@@ -1470,7 +1447,7 @@
             window.open("https://meet.jit.si/BollolandiaReunionSeguraChicas", "_blank");
         }
 
-        /* INICIALIZACIÓN DE CALENDARIO Y MAPA CON CHINCHETAS */
+        /* CALENDARIO Y MAPA CORREGIDO */
         function inicializarCalendarioYMapa() {
             const calendarEl = document.getElementById('calendar');
             if (calendarEl && !calendarInstance) {
@@ -1564,6 +1541,7 @@
         function actualizarPuntosMapa() {
             if (!mapInstance) return;
 
+            // Limpia los marcadores antiguos de la vista de Leaflet sin tocar los datos guardados
             marcadoresMapa.forEach(m => mapInstance.removeLayer(m));
             marcadoresMapa = [];
 
@@ -1620,7 +1598,15 @@
             if(calendarInstance) {
                 calendarInstance.addEvent({ title: `📍 ${titulo}`, start: fecha, color: '#87a38a' });
             }
-            actualizarPuntosMapa();
+            
+            // Fuerza inmediata de actualización del mapa y pinte de chincheta
+            setTimeout(() => {
+                if (mapInstance) {
+                    mapInstance.invalidateSize();
+                    actualizarPuntosMapa();
+                }
+            }, 100);
+
             alert('📍 ¡Plan publicado y chincheta añadida al mapa (+25 💖)!');
         }
 
