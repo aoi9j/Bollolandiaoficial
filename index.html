@@ -558,45 +558,6 @@
         .btn-close { background: #4a403b; color: white; }
         .btn-download { background: var(--accent-green); color: white; box-shadow: 0 4px 12px rgba(135, 163, 138, 0.3); }
 
-        /* ======================================================== */
-        /* NUEVOS MARCOS DE NEÓN Y HUMO DE COLORES (ADAPTADOS A FOTO) */
-        /* ======================================================== */
-        .marco-plasma {
-            position: absolute; inset: -4px; border-radius: 12px; z-index: 2; pointer-events: none;
-            background: linear-gradient(135deg, #ff0055, #ff5e00, #ffb703);
-            box-shadow: 0 0 15px rgba(255, 0, 85, 0.8), inset 0 0 8px rgba(255, 183, 3, 0.8);
-            animation: pulseGlow 1.4s ease-in-out infinite alternate;
-        }
-        .marco-neondark {
-            position: absolute; inset: -4px; border-radius: 12px; z-index: 2; pointer-events: none;
-            background: linear-gradient(135deg, #4cc9f0, #4361ee, #7209b7);
-            box-shadow: 0 0 15px rgba(67, 97, 238, 0.8), inset 0 0 8px rgba(114, 9, 183, 0.8);
-            animation: pulseGlow 1.6s ease-in-out infinite alternate;
-        }
-        .marco-goldglow {
-            position: absolute; inset: -4px; border-radius: 12px; z-index: 2; pointer-events: none;
-            background: linear-gradient(135deg, #bf953f, #fcf6ba, #b38728, #aa771c);
-            box-shadow: 0 0 15px rgba(252, 246, 186, 0.9), inset 0 0 8px rgba(191, 149, 63, 0.9);
-            animation: pulseGlow 2s ease-in-out infinite alternate;
-        }
-        .marco-cyberpunk {
-            position: absolute; inset: -4px; border-radius: 12px; z-index: 2; pointer-events: none;
-            background: linear-gradient(135deg, #f72585, #b5179e, #7209b7, #3a0ca3);
-            box-shadow: 0 0 15px rgba(247, 37, 133, 0.8), inset 0 0 8px rgba(58, 12, 163, 0.8);
-            animation: pulseGlow 1.5s ease-in-out infinite alternate;
-        }
-        .marco-amethyst {
-            position: absolute; inset: -4px; border-radius: 12px; z-index: 2; pointer-events: none;
-            background: linear-gradient(135deg, #06d6a0, #118ab2, #073b4c, #ef476f);
-            box-shadow: 0 0 15px rgba(6, 214, 160, 0.8), inset 0 0 8px rgba(239, 71, 111, 0.8);
-            animation: pulseGlow 1.8s ease-in-out infinite alternate;
-        }
-
-        @keyframes pulseGlow {
-            0% { transform: scale(0.98); opacity: 0.85; filter: brightness(0.95); }
-            100% { transform: scale(1.02); opacity: 1; filter: brightness(1.25); }
-        }
-
         .ruleta-container {
             background: linear-gradient(135deg, #fff3ee, #faebd7);
             border: 2px dashed var(--accent-coral); border-radius: 18px; padding: 16px; text-align: center; margin-bottom: 14px;
@@ -904,7 +865,7 @@
                 <div class="card" style="background: linear-gradient(135deg, #fef9e7, #fcf4db); border: 1.5px solid #f3e5ab;">
                     <h3 style="color: #8c6d1f; display:flex; align-items:center; gap:6px;">📢 Buzón de Actualizaciones</h3>
                     <p style="font-size:0.78rem; color:#6b5314; line-height:1.4; margin:0;">
-                        <strong>¡Novedades en Bollolandia!</strong> Se han incorporado los nuevos marcos de neón y humo de colores adaptados a las fotos de perfil. ✨
+                        <strong>¡Novedades en Bollolandia!</strong> Se han eliminado los marcos anteriores y se empieza desde cero con la tienda y la ruleta. ✨
                     </p>
                 </div>
 
@@ -914,8 +875,6 @@
                     
                     <div class="ruleta-premios-grid">
                         <div class="premio-card-visual">✨ <span>+30 Puntos Extra</span></div>
-                        <div class="premio-card-visual">🔥 <span>Marco Plasma Fire</span></div>
-                        <div class="premio-card-visual">💜 <span>Marco Neon Dark</span></div>
                         <div class="premio-card-visual">💖 <span>+50 Premios Gordos</span></div>
                     </div>
 
@@ -924,48 +883,10 @@
                 </div>
 
                 <div class="card">
-                    <h3>🛍️ Boutique de Marcos Ultra Premium</h3>
-                    
-                    <div class="grid-shop">
-                        <div class="shop-item">
-                            <div class="shop-flex">
-                                <div class="preview-box"><span>🔥</span><div class="marco-plasma"></div></div>
-                                <div class="shop-item-info"><h4>🔥 Plasma Fire</h4><p>Lujo ígneo intenso.</p></div>
-                            </div>
-                            <button class="btn-buy" onclick="comprarMarco('marco-plasma', 'Plasma Fire', 45)">45 💖</button>
-                        </div>
-
-                        <div class="shop-item">
-                            <div class="shop-flex">
-                                <div class="preview-box"><span>💜</span><div class="marco-neondark"></div></div>
-                                <div class="shop-item-info"><h4>💜 Neon Dark</h4><p>Elegancia nocturna.</p></div>
-                            </div>
-                            <button class="btn-buy" onclick="comprarMarco('marco-neondark', 'Neon Dark', 35)">35 💖</button>
-                        </div>
-
-                        <div class="shop-item">
-                            <div class="shop-flex">
-                                <div class="preview-box"><span>👑</span><div class="marco-goldglow"></div></div>
-                                <div class="shop-item-info"><h4>👑 Gold Glow</h4><p>Resplandor solar.</p></div>
-                            </div>
-                            <button class="btn-buy" onclick="comprarMarco('marco-goldglow', 'Gold Glow', 50)">50 💖</button>
-                        </div>
-
-                        <div class="shop-item">
-                            <div class="shop-flex">
-                                <div class="preview-box"><span>⚡</span><div class="marco-cyberpunk"></div></div>
-                                <div class="shop-item-info"><h4>⚡ Cyberpunk</h4><p>Neón vanguardista.</p></div>
-                            </div>
-                            <button class="btn-buy" onclick="comprarMarco('marco-cyberpunk', 'Cyberpunk', 40)">40 💖</button>
-                        </div>
-
-                        <div class="shop-item" style="grid-column: span 2;">
-                            <div class="shop-flex">
-                                <div class="preview-box"><span>🔮</span><div class="marco-amethyst"></div></div>
-                                <div class="shop-item-info"><h4>🔮 Amethyst Luxe</h4><p>Gradiente amatista exclusivo y sofisticado.</p></div>
-                            </div>
-                            <button class="btn-buy" onclick="comprarMarco('marco-amethyst', 'Amethyst Luxe', 60)">60 💖</button>
-                        </div>
+                    <h3>🛍️ Boutique de Marcos (Empezando de 0)</h3>
+                    <p style="font-size:0.75rem; color:#8c827b; margin-top:-4px;">Próximamente se añadirán nuevos marcos personalizados.</p>
+                    <div class="grid-shop" id="tiendaMarcosGrid">
+                        <span style="font-size:0.8rem; color:#8c827b; grid-column:span 2;">No hay marcos disponibles actualmente. ¡Usa la ruleta o espera novedades!</span>
                     </div>
                 </div>
             </div>
@@ -1055,7 +976,7 @@
                 </div>
 
                 <div class="card" id="seccionMiCarnet" style="display: none;">
-                    <h3 style="margin-bottom: 8px;">🖼️ Tus Marcos Ultra Premium</h3>
+                    <h3 style="margin-bottom: 8px;">🖼️ Tus Marcos (Desde 0)</h3>
                     <p style="font-size: 0.75rem; color: #8c827b; margin-top: -4px;">Elige el marco que lucirá en tu carnet y en tu perfil:</p>
 
                     <div id="inventarioMarcos" class="boutique-frames-list"></div>
@@ -1307,24 +1228,23 @@
             }
         }
 
+        // --- CAMBIO SOLICITUD 1: MODIFICAR NOTA DIRECTAMENTE SIN MENÚ POPUP (PROMPT) ---
         function modificarNotaInteractiva() {
             const userData = obtenerDatosActuales();
             if (!userData) return alert("Crea un perfil primero 🎒");
             
-            const accion = prompt("Elige qué deseas hacer con tu nota:\n1. Escribir texto nuevo\n2. Borrar nota actual", "1");
-            if (accion === "1") {
-                const textoNuevo = prompt("Escribe tu nueva nota (máx 30 caracteres):", userData.note || "");
-                if (textoNuevo !== null) {
-                    const nuevaNota = textoNuevo.trim().substring(0, 30);
+            const textoNuevo = prompt("Escribe tu nueva nota (o déjalo en blanco para borrarla, máx 30 caracteres):", userData.note || "");
+            if (textoNuevo !== null) {
+                const nuevaNota = textoNuevo.trim().substring(0, 30);
+                if (nuevaNota === "") {
+                    actualizarDatosActuales({ note: "", noteTimestamp: null, noteAudio: null });
+                    alert("🗑️ Nota eliminada.");
+                } else {
                     const timestamp = new Date().getTime();
                     actualizarDatosActuales({ note: nuevaNota, noteTimestamp: timestamp, noteAudio: null });
-                    cargarDatosCarnet(obtenerDatosActuales());
                     alert("✨ ¡Nota actualizada!");
                 }
-            } else if (accion === "2") {
-                actualizarDatosActuales({ note: "", noteTimestamp: null, noteAudio: null });
                 cargarDatosCarnet(obtenerDatosActuales());
-                alert("🗑️ Nota eliminada.");
             }
         }
 
@@ -1389,10 +1309,11 @@
             const today = new Date().toLocaleDateString();
             const timestamp = note ? new Date().getTime() : null;
 
+            // --- CAMBIO SOLICITUD 2: BORRAR TODOS LOS MARCOS AL CREAR/INICIAR DESDE 0 ---
             const nuevoUsuario = {
                 name, note: note || "", noteTimestamp: timestamp, noteAudio: null, bio: bio || "", mision, cardId, date: today, photo: carnetFotoBase64, isGold: esGold, isSilver: esSilver,
                 hearts: esGold ? 9999 : 100,
-                marcosComprados: esGold ? ["marco-plasma", "marco-neondark", "marco-goldglow", "marco-cyberpunk", "marco-amethyst"] : [],
+                marcosComprados: [], // Empezar de 0 sin marcos
                 marcoActivo: "",
                 buzonCartas: []
             };
@@ -1539,8 +1460,6 @@
             setTimeout(() => {
                 const premios = [
                     { tipo: 'corazones', valor: 30, texto: '¡+30 💖 extra!' },
-                    { tipo: 'marco', id: 'marco-plasma', nombre: 'Plasma Fire', texto: '🔥 ¡Ganaste el marco Plasma Fire!' },
-                    { tipo: 'marco', id: 'marco-neondark', nombre: 'Neon Dark', texto: '💜 ¡Ganaste el marco Neon Dark!' },
                     { tipo: 'corazones', valor: 50, texto: '🎉 ¡Premio gordo! +50 💖' }
                 ];
                 const premio = premios[Math.floor(Math.random() * premios.length)];
@@ -1548,32 +1467,12 @@
                 if (premio.tipo === 'corazones') {
                     actualizarCorazones(premio.valor);
                     alert(premio.texto);
-                } else {
-                    let marcos = data.marcosComprados || [];
-                    if (!marcos.includes(premio.id)) {
-                        marcos.push(premio.id);
-                        actualizarDatosActuales({ marcosComprados: marcos });
-                        renderizarInventarioMarcos();
-                    }
-                    alert(premio.texto + " ¡Ya puedes ponértelo!");
                 }
             }, 3000);
         }
 
         function comprarMarco(idMarco, nombreMarco, precio) {
-            const data = obtenerDatosActuales();
-            if (!data) return alert("Crea un perfil primero para comprar 🎒");
-            let marcos = data.marcosComprados || [];
-            if (marcos.includes(idMarco)) return alert("✨ ¡Ya tienes este marco!");
-            
-            if (!data.isGold && data.hearts < precio) return alert(`⛔ Te faltan puntos.`);
-
-            if (!data.isGold) actualizarCorazones(-precio);
-
-            marcos.push(idMarco);
-            actualizarDatosActuales({ marcosComprados: marcos });
-            renderizarInventarioMarcos();
-            alert(`🎉 ¡Marco ${nombreMarco} desbloqueado!`);
+            alert("No hay marcos disponibles en este momento. ¡Empieza desde cero!");
         }
 
         function renderizarInventarioMarcos() {
@@ -1584,21 +1483,13 @@
             if (!data) return;
 
             let marcos = data.marcosComprados || [];
-            if (data.isGold) marcos = ["marco-plasma", "marco-neondark", "marco-goldglow", "marco-cyberpunk", "marco-amethyst"];
 
             if (marcos.length === 0) {
-                contenedor.innerHTML = `<span style="font-size: 0.75rem; color: #8c827b;">Sin marcos todavía. Desbloquéalos en la tienda o ruleta.</span>`;
+                contenedor.innerHTML = `<span style="font-size: 0.75rem; color: #8c827b;">Sin marcos todavía. Empiezas desde cero.</span>`;
                 return;
             }
 
             let html = `<button class="boutique-btn frame-option" onclick="quitarMarco()">Ninguno</button>`;
-            const nombres = { 'marco-plasma': '🔥 Plasma Fire', 'marco-neondark': '💜 Neon Dark', 'marco-goldglow': '👑 Gold Glow', 'marco-cyberpunk': '⚡ Cyberpunk', 'marco-amethyst': '🔮 Amethyst Luxe' };
-
-            marcos.forEach(m => {
-                let activo = data.marcoActivo === m;
-                let activeClass = activo ? "active" : "";
-                html += `<button class="boutique-btn frame-option ${activeClass}" onclick="equiparMarco('${m}')">${nombres[m] || 'Marco'} ${activo ? '✓' : ''}</button>`;
-            });
             contenedor.innerHTML = html;
         }
 
@@ -1624,12 +1515,7 @@
             if (heroMarcoLayer) heroMarcoLayer.innerHTML = "";
 
             if (data && data.marcoActivo) {
-                const clase = { 'marco-plasma': 'marco-plasma', 'marco-neondark': 'marco-neondark', 'marco-goldglow': 'marco-goldglow', 'marco-cyberpunk': 'marco-cyberpunk', 'marco-amethyst': 'marco-amethyst' }[data.marcoActivo];
-                if (clase) {
-                    if (marcoLayer) marcoLayer.innerHTML = `<div class="${clase}"></div>`;
-                    if (miniMarcoLayer) miniMarcoLayer.innerHTML = `<div class="${clase}"></div>`;
-                    if (heroMarcoLayer) heroMarcoLayer.innerHTML = `<div class="${clase}"></div>`;
-                }
+                // Sin marcos activos por defecto al empezar de cero
             }
         }
 
