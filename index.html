@@ -3,620 +3,1267 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard Estético</title>
-    <!-- Fuente Google Fonts para un look moderno -->
-    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
-    <!-- Leaflet CSS para el mapa -->
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <title>Rincón de Bollolandia</title>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Cinzel:wght@700&display=swap" rel="stylesheet">
+
     <style>
         :root {
-            --bg-color: #f7eff8;
-            --card-bg: #ffffff;
-            --primary-color: #9c7bcf;
-            --primary-light: #ece5f5;
-            --text-main: #4a4058;
-            --text-muted: #8c829c;
-            --shadow: 0 10px 25px rgba(156, 123, 207, 0.12);
-            --radius: 24px;
-        }
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Quicksand', sans-serif;
+            --rosa: #ffc6ff;
+            --lila: #bdb2ff;
+            --fondo: #fff0f5;
+            --tarjeta: #ffffff;
+            --texto: #4a3e4e;
+            --morado: #6c5ce7;
+            --fucsia: #ff85a1;
+            --oro-main: #ffd700;
         }
 
         body {
-            background-color: var(--bg-color);
-            color: var(--text-main);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            padding: 20px;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background-color: var(--fondo);
+            color: var(--texto);
+            margin: 0;
+            padding: 0 0 85px 0;
+            overflow-x: hidden;
         }
 
-        .dashboard-container {
-            width: 100%;
-            max-width: 480px;
-            background-color: var(--bg-color);
-            border-radius: 32px;
-            padding: 20px;
-            position: relative;
-            box-shadow: 0 20px 40px rgba(156, 123, 207, 0.15);
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-        }
-
-        /* Cabecera de Perfil y Corazones */
-        .top-bar {
-            display: flex;
-            gap: 12px;
-            align-items: center;
-        }
-
-        .profile-card {
-            background-color: var(--card-bg);
-            border-radius: var(--radius);
-            padding: 10px 16px 10px 10px;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            box-shadow: var(--shadow);
-            cursor: pointer;
-            flex-grow: 1;
-            border: 2px solid var(--primary-light);
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
-        }
-
-        .profile-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 15px 30px rgba(156, 123, 207, 0.2);
-        }
-
-        .profile-avatar {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 2px solid var(--primary-color);
-        }
-
-        .profile-info {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .profile-name-row {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .profile-name {
-            font-weight: 700;
-            font-size: 1.1rem;
-            color: var(--primary-color);
-        }
-
-        .profile-backpack {
-            font-size: 1.1rem;
-        }
-
-        .hearts-card {
-            background-color: var(--card-bg);
-            border-radius: var(--radius);
-            padding: 14px 20px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            box-shadow: var(--shadow);
-            border: 2px solid var(--primary-light);
-        }
-
-        .heart-icon {
-            font-size: 1.2rem;
-        }
-
-        .infinity-symbol {
-            font-weight: 700;
-            color: #e63946;
-            font-size: 1.2rem;
-        }
-
-        /* Tarjeta de Quedada con Mapa */
-        .card {
-            background-color: var(--card-bg);
-            border-radius: var(--radius);
-            padding: 20px;
-            box-shadow: var(--shadow);
-            border: 2px solid var(--primary-light);
-        }
-
-        .card-title {
-            font-size: 1rem;
-            font-weight: 700;
-            color: var(--text-main);
-            margin-bottom: 12px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        #map {
-            width: 100%;
-            height: 160px;
-            border-radius: 16px;
-            z-index: 1;
-        }
-
-        /* Widget de Calendario Estético */
-        .calendar-widget {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        .calendar-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-weight: 700;
-            color: var(--primary-color);
-            padding: 0 4px;
-        }
-
-        .calendar-grid {
-            display: grid;
-            grid-template-columns: repeat(7, 1fr);
-            gap: 6px;
+        header {
+            background: linear-gradient(135deg, var(--rosa), var(--lila));
+            padding: 14px 15px;
             text-align: center;
+            border-bottom-left-radius: 20px;
+            border-bottom-right-radius: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
         }
 
-        .calendar-day-name {
-            font-size: 0.8rem;
-            color: var(--text-muted);
-            font-weight: 600;
+        .header-title-box {
+            text-align: center;
+            flex: 1;
+            padding: 0 5px;
         }
 
-        .calendar-day {
-            padding: 8px 0;
-            font-size: 0.9rem;
-            font-weight: 600;
+        h1 { margin: 0; font-size: 1.15rem; color: #fff; text-shadow: 0 1px 2px rgba(0,0,0,0.1); }
+        p.subtitulo { margin: 2px 0 0; color: #fff; font-size: 0.7rem; opacity: 0.95; }
+
+        /* MOCHILA / PERFIL SUPERIOR DERECHA */
+        .mochila-header-btn {
+            background: rgba(255, 255, 255, 0.95);
+            border: 2px solid var(--morado);
             border-radius: 12px;
-            background-color: #faf7fd;
-            color: var(--text-main);
-        }
-
-        .calendar-day.active {
-            background-color: var(--primary-color);
-            color: white;
-            box-shadow: 0 4px 10px rgba(156, 123, 207, 0.3);
-        }
-
-        .calendar-day.muted {
-            color: #d1c8db;
-            background-color: transparent;
-        }
-
-        /* Desplegable de Inventario (Oculto por defecto) */
-        .inventory-modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(74, 64, 88, 0.4);
-            backdrop-filter: blur(5px);
+            padding: 3px 6px;
             display: flex;
-            justify-content: center;
             align-items: center;
-            z-index: 1000;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.3s ease;
+            gap: 5px;
+            cursor: pointer;
+            box-shadow: 0 3px 8px rgba(0,0,0,0.12);
+            transition: transform 0.1s ease;
         }
+        .mochila-header-btn:active { transform: scale(0.96); }
 
-        .inventory-modal.open {
-            opacity: 1;
-            pointer-events: auto;
-        }
-
-        .inventory-content {
-            background: var(--card-bg);
-            width: 90%;
-            max-width: 400px;
-            border-radius: 32px;
-            padding: 24px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-            transform: scale(0.9);
-            transition: transform 0.3s ease;
-            border: 3px solid var(--primary-light);
-        }
-
-        .inventory-modal.open .inventory-content {
-            transform: scale(1);
-        }
-
-        .inventory-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-weight: 700;
-            font-size: 1.2rem;
-            color: var(--primary-color);
-        }
-
-        .close-inventory {
-            background: var(--primary-light);
-            border: none;
-            width: 32px;
-            height: 32px;
+        .mochila-avatar {
+            width: 30px; height: 30px;
             border-radius: 50%;
-            font-weight: bold;
-            cursor: pointer;
-            color: var(--primary-color);
-        }
-
-        .inventory-items-grid {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            max-height: 280px;
-            overflow-y: auto;
-            padding-right: 4px;
-        }
-
-        .inventory-item {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            background: #faf7fd;
-            padding: 10px 14px;
-            border-radius: 16px;
-            border: 1px solid var(--primary-light);
-            cursor: pointer;
-            transition: background 0.2s;
-        }
-
-        .inventory-item:hover {
-            background: var(--primary-light);
-        }
-
-        .item-left {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .item-icon {
-            font-size: 1.5rem;
-        }
-
-        .item-details span {
-            display: block;
-        }
-
-        .item-name {
-            font-weight: 700;
-            font-size: 0.95rem;
-        }
-
-        .item-desc {
-            font-size: 0.75rem;
-            color: var(--text-muted);
-        }
-
-        .item-count {
-            font-weight: 700;
-            color: var(--primary-color);
-            background: white;
-            padding: 4px 10px;
-            border-radius: 10px;
-            font-size: 0.85rem;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-        }
-
-        /* Modal para ver el Carnet en grande */
-        .id-card-modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(74, 64, 88, 0.6);
-            backdrop-filter: blur(8px);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 2000;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.3s ease;
-        }
-
-        .id-card-modal.open {
-            opacity: 1;
-            pointer-events: auto;
-        }
-
-        .id-card-visual {
-            background: linear-gradient(135deg, #fff 0% #f3eafa 100%);
-            width: 85%;
-            max-width: 340px;
-            border-radius: 24px;
-            padding: 24px;
-            box-shadow: 0 25px 50px rgba(0,0,0,0.25);
-            border: 4px solid var(--primary-color);
-            text-align: center;
+            border: 1px solid var(--morado);
+            background: #e2e8f0;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 0.9rem; overflow: hidden; flex-shrink: 0;
             position: relative;
-            transform: scale(0.8);
-            transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
 
-        .id-card-modal.open .id-card-visual {
-            transform: scale(1);
+        .user-selector-box {
+            position: absolute;
+            top: 4px;
+            left: 10px;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 1px 4px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            z-index: 10;
         }
 
-        .id-card-header {
-            font-size: 0.8rem;
-            font-weight: 700;
-            color: var(--primary-color);
-            letter-spacing: 2px;
-            margin-bottom: 16px;
-            text-transform: uppercase;
+        .user-selector-box select {
+            padding: 1px;
+            margin: 0;
+            font-size: 0.65rem;
+            border-radius: 4px;
+            border: 1px solid var(--lila);
+            background: #fff;
+            color: var(--morado);
+            font-weight: bold;
         }
 
-        .id-card-avatar {
-            width: 90px;
-            height: 90px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 3px solid var(--primary-color);
-            margin: 0 auto 12px auto;
-            box-shadow: 0 8px 20px rgba(156, 123, 207, 0.2);
+        .hearts-counter {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 4px 7px;
+            border-radius: 10px;
+            font-weight: bold;
+            color: #d63384;
+            font-size: 0.7rem;
+            box-shadow: 0 3px 8px rgba(0,0,0,0.12);
+            display: flex;
+            align-items: center;
+            gap: 2px;
         }
 
-        .id-card-name {
-            font-size: 1.4rem;
-            font-weight: 700;
-            color: var(--text-main);
-            margin-bottom: 4px;
-        }
+        .container { padding: 12px; max-width: 500px; margin: 0 auto; }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
 
-        .id-card-role {
-            font-size: 0.85srem;
-            color: var(--text-muted);
-            margin-bottom: 20px;
-        }
-
-        .close-id-card {
-            background: var(--primary-color);
-            color: white;
-            border: none;
-            padding: 10px 24px;
+        .card {
+            background: var(--tarjeta);
             border-radius: 14px;
-            font-weight: 700;
-            cursor: pointer;
-            box-shadow: 0 4px 15px rgba(156, 123, 207, 0.4);
+            padding: 14px;
+            margin-bottom: 12px;
+            box-shadow: 0 4px 12px rgba(189, 178, 255, 0.2);
         }
+
+        h2 { color: var(--morado); margin-top: 0; font-size: 1rem; margin-bottom: 10px; }
+
+        input, select, textarea, button {
+            width: 100%;
+            padding: 9px;
+            margin: 5px 0;
+            border-radius: 8px;
+            border: 1px solid #e2d4f0;
+            box-sizing: border-box;
+            font-size: 0.85rem;
+            font-family: inherit;
+        }
+
+        .btn-principal {
+            background: linear-gradient(135deg, #a0c4ff, var(--lila));
+            color: white;
+            font-weight: bold;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-flechazo {
+            background: linear-gradient(135deg, var(--rosa), var(--fucsia));
+            color: white;
+            font-weight: bold;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-logout {
+            background: #fee2e2;
+            color: #dc2626;
+            border: 1px solid #fca5a5;
+            padding: 8px;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 0.75rem;
+            cursor: pointer;
+            margin-top: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .btn-mapa {
+            background: #e8def8;
+            color: var(--morado);
+            border: none;
+            padding: 5px 8px;
+            border-radius: 6px;
+            font-weight: bold;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 4px;
+            font-size: 0.75rem;
+        }
+
+        /* ACORDEONES DESPLEGABLES */
+        .accordion-header {
+            background: #f8f7fc;
+            border: 1px solid #e2d4f0;
+            padding: 9px 11px;
+            border-radius: 10px;
+            font-weight: bold;
+            color: var(--morado);
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.85rem;
+            margin-bottom: 8px;
+        }
+        .accordion-body {
+            display: none;
+            padding: 4px 2px 8px 2px;
+        }
+        .accordion-body.open { display: block; }
+
+        .grid-shop { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 8px; }
+        .grid-pets { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 8px; }
+        .pet-item img { width: 100%; height: 90px; object-fit: cover; border-radius: 8px; }
+
+        #matchOverlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(255, 240, 245, 0.95);
+            z-index: 9999;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 20px;
+        }
+
+        #cartaFlotanteBox {
+            display: none;
+            position: fixed;
+            bottom: 75px;
+            left: 12px;
+            right: 12px;
+            background: #fff;
+            border: 2px solid var(--fucsia);
+            border-radius: 12px;
+            padding: 12px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            z-index: 9998;
+            animation: bounceIn 0.4s ease;
+        }
+
+        @keyframes bounceIn {
+            0% { transform: translateY(50px); opacity: 0; }
+            100% { transform: translateY(0); opacity: 1; }
+        }
+
+        .file-input-label {
+            background: #f1f5f9;
+            border: 2px dashed var(--morado);
+            padding: 9px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.75rem;
+            color: var(--morado);
+            font-weight: bold;
+            text-align: center;
+            display: block;
+            margin: 5px 0;
+        }
+
+        .card-modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 10000;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 15px;
+        }
+
+        .mclovin-card {
+            width: 320px;
+            background: white;
+            border-radius: 12px;
+            border: 2px solid #b0b0b0;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+            overflow: hidden;
+            background-image: linear-gradient(120deg, #fbcfe8 0%, #fed7aa 30%, #fef08a 60%, #bae6fd 100%);
+            font-family: 'Arial', sans-serif;
+            box-sizing: border-box;
+            color: #333;
+            position: relative;
+        }
+
+        .mclovin-card.gold-edition {
+            background-image: linear-gradient(135deg, #bf953f 0%, #fcf6ba 25%, #b38728 50%, #fbf5b7 75%, #aa771c 100%);
+            border: 2px solid #ffd700;
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.6);
+        }
+
+        .card-header {
+            padding: 6px 8px;
+            text-align: center;
+            background: #0284c7;
+            color: white;
+            border-bottom: 2px solid #f59e0b;
+        }
+
+        .mclovin-card.gold-edition .card-header {
+            background: linear-gradient(90deg, #785212, #b8860b, #785212);
+            border-bottom: 2px solid #fff;
+        }
+
+        .header-main { font-size: 0.8rem; font-weight: 900; color: #fef08a; text-transform: uppercase; }
+        .header-sub { font-size: 0.6rem; font-weight: bold; color: #ffffff; letter-spacing: 1px; }
+
+        .card-body { display: flex; padding: 10px; gap: 10px; align-items: flex-start; }
+
+        .card-photo-box {
+            width: 80px; height: 100px;
+            background: #e2e8f0;
+            border: 2px solid #0284c7;
+            border-radius: 6px;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 2px 2px 5px rgba(0,0,0,0.15);
+            flex-shrink: 0;
+            position: relative;
+        }
+
+        .mclovin-card.gold-edition .card-photo-box {
+            border: 2px solid #b8860b;
+        }
+
+        .card-photo-img { width: 100%; height: 100%; object-fit: cover; }
+        .card-info { flex: 1; font-size: 0.65rem; color: #1e293b; font-weight: bold; text-align: left; }
+        .info-row { margin-bottom: 3px; }
+        .label-red { color: #b91c1c; font-size: 0.55rem; text-transform: uppercase; }
+        .mclovin-card.gold-edition .label-red { color: #5c3d00; }
+        .val-bold { font-size: 0.8rem; font-weight: 900; color: #000; text-transform: uppercase; }
+        .val-mision { font-size: 0.65rem; color: #1e3a8a; line-height: 1.15; display: block; margin-top: 1px; }
+        .mclovin-card.gold-edition .val-mision { color: #3d2700; }
+
+        .signature { 
+            font-family: 'Great Vibes', cursive; 
+            font-size: 1.2rem; 
+            color: #0f172a;
+            line-height: 1;
+            transform: rotate(-2deg);
+            display: inline-block;
+            margin-top: 2px;
+        }
+
+        .founder-seal {
+            display: none;
+            position: absolute;
+            bottom: 6px;
+            right: 6px;
+            background: #785212;
+            color: #fff3a0;
+            padding: 2px 5px;
+            border-radius: 4px;
+            font-size: 0.5rem;
+            font-weight: 900;
+            border: 1px solid #ffd700;
+        }
+
+        .gold-edition .founder-seal { display: block; }
+
+        .modal-buttons { display: flex; flex-direction: column; gap: 6px; width: 320px; margin-top: 12px; }
+        .btn-action { width: 100%; padding: 8px; border: none; border-radius: 8px; font-size: 0.8rem; cursor: pointer; font-weight: bold; text-align: center; }
+        .btn-close { background: #333; color: white; }
+        .btn-download { background: #10b981; color: white; }
+
+        /* MARCOS ANIMADOS */
+        .marco-arcoiris {
+            position: absolute; inset: -3px; border-radius: 8px;
+            background: linear-gradient(45deg, #ff0000, #ff7f00, #ffff00, #00ff00, #0000ff, #4b0082, #8b00ff);
+            background-size: 400% 400%; z-index: 2; animation: gradientBorder 4s ease infinite;
+            pointer-events: none; mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor; mask-composite: exclude; padding: 3px;
+        }
+        .marco-neon {
+            position: absolute; inset: 0; border: 3px solid #ff758c; border-radius: 6px; z-index: 2; pointer-events: none; animation: pulseNeon 1.5s infinite alternate;
+        }
+        .marco-oro {
+            position: absolute; inset: 0; border: 3px dashed #ffd700; border-radius: 6px; z-index: 2; pointer-events: none; animation: spinGold 6s linear infinite;
+        }
+        .marco-corazones {
+            position: absolute; inset: 0; border: 3px solid #ff4757; border-radius: 6px; z-index: 2; pointer-events: none; animation: pulseHearts 1s infinite alternate;
+        }
+        @keyframes gradientBorder { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+        @keyframes pulseNeon { 0% { box-shadow: 0 0 4px #ff758c, inset 0 0 4px #ff758c; border-color: #ff758c; } 100% { box-shadow: 0 0 12px #ff7eb3, inset 0 0 8px #ff7eb3; border-color: #ff7eb3; } }
+        @keyframes spinGold { 0% { transform: rotate(0deg); border-color: #ffd700; } 50% { border-color: #ff6b81; } 100% { transform: rotate(360deg); border-color: #ffd700; } }
+        @keyframes pulseHearts { 0% { box-shadow: 0 0 4px #ff4757; transform: scale(1); } 100% { box-shadow: 0 0 12px #ff6b81; transform: scale(1.02); } }
+
+        /* TIENDA & RULETA */
+        .ruleta-box {
+            background: linear-gradient(135deg, #fdf4ff, #fae8ff);
+            border: 2px dashed #d946ef; border-radius: 12px; padding: 12px; text-align: center; margin-bottom: 10px;
+        }
+        .ruleta-wheel {
+            width: 70px; height: 70px; margin: 6px auto; border-radius: 50%;
+            background: conic-gradient(#f43f5e 0deg 90deg, #fbbf24 90deg 180deg, #38bdf8 180deg 270deg, #a855f7 270deg 360deg);
+            display: flex; align-items: center; justify-content: center; box-shadow: 0 3px 10px rgba(0,0,0,0.15); font-size: 1.3rem; transition: transform 3s cubic-bezier(0.15, 0.9, 0.2, 1);
+        }
+
+        .shop-item { border: 1px solid #e2d4f0; border-radius: 10px; padding: 8px; background: #fff; display: flex; flex-direction: column; justify-content: space-between; }
+        .shop-flex { display: flex; align-items: center; gap: 6px; }
+        .preview-box { width: 35px; height: 45px; background: #e2e8f0; border-radius: 6px; position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 1rem; border: 1px solid #ccc; }
+        .shop-item-info h4 { margin: 0 0 2px 0; font-size: 0.75rem; color: var(--morado); }
+        .shop-item-info p { margin: 0; font-size: 0.65rem; color: #666; }
+        .btn-buy { background: linear-gradient(135deg, var(--rosa), var(--fucsia)); color: white; border: none; padding: 5px; border-radius: 6px; font-weight: bold; font-size: 0.7rem; cursor: pointer; width: 100%; margin-top: 6px; }
+
+        /* BUZÓN */
+        .carta-item {
+            background: #fffbeb;
+            border: 1px solid #fde68a;
+            border-radius: 8px;
+            padding: 8px;
+            margin-bottom: 8px;
+            font-size: 0.8rem;
+        }
+        .carta-item.no-leida {
+            border-left: 4px solid var(--fucsia);
+            background: #fff5f7;
+        }
+
+        /* NAVEGACIÓN INFERIOR (4 PESTAÑAS) */
+        .nav-tabs {
+            display: flex; justify-content: space-around; background: #fff; position: fixed; bottom: 0; left: 0; right: 0; padding: 8px 2px; box-shadow: 0 -2px 10px rgba(0,0,0,0.08); z-index: 99;
+        }
+        .tab-btn {
+            background: none; border: none; font-size: 0.6rem; color: #888; display: flex; flex-direction: column; align-items: center; gap: 2px; font-weight: bold; flex: 1; padding: 0; margin: 0; cursor: pointer; position: relative;
+        }
+        .tab-btn.active { color: var(--morado); }
+        .tab-btn span { font-size: 1.1rem; }
+        .notif-dot {
+            position: absolute; top: 0; right: 22%; width: 7px; height: 7px; background: #ef4444; border-radius: 50%; display: none;
+        }
+
+        footer { text-align: center; padding: 12px; font-size: 0.75rem; color: #666; }
     </style>
 </head>
 <body>
 
-    <div class="dashboard-container">
-        
-        <!-- Fila Superior: Perfil y Corazones -->
-        <div class="top-bar">
-            <div class="profile-card" id="openInventory">
-                <img src="IMG_3900.jpeg" alt="Aoi" class="profile-avatar" onerror="this.src='https://via.placeholder.com/50'">
-                <div class="profile-info">
-                    <div class="profile-name-row">
-                        <span class="profile-name">Aoi</span>
-                        <span class="profile-backpack">🎒</span>
+    <div id="cartaFlotanteBox" onclick="abrirBuzonDesdeFlotante()">
+        <div style="display:flex; align-items:center; gap:8px;">
+            <span style="font-size:1.5rem;">💌</span>
+            <div>
+                <strong style="color:var(--morado); font-size:0.8rem;" id="flotanteRemitente">¡Nueva carta!</strong>
+                <p style="margin:2px 0 0 0; font-size:0.7rem; color:#555;" id="flotanteTexto">Te han enviado un mensaje secreto.</p>
+            </div>
+        </div>
+    </div>
+
+    <div id="matchOverlay" onclick="cerrarMatchAnimacion()">
+        <div style="font-size: 60px;">💖🏹</div>
+        <div style="font-size: 1.2rem; color: var(--fucsia); font-weight: bold; margin-top: 8px;">¡FLECHAZO MUTUO! 🌸</div>
+        <p id="matchTextoAnimado" style="font-size:0.9rem; color:var(--texto); font-weight:600;"></p>
+        <p style="font-size:0.7rem; color:#888; margin-top:10px;">(Toca la pantalla para cerrar)</p>
+    </div>
+
+    <!-- MODAL DEL CARNET -->
+    <div id="cardModal" class="card-modal" onclick="cerrarModalCarnet()">
+        <div id="mclovin-card" class="mclovin-card" onclick="event.stopPropagation()">
+            <div class="card-header">
+                <div class="header-main" id="cardHeaderTitle">ESPAÑA • BOLLOLANDIA 🌈</div>
+                <div class="header-sub">DRIVER LICENSE / CARNET SÁFICO</div>
+            </div>
+            <div class="card-body">
+                <div class="card-photo-box" id="cardPhotoBox">
+                    <span style="font-size: 2rem;">👤</span>
+                </div>
+                <div class="card-info">
+                    <div class="info-row">
+                        <span class="label-red">LICENCE NO.</span><br>
+                        <span class="val-bold" id="cardIdOut" style="color: #b91c1c;">BL-0000001</span>
                     </div>
-                    <span style="font-size: 0.75rem; color: var(--text-muted);">Toca para abrir mochila</span>
+                    <div class="info-row" style="display: flex; gap: 8px;">
+                        <div>
+                            <span class="label-red">EXP:</span> <span id="cardExpOut">PERM</span>
+                        </div>
+                        <div>
+                            <span class="label-red">DOB:</span> <span id="cardDateOut">00/00/00</span>
+                        </div>
+                    </div>
+                    <div class="info-row" style="margin-top: 2px;">
+                        <span class="label-red">NOMBRE / APODO:</span><br>
+                        <span class="val-bold" id="cardNameOut">---</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="label-red">MISIÓN PRINCIPAL:</span><br>
+                        <span class="val-mision" id="cardMisionOut">---</span>
+                    </div>
+                    <div class="info-row" style="margin-top: 2px;">
+                        <span class="label-red">FIRMA:</span><br>
+                        <span class="signature" id="cardSignatureOut">---</span>
+                    </div>
                 </div>
             </div>
-            
-            <div class="hearts-card">
-                <span class="heart-icon">💖</span>
-                <span class="infinity-symbol">∞</span>
+            <div class="founder-seal">✨ CREADORA VIP ✨</div>
+        </div>
+
+        <div class="modal-buttons" onclick="event.stopPropagation()">
+            <button class="btn-action btn-download" onclick="descargarCarnet()">📸 Descargar Carnet</button>
+            <button class="btn-action btn-close" onclick="cerrarModalCarnet()">Cerrar</button>
+        </div>
+    </div>
+
+    <header>
+        <div class="user-selector-box">
+            <select id="selectPerfilActivo" onchange="cambiarPerfilActivo(this.value)">
+                <!-- JavaScript -->
+            </select>
+        </div>
+
+        <div class="header-title-box">
+            <h1>🌸 Bollolandia</h1>
+            <p class="subtitulo">Espacio seguro ✨</p>
+        </div>
+
+        <div style="display: flex; align-items: center; gap: 5px;">
+            <!-- MOCHILA / PERFIL SUPERIOR DERECHA -->
+            <div class="mochila-header-btn" id="btnMochilaHeader" onclick="abrirModalCarnet()" style="display: none;" title="Abrir Mochila / Carnet">
+                <div class="mochila-avatar" id="miniAvatarBox">👤<div id="miniMarcoLayer"></div></div>
+                <div style="font-size:0.65rem; font-weight:bold; color:var(--morado); line-height: 1; text-align: left;">
+                    🎒 <span id="badgeNameOut" style="max-width: 45px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; display: block;">Perfil</span>
+                </div>
+            </div>
+
+            <div class="hearts-counter">💖 <span id="heartCount">0</span></div>
+        </div>
+    </header>
+
+    <div class="container">
+
+        <!-- PESTAÑA 1: TIENDA Y PREMIOS -->
+        <div id="tienda" class="tab-content active">
+            <div class="ruleta-box">
+                <h2 style="margin-top:0; color:#c026d3; font-size:0.95rem;">🎡 La Ruleta Sáfica</h2>
+                <p style="font-size:0.7rem; color:#666;">Gira para ganar premios (Cuesta 20 💖).</p>
+                <div class="ruleta-wheel" id="ruletaWheel">🎨</div>
+                <button class="btn-principal" style="background: linear-gradient(135deg, #ec4899, #8b5cf6); padding: 7px; font-size:0.8rem;" onclick="girarRuleta()">🎯 Girar Ruleta (20 💖)</button>
+            </div>
+
+            <div class="card">
+                <h2>🛍️ Tienda de Marcos y Extras</h2>
+                
+                <div class="grid-shop">
+                    <div class="shop-item">
+                        <div class="shop-flex">
+                            <div class="preview-box"><span>🌸</span><div class="marco-arcoiris"></div></div>
+                            <div class="shop-item-info"><h4>🌈 Arcoíris</h4><p>Multicolor.</p></div>
+                        </div>
+                        <button class="btn-buy" onclick="comprarMarco('marco-arcoiris', 'Arcoíris Sáfico', 30)">30 💖</button>
+                    </div>
+
+                    <div class="shop-item">
+                        <div class="shop-flex">
+                            <div class="preview-box"><span>✨</span><div class="marco-neon"></div></div>
+                            <div class="shop-item-info"><h4>🔮 Neón</h4><p>Cyberpunk.</p></div>
+                        </div>
+                        <button class="btn-buy" onclick="comprarMarco('marco-neon', 'Neón Cyberpunk', 35)">35 💖</button>
+                    </div>
+
+                    <div class="shop-item">
+                        <div class="shop-flex">
+                            <div class="preview-box"><span>👑</span><div class="marco-oro"></div></div>
+                            <div class="shop-item-info"><h4>⚡ Dorado</h4><p>Giratorio.</p></div>
+                        </div>
+                        <button class="btn-buy" onclick="comprarMarco('marco-oro', 'Anillo Dorado', 40)">40 💖</button>
+                    </div>
+
+                    <div class="shop-item">
+                        <div class="shop-flex">
+                            <div class="preview-box"><span>💖</span><div class="marco-corazones"></div></div>
+                            <div class="shop-item-info"><h4>💘 Latido</h4><p>Pulso fucsia.</p></div>
+                        </div>
+                        <button class="btn-buy" onclick="comprarMarco('marco-corazones', 'Latido de Amor', 30)">30 💖</button>
+                    </div>
+                </div>
+
+                <div style="margin-top: 10px; border: 1px solid var(--fucsia); padding: 8px; border-radius: 10px; background: #fff5f7;">
+                    <div style="font-size:0.8rem; font-weight:bold; color:var(--fucsia);">💌 Pase Especial de Cartas</div>
+                    <p style="font-size:0.7rem; color:#555; margin:2px 0 6px 0;">Habilita funciones avanzadas en el buzón.</p>
+                    <button class="btn-buy" style="margin-top:0;" onclick="comprarItem('Carta / Reto al Crush', 25)">Comprar por 25 💖</button>
+                </div>
             </div>
         </div>
 
-        <!-- Tarjeta de Quedada con Mapa -->
-        <div class="card">
-            <div class="card-title">
-                📍 Próxima Quedada
-                <span style="font-size: 0.75rem; color: var(--text-muted); font-weight: normal;">Madrid Centro</span>
+        <!-- PESTAÑA 2: AGENDA Y PLANES -->
+        <div id="agenda" class="tab-content">
+            <div class="card">
+                <h2>📅 Agenda y Quedadas</h2>
+                
+                <div class="accordion-header" onclick="toggleAccordion('accCumple')"><span>🎂 Añadir Cumpleaños (+15💖)</span> <span>▼</span></div>
+                <div id="accCumple" class="accordion-body">
+                    <input type="text" id="nombreCumple" placeholder="Nombre de la cumpleañera">
+                    <input type="date" id="fechaCumple">
+                    <button class="btn-principal" onclick="agregarCumple()">Guardar Cumple</button>
+                </div>
+
+                <div class="accordion-header" onclick="toggleAccordion('accQuedada')" style="margin-top:6px;"><span>📍 Proponer Plan / Quedada (+25💖)</span> <span>▼</span></div>
+                <div id="accQuedada" class="accordion-body">
+                    <input type="text" id="tituloQuedada" placeholder="Plan (ej: Café y chismes...)">
+                    <input type="text" id="lugarQuedada" placeholder="Lugar o Ciudad">
+                    <input type="datetime-local" id="fechaQuedada">
+                    <button class="btn-principal" onclick="agregarQuedada()">Publicar Plan</button>
+                </div>
             </div>
-            <div id="map"></div>
+
+            <div class="card">
+                <h2>🎉 Próximos Eventos</h2>
+                <h3 style="font-size:0.8rem; color:var(--morado); margin:6px 0 2px 0;">🎂 Cumpleaños:</h3>
+                <div id="listaCumples" style="font-size:0.75rem; margin-bottom:8px;">Aún no hay cumpleaños.</div>
+                <h3 style="font-size:0.8rem; color:var(--morado); margin:6px 0 2px 0;">📍 Quedadas:</h3>
+                <div id="listaQuedadas" style="font-size:0.75rem;">Aún no hay planes.</div>
+            </div>
         </div>
 
-        <!-- Tarjeta de Calendario (Widget) -->
-        <div class="card calendar-widget">
-            <div class="calendar-header">
-                <span>Agosto 2026</span>
-                <span style="font-size: 0.8rem; font-weight: normal; color: var(--text-muted);">📅 Vista Mensual</span>
+        <!-- PESTAÑA 3: BUZÓN Y FLECHAZOS -->
+        <div id="buzon" class="tab-content">
+            <div class="card">
+                <h2>💌 Buzón y Conexiones</h2>
+                
+                <div class="accordion-header" onclick="toggleAccordion('accEnviarCarta')"><span>📨 Enviar Carta Secreta</span> <span>▼</span></div>
+                <div id="accEnviarCarta" class="accordion-body">
+                    <select id="selectDestinataria">
+                        <option value="" disabled selected>Selecciona destinataria...</option>
+                    </select>
+                    <textarea id="textoCarta" placeholder="Escribe tu mensaje..." rows="2"></textarea>
+                    <button class="btn-flechazo" onclick="enviarCartaBuzon()">Enviar Carta</button>
+                </div>
+
+                <div class="accordion-header" onclick="toggleAccordion('accFlechazo')" style="margin-top:6px;"><span>💘 Mandar Flechazo Anónimo</span> <span>▼</span></div>
+                <div id="accFlechazo" class="accordion-body">
+                    <input type="text" id="destinoFlechazo" placeholder="¿A quién le mandas el flechazo?">
+                    <button class="btn-flechazo" onclick="enviarFlechazo()">Mandar Flechazo</button>
+                </div>
             </div>
-            <div class="calendar-grid">
-                <div class="calendar-day-name">L</div>
-                <div class="calendar-day-name">M</div>
-                <div class="calendar-day-name">X</div>
-                <div class="calendar-day-name">J</div>
-                <div class="calendar-day-name">V</div>
-                <div class="calendar-day-name">S</div>
-                <div class="calendar-day-name">D</div>
+
+            <div class="card">
+                <h2>📥 Tu Buzón & Matches</h2>
+                <div id="miBuzonContenedor" style="font-size:0.75rem; margin-bottom: 8px;">No tienes cartas.</div>
+                <div id="misMatches"></div>
+            </div>
+        </div>
+
+        <!-- PESTAÑA 4: EXTRAS (PERFIL, REGISTRO Y MASCOTAS) -->
+        <div id="extras" class="tab-content">
+            <div class="card" id="formRegistroCarnet">
+                <h2>🎒 Crear Carnet y Mochila</h2>
+                <p style="font-size:0.75rem; color:#666; margin-top:-4px;">Regístrate con tu apodo y código exclusivo.</p>
                 
-                <div class="calendar-day muted">27</div>
-                <div class="calendar-day muted">28</div>
-                <div class="calendar-day muted">29</div>
-                <div class="calendar-day muted">30</div>
-                <div class="calendar-day muted">31</div>
-                <div class="calendar-day">1</div>
-                <div class="calendar-day">2</div>
+                <input type="text" id="inName" placeholder="Tu Apodo / Nombre" maxlength="15">
                 
-                <div class="calendar-day active">3</div>
-                <div class="calendar-day">4</div>
-                <div class="calendar-day">5</div>
-                <div class="calendar-day">6</div>
-                <div class="calendar-day">7</div>
-                <div class="calendar-day">8</div>
-                <div class="calendar-day">9</div>
+                <select id="inMision">
+                    <option value="" disabled selected>Selecciona tu misión...</option>
+                    <option value="Traer el chisme fresco">✨ Traer el chisme fresco</option>
+                    <option value="Organizar las previas">🍻 Organizar las previas</option>
+                    <option value="Dar los mejores abrazos">🫂 Dar los mejores abrazos</option>
+                    <option value="Servir drama libre">Aesthetic & Drama Libre</option>
+                    <option value="Analizar las red flags">🚩 Analizadora de Red Flags</option>
+                    <option value="Ser la DJ oficial">🎧 DJ oficial del grupo</option>
+                    <option value="Crisis existenciales 3 AM">🌙 Crisis existenciales 3 AM</option>
+                    <option value="Adoptar gatitos y llorar">🐱 Adoptar gatitos y llorar</option>
+                </select>
+
+                <label for="inPhoto" class="file-input-label" id="photoLabel">📷 Subir Foto de Perfil</label>
+                <input type="file" id="inPhoto" accept="image/*" style="display: none;" onchange="procesarFotoCarnet()">
+
+                <input type="password" id="inCodigo" placeholder="🔒 Código de acceso exclusivo">
+
+                <button class="btn-principal" onclick="crearCarnet()">✨ Validar y Guardar en Mochila</button>
+            </div>
+
+            <div class="card" id="seccionMiCarnet" style="display: none;">
+                <h2>🎒 Gestión de Mochila 🌸</h2>
+                <p style="font-size: 0.75rem; color: #555; margin-top: -4px;">Toca arriba en tu icono de mochila 🎒 o aquí abajo para ver tu carnet oficial en grande.</p>
+                
+                <button class="btn-principal" onclick="abrirModalCarnet()" style="margin-top: 4px;">👁️ Ver Carnet Oficial</button>
+
+                <div style="margin-top: 10px; border-top: 1px solid #eee; padding-top: 8px;">
+                    <h3 style="font-size: 0.85rem; color: var(--morado); margin-bottom: 6px;">🖼️ Tus Marcos Animados</h3>
+                    <div id="inventarioMarcos" style="display: flex; gap: 5px; flex-wrap: wrap;"></div>
+                </div>
+
+                <button class="btn-logout" onclick="cerrarSesion()">🚪 Cerrar Sesión / Borrar Perfil</button>
+            </div>
+
+            <div class="card" style="margin-top: 12px;">
+                <h2>🐾 Galería Peluda</h2>
+                <input type="text" id="nombreMascota" placeholder="Nombre del animalito">
+                <input type="file" id="fotoMascota" accept="image/*">
+                <button class="btn-principal" onclick="subirMascota()">Publicar Foto (+20💖)</button>
+                <div id="galeriaMascotas" class="grid-pets" style="margin-top:8px;"></div>
+            </div>
+
+            <div class="card">
+                <h2>📢 Actualizaciones</h2>
+                <div style="background:#f8fafc; border-left:3px solid var(--morado); padding:8px; border-radius:4px; font-size:0.7rem;">
+                    <strong style="color:var(--morado);">✨ Versión 4.0 - Súper Limpia</strong>
+                    <p style="margin:2px 0 0 0; color:#444;">Estructura de 4 pestañas esenciales, mochila superior derecha y acordeones para ahorrar espacio.</p>
+                </div>
             </div>
         </div>
 
     </div>
 
-    <!-- Desplegable de Inventario (Mochila) -->
-    <div class="inventory-modal" id="inventoryModal">
-        <div class="inventory-content">
-            <div class="inventory-header">
-                <span>🎒 Mochila de Objetos</span>
-                <button class="close-inventory" id="closeInventory">✕</button>
-            </div>
-            <div class="inventory-items-grid">
-                
-                <!-- Objeto Carnet (Interactivo) -->
-                <div class="inventory-item" id="openIdCard">
-                    <div class="item-left">
-                        <span class="item-icon">🪪</span>
-                        <div class="item-details">
-                            <span class="item-name">Carnet de Identidad</span>
-                            <span class="item-desc">Documento oficial y personal</span>
-                        </div>
-                    </div>
-                    <span class="item-count">×1</span>
-                </div>
+    <footer>
+        <p>✨ "Un espacio donde siempre puedes ser tú misma." ✨</p>
+    </footer>
 
-                <!-- Objeto Premio Ruleta -->
-                <div class="inventory-item">
-                    <div class="item-left">
-                        <span class="item-icon">🎡</span>
-                        <div class="item-details">
-                            <span class="item-name">Premio de la Ruleta</span>
-                            <span class="item-desc">Objeto especial conseguido en la suerte</span>
-                        </div>
-                    </div>
-                    <span class="item-count">×3</span>
-                </div>
-
-                <!-- Repelente (Estilo Pokémon traducido) -->
-                <div class="inventory-item">
-                    <div class="item-left">
-                        <span class="item-icon">🧴</span>
-                        <div class="item-details">
-                            <span class="item-name">Repelente</span>
-                            <span class="item-desc">Evita molestias durante 100 pasos</span>
-                        </div>
-                    </div>
-                    <span class="item-count">×1</span>
-                </div>
-
-                <!-- Polvos Estelares -->
-                <div class="inventory-item">
-                    <div class="item-left">
-                        <span class="item-icon">✨</span>
-                        <div class="item-details">
-                            <span class="item-name">Polvo Estelar</span>
-                            <span class="item-desc">Brillo especial obtenido explorando</span>
-                        </div>
-                    </div>
-                    <span class="item-count">×5</span>
-                </div>
-
-                <!-- Cuerda Huida -->
-                <div class="inventory-item">
-                    <div class="item-left">
-                        <span class="item-icon">🪢</span>
-                        <div class="item-details">
-                            <span class="item-name">Cuerda Huida</span>
-                            <span class="item-desc">Para escapar rápidamente de sitios aburridos</span>
-                        </div>
-                    </div>
-                    <span class="item-count">×2</span>
-                </div>
-
-            </div>
-        </div>
+    <div class="nav-tabs" id="navTabs" style="display: none;">
+        <button class="tab-btn active" onclick="cambiarPestana('tienda', this)"><span>🛍️</span>Tienda</button>
+        <button class="tab-btn" onclick="cambiarPestana('agenda', this)"><span>📅</span>Agenda</button>
+        <button class="tab-btn" onclick="cambiarPestana('buzon', this)"><span>💌</span>Buzón<div class="notif-dot" id="dotBuzon"></div></button>
+        <button class="tab-btn" onclick="cambiarPestana('extras', this)"><span>🎒</span>Mochila</button>
     </div>
 
-    <!-- Modal para ver el Carnet en grande -->
-    <div class="id-card-modal" id="idCardModal">
-        <div class="id-card-visual">
-            <div class="id-card-header">Carnet Oficial</div>
-            <img src="IMG_3900.jpeg" alt="Aoi" class="id-card-avatar" onerror="this.src='https://via.placeholder.com/90'">
-            <div class="id-card-name">Aoi</div>
-            <div class="id-card-role">✨ Usuario Verificado ✨</div>
-            <button class="close-id-card" id="closeIdCard">Cerrar</button>
-        </div>
-    </div>
-
-    <!-- Leaflet JS para inicializar el mapa -->
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script>
-        // Inicializar el mapa centrado en un punto estético
-        document.addEventListener("DOMContentLoaded", function() {
-            var map = L.map('map', {
-                zoomControl: false,
-                attributionControl: false
-            }).setView([40.4168, -3.7038], 14);
+        const CODIGO_CORRECTO = "BL-VIP-8317";
+        const CODIGO_FUNDADORA = "BL-FUNDADORA-GOLD";
 
-            L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{@2x}.png', {
-                maxZoom: 19
-            }).addTo(map);
+        let carnetFotoBase64 = "";
+        let perfilActivo = localStorage.getItem("perfil_activo") || "";
 
-            L.marker([40.4168, -3.7038]).addTo(map);
+        function obtenerBaseDatosGlobal() {
+            return JSON.parse(localStorage.getItem("bollolandia_usuarios") || "{}");
+        }
 
-            // Forzar actualización del tamaño del mapa tras renderizar
-            setTimeout(function() {
-                map.invalidateSize();
-            }, 200);
-        });
+        function guardarBaseDatosGlobal(db) {
+            localStorage.setItem("bollolandia_usuarios", JSON.stringify(db));
+        }
 
-        // Lógica para abrir/cerrar el inventario (Mochila)
-        const openInventoryBtn = document.getElementById('openInventory');
-        const closeInventoryBtn = document.getElementById('closeInventory');
-        const inventoryModal = document.getElementById('inventoryModal');
+        function obtenerDatosActuales() {
+            const db = obtenerBaseDatosGlobal();
+            return db[perfilActivo] || null;
+        }
 
-        openInventoryBtn.addEventListener('click', () => {
-            inventoryModal.classList.add('open');
-        });
-
-        closeInventoryBtn.addEventListener('click', () => {
-            inventoryModal.classList.remove('open');
-        });
-
-        inventoryModal.addEventListener('click', (e) => {
-            if (e.target === inventoryModal) {
-                inventoryModal.classList.remove('open');
+        function actualizarDatosActuales(nuevosDatos) {
+            const db = obtenerBaseDatosGlobal();
+            if (perfilActivo && db[perfilActivo]) {
+                db[perfilActivo] = { ...db[perfilActivo], ...nuevosDatos };
+                guardarBaseDatosGlobal(db);
             }
-        });
+        }
 
-        // Lógica para abrir el carnet en grande
-        const openIdCardBtn = document.getElementById('openIdCard');
-        const closeIdCardBtn = document.getElementById('closeIdCard');
-        const idCardModal = document.getElementById('idCardModal');
+        function cambiarPerfilActivo(nombre) {
+            perfilActivo = nombre;
+            localStorage.setItem("perfil_activo", nombre);
+            sincronizarInterfazUsuario();
+        }
 
-        openIdCardBtn.addEventListener('click', () => {
-            inventoryModal.classList.remove('open'); // Cierra mochila
-            idCardModal.classList.add('open'); // Abre carnet en grande
-        });
+        function actualizarSelectorPerfiles() {
+            const db = obtenerBaseDatosGlobal();
+            const select = document.getElementById("selectPerfilActivo");
+            const selectDest = document.getElementById("selectDestinataria");
+            const nombres = Object.keys(db);
 
-        closeIdCardBtn.addEventListener('click', () => {
-            idCardModal.classList.remove('open');
-        });
-
-        idCardModal.addEventListener('click', (e) => {
-            if (e.target === idCardModal) {
-                idCardModal.classList.remove('open');
+            if (nombres.length === 0) {
+                select.innerHTML = `<option value="">Sin perfiles</option>`;
+                if(selectDest) selectDest.innerHTML = `<option value="">Nadie</option>`;
+                return;
             }
+
+            if (!perfilActivo || !db[perfilActivo]) {
+                perfilActivo = nombres[0];
+                localStorage.setItem("perfil_activo", perfilActivo);
+            }
+
+            select.innerHTML = nombres.map(n => `<option value="${n}" ${n === perfilActivo ? 'selected' : ''}>${n}</option>`).join('');
+            
+            if(selectDest) {
+                selectDest.innerHTML = `<option value="" disabled selected>Destinataria...</option>` +
+                    nombres.filter(n => n.toLowerCase() !== perfilActivo.toLowerCase())
+                           .map(n => `<option value="${n}">${n}</option>`).join('');
+            }
+        }
+
+        function sincronizarInterfazUsuario() {
+            actualizarSelectorPerfiles();
+            const userData = obtenerDatosActuales();
+
+            if (userData) {
+                document.getElementById("navTabs").style.display = "flex";
+                document.getElementById("formRegistroCarnet").style.display = "none";
+                document.getElementById("seccionMiCarnet").style.display = "block";
+                document.getElementById("btnMochilaHeader").style.display = "flex";
+                cargarDatosCarnet(userData);
+                renderizarInventarioMarcos();
+                cargarBuzonPersonal();
+                comprobarNotificacionesBuzon();
+            } else {
+                document.getElementById("navTabs").style.display = "flex"; // Se muestra para poder registrarse en Extras
+                document.getElementById("formRegistroCarnet").style.display = "block";
+                document.getElementById("seccionMiCarnet").style.display = "none";
+                document.getElementById("btnMochilaHeader").style.display = "none";
+                document.getElementById("heartCount").innerText = "0";
+            }
+            comprobarMatches();
+        }
+
+        function actualizarCorazones(cantidad) {
+            const data = obtenerDatosActuales();
+            if (!data) return;
+
+            if (data.isGold) {
+                document.getElementById("heartCount").innerText = "∞";
+                return;
+            }
+
+            data.hearts = (data.hearts || 0) + cantidad;
+            if (data.hearts < 0) data.hearts = 0;
+            actualizarDatosActuales({ hearts: data.hearts });
+            document.getElementById("heartCount").innerText = data.hearts;
+        }
+
+        function cambiarPestana(idPestana, btn) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+            document.getElementById(idPestana).classList.add('active');
+            if(btn) btn.classList.add('active');
+            
+            if(idPestana === 'buzon') {
+                marcarBuzonComoLeido();
+            }
+        }
+
+        function toggleAccordion(id) {
+            const el = document.getElementById(id);
+            if(el) el.classList.toggle('open');
+        }
+
+        function procesarFotoCarnet() {
+            const file = document.getElementById('inPhoto').files[0];
+            const label = document.getElementById('photoLabel');
+            if (file) {
+                const reader = new FileReader();
+                reader.onloadend = function() {
+                    carnetFotoBase64 = reader.result;
+                    label.innerText = "✅ Foto cargada";
+                    label.style.borderColor = "#10b981";
+                    label.style.color = "#10b981";
+                }
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function crearCarnet() {
+            const name = document.getElementById("inName").value.trim();
+            const mision = document.getElementById("inMision").value;
+            const codigoIngresado = document.getElementById("inCodigo").value.trim();
+
+            if (!name || !mision) return alert("Por favor escribe tu nombre y elige una misión 🌈");
+
+            let esGold = false;
+            if (codigoIngresado === CODIGO_FUNDADORA) {
+                esGold = true;
+            } else if (codigoIngresado === CODIGO_CORRECTO) {
+                esGold = false;
+            } else {
+                return alert("🔒 Código de acceso incorrecto.");
+            }
+
+            let counter = parseInt(localStorage.getItem("dni_counter_num") || "0", 10) + 1;
+            localStorage.setItem("dni_counter_num", counter.toString());
+
+            const formattedNum = counter.toString().padStart(7, '0');
+            const cardId = esGold ? `BL-GOLD-001` : `BL-${formattedNum}`;
+            const today = new Date().toLocaleDateString();
+
+            const nuevoUsuario = {
+                name, mision, cardId, date: today, photo: carnetFotoBase64, isGold: esGold,
+                hearts: esGold ? 9999 : 100,
+                marcosComprados: esGold ? ["marco-arcoiris", "marco-neon", "marco-oro", "marco-corazones"] : [],
+                marcoActivo: "",
+                buzonCartas: []
+            };
+
+            const db = obtenerBaseDatosGlobal();
+            db[name] = nuevoUsuario;
+            guardarBaseDatosGlobal(db);
+
+            perfilActivo = name;
+            localStorage.setItem("perfil_activo", name);
+            carnetFotoBase64 = "";
+
+            sincronizarInterfazUsuario();
+            abrirModalCarnet();
+        }
+
+        function cargarDatosCarnet(data) {
+            document.getElementById("badgeNameOut").innerText = data.name;
+
+            document.getElementById("cardNameOut").innerText = data.name;
+            document.getElementById("cardMisionOut").innerText = data.mision;
+            document.getElementById("cardSignatureOut").innerText = data.name;
+            document.getElementById("cardIdOut").innerText = data.cardId;
+            document.getElementById("cardDateOut").innerText = data.date;
+
+            const cardElement = document.getElementById("mclovin-card");
+
+            if (data.isGold) {
+                cardElement.classList.add("gold-edition");
+                document.getElementById("cardHeaderTitle").innerText = "GOLD • ESPAÑA 👑";
+                document.getElementById("heartCount").innerText = "∞";
+            } else {
+                cardElement.classList.remove("gold-edition");
+                document.getElementById("cardHeaderTitle").innerText = "ESPAÑA • BOLLOLANDIA 🌈";
+                document.getElementById("heartCount").innerText = data.hearts || 0;
+            }
+
+            if (data.photo) {
+                document.getElementById("cardPhotoBox").innerHTML = `<img src="${data.photo}" class="card-photo-img"><div id="marcoLayer"></div>`;
+                document.getElementById("miniAvatarBox").innerHTML = `<img src="${data.photo}" style="width:100%;height:100%;object-fit:cover;"><div id="miniMarcoLayer"></div>`;
+            } else {
+                document.getElementById("cardPhotoBox").innerHTML = `<span style="font-size: 2rem;">👤</span><div id="marcoLayer"></div>`;
+                document.getElementById("miniAvatarBox").innerHTML = `👤<div id="miniMarcoLayer"></div>`;
+            }
+
+            aplicarMarcoGuardado();
+        }
+
+        function cerrarSesion() {
+            if (confirm(`¿Eliminar perfil de ${perfilActivo}?`)) {
+                const db = obtenerBaseDatosGlobal();
+                delete db[perfilActivo];
+                guardarBaseDatosGlobal(db);
+                const remaining = Object.keys(db);
+                perfilActivo = remaining.length > 0 ? remaining[0] : "";
+                localStorage.setItem("perfil_activo", perfilActivo);
+                sincronizarInterfazUsuario();
+            }
+        }
+
+        function abrirModalCarnet() { document.getElementById("cardModal").style.display = "flex"; }
+        function cerrarModalCarnet() { document.getElementById("cardModal").style.display = "none"; }
+
+        function descargarCarnet() {
+            const cardElement = document.getElementById("mclovin-card");
+            html2canvas(cardElement).then(canvas => {
+                const link = document.createElement("a");
+                link.download = `carnet-${perfilActivo}.png`;
+                link.href = canvas.toDataURL("image/png");
+                link.click();
+            });
+        }
+
+        function girarRuleta() {
+            const costo = 20;
+            const data = obtenerDatosActuales();
+            if (!data) return alert("Crea un perfil primero para girar la ruleta 🎒");
+            if (!data.isGold && data.hearts < costo) return alert(`⛔ Necesitas ${costo} 💖.`);
+
+            if (!data.isGold) actualizarCorazones(-costo);
+
+            const wheel = document.getElementById("ruletaWheel");
+            const randomDeg = Math.floor(1440 + Math.random() * 1080);
+            wheel.style.transform = `rotate(${randomDeg}deg)`;
+
+            setTimeout(() => {
+                const premios = [
+                    { tipo: 'corazones', valor: 30, texto: '¡+30 💖 extra!' },
+                    { tipo: 'marco', id: 'marco-arcoiris', nombre: 'Arcoíris Sáfico', texto: '¡Ganaste el marco Arcoíris 🌈' },
+                    { tipo: 'marco', id: 'marco-neon', nombre: 'Neón Cyberpunk', texto: '¡Ganaste el marco Neón ✨' },
+                    { tipo: 'corazones', valor: 50, texto: '¡Premio gordo! +50 💖 🎉' }
+                ];
+                const premio = premios[Math.floor(Math.random() * premios.length)];
+
+                if (premio.tipo === 'corazones') {
+                    actualizarCorazones(premio.valor);
+                    alert(premio.texto);
+                } else {
+                    let marcos = data.marcosComprados || [];
+                    if (!marcos.includes(premio.id)) {
+                        marcos.push(premio.id);
+                        actualizarDatosActuales({ marcosComprados: marcos });
+                        renderizarInventarioMarcos();
+                    }
+                    alert(premio.texto + " ¡Ya puedes ponértelo!");
+                }
+            }, 3000);
+        }
+
+        function comprarMarco(idMarco, nombreMarco, precio) {
+            const data = obtenerDatosActuales();
+            if (!data) return alert("Crea un perfil primero para comprar en la tienda 🎒");
+            let marcos = data.marcosComprados || [];
+            if (marcos.includes(idMarco)) return alert("✨ ¡Ya tienes este marco!");
+            
+            if (!data.isGold && data.hearts < precio) return alert(`⛔ Te faltan puntos.`);
+
+            if (!data.isGold) actualizarCorazones(-precio);
+
+            marcos.push(idMarco);
+            actualizarDatosActuales({ marcosComprados: marcos });
+            renderizarInventarioMarcos();
+            alert(`🎉 ¡Marco ${nombreMarco} desbloqueado!`);
+        }
+
+        function renderizarInventarioMarcos() {
+            const contenedor = document.getElementById("inventarioMarcos");
+            if (!contenedor) return;
+
+            const data = obtenerDatosActuales();
+            if (!data) return;
+
+            let marcos = data.marcosComprados || [];
+            if (data.isGold) marcos = ["marco-arcoiris", "marco-neon", "marco-oro", "marco-corazones"];
+
+            if (marcos.length === 0) {
+                contenedor.innerHTML = `<span style="font-size: 0.7rem; color: #888;">Sin marcos.</span>`;
+                return;
+            }
+
+            let html = `<button onclick="quitarMarco()" style="padding:4px 7px; font-size:0.65rem; border-radius:6px; background:#e2e8f0; border:none; cursor:pointer; font-weight:bold;">Ninguno</button>`;
+            const nombres = { 'marco-arcoiris': '🌈 Arcoíris', 'marco-neon': '✨ Neón', 'marco-oro': '👑 Oro', 'marco-corazones': '💖 Latido' };
+
+            marcos.forEach(m => {
+                let activo = data.marcoActivo === m;
+                let btnStyle = activo ? "background:var(--morado); color:white;" : "background:#fff; color:var(--morado); border:1px solid var(--morado);";
+                html += `<button onclick="equiparMarco('${m}')" style="padding:4px 7px; font-size:0.65rem; border-radius:6px; cursor:pointer; font-weight:bold; ${btnStyle}">${nombres[m] || 'Marco'} ${activo ? '✓' : ''}</button>`;
+            });
+            contenedor.innerHTML = html;
+        }
+
+        function equiparMarco(idMarco) {
+            actualizarDatosActuales({ marcoActivo: idMarco });
+            aplicarMarcoGuardado();
+            renderizarInventarioMarcos();
+        }
+
+        function quitarMarco() {
+            actualizarDatosActuales({ marcoActivo: "" });
+            aplicarMarcoGuardado();
+            renderizarInventarioMarcos();
+        }
+
+        function aplicarMarcoGuardado() {
+            const data = obtenerDatosActuales();
+            const marcoLayer = document.getElementById("marcoLayer");
+            const miniMarcoLayer = document.getElementById("miniMarcoLayer");
+            if (marcoLayer) marcoLayer.innerHTML = "";
+            if (miniMarcoLayer) miniMarcoLayer.innerHTML = "";
+
+            if (data && data.marcoActivo) {
+                const clase = { 'marco-arcoiris': 'marco-arcoiris', 'marco-neon': 'marco-neon', 'marco-oro': 'marco-oro', 'marco-corazones': 'marco-corazones' }[data.marcoActivo];
+                if (clase) {
+                    if (marcoLayer) marcoLayer.innerHTML = `<div class="${clase}"></div>`;
+                    if (miniMarcoLayer) miniMarcoLayer.innerHTML = `<div class="${clase}"></div>`;
+                }
+            }
+        }
+
+        function comprarItem(itemNombre, precio) {
+            const data = obtenerDatosActuales();
+            if (!data) return alert("Crea un perfil primero 🎒");
+            if (!data.isGold && data.hearts < precio) return alert(`⛔ Necesitas ${precio} 💖.`);
+            if (!data.isGold) actualizarCorazones(-precio);
+            alert(`🎉 ¡Canjeado con éxito!`);
+        }
+
+        function enviarCartaBuzon() {
+            const data = obtenerDatosActuales();
+            if (!data) return alert("Crea un perfil primero 🎒");
+            const destSelect = document.getElementById("selectDestinataria");
+            const texto = document.getElementById("textoCarta").value.trim();
+            const destinataria = destSelect.value;
+
+            if (!destinataria || !texto) return alert("Selecciona destinataria y mensaje.");
+
+            const db = obtenerBaseDatosGlobal();
+            if (db[destinataria]) {
+                if (!db[destinataria].buzonCartas) db[destinataria].buzonCartas = [];
+                
+                db[destinataria].buzonCartas.push({
+                    de: perfilActivo,
+                    texto: texto,
+                    fecha: new Date().toLocaleDateString(),
+                    leida: false
+                });
+
+                guardarBaseDatosGlobal(db);
+                document.getElementById("textoCarta").value = "";
+                alert("💌 ¡Carta enviada!");
+            }
+        }
+
+        function cargarBuzonPersonal() {
+            const data = obtenerDatosActuales();
+            const contenedor = document.getElementById("miBuzonContenedor");
+            if (!contenedor || !data) return;
+
+            const cartas = data.buzonCartas || [];
+            if (cartas.length === 0) {
+                contenedor.innerHTML = `<p style="color:#888; font-size:0.75rem;">Buzón vacío.</p>`;
+                return;
+            }
+
+            contenedor.innerHTML = cartas.map((c) => `
+                <div class="carta-item ${c.leida ? '' : 'no-leida'}">
+                    <div style="display:flex; justify-content:space-between; font-weight:bold; color:var(--morado); font-size:0.7rem;">
+                        <span>💌 De: ${c.de}</span>
+                        <span style="color:#888; font-size:0.65rem;">${c.fecha}</span>
+                    </div>
+                    <p style="margin:4px 0 0 0; color:#333; font-size:0.75rem; white-space: pre-wrap;">${c.texto}</p>
+                </div>
+            `).join('');
+        }
+
+        function comprobarNotificacionesBuzon() {
+            const data = obtenerDatosActuales();
+            if (!data || !data.buzonCartas) return;
+
+            const noLeidas = data.buzonCartas.filter(c => !c.leida);
+            const dot = document.getElementById("dotBuzon");
+            const flotante = document.getElementById("cartaFlotanteBox");
+
+            if (noLeidas.length > 0) {
+                dot.style.display = "block";
+                const ultima = noLeidas[noLeidas.length - 1];
+                document.getElementById("flotanteRemitente").innerText = `¡Carta de ${ultima.de}!`;
+                document.getElementById("flotanteTexto").innerText = ultima.texto.substring(0, 30) + "...";
+                flotante.style.display = "block";
+            } else {
+                dot.style.display = "none";
+                flotante.style.display = "none";
+            }
+        }
+
+        function marcarBuzonComoLeido() {
+            const db = obtenerBaseDatosGlobal();
+            if (db[perfilActivo] && db[perfilActivo].buzonCartas) {
+                db[perfilActivo].buzonCartas.forEach(c => c.leida = true);
+                guardarBaseDatosGlobal(db);
+                document.getElementById("dotBuzon").style.display = "none";
+                document.getElementById("cartaFlotanteBox").style.display = "none";
+                cargarBuzonPersonal();
+            }
+        }
+
+        function abrirBuzonDesdeFlotante() {
+            cambiarPestana('buzon', document.querySelectorAll('.tab-btn')[2]);
+        }
+
+        function agregarCumple() {
+            const data = obtenerDatosActuales();
+            if (!data) return alert("Crea un perfil primero 🎒");
+            const nombre = document.getElementById('nombreCumple').value;
+            const fecha = document.getElementById('fechaCumple').value;
+            if(!nombre || !fecha) return alert('Rellena los campos');
+            const cumples = JSON.parse(localStorage.getItem('cumples') || '[]');
+            cumples.push({ nombre, fecha });
+            localStorage.setItem('cumples', JSON.stringify(cumples));
+            document.getElementById('nombreCumple').value = '';
+            document.getElementById('fechaCumple').value = '';
+            actualizarCorazones(15);
+            cargarCumples();
+            alert('🎂 ¡Cumpleaños guardado (+15 💖)!');
+        }
+
+        function cargarCumples() {
+            const cumples = JSON.parse(localStorage.getItem('cumples') || '[]');
+            const cont = document.getElementById('listaCumples');
+            if(!cont) return;
+            if(cumples.length === 0) return cont.innerHTML = 'Aún no hay cumpleaños.';
+            cont.innerHTML = cumples.map(c => `🎂 <strong>${c.nombre}</strong> (${c.fecha})<br>`).join('');
+        }
+
+        function agregarQuedada() {
+            const data = obtenerDatosActuales();
+            if (!data) return alert("Crea un perfil primero 🎒");
+            const titulo = document.getElementById('tituloQuedada').value;
+            const lugar = document.getElementById('lugarQuedada').value;
+            const fecha = document.getElementById('fechaQuedada').value;
+            if(!titulo || !lugar || !fecha) return alert('Rellena los datos');
+            const quedadas = JSON.parse(localStorage.getItem('quedadas') || '[]');
+            quedadas.push({ titulo, lugar, fecha });
+            localStorage.setItem('quedadas', JSON.stringify(quedadas));
+            document.getElementById('tituloQuedada').value = '';
+            document.getElementById('lugarQuedada').value = '';
+            document.getElementById('fechaQuedada').value = '';
+            actualizarCorazones(25);
+            cargarQuedadas();
+            alert('📍 ¡Plan publicado (+25 💖)!');
+        }
+
+        function cargarQuedadas() {
+            const quedadas = JSON.parse(localStorage.getItem('quedadas') || '[]');
+            const cont = document.getElementById('listaQuedadas');
+            if(!cont) return;
+            if(quedadas.length === 0) return cont.innerHTML = 'Aún no hay planes.';
+            cont.innerHTML = quedadas.map(q => {
+                const mapUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(q.lugar)}`;
+                return `📍 <strong>${q.titulo}</strong> (${q.lugar})<br><a href="${mapUrl}" target="_blank" class="btn-mapa">🗺️ Ver Mapa</a><br>`;
+            }).join('');
+        }
+
+        function enviarFlechazo() {
+            const data = obtenerDatosActuales();
+            if (!data) return alert("Crea un perfil primero 🎒");
+            const para = document.getElementById('destinoFlechazo').value.trim().toLowerCase();
+            if(!para) return alert('Escribe el nombre');
+            if(para === perfilActivo.toLowerCase()) return alert('No te puedes mandar un flechazo a ti misma');
+
+            const flechazos = JSON.parse(localStorage.getItem('flechazos') || '[]');
+            const de = perfilActivo.toLowerCase();
+            if(!flechazos.some(f => f.de === de && f.para === para)) {
+                flechazos.push({ de, para });
+                localStorage.setItem('flechazos', JSON.stringify(flechazos));
+            }
+            document.getElementById('destinoFlechazo').value = '';
+            alert('💘 Flechazo guardado.');
+            comprobarMatches();
+        }
+
+        function comprobarMatches() {
+            const cont = document.getElementById('misMatches');
+            if(!cont || !perfilActivo) return;
+            const miNombre = perfilActivo.toLowerCase();
+            const flechazos = JSON.parse(localStorage.getItem('flechazos') || '[]');
+            const misEnviados = flechazos.filter(f => f.de === miNombre).map(f => f.para);
+            const matches = flechazos.filter(f => f.para === miNombre && misEnviados.includes(f.de));
+
+            if(matches.length > 0) {
+                cont.innerHTML = matches.map(m => `
+                    <div style="background:#ffe5ec; border:1px dashed var(--fucsia); border-radius:8px; padding:8px; text-align:center; margin-top:6px;">
+                        <strong style="color:#d63384; font-size:0.8rem;">¡HAY MATCH MUTUO CON ${m.de.toUpperCase()}! 🌸💖</strong>
+                    </div>
+                `).join('');
+            } else {
+                cont.innerHTML = '';
+            }
+        }
+
+        function subirMascota() {
+            const data = obtenerDatosActuales();
+            if (!data) return alert("Crea un perfil primero 🎒");
+            const nombre = document.getElementById('nombreMascota').value;
+            const fileInput = document.getElementById('fotoMascota');
+            if(!nombre || fileInput.files.length === 0) return alert('Pon nombre y foto');
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const mascotas = JSON.parse(localStorage.getItem('mascotas') || '[]');
+                mascotas.push({ nombre, foto: e.target.result });
+                localStorage.setItem('mascotas', JSON.stringify(mascotas));
+                document.getElementById('nombreMascota').value = '';
+                fileInput.value = '';
+                actualizarCorazones(20);
+                cargarMascotas();
+                alert('🐾 ¡Foto subida (+20 💖)!');
+            };
+            reader.readAsDataURL(fileInput.files[0]);
+        }
+
+        function cargarMascotas() {
+            const mascotas = JSON.parse(localStorage.getItem('mascotas') || '[]');
+            const cont = document.getElementById('galeriaMascotas');
+            if(!cont) return;
+            if(mascotas.length === 0) return cont.innerHTML = '<span style="grid-column:1/3; color:#888; font-size:0.7rem;">Sin fotos de peludos.</span>';
+            cont.innerHTML = mascotas.map(m => `
+                <div class="pet-item">
+                    <img src="${m.foto}">
+                    <p style="text-align:center; font-weight:bold; margin:2px 0; font-size:0.7rem;">${m.nombre}</p>
+                </div>
+            `).join('');
+        }
+
+        window.addEventListener("DOMContentLoaded", function() {
+            sincronizarInterfazUsuario();
+            cargarCumples();
+            cargarQuedadas();
+            cargarMascotas();
+            setInterval(comprobarNotificacionesBuzon, 3000);
         });
     </script>
 </body>
