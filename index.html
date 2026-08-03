@@ -232,6 +232,7 @@
             box-shadow: 0 10px 25px rgba(0,0,0,0.2);
             z-index: 9998;
             animation: bounceIn 0.4s ease;
+            cursor: pointer;
         }
 
         @keyframes bounceIn {
@@ -690,8 +691,8 @@
             <div class="card">
                 <h2>📢 Actualizaciones</h2>
                 <div style="background:#f8fafc; border-left:3px solid var(--morado); padding:8px; border-radius:4px; font-size:0.7rem;">
-                    <strong style="color:var(--morado);">✨ Versión 4.0 - Súper Limpia</strong>
-                    <p style="margin:2px 0 0 0; color:#444;">Estructura de 4 pestañas esenciales, mochila superior derecha y acordeones para ahorrar espacio.</p>
+                    <strong style="color:var(--morado);">✨ Versión 4.0 - Súper Completa</strong>
+                    <p style="margin:2px 0 0 0; color:#444;">Incluye tienda con ruleta interactiva, agenda de quedadas con mapas de Google Maps, sistema de buzón con alertas flotantes y perfiles guardados.</p>
                 </div>
             </div>
         </div>
@@ -783,7 +784,7 @@
                 cargarBuzonPersonal();
                 comprobarNotificacionesBuzon();
             } else {
-                document.getElementById("navTabs").style.display = "flex"; // Se muestra para poder registrarse en Extras
+                document.getElementById("navTabs").style.display = "flex";
                 document.getElementById("formRegistroCarnet").style.display = "block";
                 document.getElementById("seccionMiCarnet").style.display = "none";
                 document.getElementById("btnMochilaHeader").style.display = "none";
