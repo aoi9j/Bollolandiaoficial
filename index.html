@@ -659,6 +659,31 @@
             border: none;
         }
 
+        /* --- EFECTOS DE MARCOS DE NEÓN Y HUMOS CIRCULARES --- */
+        @keyframes neonGlow {
+            0% { box-shadow: 0 0 5px #ff007f, 0 0 10px #ff007f, 0 0 20px #7928ca, 0 0 30px #7928ca; border-color: #ff007f; }
+            50% { box-shadow: 0 0 10px #00f2fe, 0 0 20px #4facfe, 0 0 30px #00f2fe, 0 0 40px #4facfe; border-color: #00f2fe; }
+            100% { box-shadow: 0 0 5px #ff007f, 0 0 10px #ff007f, 0 0 20px #7928ca, 0 0 30px #7928ca; border-color: #ff007f; }
+        }
+
+        @keyframes smokeRotate {
+            0% { transform: rotate(0deg) scale(1); filter: hue-rotate(0deg); opacity: 0.8; }
+            50% { transform: rotate(180deg) scale(1.08); filter: hue-rotate(180deg); opacity: 1; }
+            100% { transform: rotate(360deg) scale(1); filter: hue-rotate(360deg); opacity: 0.8; }
+        }
+
+        .marco-neon-humo {
+            position: absolute;
+            inset: -6px;
+            border-radius: 50%;
+            border: 3px solid transparent;
+            animation: neonGlow 3s infinite alternate, smokeRotate 6s linear infinite;
+            pointer-events: none;
+            z-index: 5;
+            background: radial-gradient(circle, rgba(255,0,127,0.15) 0%, rgba(79,172,254,0.15) 70%, transparent 100%);
+            box-shadow: inset 0 0 10px rgba(255,255,255,0.5);
+        }
+
         .chat-box-container {
             background: #fbf9f6;
             border: 1.5px solid var(--border-soft);
@@ -833,6 +858,7 @@
             </div>
             <div class="hero-profile-avatar" id="heroProfileAvatarBox">
                 <span style="font-size: 2rem;">👤</span>
+                <div id="heroMarcoLayer" class="marco-neon-humo"></div>
             </div>
         </div>
 
@@ -865,7 +891,7 @@
                 <div class="card" style="background: linear-gradient(135deg, #fef9e7, #fcf4db); border: 1.5px solid #f3e5ab;">
                     <h3 style="color: #8c6d1f; display:flex; align-items:center; gap:6px;">📢 Buzón de Actualizaciones</h3>
                     <p style="font-size:0.78rem; color:#6b5314; line-height:1.4; margin:0;">
-                        <strong>¡Novedades en Bollolandia!</strong> Se han eliminado los marcos anteriores y se empieza desde cero con la tienda y la ruleta. ✨
+                        <strong>¡Novedades en Bollolandia!</strong> Se han añadido efectos visuales de neón y humo circular alrededor de tu foto de perfil. ✨
                     </p>
                 </div>
 
@@ -883,10 +909,10 @@
                 </div>
 
                 <div class="card">
-                    <h3>🛍️ Boutique de Marcos (Empezando de 0)</h3>
-                    <p style="font-size:0.75rem; color:#8c827b; margin-top:-4px;">Próximamente se añadirán nuevos marcos personalizados.</p>
+                    <h3>🛍️ Boutique de Marcos</h3>
+                    <p style="font-size:0.75rem; color:#8c827b; margin-top:-4px;">Marcos de neón y humo activos permanentemente.</p>
                     <div class="grid-shop" id="tiendaMarcosGrid">
-                        <span style="font-size:0.8rem; color:#8c827b; grid-column:span 2;">No hay marcos disponibles actualmente. ¡Usa la ruleta o espera novedades!</span>
+                        <span style="font-size:0.8rem; color:#8c827b; grid-column:span 2;">Efecto de neón y humo aplicado correctamente en tu perfil.</span>
                     </div>
                 </div>
             </div>
@@ -976,10 +1002,12 @@
                 </div>
 
                 <div class="card" id="seccionMiCarnet" style="display: none;">
-                    <h3 style="margin-bottom: 8px;">🖼️ Tus Marcos (Desde 0)</h3>
-                    <p style="font-size: 0.75rem; color: #8c827b; margin-top: -4px;">Elige el marco que lucirá en tu carnet y en tu perfil:</p>
+                    <h3 style="margin-bottom: 8px;">🖼️ Tus Marcos</h3>
+                    <p style="font-size: 0.75rem; color: #8c827b; margin-top: -4px;">Efectos de neón y humo aplicados en tu perfil:</p>
 
-                    <div id="inventarioMarcos" class="boutique-frames-list"></div>
+                    <div id="inventarioMarcos" class="boutique-frames-list">
+                        <div style="font-size:0.8rem; color:var(--accent-coral); font-weight:bold;">✨ Marco Neón & Humo Circular (Activo)</div>
+                    </div>
 
                     <div style="margin-top: 16px; border-top: 1px solid var(--border-soft); padding-top: 12px;">
                         <h4 style="font-size: 0.8rem; color: var(--text-main); margin-bottom: 6px;">⚙️ Gestión de Perfiles</h4>
@@ -1058,9 +1086,6 @@
         }
 
         function inicializarAppSegura() {
-            localStorage.removeItem("quedadas");
-            localStorage.removeItem("cumples");
-
             const db = obtenerBaseDatosGlobal();
             const nombres = Object.keys(db);
 
@@ -1138,7 +1163,6 @@
                 document.getElementById("formRegistroCarnet").style.display = "none";
                 document.getElementById("seccionMiCarnet").style.display = "block";
                 cargarDatosCarnet(userData);
-                renderizarInventarioMarcos();
                 cargarBuzonPersonal();
                 comprobarNotificacionesBuzon();
             } else {
@@ -1228,7 +1252,6 @@
             }
         }
 
-        // --- CAMBIO SOLICITUD 1: MODIFICAR NOTA DIRECTAMENTE SIN MENÚ POPUP (PROMPT) ---
         function modificarNotaInteractiva() {
             const userData = obtenerDatosActuales();
             if (!userData) return alert("Crea un perfil primero 🎒");
@@ -1309,12 +1332,9 @@
             const today = new Date().toLocaleDateString();
             const timestamp = note ? new Date().getTime() : null;
 
-            // --- CAMBIO SOLICITUD 2: BORRAR TODOS LOS MARCOS AL CREAR/INICIAR DESDE 0 ---
             const nuevoUsuario = {
                 name, note: note || "", noteTimestamp: timestamp, noteAudio: null, bio: bio || "", mision, cardId, date: today, photo: carnetFotoBase64, isGold: esGold, isSilver: esSilver,
                 hearts: esGold ? 9999 : 100,
-                marcosComprados: [], // Empezar de 0 sin marcos
-                marcoActivo: "",
                 buzonCartas: []
             };
 
@@ -1400,16 +1420,14 @@
 
             const heroAvatarBox = document.getElementById("heroProfileAvatarBox");
             if (data.photo) {
-                document.getElementById("cardPhotoBox").innerHTML = `<img src="${data.photo}" class="card-photo-img"><div id="marcoLayer"></div>`;
-                document.getElementById("btnMochilaHeader").innerHTML = `<img src="${data.photo}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;"><div id="miniMarcoLayer"></div>`;
-                heroAvatarBox.innerHTML = `<img src="${data.photo}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;"><div id="heroMarcoLayer"></div>`;
+                document.getElementById("cardPhotoBox").innerHTML = `<img src="${data.photo}" class="card-photo-img"><div id="marcoLayer" class="marco-neon-humo"></div>`;
+                document.getElementById("btnMochilaHeader").innerHTML = `<img src="${data.photo}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;"><div id="miniMarcoLayer" class="marco-neon-humo"></div>`;
+                heroAvatarBox.innerHTML = `<img src="${data.photo}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;"><div id="heroMarcoLayer" class="marco-neon-humo"></div>`;
             } else {
-                document.getElementById("cardPhotoBox").innerHTML = `<span style="font-size: 2rem;">👤</span><div id="marcoLayer"></div>`;
-                document.getElementById("btnMochilaHeader").innerHTML = `👤<div id="miniMarcoLayer"></div>`;
-                heroAvatarBox.innerHTML = `<span style="font-size: 2rem;">👤</span><div id="heroMarcoLayer"></div>`;
+                document.getElementById("cardPhotoBox").innerHTML = `<span style="font-size: 2rem;">👤</span><div id="marcoLayer" class="marco-neon-humo"></div>`;
+                document.getElementById("btnMochilaHeader").innerHTML = `👤<div id="miniMarcoLayer" class="marco-neon-humo"></div>`;
+                heroAvatarBox.innerHTML = `<span style="font-size: 2rem;">👤</span><div id="heroMarcoLayer" class="marco-neon-humo"></div>`;
             }
-
-            aplicarMarcoGuardado();
         }
 
         function cerrarSesionSegura() {
@@ -1469,54 +1487,6 @@
                     alert(premio.texto);
                 }
             }, 3000);
-        }
-
-        function comprarMarco(idMarco, nombreMarco, precio) {
-            alert("No hay marcos disponibles en este momento. ¡Empieza desde cero!");
-        }
-
-        function renderizarInventarioMarcos() {
-            const contenedor = document.getElementById("inventarioMarcos");
-            if (!contenedor) return;
-
-            const data = obtenerDatosActuales();
-            if (!data) return;
-
-            let marcos = data.marcosComprados || [];
-
-            if (marcos.length === 0) {
-                contenedor.innerHTML = `<span style="font-size: 0.75rem; color: #8c827b;">Sin marcos todavía. Empiezas desde cero.</span>`;
-                return;
-            }
-
-            let html = `<button class="boutique-btn frame-option" onclick="quitarMarco()">Ninguno</button>`;
-            contenedor.innerHTML = html;
-        }
-
-        function equiparMarco(idMarco) {
-            actualizarDatosActuales({ marcoActivo: idMarco });
-            aplicarMarcoGuardado();
-            renderizarInventarioMarcos();
-        }
-
-        function quitarMarco() {
-            actualizarDatosActuales({ marcoActivo: "" });
-            aplicarMarcoGuardado();
-            renderizarInventarioMarcos();
-        }
-
-        function aplicarMarcoGuardado() {
-            const data = obtenerDatosActuales();
-            const marcoLayer = document.getElementById("marcoLayer");
-            const miniMarcoLayer = document.getElementById("miniMarcoLayer");
-            const heroMarcoLayer = document.getElementById("heroMarcoLayer");
-            if (marcoLayer) marcoLayer.innerHTML = "";
-            if (miniMarcoLayer) miniMarcoLayer.innerHTML = "";
-            if (heroMarcoLayer) heroMarcoLayer.innerHTML = "";
-
-            if (data && data.marcoActivo) {
-                // Sin marcos activos por defecto al empezar de cero
-            }
         }
 
         function enviarCartaBuzon() {
