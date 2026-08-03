@@ -6,7 +6,6 @@
     <title>Bollolandia - Dashboard</title>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-    <!-- FullCalendar CSS y JS para el calendario funcional -->
     <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Cinzel:wght@700&display=swap" rel="stylesheet">
@@ -33,7 +32,6 @@
             overflow-x: hidden;
         }
 
-        /* BARRA LATERAL FLOTANTE */
         .sidebar-left {
             position: fixed;
             top: 16px;
@@ -93,7 +91,6 @@
             max-width: 580px;
         }
 
-        /* HEADER SUPERIOR */
         .top-header {
             display: flex;
             justify-content: space-between;
@@ -130,7 +127,6 @@
             gap: 6px;
         }
 
-        /* BANNER PRINCIPAL */
         .hero-card {
             background: linear-gradient(135deg, #fff3ee, #faebd7);
             border-radius: 22px;
@@ -148,7 +144,6 @@
         .hero-card h2 { margin: 0; font-size: 1.15rem; color: #4a3e3a; font-weight: 800; }
         .hero-card p { margin: 6px 0 0 0; font-size: 0.78rem; color: #7a6e67; line-height: 1.4; }
 
-        /* ESTADÍSTICAS */
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
@@ -170,7 +165,6 @@
         .stat-card .val { font-size: 0.95rem; font-weight: 800; color: var(--text-main); }
         .stat-card .label { font-size: 0.65rem; color: #8c827b; margin-top: 2px; }
 
-        /* CONTENEDORES GENERALES */
         .card {
             background: var(--card-bg);
             border-radius: 20px;
@@ -228,35 +222,41 @@
             background: #f4efe6;
             color: var(--text-main);
             border: 1px solid var(--border-soft);
-            padding: 11px;
-            border-radius: 14px;
-            font-weight: bold;
-            font-size: 0.8rem;
+            padding: 14px 20px;
+            border-radius: 16px;
+            font-weight: 600;
+            font-size: 0.95rem;
             cursor: pointer;
             width: 100%;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 6px;
+            gap: 8px;
             margin-top: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+            transition: all 0.2s ease;
         }
+        .btn-sesion-safe:hover { background: #eae3d8; }
 
         .btn-danger-safe {
-            background: #fff5f5;
+            background: #fff3f3;
             color: #d9534f;
-            border: 1px solid #ffdcdc;
-            padding: 11px;
-            border-radius: 14px;
-            font-weight: bold;
-            font-size: 0.8rem;
+            border: 1px solid #f9dede;
+            padding: 14px 20px;
+            border-radius: 16px;
+            font-weight: 600;
+            font-size: 0.95rem;
             cursor: pointer;
             width: 100%;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 6px;
-            margin-top: 8px;
+            gap: 8px;
+            margin-top: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+            transition: all 0.2s ease;
         }
+        .btn-danger-safe:hover { background: #fde8e8; }
 
         .btn-mapa {
             background: #f0f4f1;
@@ -293,7 +293,6 @@
         .pet-item { background: #fbf9f6; border-radius: 14px; padding: 8px; border: 1px solid var(--border-soft); }
         .pet-item img { width: 100%; height: 95px; object-fit: cover; border-radius: 10px; }
 
-        /* MODAL Y CARNET */
         #cartaFlotanteBox {
             display: none;
             position: fixed;
@@ -461,7 +460,6 @@
         .btn-close { background: #4a403b; color: white; }
         .btn-download { background: var(--accent-green); color: white; box-shadow: 0 4px 12px rgba(135, 163, 138, 0.3); }
 
-        /* MARCOS ANIMADOS */
         .marco-plasma {
             position: absolute; inset: -4px; border-radius: 14px; z-index: 2; pointer-events: none;
             background: conic-gradient(from 0deg, #ff2200, #ff7700, #ffcc00, #ff2200);
@@ -577,8 +575,44 @@
             background: #e2dcd3;
             overflow: hidden;
         }
+
+        /* Estilos boutique unificados para marcos y opciones */
+        .boutique-btn {
+            width: 100%;
+            padding: 14px 20px;
+            border: none;
+            border-radius: 16px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+            margin: 6px 0;
+            box-sizing: border-box;
+        }
+        .boutique-frames-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        .frame-option {
+            background: #f7f5f0;
+            color: #4a453e;
+            border: 1px solid #eae5dc;
+        }
+        .frame-option:hover { background: #f0ebe1; }
+        .frame-option.active {
+            background: linear-gradient(135deg, var(--accent-coral), var(--accent-peach));
+            color: #ffffff;
+            box-shadow: 0 6px 15px rgba(242, 139, 114, 0.3);
+            border: none;
+        }
     </style>
-    <!-- Leaflet CSS y JS -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 </head>
@@ -594,7 +628,6 @@
         </div>
     </div>
 
-    <!-- MODAL FLECHAZO MUTUO -->
     <div id="matchOverlay" style="display:none; position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.6); backdrop-filter:blur(4px); z-index:10001; flex-direction:column; justify-content:center; align-items:center; padding:16px;" onclick="cerrarMatchAnimacion()">
         <div style="background:#fff; padding:24px; border-radius:20px; text-align:center; max-width:320px; border:2px solid var(--accent-coral); box-shadow:0 10px 25px rgba(0,0,0,0.2);" onclick="event.stopPropagation()">
             <div style="font-size: 50px;">💖🏹</div>
@@ -604,7 +637,6 @@
         </div>
     </div>
 
-    <!-- MODAL DEL CARNET -->
     <div id="cardModal" class="card-modal" onclick="cerrarModalCarnet()">
         <div id="mclovin-card" class="mclovin-card" onclick="event.stopPropagation()">
             <div class="card-header">
@@ -642,7 +674,7 @@
                     </div>
                 </div>
             </div>
-            <div class="founder-seal">✨ CREADORA VIP ✨</div>
+            <div class="founder-seal">✨ FUNDADORA VIP ✨</div>
             <div class="silver-seal">🌟 MIEMBRO VIP 🌟</div>
         </div>
 
@@ -654,7 +686,6 @@
 
     <input type="file" id="inputFotoDirectoCarnet" accept="image/*" style="display: none;" onchange="procesarFotoDirectoCarnet(this)">
 
-    <!-- BARRA LATERAL IZQUIERDA -->
     <div class="sidebar-left">
         <div class="sidebar-avatar" id="btnMochilaHeader" onclick="abrirModalCarnet()" style="cursor: pointer;" title="Ver mi Carnet">
             👤<div id="miniMarcoLayer"></div>
@@ -669,7 +700,6 @@
         <button class="nav-icon-btn" onclick="cambiarPestana('extras', this)" title="Mochila / Perfil">🎒</button>
 
         <select id="selectPerfilActivo" class="select-perfil-sidebar" onchange="cambiarPerfilActivo(this.value)" title="Cambiar Perfil">
-            <!-- JS -->
         </select>
     </div>
 
@@ -717,7 +747,6 @@
 
         <div class="container-contenido">
 
-            <!-- PESTAÑA 1: TIENDA Y RULETA -->
             <div id="tienda" class="tab-content">
                 <div class="ruleta-container">
                     <h3 style="margin-top:0; color:var(--accent-coral); font-size:0.95rem;">🎡 La Ruleta de Premios Sáfica</h3>
@@ -773,7 +802,6 @@
                 </div>
             </div>
 
-            <!-- PESTAÑA 2: AGENDA Y MAPA -->
             <div id="agenda" class="tab-content" style="display:none;">
                 <div class="card">
                     <h3>📅 Calendario</h3>
@@ -809,7 +837,6 @@
                 </div>
             </div>
 
-            <!-- PESTAÑA 3: BUZÓN -->
             <div id="buzon" class="tab-content" style="display:none;">
                 <div class="card">
                     <h3>💌 Buzón y Conexiones</h3>
@@ -838,7 +865,6 @@
                 </div>
             </div>
 
-            <!-- PESTAÑA 4: EXTRAS -->
             <div id="extras" class="tab-content" style="display:none;">
                 <div class="card" id="formRegistroCarnet">
                     <h3>🎒 Crear Carnet y Mochila</h3>
@@ -865,16 +891,10 @@
                 </div>
 
                 <div class="card" id="seccionMiCarnet" style="display: none;">
-                    <h3>🎒 Gestión de Mochila 🌸</h3>
-                    <p style="font-size: 0.75rem; color: #8c827b; margin-top: -4px;">Cambia tu foto de perfil tantas veces como quieras directamente pinchando en la foto de tu carnet, o usa el botón:</p>
+                    <h3 style="margin-bottom: 8px;">🖼️ Tus Marcos Animados</h3>
+                    <p style="font-size: 0.75rem; color: #8c827b; margin-top: -4px;">Elige el marco que lucirá en tu carnet y en tu perfil:</p>
 
-                    <label for="inPhotoUpdate" class="file-input-label" id="photoUpdateLabel">📷 Cambiar Foto de Perfil</label>
-                    <input type="file" id="inPhotoUpdate" accept="image/*" style="display: none;" onchange="actualizarFotoPerfilIlimitada()">
-
-                    <div style="margin-top: 14px; border-top: 1px solid var(--border-soft); padding-top: 10px;">
-                        <h4 style="font-size: 0.85rem; color: var(--text-main); margin-bottom: 8px;">🖼️ Tus Marcos Animados</h4>
-                        <div id="inventarioMarcos" style="display: flex; gap: 6px; flex-wrap: wrap;"></div>
-                    </div>
+                    <div id="inventarioMarcos" class="boutique-frames-list"></div>
 
                     <div style="margin-top: 16px; border-top: 1px solid var(--border-soft); padding-top: 12px;">
                         <button class="btn-sesion-safe" onclick="cerrarSesionSegura()">🔄 Cerrar Sesión (Cambiar de Perfil)</button>
@@ -894,7 +914,6 @@
         </div>
     </div>
 
-    <!-- MODAL SELECTOR DE FECHA -->
     <div id="modalSelectorFecha" class="card-modal" onclick="cerrarModalFechaCustom()">
         <div style="background:#fff; padding:20px; border-radius:18px; width:280px; text-align:center; border:2px solid var(--accent-green); box-shadow:0 10px 25px rgba(0,0,0,0.2);" onclick="event.stopPropagation()">
             <h3 style="color:var(--text-main); font-size:0.95rem; margin-bottom:8px;">📅 Seleccionar Mes y Año</h3>
@@ -953,7 +972,6 @@
             }
         }
 
-        /* INICIALIZACIÓN SEGURA: MANTIENE CUMPLES, QUEDADAS Y USUARIOS, LIMPIANDO SOLO CACHÉ TÉCNICA */
         function inicializarAppSegura() {
             const db = obtenerBaseDatosGlobal();
             const nombres = Object.keys(db);
@@ -1071,7 +1089,7 @@
                     if (calendarInstance) calendarInstance.updateSize();
                     if (mapInstance) {
                         mapInstance.invalidateSize();
-                        actualizarPuntosMapa(); // Refresca chinchetas al abrir la pestaña
+                        actualizarPuntosMapa();
                     }
                 }, 200);
             }
@@ -1111,23 +1129,6 @@
                     const userData = obtenerDatosActuales();
                     cargarDatosCarnet(userData);
                     alert("✨ ¡Foto de perfil actualizada con éxito!");
-                }
-                reader.readAsDataURL(file);
-            }
-        }
-
-        function actualizarFotoPerfilIlimitada() {
-            const file = document.getElementById('inPhotoUpdate').files[0];
-            const label = document.getElementById('photoUpdateLabel');
-            if (file) {
-                const reader = new FileReader();
-                reader.onloadend = function() {
-                    const nuevaFoto = reader.result;
-                    actualizarDatosActuales({ photo: nuevaFoto });
-                    const userData = obtenerDatosActuales();
-                    cargarDatosCarnet(userData);
-                    label.innerText = "✨ ¡Foto actualizada!";
-                    setTimeout(() => { label.innerText = "📷 Cambiar Foto de Perfil"; }, 2500);
                 }
                 reader.readAsDataURL(file);
             }
@@ -1315,17 +1316,17 @@
             if (data.isGold) marcos = ["marco-plasma", "marco-neondark", "marco-goldglow", "marco-cyberpunk"];
 
             if (marcos.length === 0) {
-                contenedor.innerHTML = `<span style="font-size: 0.75rem; color: #8c827b;">Sin marcos todavía.</span>`;
+                contenedor.innerHTML = `<span style="font-size: 0.75rem; color: #8c827b;">Sin marcos todavía. Desbloquéalos en la tienda o ruleta.</span>`;
                 return;
             }
 
-            let html = `<button onclick="quitarMarco()" style="padding:5px 9px; font-size:0.7rem; border-radius:8px; background:#e2dcd3; border:none; cursor:pointer; font-weight:bold;">Ninguno</button>`;
-            const nombres = { 'marco-plasma': '🔥 Plasma', 'marco-neondark': '💜 Neon', 'marco-goldglow': '👑 Gold', 'marco-cyberpunk': '⚡ Cyber' };
+            let html = `<button class="boutique-btn frame-option" onclick="quitarMarco()">Ninguno</button>`;
+            const nombres = { 'marco-plasma': '🔥 Plasma Fire', 'marco-neondark': '💜 Neon Dark', 'marco-goldglow': '👑 Gold Glow', 'marco-cyberpunk': '⚡ Cyberpunk' };
 
             marcos.forEach(m => {
                 let activo = data.marcoActivo === m;
-                let btnStyle = activo ? "background:var(--accent-coral); color:white;" : "background:#fff; color:var(--text-main); border:1px solid var(--border-soft);";
-                html += `<button onclick="equiparMarco('${m}')" style="padding:5px 9px; font-size:0.7rem; border-radius:8px; cursor:pointer; font-weight:bold; ${btnStyle}">${nombres[m] || 'Marco'} ${activo ? '✓' : ''}</button>`;
+                let activeClass = activo ? "active" : "";
+                html += `<button class="boutique-btn frame-option ${activeClass}" onclick="equiparMarco('${m}')">${nombres[m] || 'Marco'} ${activo ? '✓' : ''}</button>`;
             });
             contenedor.innerHTML = html;
         }
@@ -1447,7 +1448,6 @@
             window.open("https://meet.jit.si/BollolandiaReunionSeguraChicas", "_blank");
         }
 
-        /* CALENDARIO Y MAPA CORREGIDO */
         function inicializarCalendarioYMapa() {
             const calendarEl = document.getElementById('calendar');
             if (calendarEl && !calendarInstance) {
@@ -1541,7 +1541,6 @@
         function actualizarPuntosMapa() {
             if (!mapInstance) return;
 
-            // Limpia los marcadores antiguos de la vista de Leaflet sin tocar los datos guardados
             marcadoresMapa.forEach(m => mapInstance.removeLayer(m));
             marcadoresMapa = [];
 
@@ -1599,7 +1598,6 @@
                 calendarInstance.addEvent({ title: `📍 ${titulo}`, start: fecha, color: '#87a38a' });
             }
             
-            // Fuerza inmediata de actualización del mapa y pinte de chincheta
             setTimeout(() => {
                 if (mapInstance) {
                     mapInstance.invalidateSize();
