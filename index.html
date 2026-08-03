@@ -403,6 +403,12 @@
             line-height: 1.1;
             box-shadow: 0 2px 6px rgba(0,0,0,0.05);
             position: relative;
+            cursor: pointer;
+            transition: transform 0.1s ease;
+        }
+        .card-note-box:hover {
+            transform: scale(1.03);
+            border-color: var(--accent-coral);
         }
         .card-note-box::after {
             content: '';
@@ -494,6 +500,40 @@
         .btn-action { width: 100%; padding: 10px; border: none; border-radius: 14px; font-size: 0.85rem; cursor: pointer; font-weight: bold; text-align: center; }
         .btn-close { background: #4a403b; color: white; }
         .btn-download { background: var(--accent-green); color: white; box-shadow: 0 4px 12px rgba(135, 163, 138, 0.3); }
+
+        /* Estilo para el Reproductor Modal estilo Instagram de notas */
+        .modal-reproductor-nota {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(4px);
+            z-index: 10005;
+            justify-content: center;
+            align-items: center;
+            padding: 16px;
+        }
+        .modal-contenido-reproductor {
+            background: #ffffff;
+            padding: 22px;
+            border-radius: 18px;
+            width: 100%;
+            max-width: 320px;
+            text-align: center;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            border: 2px solid var(--accent-coral);
+            position: relative;
+        }
+        .btn-cerrar-reproductor {
+            position: absolute;
+            top: 10px;
+            right: 14px;
+            background: none;
+            border: none;
+            font-size: 22px;
+            cursor: pointer;
+            color: #666;
+        }
 
         .marco-plasma {
             position: absolute; inset: -6px; border-radius: 16px; z-index: 2; pointer-events: none;
@@ -686,6 +726,21 @@
         </div>
     </div>
 
+    <!-- Reproductor Modal Estilo Instagram para Notas -->
+    <div id="modalReproductorNota" class="modal-reproductor-nota" onclick="cerrarReproductorNota()">
+        <div class="modal-contenido-reproductor" onclick="event.stopPropagation()">
+            <button class="btn-cerrar-reproductor" onclick="cerrarReproductorNota()">&times;</button>
+            <h3 style="color: var(--accent-coral); font-size: 0.95rem; margin-bottom: 8px;">🎵 Nota de Voz</h3>
+            <p id="textoNotaModal" style="font-size: 0.8rem; color: var(--text-main); margin-bottom: 12px; font-weight: 600;"></p>
+            
+            <!-- Si deseas probar con un enlace de audio real, puedes asignarlo aquí o por código -->
+            <audio id="audioNotaPlayer" controls style="width: 100%;">
+                Tu navegador no soporta el elemento de audio.
+            </audio>
+            <p style="font-size: 0.65rem; color: #8c827b; margin-top: 8px;">Toca la nota en cualquier momento para escucharla.</p>
+        </div>
+    </div>
+
     <div id="matchOverlay" style="display:none; position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.6); backdrop-filter:blur(4px); z-index:10001; flex-direction:column; justify-content:center; align-items:center; padding:16px;" onclick="cerrarMatchAnimacion()">
         <div style="background:#fff; padding:24px; border-radius:20px; text-align:center; max-width:320px; border:2px solid var(--accent-coral); box-shadow:0 10px 25px rgba(0,0,0,0.2);" onclick="event.stopPropagation()">
             <div style="font-size: 50px;">💖🏹</div>
@@ -703,7 +758,7 @@
             </div>
             <div class="card-body">
                 <div class="card-left-column">
-                    <div class="card-note-box" id="cardNoteOut" title="Nota actual">Nota...</div>
+                    <div class="card-note-box" id="cardNoteOut" onclick="abrirReproductorNotaDesdeCarnet()" title="Pincha para escuchar nota estilo IG">Nota...</div>
                     <div class="card-photo-box" id="cardPhotoBox" onclick="dispararCambioFotoDirecto()" title="Pincha aquí para cambiar tu foto">
                         <span style="font-size: 2rem;">👤</span>
                     </div>
@@ -811,7 +866,7 @@
                 <div class="card" style="background: linear-gradient(135deg, #fef9e7, #fcf4db); border: 1.5px solid #f3e5ab;">
                     <h3 style="color: #8c6d1f; display:flex; align-items:center; gap:6px;">📢 Buzón de Actualizaciones</h3>
                     <p style="font-size:0.78rem; color:#6b5314; line-height:1.4; margin:0;">
-                        <strong>¡Novedades en Bollolandia!</strong> Se han añadido las notas estilo Instagram sobre la foto de perfil en el carnet y la biografía dinámica en la mochila. ✨
+                        <strong>¡Novedades en Bollolandia!</strong> Se han añadido las notas estilo Instagram (haz clic en la nota de tu carnet para escuchar audio) y la biografía dinámica en la mochila. ✨
                     </p>
                 </div>
 
@@ -1340,6 +1395,27 @@
             }
 
             aplicarMarcoGuardado();
+        }
+
+        // Lógica de Reproductor de Notas Estilo Instagram
+        function abrirReproductorNotaDesdeCarnet() {
+            const userData = obtenerDatosActuales();
+            const textoNota = userData && userData.note ? userData.note : "Nota sin contenido";
+            
+            document.getElementById("textoNotaModal").innerText = `"${textoNota}"`;
+            document.getElementById("modalReproductorNota").style.display = "flex";
+            
+            // Si quieres enlazar un audio por defecto o dinámico, colócalo aquí:
+            const reproductor = document.getElementById("audioNotaPlayer");
+            // reproductor.src = "URL_DE_TU_AUDIO_AQUI"; 
+            reproductor.play().catch(e => console.log("Reproducción automática bloqueada por navegador:", e));
+        }
+
+        function cerrarReproductorNota() {
+            const reproductor = document.getElementById("audioNotaPlayer");
+            reproductor.pause();
+            reproductor.currentTime = 0;
+            document.getElementById("modalReproductorNota").style.display = "none";
         }
 
         function cerrarSesionSegura() {
