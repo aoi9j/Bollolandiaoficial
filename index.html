@@ -641,6 +641,18 @@
             box-shadow: inset 0 0 10px rgba(255,255,255,0.5);
         }
 
+        /* Marco Exclusivo Fundadora (Corona Solar / Eclipse) */
+        @keyframes eclipseCorona {
+            0% { box-shadow: 0 0 15px #ffd700, 0 0 30px #ff8c00, inset 0 0 15px #ffffff; border-color: #ffd700; }
+            50% { box-shadow: 0 0 25px #ff4500, 0 0 45px #ffd700, inset 0 0 20px #ffdab9; border-color: #ff8c00; }
+            100% { box-shadow: 0 0 15px #ffd700, 0 0 30px #ff8c00, inset 0 0 15px #ffffff; border-color: #ffd700; }
+        }
+        .marco-eclipse {
+            background: radial-gradient(circle, rgba(0,0,0,0.85) 60%, rgba(255,140,0,0.4) 85%, rgba(255,215,0,0.8) 100%);
+            border: 3px solid #ffd700;
+            animation: eclipseCorona 4s ease-in-out infinite;
+        }
+
         .marco-multicolor {
             background: radial-gradient(circle, rgba(255,0,127,0.15) 0%, rgba(79,172,254,0.15) 70%, transparent 100%);
             box-shadow: 0 0 15px #ff007f, 0 0 25px #00f2fe;
@@ -879,7 +891,7 @@
                 <div class="card" style="background: linear-gradient(135deg, #fef9e7, #fcf4db); border: 1.5px solid #f3e5ab;">
                     <h3 style="color: #8c6d1f; display:flex; align-items:center; gap:6px;">📢 Buzón de Actualizaciones</h3>
                     <p style="font-size:0.78rem; color:#6b5314; line-height:1.4; margin:0;">
-                        <strong>¡Boutique de Marcos actualizada!</strong> Compra tus colores de neón favoritos por separado usando tus puntos 💖. Una vez comprados, los tendrás disponibles para ponértelos siempre que quieras. ✨
+                        <strong>¡Boutique de Marcos actualizada!</strong> Los marcos de neón ahora están separados por colores independientes para que cada chica elija su estilo favorito. ✨
                     </p>
                 </div>
 
@@ -897,8 +909,8 @@
                 </div>
 
                 <div class="card">
-                    <h3>🛍️ Boutique de Marcos (Comprar por Separado)</h3>
-                    <p style="font-size:0.75rem; color:#8c827b; margin-top:-4px;">Adquiere nuevos colores de neón para tu colección.</p>
+                    <h3>🛍️ Boutique de Marcos (Colores Separados)</h3>
+                    <p style="font-size:0.75rem; color:#8c827b; margin-top:-4px;">Elige y adquiere tu color de neón preferido de forma individual.</p>
                     <div class="grid-shop" id="tiendaMarcosGrid">
                         <!-- Se llena dinámicamente con JS -->
                     </div>
@@ -1047,12 +1059,13 @@
         const CODIGO_FUNDADORA = "BL-FUNDADORA-GOLD";
 
         const MARCOS_CATALOGO = [
-            { id: 'marco-multicolor', nombre: '🌈 Multicolour', precio: 0 },
-            { id: 'marco-rosa', nombre: '🌸 Rosa Neón', precio: 50 },
-            { id: 'marco-azul', nombre: '💧 Azul Eléctrico', precio: 50 },
-            { id: 'marco-morado', nombre: '🔮 Morado Místico', precio: 75 },
-            { id: 'marco-dorado', nombre: '✨ Oro Sáfico', precio: 100 },
-            { id: 'marco-verde', nombre: '🌿 Verde Esmeralda', precio: 60 }
+            { id: 'marco-eclipse', nombre: '🌑 Eclipse Solar (Exclusivo Fundadora)', precio: 0, exclusivoFundadora: true },
+            { id: 'marco-multicolor', nombre: '🌈 Multicolour', precio: 0, exclusivoFundadora: false },
+            { id: 'marco-rosa', nombre: '🌸 Rosa Neón', precio: 50, exclusivoFundadora: false },
+            { id: 'marco-azul', nombre: '💧 Azul Eléctrico', precio: 50, exclusivoFundadora: false },
+            { id: 'marco-morado', nombre: '🔮 Morado Místico', precio: 75, exclusivoFundadora: false },
+            { id: 'marco-dorado', nombre: '✨ Oro Sáfico', precio: 100, exclusivoFundadora: false },
+            { id: 'marco-verde', nombre: '🌿 Verde Esmeralda', precio: 60, exclusivoFundadora: false }
         ];
 
         let carnetFotoBase64 = "";
@@ -1101,6 +1114,13 @@
                 if (nombreFundadora && db[nombreFundadora]) {
                     const datosMia = db[nombreFundadora];
                     datosMia.isGold = true; 
+                    // Asegurar marco eclipse exclusivo para fundadora
+                    if (!datosMia.marcosDesbloqueados) datosMia.marcosDesbloqueados = ['marco-multicolor'];
+                    if (!datosMia.marcosDesbloqueados.includes('marco-eclipse')) {
+                        datosMia.marcosDesbloqueados.push('marco-eclipse');
+                    }
+                    datosMia.marcoColor = 'marco-eclipse';
+
                     const nuevaDb = {};
                     nuevaDb[nombreFundadora] = datosMia;
                     guardarBaseDatosGlobal(nuevaDb);
@@ -1160,10 +1180,15 @@
                 document.getElementById("formRegistroCarnet").style.display = "none";
                 document.getElementById("seccionMiCarnet").style.display = "block";
                 
+                // Asegurar inventario inicial de marcos y exclusivo de fundadora
                 if (!userData.marcosDesbloqueados) {
                     userData.marcosDesbloqueados = ['marco-multicolor'];
-                    actualizarDatosActuales({ marcosDesbloqueados: userData.marcosDesbloqueados });
                 }
+                if (userData.isGold && !userData.marcosDesbloqueados.includes('marco-eclipse')) {
+                    userData.marcosDesbloqueados.push('marco-eclipse');
+                    userData.marcoColor = 'marco-eclipse';
+                }
+                actualizarDatosActuales({ marcosDesbloqueados: userData.marcosDesbloqueados, marcoColor: userData.marcoColor });
 
                 cargarDatosCarnet(userData);
                 renderizarBoutiqueMarcos();
@@ -1235,6 +1260,7 @@
             const desbloqueados = data.marcosDesbloqueados || ['marco-multicolor'];
 
             grid.innerHTML = MARCOS_CATALOGO.map(m => {
+                if (m.exclusivoFundadora && !data.isGold) return ''; // Ocultar el marco exclusivo a quien no sea fundadora
                 const tiene = desbloqueados.includes(m.id);
                 return `
                     <div class="shop-item">
@@ -1268,6 +1294,7 @@
 
             contenedor.innerHTML = desbloqueados.map(idMarco => {
                 const info = MARCOS_CATALOGO.find(m => m.id === idMarco) || { nombre: idMarco };
+                if (info.exclusivoFundadora && !data.isGold) return '';
                 const esActual = actual === idMarco;
                 return `
                     <button class="btn-principal" style="font-size:0.75rem; background:${esActual ? 'var(--accent-coral)' : 'var(--accent-green)'};" onclick="cambiarColorMarco('${idMarco}')">
@@ -1283,6 +1310,11 @@
 
             const desbloqueados = data.marcosDesbloqueados || ['marco-multicolor'];
             if (desbloqueados.includes(idMarco)) return alert("¡Ya tienes este marco en tu colección!");
+
+            const marcoInfo = MARCOS_CATALOGO.find(m => m.id === idMarco);
+            if (marcoInfo && marcoInfo.exclusivoFundadora && !data.isGold) {
+                return alert("⛔ Este marco es exclusivo para la FUNDADORA.");
+            }
 
             if (!data.isGold && (data.hearts || 0) < precio) {
                 return alert(`⛔ No tienes suficientes corazones. Te faltan puntos 💖.`);
@@ -1430,10 +1462,13 @@
             const today = new Date().toLocaleDateString();
             const timestamp = note ? new Date().getTime() : null;
 
+            const marcosIniciales = esGold ? ["marco-multicolor", "marco-eclipse"] : ["marco-multicolor"];
+            const colorInicial = esGold ? "marco-eclipse" : "marco-multicolor";
+
             const nuevoUsuario = {
                 name, note: note || "", noteTimestamp: timestamp, noteAudio: null, bio: bio || "", mision, cardId, date: today, photo: carnetFotoBase64, isGold: esGold, isSilver: esSilver,
-                marcoColor: "marco-multicolor",
-                marcosDesbloqueados: ["marco-multicolor"],
+                marcoColor: colorInicial,
+                marcosDesbloqueados: marcosIniciales,
                 hearts: esGold ? 9999 : 100,
                 buzonCartas: []
             };
@@ -1518,7 +1553,7 @@
                 if(sealNormal) sealNormal.style.display = "block";
             }
 
-            const colorClase = data.marcoColor || "marco-multicolor";
+            const colorClase = data.marcoColor || (data.isGold ? "marco-eclipse" : "marco-multicolor");
             const heroAvatarBox = document.getElementById("heroProfileAvatarBox");
             if (data.photo) {
                 document.getElementById("cardPhotoBox").innerHTML = `<img src="${data.photo}" class="card-photo-img"><div id="marcoLayer" class="marco-neon-humo ${colorClase}"></div>`;
