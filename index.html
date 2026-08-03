@@ -6,6 +6,9 @@
     <title>Bollolandia - Dashboard</title>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <!-- FullCalendar CSS y JS para el calendario funcional -->
+    <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Cinzel:wght@700&display=swap" rel="stylesheet">
 
     <style>
@@ -381,6 +384,18 @@
             box-shadow: 3px 3px 8px rgba(0,0,0,0.15);
             flex-shrink: 0;
             position: relative;
+            cursor: pointer;
+        }
+        .card-photo-box:hover::after {
+            content: '📷';
+            position: absolute;
+            inset: 0;
+            background: rgba(0,0,0,0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: #fff;
         }
 
         .card-photo-img { width: 100%; height: 100%; object-fit: cover; }
@@ -420,34 +435,36 @@
         .btn-close { background: #4a403b; color: white; }
         .btn-download { background: var(--accent-green); color: white; box-shadow: 0 4px 12px rgba(135, 163, 138, 0.3); }
 
-        /* MARCOS ANIMADOS ESTILO GIF / PLASMA FIRE */
+        /* MARCOS ANIMADOS EXACTOS A REFERENCIA GIF/PLASMA */
         .marco-plasma {
             position: absolute; inset: -4px; border-radius: 14px; z-index: 2; pointer-events: none;
-            background: radial-gradient(circle, rgba(255,69,0,0.3) 0%, rgba(255,0,0,0.6) 70%);
-            box-shadow: 0 0 15px rgba(255, 69, 0, 0.9), inset 0 0 10px rgba(255, 140, 0, 0.8);
-            animation: plasmaGlow 1.5s infinite alternate ease-in-out;
+            background: conic-gradient(from 0deg, #ff2200, #ff7700, #ffcc00, #ff2200);
+            box-shadow: 0 0 15px #ff3300, inset 0 0 12px #ffbb00;
+            animation: plasmaSpin 1.2s linear infinite, plasmaGlow 0.8s ease-in-out infinite alternate;
             mix-blend-mode: screen;
         }
         .marco-arcoiris {
             position: absolute; inset: -3px; border-radius: 12px;
-            background: linear-gradient(45deg, #ff9a9e, #fad0c4, #ffd1ff, #a1c4fd, #c2e9fb);
-            background-size: 400% 400%; z-index: 2; animation: gradientBorder 5s ease infinite;
-            pointer-events: none; mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-            -webkit-mask-composite: xor; mask-composite: exclude; padding: 3px;
+            background: linear-gradient(45deg, #ff9a9e, #fad0c4, #ffd1ff, #a1c4fd, #c2e9fb, #ff9a9e);
+            background-size: 400% 400%; z-index: 2; animation: gradientBorder 4s ease infinite;
+            pointer-events: none; box-shadow: 0 0 12px rgba(161,196,253,0.8);
         }
         .marco-sakura {
-            position: absolute; inset: -3px; border: 2.5px solid #ff9ebb; border-radius: 12px; z-index: 2; pointer-events: none;
-            box-shadow: 0 0 10px rgba(255, 158, 187, 0.6), inset 0 0 10px rgba(255, 158, 187, 0.4);
-            animation: pulseSakura 2s infinite alternate;
+            position: absolute; inset: -3px; border: 3px solid #ff9ebb; border-radius: 12px; z-index: 2; pointer-events: none;
+            box-shadow: 0 0 12px #ff9ebb, inset 0 0 10px #ffb3c6;
+            animation: pulseSakura 1.5s infinite alternate;
         }
 
+        @keyframes plasmaSpin {
+            0% { filter: hue-rotate(0deg); }
+            100% { filter: hue-rotate(360deg); }
+        }
         @keyframes plasmaGlow {
-            0% { transform: scale(1); opacity: 0.8; filter: hue-rotate(0deg); }
-            100% { transform: scale(1.04); opacity: 1; filter: hue-rotate(15deg); }
+            0% { transform: scale(0.98); opacity: 0.85; }
+            100% { transform: scale(1.03); opacity: 1; }
         }
         @keyframes gradientBorder { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
-        @keyframes pulseSakura { 0% { box-shadow: 0 0 6px #ff9ebb; border-color: #ff9ebb; } 100% { box-shadow: 0 0 15px #ffb3c6; border-color: #ffc2d1; } }
+        @keyframes pulseSakura { 0% { box-shadow: 0 0 6px #ff9ebb; border-color: #ff9ebb; transform: scale(1); } 100% { box-shadow: 0 0 16px #ffc2d1; border-color: #ffd1dc; transform: scale(1.01); } }
 
         /* RULETA VISUAL DE PREMIOS MEJORADA */
         .ruleta-container {
@@ -502,7 +519,33 @@
             margin-bottom: 10px;
             text-align: center;
         }
+
+        /* ESTILOS PARA MAPA Y CALENDARIO INTEGRADOS */
+        #calendarContainer {
+            background: #fff;
+            border-radius: 14px;
+            padding: 10px;
+            border: 1.5px solid var(--border-soft);
+            margin-bottom: 14px;
+            font-size: 0.75rem;
+        }
+        .fc { font-family: inherit; }
+        .fc .fc-toolbar-title { font-size: 0.9rem !important; color: var(--text-main); }
+        .fc .fc-button { background: var(--accent-green) !important; border: none !important; font-size: 0.75rem !important; padding: 4px 8px !important; }
+
+        #mapContainer {
+            width: 100%;
+            height: 220px;
+            border-radius: 14px;
+            border: 1.5px solid var(--border-soft);
+            margin-top: 10px;
+            background: #e2dcd3;
+            overflow: hidden;
+        }
     </style>
+    <!-- Leaflet CSS y JS para mapas funcionales -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 </head>
 <body>
 
@@ -516,11 +559,14 @@
         </div>
     </div>
 
-    <div id="matchOverlay" onclick="cerrarMatchAnimacion()">
-        <div style="font-size: 60px;">💖🏹</div>
-        <div style="font-size: 1.2rem; color: var(--accent-coral); font-weight: bold; margin-top: 10px;">¡FLECHAZO MUTUO! 🌸</div>
-        <p id="matchTextoAnimado" style="font-size:0.9rem; color:var(--text-main); font-weight:600; margin-top: 6px;"></p>
-        <p style="font-size:0.7rem; color:#8c827b; margin-top:10px;">(Toca la pantalla para cerrar)</p>
+    <!-- MODAL FLECHAZO MUTUO (SOLO CHICAS Y CERRABLE) -->
+    <div id="matchOverlay" style="display:none; position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.6); backdrop-filter:blur(4px); z-index:10001; flex-direction:column; justify-content:center; align-items:center; padding:16px;" onclick="cerrarMatchAnimacion()">
+        <div style="background:#fff; padding:24px; border-radius:20px; text-align:center; max-width:320px; border:2px solid var(--accent-coral); box-shadow:0 10px 25px rgba(0,0,0,0.2);" onclick="event.stopPropagation()">
+            <div style="font-size: 50px;">💖🏹</div>
+            <div style="font-size: 1.1rem; color: var(--accent-coral); font-weight: bold; margin-top: 10px;">¡FLECHAZO MUTUO! 🌸</div>
+            <p id="matchTextoAnimado" style="font-size:0.85rem; color:var(--text-main); font-weight:600; margin-top: 8px;"></p>
+            <button class="btn-flechazo" style="margin-top:16px;" onclick="cerrarMatchAnimacion()">Cerrar</button>
+        </div>
     </div>
 
     <!-- MODAL DEL CARNET -->
@@ -531,7 +577,7 @@
                 <div class="header-sub">DRIVER LICENSE / CARNET SÁFICO</div>
             </div>
             <div class="card-body">
-                <div class="card-photo-box" id="cardPhotoBox">
+                <div class="card-photo-box" id="cardPhotoBox" onclick="dispararCambioFotoDirecto()" title="Pincha aquí para cambiar tu foto">
                     <span style="font-size: 2rem;">👤</span>
                 </div>
                 <div class="card-info">
@@ -569,6 +615,9 @@
             <button class="btn-action btn-close" onclick="cerrarModalCarnet()">Cerrar</button>
         </div>
     </div>
+
+    <!-- Input oculto global para cambiar foto pinchando directamente en el carnet -->
+    <input type="file" id="inputFotoDirectoCarnet" accept="image/*" style="display: none;" onchange="procesarFotoDirectoCarnet(this)">
 
     <!-- BARRA LATERAL IZQUIERDA -->
     <div class="sidebar-left">
@@ -685,11 +734,16 @@
                 </div>
             </div>
 
-            <!-- PESTAÑA 2: AGENDA Y PLANES -->
+            <!-- PESTAÑA 2: AGENDA Y PLANES CON CALENDARIO Y MAPA INTERACTIVO -->
             <div id="agenda" class="tab-content" style="display:none;">
                 <div class="card">
-                    <h3>📅 Agenda y Quedadas</h3>
+                    <h3>📅 Agenda, Calendario y Quedadas</h3>
                     
+                    <!-- CALENDARIO FUNCIONAL -->
+                    <div id="calendarContainer">
+                        <div id="calendar"></div>
+                    </div>
+
                     <div class="accordion-header" onclick="toggleAccordion('accCumple')"><span>🎂 Añadir Cumpleaños (+15💖)</span> <span>▼</span></div>
                     <div id="accCumple" class="accordion-body">
                         <input type="text" id="nombreCumple" placeholder="Nombre de la cumpleañera">
@@ -700,18 +754,22 @@
                     <div class="accordion-header" onclick="toggleAccordion('accQuedada')" style="margin-top:8px;"><span>📍 Proponer Plan / Quedada (+25💖)</span> <span>▼</span></div>
                     <div id="accQuedada" class="accordion-body">
                         <input type="text" id="tituloQuedada" placeholder="Plan (ej: Café y chismes...)">
-                        <input type="text" id="lugarQuedada" placeholder="Lugar o Ciudad">
+                        <input type="text" id="lugarQuedada" placeholder="Lugar o Ciudad (ej: Madrid)">
                         <input type="datetime-local" id="fechaQuedada">
                         <button class="btn-principal" onclick="agregarQuedada()">Publicar Plan</button>
                     </div>
                 </div>
 
                 <div class="card">
-                    <h3>🎉 Próximos Eventos</h3>
+                    <h3>🎉 Próximos Eventos y Mapa</h3>
                     <h4 style="font-size:0.8rem; color:var(--accent-green); margin:8px 0 4px 0;">🎂 Cumpleaños:</h4>
                     <div id="listaCumples" style="font-size:0.8rem; margin-bottom:10px;">Aún no hay cumpleaños.</div>
                     <h4 style="font-size:0.8rem; color:var(--accent-green); margin:8px 0 4px 0;">📍 Quedadas:</h4>
                     <div id="listaQuedadas" style="font-size:0.8rem;">Aún no hay planes.</div>
+
+                    <!-- MAPA FUNCIONAL CON LEAFLET -->
+                    <h4 style="font-size:0.8rem; color:var(--accent-green); margin:12px 0 4px 0;">🗺️ Mapa Interactivo de Quedadas:</h4>
+                    <div id="mapContainer"></div>
                 </div>
             </div>
 
@@ -729,10 +787,11 @@
                         <button class="btn-flechazo" onclick="enviarCartaBuzon()">Enviar Carta</button>
                     </div>
 
-                    <div class="accordion-header" onclick="toggleAccordion('accFlechazo')" style="margin-top:8px;"><span>💘 Mandar Flechazo Anónimo</span> <span>▼</span></div>
+                    <div class="accordion-header" onclick="toggleAccordion('accFlechazo')" style="margin-top:8px;"><span>💘 Mandar Flechazo (Exclusivo Chicas)</span> <span>▼</span></div>
                     <div id="accFlechazo" class="accordion-body">
-                        <input type="text" id="destinoFlechazo" placeholder="¿A quién le mandas el flechazo?">
-                        <button class="btn-flechazo" onclick="enviarFlechazo()">Mandar Flechazo</button>
+                        <p style="font-size:0.7rem; color:#8c827b; margin-top:0;">El flechazo mutuo se activa únicamente si ambas chicas se gustan.</p>
+                        <input type="text" id="destinoFlechazo" placeholder="¿A qué chica le mandas el flechazo?">
+                        <button class="btn-flechazo" onclick="enviarFlechazo()">Mandar Flechazo 💘</button>
                     </div>
                 </div>
 
@@ -771,7 +830,7 @@
 
                 <div class="card" id="seccionMiCarnet" style="display: none;">
                     <h3>🎒 Gestión de Mochila 🌸</h3>
-                    <p style="font-size: 0.75rem; color: #8c827b; margin-top: -4px;">Cambia tu foto de perfil tantas veces como quieras:</p>
+                    <p style="font-size: 0.75rem; color: #8c827b; margin-top: -4px;">Cambia tu foto de perfil tantas veces como quieras directamente pinchando en la foto de tu carnet, o usa el botón:</p>
 
                     <!-- CAMBIO DE FOTO ILIMITADO -->
                     <label for="inPhotoUpdate" class="file-input-label" id="photoUpdateLabel">📷 Cambiar Foto de Perfil</label>
@@ -807,6 +866,8 @@
 
         let carnetFotoBase64 = "";
         let perfilActivo = localStorage.getItem("perfil_activo") || "";
+        let calendarInstance = null;
+        let mapInstance = null;
 
         function obtenerBaseDatosGlobal() {
             return JSON.parse(localStorage.getItem("bollolandia_usuarios") || "{}");
@@ -907,6 +968,12 @@
             if(idPestana === 'buzon') {
                 marcarBuzonComoLeido();
             }
+            if(idPestana === 'agenda') {
+                setTimeout(() => {
+                    if (calendarInstance) calendarInstance.updateSize();
+                    if (mapInstance) mapInstance.invalidateSize();
+                }, 200);
+            }
         }
 
         function toggleAccordion(id) {
@@ -929,7 +996,26 @@
             }
         }
 
-        /* CAMBIO DE FOTO ILIMITADO DESDE LA MOCHILA */
+        /* CAMBIO DE FOTO ILIMITADO DESDE EL CARNET O LA MOCHILA */
+        function dispararCambioFotoDirecto() {
+            document.getElementById('inputFotoDirectoCarnet').click();
+        }
+
+        function procesarFotoDirectoCarnet(input) {
+            const file = input.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onloadend = function() {
+                    const nuevaFoto = reader.result;
+                    actualizarDatosActuales({ photo: nuevaFoto });
+                    const userData = obtenerDatosActuales();
+                    cargarDatosCarnet(userData);
+                    alert("✨ ¡Foto de perfil actualizada con éxito!");
+                }
+                reader.readAsDataURL(file);
+            }
+        }
+
         function actualizarFotoPerfilIlimitada() {
             const file = document.getElementById('inPhotoUpdate').files[0];
             const label = document.getElementById('photoUpdateLabel');
@@ -1247,6 +1333,73 @@
             cambiarPestana('buzon', document.querySelectorAll('.nav-icon-btn')[2]);
         }
 
+        /* INICIALIZACIÓN DE CALENDARIO Y MAPA LEAFLET */
+        function inicializarCalendarioYMapa() {
+            const calendarEl = document.getElementById('calendar');
+            if (calendarEl && !calendarInstance) {
+                calendarInstance = new FullCalendar.Calendar(calendarEl, {
+                    initialView: 'dayGridMonth',
+                    locale: 'es',
+                    height: 300,
+                    headerToolbar: {
+                        left: 'prev',
+                        center: 'title',
+                        right: 'next'
+                    },
+                    events: obtenerEventosCalendario()
+                });
+                calendarInstance.render();
+            }
+
+            const mapEl = document.getElementById('mapContainer');
+            if (mapEl && !mapInstance) {
+                mapInstance = L.map('mapContainer').setView([40.4168, -3.7038], 6); // Centrado en España
+                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    attribution: '© OpenStreetMap'
+                }).addTo(mapInstance);
+                actualizarPuntosMapa();
+            }
+        }
+
+        function obtenerEventosCalendario() {
+            const cumples = JSON.parse(localStorage.getItem('cumples') || '[]');
+            const quedadas = JSON.parse(localStorage.getItem('quedadas') || '[]');
+            let eventos = [];
+            cumples.forEach(c => {
+                eventos.push({ title: `🎂 ${c.nombre}`, start: c.fecha, color: '#f28b72' });
+            });
+            quedadas.forEach(q => {
+                eventos.push({ title: `📍 ${q.titulo}`, start: q.fecha, color: '#87a38a' });
+            });
+            return eventos;
+        }
+
+        function actualizarPuntosMapa() {
+            if (!mapInstance) return;
+            const quedadas = JSON.parse(localStorage.getItem('quedadas') || '[]');
+            // Coordenadas aproximadas de ciudades de referencia para mostrar pines funcionales
+            const coordenadasCiudades = {
+                'madrid': [40.4168, -3.7038],
+                'barcelona': [41.3851, 2.1734],
+                'valencia': [39.4699, -0.3763],
+                'sevilla': [37.3891, -5.9845],
+                'bilbao': [43.2630, -2.9350],
+                'malaga': [36.7213, -4.4214]
+            };
+
+            quedadas.forEach(q => {
+                let lugarLower = q.lugar.toLowerCase().trim();
+                let coords = [40.4168, -3.7038]; // por defecto Madrid si no se encuentra
+                for (let ciudad in coordenadasCiudades) {
+                    if (lugarLower.includes(ciudad)) {
+                        coords = coordenadasCiudades[ciudad];
+                        break;
+                    }
+                }
+                L.marker(coords).addTo(mapInstance).bindPopup(`<b>${q.titulo}</b><br>${q.lugar}`);
+            });
+        }
+
         function agregarCumple() {
             const data = obtenerDatosActuales();
             if (!data) return alert("Crea un perfil primero 🎒");
@@ -1260,6 +1413,9 @@
             document.getElementById('fechaCumple').value = '';
             actualizarCorazones(15);
             cargarCumples();
+            if(calendarInstance) {
+                calendarInstance.addEvent({ title: `🎂 ${nombre}`, start: fecha, color: '#f28b72' });
+            }
             alert('🎂 ¡Cumpleaños guardado (+15 💖)!');
         }
 
@@ -1287,6 +1443,10 @@
             actualizarCorazones(25);
             cargarQuedadas();
             document.getElementById("statQuedadas").innerText = quedadas.length;
+            if(calendarInstance) {
+                calendarInstance.addEvent({ title: `📍 ${titulo}`, start: fecha, color: '#87a38a' });
+            }
+            actualizarPuntosMapa();
             alert('📍 ¡Plan publicado (+25 💖)!');
         }
 
@@ -1298,7 +1458,7 @@
             if(quedadas.length === 0) return cont.innerHTML = 'Aún no hay planes.';
             cont.innerHTML = quedadas.map(q => {
                 const mapUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(q.lugar)}`;
-                return `📍 <strong>${q.titulo}</strong> (${q.lugar})<br><a href="${mapUrl}" target="_blank" class="btn-mapa">🗺️ Ver Mapa</a><br>`;
+                return `📍 <strong>${q.titulo}</strong> (${q.lugar})<br><a href="${mapUrl}" target="_blank" class="btn-mapa">🗺️ Ver Google Maps</a><br>`;
             }).join('');
         }
 
@@ -1306,7 +1466,7 @@
             const data = obtenerDatosActuales();
             if (!data) return alert("Crea un perfil primero 🎒");
             const para = document.getElementById('destinoFlechazo').value.trim().toLowerCase();
-            if(!para) return alert('Escribe el nombre');
+            if(!para) return alert('Escribe el nombre de la chica');
             if(para === perfilActivo.toLowerCase()) return alert('No te puedes mandar un flechazo a ti misma');
 
             const flechazos = JSON.parse(localStorage.getItem('flechazos') || '[]');
@@ -1316,7 +1476,7 @@
                 localStorage.setItem('flechazos', JSON.stringify(flechazos));
             }
             document.getElementById('destinoFlechazo').value = '';
-            alert('💘 Flechazo guardado.');
+            alert('💘 Flechazo enviado con éxito.');
             comprobarMatches();
         }
 
@@ -1331,12 +1491,24 @@
             if(matches.length > 0) {
                 cont.innerHTML = matches.map(m => `
                     <div style="background:#fff3ee; border:1.5px dashed var(--accent-coral); border-radius:14px; padding:10px; text-align:center; margin-top:8px;">
-                        <strong style="color:var(--accent-coral); font-size:0.85rem;">¡HAY MATCH MUTUO CON ${m.de.toUpperCase()}! 🌸💖</strong>
+                        <strong style="color:var(--accent-coral); font-size:0.85rem;">¡HAY FLECHAZO MUTUO CON ${m.de.toUpperCase()}! 🌸💖</strong>
                     </div>
                 `).join('');
+                
+                // Mostrar overlay animado si hay match nuevo
+                const overlay = document.getElementById('matchOverlay');
+                if(overlay && overlay.style.display !== 'flex') {
+                    document.getElementById('matchTextoAnimado').innerText = `¡Se gustan mutuamente en Bollolandia! 💖`;
+                    overlay.style.display = 'flex';
+                }
             } else {
                 cont.innerHTML = '';
             }
+        }
+
+        function cerrarMatchAnimacion() {
+            const overlay = document.getElementById('matchOverlay');
+            if(overlay) overlay.style.display = 'none';
         }
 
         function subirMascota() {
@@ -1377,8 +1549,10 @@
             cargarCumples();
             cargarQuedadas();
             cargarMascotas();
+            inicializarCalendarioYMapa();
             setInterval(comprobarNotificacionesBuzon, 3000);
         });
     </script>
 </body>
 </html>
+```[cite: 2]
