@@ -73,12 +73,12 @@
             cursor: pointer;
         }
 
-        /* Nota actual visible al lado de la foto de perfil en el menú lateral */
+        /* Nota actual reubicada hacia arriba para que no estorbe */
         .sidebar-note-bubble {
             position: absolute;
-            left: 60px;
-            top: 50%;
-            transform: translateY(-50%);
+            bottom: 54px;
+            left: 50%;
+            transform: translateX(-50%);
             background: #ffffff;
             border: 1px solid var(--border-soft);
             border-radius: 12px;
@@ -96,13 +96,13 @@
         .sidebar-note-bubble::before {
             content: '';
             position: absolute;
-            left: -4px;
-            top: 50%;
-            transform: translateY(-50%) rotate(45deg);
+            bottom: -4px;
+            left: 50%;
+            transform: translateX(-50%) rotate(45deg);
             width: 6px;
             height: 6px;
             background: #ffffff;
-            border-left: 1px solid var(--border-soft);
+            border-right: 1px solid var(--border-soft);
             border-bottom: 1px solid var(--border-soft);
         }
 
@@ -799,7 +799,7 @@
                             <span class="label-red">EXP:</span> <span id="cardExpOut">PERM</span>
                         </div>
                         <div>
-                            <span class="label-red">EXP:</span> <span id="cardDateOut">00/00/00</span>
+                            <span class="label-red">DOB:</span> <span id="cardDateOut">00/00/00</span>
                         </div>
                     </div>
                     <div class="info-row" style="margin-top: 2px;">
@@ -835,7 +835,7 @@
             <div class="sidebar-avatar" id="btnMochilaHeader" onclick="abrirModalCarnet()" title="Ver mi Carnet">
                 👤<div id="miniMarcoLayer"></div>
             </div>
-            <!-- Nota actual al lado de la foto de perfil -->
+            <!-- Nota actual reubicada -->
             <div class="sidebar-note-bubble" id="sidebarNoteBubble" onclick="modificarNotaInteractiva()" style="display: none;" title="Haz clic para modificar la nota"></div>
         </div>
 
@@ -1305,7 +1305,6 @@
             }
         }
 
-        // Modificación interactiva de nota haciendo clic y opción de añadir texto o audio
         function modificarNotaInteractiva() {
             const userData = obtenerDatosActuales();
             if (!userData) return alert("Crea un perfil primero 🎒");
