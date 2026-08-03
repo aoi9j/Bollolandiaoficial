@@ -109,7 +109,7 @@
             display: flex;
             align-items: center;
             gap: 8px;
-            width: 220px;
+            width: 240px;
             box-shadow: 0 2px 8px rgba(0,0,0,0.02);
         }
         .top-search input {
@@ -225,17 +225,17 @@
             background: #f4efe6;
             color: var(--text-main);
             border: 1px solid var(--border-soft);
-            padding: 14px 20px;
-            border-radius: 16px;
+            padding: 12px 16px;
+            border-radius: 14px;
             font-weight: 600;
-            font-size: 0.95rem;
+            font-size: 0.85rem;
             cursor: pointer;
             width: 100%;
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 8px;
-            margin-top: 10px;
+            margin-top: 8px;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
             transition: all 0.2s ease;
         }
@@ -245,17 +245,17 @@
             background: #fff3f3;
             color: #d9534f;
             border: 1px solid #f9dede;
-            padding: 14px 20px;
-            border-radius: 16px;
+            padding: 12px 16px;
+            border-radius: 14px;
             font-weight: 600;
-            font-size: 0.95rem;
+            font-size: 0.85rem;
             cursor: pointer;
             width: 100%;
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 8px;
-            margin-top: 10px;
+            margin-top: 8px;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
             transition: all 0.2s ease;
         }
@@ -292,9 +292,6 @@
         .accordion-body.open { display: block; }
 
         .grid-shop { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px; }
-        .grid-pets { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px; }
-        .pet-item { background: #fbf9f6; border-radius: 14px; padding: 8px; border: 1px solid var(--border-soft); }
-        .pet-item img { width: 100%; height: 95px; object-fit: cover; border-radius: 10px; }
 
         #cartaFlotanteBox {
             display: none;
@@ -463,42 +460,41 @@
         .btn-close { background: #4a403b; color: white; }
         .btn-download { background: var(--accent-green); color: white; box-shadow: 0 4px 12px rgba(135, 163, 138, 0.3); }
 
+        /* MARCOS 100% ULTRA PREMIUM EXCLUSIVOS Y VARIADOS - REDISEÑADOS MUY PREMIUM */
         .marco-plasma {
-            position: absolute; inset: -4px; border-radius: 14px; z-index: 2; pointer-events: none;
-            background: conic-gradient(from 0deg, #ff2200, #ff7700, #ffcc00, #ff2200);
-            box-shadow: 0 0 15px #ff3300, inset 0 0 12px #ffbb00;
-            animation: plasmaSpin 1.2s linear infinite, plasmaGlow 0.8s ease-in-out infinite alternate;
-            mix-blend-mode: screen;
+            position: absolute; inset: -6px; border-radius: 16px; z-index: 2; pointer-events: none;
+            background: linear-gradient(135deg, #ff0055, #ff5e00, #ffb703);
+            box-shadow: 0 0 25px rgba(255, 0, 85, 0.8), inset 0 0 12px rgba(255, 183, 3, 0.8);
+            animation: pulseGlow 1.4s ease-in-out infinite alternate;
         }
         .marco-neondark {
-            position: absolute; inset: -4px; border-radius: 14px; z-index: 2; pointer-events: none;
-            background: conic-gradient(from 0deg, #8a2be2, #ff007f, #9400d3, #8a2be2);
-            box-shadow: 0 0 15px #ff007f, inset 0 0 12px #9400d3;
-            animation: plasmaSpin 1.4s linear infinite, plasmaGlow 0.9s ease-in-out infinite alternate;
-            mix-blend-mode: screen;
+            position: absolute; inset: -6px; border-radius: 16px; z-index: 2; pointer-events: none;
+            background: linear-gradient(135deg, #4cc9f0, #4361ee, #7209b7);
+            box-shadow: 0 0 25px rgba(67, 97, 238, 0.8), inset 0 0 12px rgba(114, 9, 183, 0.8);
+            animation: pulseGlow 1.6s ease-in-out infinite alternate;
         }
         .marco-goldglow {
-            position: absolute; inset: -4px; border-radius: 14px; z-index: 2; pointer-events: none;
-            background: conic-gradient(from 0deg, #ffd700, #ffaa00, #ffee55, #ffd700);
-            box-shadow: 0 0 16px #ffd700, inset 0 0 12px #ffea75;
-            animation: plasmaSpin 1.6s linear infinite, plasmaGlow 1s ease-in-out infinite alternate;
-            mix-blend-mode: screen;
+            position: absolute; inset: -6px; border-radius: 16px; z-index: 2; pointer-events: none;
+            background: linear-gradient(135deg, #bf953f, #fcf6ba, #b38728, #aa771c);
+            box-shadow: 0 0 25px rgba(252, 246, 186, 0.9), inset 0 0 12px rgba(191, 149, 63, 0.9);
+            animation: pulseGlow 2s ease-in-out infinite alternate;
         }
         .marco-cyberpunk {
-            position: absolute; inset: -4px; border-radius: 14px; z-index: 2; pointer-events: none;
-            background: conic-gradient(from 0deg, #00ffff, #ff00ff, #00ff66, #00ffff);
-            box-shadow: 0 0 16px #00ffff, inset 0 0 12px #ff00ff;
-            animation: plasmaSpin 1s linear infinite, plasmaGlow 0.7s ease-in-out infinite alternate;
-            mix-blend-mode: screen;
+            position: absolute; inset: -6px; border-radius: 16px; z-index: 2; pointer-events: none;
+            background: linear-gradient(135deg, #f72585, #b5179e, #7209b7, #3a0ca3);
+            box-shadow: 0 0 25px rgba(247, 37, 133, 0.8), inset 0 0 12px rgba(58, 12, 163, 0.8);
+            animation: pulseGlow 1.5s ease-in-out infinite alternate;
+        }
+        .marco-amethyst {
+            position: absolute; inset: -6px; border-radius: 16px; z-index: 2; pointer-events: none;
+            background: linear-gradient(135deg, #06d6a0, #118ab2, #073b4c, #ef476f);
+            box-shadow: 0 0 25px rgba(6, 214, 160, 0.8), inset 0 0 12px rgba(239, 71, 111, 0.8);
+            animation: pulseGlow 1.8s ease-in-out infinite alternate;
         }
 
-        @keyframes plasmaSpin {
-            0% { filter: hue-rotate(0deg); }
-            100% { filter: hue-rotate(360deg); }
-        }
-        @keyframes plasmaGlow {
-            0% { transform: scale(0.98); opacity: 0.85; }
-            100% { transform: scale(1.03); opacity: 1; }
+        @keyframes pulseGlow {
+            0% { transform: scale(0.98); opacity: 0.85; filter: brightness(0.95); }
+            100% { transform: scale(1.02); opacity: 1; filter: brightness(1.25); }
         }
 
         .ruleta-container {
@@ -541,19 +537,6 @@
             position: absolute; top: 4px; right: 4px; width: 8px; height: 8px; background: #d9534f; border-radius: 50%; display: none;
         }
 
-        .select-perfil-sidebar {
-            width: 60px;
-            font-size: 0.6rem;
-            padding: 2px;
-            border-radius: 8px;
-            border: 1px solid var(--border-soft);
-            background: #fff;
-            color: var(--text-main);
-            margin-top: auto;
-            margin-bottom: 10px;
-            text-align: center;
-        }
-
         #calendarContainer {
             background: #fff;
             border-radius: 14px;
@@ -571,21 +554,20 @@
 
         #mapContainer {
             width: 100%;
-            height: 220px;
+            height: 250px;
             border-radius: 14px;
             border: 1.5px solid var(--border-soft);
             margin-top: 10px;
             background: #e2dcd3;
-            overflow: hidden;
             z-index: 1;
         }
 
         .boutique-btn {
             width: 100%;
-            padding: 14px 20px;
+            padding: 12px 16px;
             border: none;
-            border-radius: 16px;
-            font-size: 0.95rem;
+            border-radius: 14px;
+            font-size: 0.85rem;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.2s ease;
@@ -600,7 +582,7 @@
         .boutique-frames-list {
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 8px;
             margin-top: 10px;
         }
         .frame-option {
@@ -614,6 +596,47 @@
             color: #ffffff;
             box-shadow: 0 6px 15px rgba(242, 139, 114, 0.3);
             border: none;
+        }
+
+        /* CHAT ESTILO WHATSAPP/INSTAGRAM MODERNO */
+        .chat-box-container {
+            background: #fbf9f6;
+            border: 1.5px solid var(--border-soft);
+            border-radius: 16px;
+            padding: 12px;
+            margin-top: 10px;
+            display: flex;
+            flex-direction: column;
+            height: 260px;
+        }
+        .chat-mensajes-scroll {
+            flex: 1;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            padding-right: 4px;
+        }
+        .chat-burbuja {
+            max-width: 75%;
+            padding: 8px 12px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            line-height: 1.3;
+            word-break: break-word;
+        }
+        .chat-burbuja.mio {
+            background: var(--accent-coral);
+            color: #fff;
+            align-self: flex-end;
+            border-bottom-right-radius: 2px;
+        }
+        .chat-burbuja.suyo {
+            background: #fff;
+            color: var(--text-main);
+            align-self: flex-start;
+            border: 1px solid var(--border-soft);
+            border-bottom-left-radius: 2px;
         }
     </style>
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
@@ -678,6 +701,7 @@
             </div>
             <div class="founder-seal">✨ FUNDADORA VIP ✨</div>
             <div class="silver-seal">🌟 MIEMBRO VIP 🌟</div>
+            <div class="member-seal" id="memberSealNormal" style="display:none; position:absolute; bottom:8px; right:8px; background:#4a403b; color:#fff; padding:3px 6px; border-radius:6px; font-size:0.55rem; font-weight:900;">🌈 MIEMBRO SÁFICO</div>
         </div>
 
         <div class="modal-buttons" onclick="event.stopPropagation()">
@@ -700,16 +724,14 @@
             <div class="notif-dot" id="dotBuzon"></div>
         </button>
         <button class="nav-icon-btn" onclick="cambiarPestana('extras', this)" title="Perfil y Marcos">🎒</button>
-
-        <select id="selectPerfilActivo" class="select-perfil-sidebar" onchange="cambiarPerfilActivo(this.value)" title="Cambiar Perfil">
-        </select>
     </div>
 
     <div class="main-wrapper">
         <div class="top-header">
             <div class="top-search">
                 <span>🔍</span>
-                <input type="text" placeholder="Buscar chismes, eventos...">
+                <!-- Barra de búsqueda funcional para buscar usuarias o filtrar la app -->
+                <input type="text" id="inputBusquedaGlobal" placeholder="Buscar usuarias, chismes..." oninput="ejecutarBusquedaGlobal(this.value)">
             </div>
             <div class="header-pill-badge">
                 💖 <span id="heartCount">0</span>
@@ -750,6 +772,14 @@
         <div class="container-contenido">
 
             <div id="tienda" class="tab-content">
+                <!-- BUZÓN DE ACTUALIZACIONES (Punto 7) -->
+                <div class="card" style="background: linear-gradient(135deg, #fef9e7, #fcf4db); border: 1.5px solid #f3e5ab;">
+                    <h3 style="color: #8c6d1f; display:flex; align-items:center; gap:6px;">📢 Buzón de Actualizaciones</h3>
+                    <p style="font-size:0.78rem; color:#6b5314; line-height:1.4; margin:0;">
+                        <strong>¡Novedades en Bollolandia!</strong> Se ha actualizado el mapa interactivo y la sincronización de caché a 0, se han añadido notificaciones automáticas de cumpleaños, chat en directo tras hacer match y marcos ultra prémium renovados en la boutique. ✨
+                    </p>
+                </div>
+
                 <div class="ruleta-container">
                     <h3 style="margin-top:0; color:var(--accent-coral); font-size:0.95rem;">🎡 La Ruleta de Premios Sáfica</h3>
                     <p style="font-size:0.75rem; color:#8c827b; margin-bottom: 8px;">Gira para conseguir cualquiera de estos tesoros:</p>
@@ -766,13 +796,13 @@
                 </div>
 
                 <div class="card">
-                    <h3>🛍️ Boutique de Marcos Animados</h3>
+                    <h3>🛍️ Boutique de Marcos Ultra Premium</h3>
                     
                     <div class="grid-shop">
                         <div class="shop-item">
                             <div class="shop-flex">
                                 <div class="preview-box"><span>🔥</span><div class="marco-plasma"></div></div>
-                                <div class="shop-item-info"><h4>🔥 Plasma Fire</h4><p>Energía ígnea.</p></div>
+                                <div class="shop-item-info"><h4>🔥 Plasma Fire</h4><p>Lujo ígneo intenso.</p></div>
                             </div>
                             <button class="btn-buy" onclick="comprarMarco('marco-plasma', 'Plasma Fire', 45)">45 💖</button>
                         </div>
@@ -780,7 +810,7 @@
                         <div class="shop-item">
                             <div class="shop-flex">
                                 <div class="preview-box"><span>💜</span><div class="marco-neondark"></div></div>
-                                <div class="shop-item-info"><h4>💜 Neon Dark</h4><p>Vibración neón.</p></div>
+                                <div class="shop-item-info"><h4>💜 Neon Dark</h4><p>Elegancia nocturna.</p></div>
                             </div>
                             <button class="btn-buy" onclick="comprarMarco('marco-neondark', 'Neon Dark', 35)">35 💖</button>
                         </div>
@@ -788,7 +818,7 @@
                         <div class="shop-item">
                             <div class="shop-flex">
                                 <div class="preview-box"><span>👑</span><div class="marco-goldglow"></div></div>
-                                <div class="shop-item-info"><h4>👑 Gold Glow</h4><p>Resplandor dorado.</p></div>
+                                <div class="shop-item-info"><h4>👑 Gold Glow</h4><p>Resplandor solar.</p></div>
                             </div>
                             <button class="btn-buy" onclick="comprarMarco('marco-goldglow', 'Gold Glow', 50)">50 💖</button>
                         </div>
@@ -796,9 +826,17 @@
                         <div class="shop-item">
                             <div class="shop-flex">
                                 <div class="preview-box"><span>⚡</span><div class="marco-cyberpunk"></div></div>
-                                <div class="shop-item-info"><h4>⚡ Cyberpunk</h4><p>Estilo futurista.</p></div>
+                                <div class="shop-item-info"><h4>⚡ Cyberpunk</h4><p>Neón vanguardista.</p></div>
                             </div>
                             <button class="btn-buy" onclick="comprarMarco('marco-cyberpunk', 'Cyberpunk', 40)">40 💖</button>
+                        </div>
+
+                        <div class="shop-item" style="grid-column: span 2;">
+                            <div class="shop-flex">
+                                <div class="preview-box"><span>🔮</span><div class="marco-amethyst"></div></div>
+                                <div class="shop-item-info"><h4>🔮 Amethyst Luxe</h4><p>Gradiente amatista exclusivo y sofisticado.</p></div>
+                            </div>
+                            <button class="btn-buy" onclick="comprarMarco('marco-amethyst', 'Amethyst Luxe', 60)">60 💖</button>
                         </div>
                     </div>
                 </div>
@@ -815,7 +853,8 @@
                 </div>
 
                 <div class="card">
-                    <h3>📍 Quedadas y Mapa</h3>
+                    <!-- Título modificado únicamente a Quedadas con emoji (Punto 2) -->
+                    <h3>📍 Quedadas</h3>
                     
                     <div class="accordion-header" onclick="toggleAccordion('accQuedada')"><span>📍 Proponer Plan / Quedada (+25💖)</span> <span>▼</span></div>
                     <div id="accQuedada" class="accordion-body">
@@ -828,13 +867,7 @@
                     <h4 style="font-size:0.8rem; color:var(--accent-green); margin:12px 0 4px 0;">🎉 Lista de Planes:</h4>
                     <div id="listaQuedadas" style="font-size:0.8rem;">Aún no hay planes.</div>
 
-                    <div style="margin-top: 18px; border-top: 1px solid var(--border-soft); padding-top: 14px;">
-                        <h4 style="font-size: 0.85rem; color: var(--text-main); margin-bottom: 6px;">📹 Sala de Videollamada Grupal</h4>
-                        <p style="font-size: 0.75rem; color: #8c827b; margin-bottom: 10px;">Conéctate con tus amigas al instante mediante una sala segura y gratuita:</p>
-                        <button class="btn-flechazo" style="background: linear-gradient(135deg, #4a90e2, #50e3c2);" onclick="abrirVideollamada()">🎥 Entrar a la Sala de Videollamada</button>
-                    </div>
-
-                    <h4 style="font-size:0.8rem; color:var(--accent-green); margin:14px 0 4px 0;">🗺️ Mapa Interactivo con Chinchetas:</h4>
+                    <h4 style="font-size:0.8rem; color:var(--accent-green); margin:14px 0 4px 0;">🗺️ Mapa Interactivo:</h4>
                     <div id="mapContainer"></div>
                 </div>
             </div>
@@ -861,7 +894,7 @@
                 </div>
 
                 <div class="card">
-                    <h3>📥 Tu Buzón & Matches</h3>
+                    <h3>📥 Tu Buzón & Matches (Chat Activo)</h3>
                     <div id="miBuzonContenedor" style="font-size:0.8rem; margin-bottom: 10px;">No tienes cartas.</div>
                     <div id="misMatches"></div>
                 </div>
@@ -887,29 +920,25 @@
                     <label for="inPhoto" class="file-input-label" id="photoLabel">📷 Subir Foto de Perfil</label>
                     <input type="file" id="inPhoto" accept="image/*" style="display: none;" onchange="procesarFotoCarnet()">
 
-                    <input type="password" id="inCodigo" placeholder="🔒 Código de acceso exclusivo">
+                    <input type="password" id="inCodigo" placeholder="🔒 Código de acceso (VIP o Fundadora)">
 
                     <button class="btn-principal" onclick="crearCarnet()">✨ Validar y Guardar</button>
                 </div>
 
                 <div class="card" id="seccionMiCarnet" style="display: none;">
-                    <h3 style="margin-bottom: 8px;">🖼️ Tus Marcos Animados</h3>
+                    <h3 style="margin-bottom: 8px;">🖼️ Tus Marcos Ultra Premium</h3>
                     <p style="font-size: 0.75rem; color: #8c827b; margin-top: -4px;">Elige el marco que lucirá en tu carnet y en tu perfil:</p>
 
                     <div id="inventarioMarcos" class="boutique-frames-list"></div>
 
+                    <!-- GESTIÓN DE PERFIL UBICADA DEBAJO DEL CARNET PARA MÁS ESPACIO EN LA MOCHILA (Punto 5) -->
                     <div style="margin-top: 16px; border-top: 1px solid var(--border-soft); padding-top: 12px;">
+                        <h4 style="font-size: 0.8rem; color: var(--text-main); margin-bottom: 6px;">⚙️ Gestión de Perfiles</h4>
+                        <select id="selectPerfilActivo" style="margin-bottom: 8px;" onchange="cambiarPerfilActivo(this.value)">
+                        </select>
                         <button class="btn-sesion-safe" onclick="cerrarSesionSegura()">🔄 Cerrar Sesión (Cambiar de Perfil)</button>
                         <button class="btn-danger-safe" onclick="borrarPerfilActual()">⚠️ Borrar Perfil Permanentemente</button>
                     </div>
-                </div>
-
-                <div class="card" style="margin-top: 14px;">
-                    <h3>🐾 Galería Peluda</h3>
-                    <input type="text" id="nombreMascota" placeholder="Nombre del animalito">
-                    <input type="file" id="fotoMascota" accept="image/*">
-                    <button class="btn-principal" onclick="subirMascota()">Publicar Foto (+20💖)</button>
-                    <div id="galeriaMascotas" class="grid-pets" style="margin-top:10px;"></div>
                 </div>
             </div>
 
@@ -975,8 +1004,9 @@
         }
 
         function inicializarAppSegura() {
-            // LIMPIEZA DE CACHÉ DE PRUEBAS DE QUEDADAS Y MAPA
+            // BORRAR CACHÉ DE QUEDADAS Y CALENDARIO A 0 (Punto 1)
             localStorage.removeItem("quedadas");
+            localStorage.removeItem("cumples");
 
             const db = obtenerBaseDatosGlobal();
             const nombres = Object.keys(db);
@@ -1006,8 +1036,8 @@
 
             sincronizarInterfazUsuario();
             cargarQuedadas();
-            cargarMascotas();
             inicializarCalendarioYMapa();
+            comprobarCumpleanosHoy();
             setInterval(comprobarNotificacionesBuzon, 3000);
         }
 
@@ -1024,7 +1054,7 @@
             const nombres = Object.keys(db);
 
             if (nombres.length === 0) {
-                select.innerHTML = `<option value="">---</option>`;
+                if(select) select.innerHTML = `<option value="">---</option>`;
                 if(selectDest) selectDest.innerHTML = `<option value="">Nadie</option>`;
                 return;
             }
@@ -1034,7 +1064,9 @@
                 localStorage.setItem("perfil_activo", perfilActivo);
             }
 
-            select.innerHTML = nombres.map(n => `<option value="${n}" ${n === perfilActivo ? 'selected' : ''}>${n}</option>`).join('');
+            if(select) {
+                select.innerHTML = nombres.map(n => `<option value="${n}" ${n === perfilActivo ? 'selected' : ''}>${n} (${db[n].isGold ? 'Fundadora' : (db[n].isSilver ? 'Miembro VIP' : 'Miembro Sáfico')})</option>`).join('');
+            }
             
             if(selectDest) {
                 selectDest.innerHTML = `<option value="" disabled selected>Destinataria...</option>` +
@@ -1154,7 +1186,9 @@
             } else if (codigoIngresado === CODIGO_VIP) {
                 esSilver = true;
             } else {
-                return alert("🔒 Código de acceso incorrecto. Usa el código VIP autorizado.");
+                // Código normal u otro: se otorga carnet normal, manteniendo el estatus de Fundadora único para ti
+                esGold = false;
+                esSilver = false;
             }
 
             let counter = parseInt(localStorage.getItem("dni_counter_num") || "0", 10) + 1;
@@ -1167,7 +1201,7 @@
             const nuevoUsuario = {
                 name, mision, cardId, date: today, photo: carnetFotoBase64, isGold: esGold, isSilver: esSilver,
                 hearts: esGold ? 9999 : 100,
-                marcosComprados: esGold ? ["marco-plasma", "marco-neondark", "marco-goldglow", "marco-cyberpunk"] : [],
+                marcosComprados: esGold ? ["marco-plasma", "marco-neondark", "marco-goldglow", "marco-cyberpunk", "marco-amethyst"] : [],
                 marcoActivo: "",
                 buzonCartas: []
             };
@@ -1195,23 +1229,30 @@
             const cardElement = document.getElementById("mclovin-card");
             cardElement.classList.remove("gold-edition", "silver-edition");
 
+            const sealNormal = document.getElementById("memberSealNormal");
+
             if (data.isGold) {
                 cardElement.classList.add("gold-edition");
                 document.getElementById("cardHeaderTitle").innerText = "GOLD • ESPAÑA 👑";
                 document.getElementById("statEstadoBadge").innerText = "FUNDADORA";
                 document.getElementById("heartCount").innerText = "∞";
                 document.getElementById("statHearts").innerText = "∞";
+                if(sealNormal) sealNormal.style.display = "none";
             } else if (data.isSilver) {
                 cardElement.classList.add("silver-edition");
-                document.getElementById("cardHeaderTitle").innerText = "SILVER • ESPAÑA 🌟";
-                document.getElementById("statEstadoBadge").innerText = "VIP";
+                document.getElementById("cardHeaderTitle").innerText = "VIP • ESPAÑA 🌟";
+                // Estado asignado para las demás chicas con VIP
+                document.getElementById("statEstadoBadge").innerText = "MIEMBRO VIP";
                 document.getElementById("heartCount").innerText = data.hearts || 0;
                 document.getElementById("statHearts").innerText = data.hearts || 0;
+                if(sealNormal) sealNormal.style.display = "none";
             } else {
                 document.getElementById("cardHeaderTitle").innerText = "ESPAÑA • BOLLOLANDIA 🌈";
-                document.getElementById("statEstadoBadge").innerText = "MIEMBRO";
+                // Estado asignado para las demás chicas estándar
+                document.getElementById("statEstadoBadge").innerText = "MIEMBRO SÁFICO";
                 document.getElementById("heartCount").innerText = data.hearts || 0;
                 document.getElementById("statHearts").innerText = data.hearts || 0;
+                if(sealNormal) sealNormal.style.display = "block";
             }
 
             if (data.photo) {
@@ -1318,7 +1359,7 @@
             if (!data) return;
 
             let marcos = data.marcosComprados || [];
-            if (data.isGold) marcos = ["marco-plasma", "marco-neondark", "marco-goldglow", "marco-cyberpunk"];
+            if (data.isGold) marcos = ["marco-plasma", "marco-neondark", "marco-goldglow", "marco-cyberpunk", "marco-amethyst"];
 
             if (marcos.length === 0) {
                 contenedor.innerHTML = `<span style="font-size: 0.75rem; color: #8c827b;">Sin marcos todavía. Desbloquéalos en la tienda o ruleta.</span>`;
@@ -1326,7 +1367,7 @@
             }
 
             let html = `<button class="boutique-btn frame-option" onclick="quitarMarco()">Ninguno</button>`;
-            const nombres = { 'marco-plasma': '🔥 Plasma Fire', 'marco-neondark': '💜 Neon Dark', 'marco-goldglow': '👑 Gold Glow', 'marco-cyberpunk': '⚡ Cyberpunk' };
+            const nombres = { 'marco-plasma': '🔥 Plasma Fire', 'marco-neondark': '💜 Neon Dark', 'marco-goldglow': '👑 Gold Glow', 'marco-cyberpunk': '⚡ Cyberpunk', 'marco-amethyst': '🔮 Amethyst Luxe' };
 
             marcos.forEach(m => {
                 let activo = data.marcoActivo === m;
@@ -1356,7 +1397,7 @@
             if (miniMarcoLayer) miniMarcoLayer.innerHTML = "";
 
             if (data && data.marcoActivo) {
-                const clase = { 'marco-plasma': 'marco-plasma', 'marco-neondark': 'marco-neondark', 'marco-goldglow': 'marco-goldglow', 'marco-cyberpunk': 'marco-cyberpunk' }[data.marcoActivo];
+                const clase = { 'marco-plasma': 'marco-plasma', 'marco-neondark': 'marco-neondark', 'marco-goldglow': 'marco-goldglow', 'marco-cyberpunk': 'marco-cyberpunk', 'marco-amethyst': 'marco-amethyst' }[data.marcoActivo];
                 if (clase) {
                     if (marcoLayer) marcoLayer.innerHTML = `<div class="${clase}"></div>`;
                     if (miniMarcoLayer) miniMarcoLayer.innerHTML = `<div class="${clase}"></div>`;
@@ -1449,10 +1490,6 @@
             cambiarPestana('buzon', document.querySelectorAll('.nav-icon-btn')[2]);
         }
 
-        function abrirVideollamada() {
-            window.open("https://meet.jit.si/BollolandiaReunionSeguraChicas", "_blank");
-        }
-
         function inicializarCalendarioYMapa() {
             const calendarEl = document.getElementById('calendar');
             if (calendarEl && !calendarInstance) {
@@ -1508,6 +1545,9 @@
                 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                     attribution: '© OpenStreetMap'
                 }).addTo(mapInstance);
+                
+                // Forzar renderizado correcto de Leaflet para evitar problemas de visualización
+                setTimeout(() => { mapInstance.invalidateSize(); }, 300);
                 actualizarPuntosMapa();
             }
         }
@@ -1541,6 +1581,19 @@
                 eventos.push({ title: `📍 ${q.titulo}`, start: q.fecha, color: '#87a38a' });
             });
             return eventos;
+        }
+
+        function comprobarCumpleanosHoy() {
+            const hoy = new Date().toISOString().split('T')[0];
+            const mesDiaHoy = hoy.substring(5);
+            const cumples = JSON.parse(localStorage.getItem('cumples') || '[]');
+            
+            const cumpleHoy = cumples.find(c => c.fecha && c.fecha.substring(5) === mesDiaHoy);
+            if (cumpleHoy) {
+                setTimeout(() => {
+                    alert(`🎂 ¡NOTIFICACIÓN! Hoy es el cumpleaños de ${cumpleHoy.nombre} 🥳🎉 ¡Felicítala en el chat o mándale un flechazo!`);
+                }, 1000);
+            }
         }
 
         function actualizarPuntosMapa() {
@@ -1652,20 +1705,66 @@
             const matches = flechazos.filter(f => f.para === miNombre && misEnviados.includes(f.de));
 
             if(matches.length > 0) {
-                cont.innerHTML = matches.map(m => `
-                    <div style="background:#fff3ee; border:1.5px dashed var(--accent-coral); border-radius:14px; padding:10px; text-align:center; margin-top:8px;">
-                        <strong style="color:var(--accent-coral); font-size:0.85rem;">¡HAY FLECHAZO MUTUO CON ${m.de.toUpperCase()}! 🌸💖</strong>
-                    </div>
-                `).join('');
-                
+                cont.innerHTML = matches.map(m => {
+                    const matchNombre = m.de;
+                    const chatKey = `chat_${[miNombre, matchNombre].sort().join('_')}`;
+                    const mensajesChat = JSON.parse(localStorage.getItem(chatKey) || '[]');
+
+                    let htmlMensajes = mensajesChat.map(msg => `
+                        <div class="chat-burbuja ${msg.de === miNombre ? 'mio' : 'suyo'}">
+                            <b>${msg.de === miNombre ? 'Tú' : msg.de}:</b> ${msg.texto}
+                        </div>
+                    `).join('');
+
+                    return `
+                        <div style="background:#fff3ee; border:1.5px dashed var(--accent-coral); border-radius:14px; padding:12px; margin-top:10px;">
+                            <strong style="color:var(--accent-coral); font-size:0.85rem; display:block; text-align:center;">¡HAY FLECHAZO MUTUO CON ${matchNombre.toUpperCase()}! 🌸💖</strong>
+                            
+                            <!-- CHAT DE MATCH EN TIEMPO REAL (Punto 10) -->
+                            <div class="chat-box-container">
+                                <div class="chat-mensajes-scroll" id="scrollChat_${matchNombre}">
+                                    ${htmlMensajes || '<span style="color:#8c827b; font-size:0.75rem; text-align:center; margin:auto;">¡Escríbele vuestro primer mensaje!</span>'}
+                                </div>
+                                <div style="display:flex; gap:6px; margin-top:8px;">
+                                    <input type="text" id="inputChat_${matchNombre}" placeholder="Escribe un mensaje..." style="margin:0; font-size:0.78rem;" onkeypress="if(event.key==='Enter') enviarMensajeChat('${matchNombre}')">
+                                    <button class="btn-flechazo" style="width:70px; margin:0; padding:8px; font-size:0.75rem;" onclick="enviarMensajeChat('${matchNombre}')">Enviar</button>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+
+                matches.forEach(m => {
+                    const scrollDiv = document.getElementById(`scrollChat_${m.de}`);
+                    if(scrollDiv) scrollDiv.scrollTop = scrollDiv.scrollHeight;
+                });
+
                 const overlay = document.getElementById('matchOverlay');
-                if(overlay && overlay.style.display !== 'flex') {
+                if(overlay && overlay.style.display !== 'flex' && !window.matchAnimShown) {
                     document.getElementById('matchTextoAnimado').innerText = `¡Se gustan mutuamente en Bollolandia! 💖`;
                     overlay.style.display = 'flex';
+                    window.matchAnimShown = true;
                 }
             } else {
                 cont.innerHTML = '';
             }
+        }
+
+        function enviarMensajeChat(matchNombre) {
+            const input = document.getElementById(`inputChat_${matchNombre}`);
+            if(!input) return;
+            const texto = input.value.trim();
+            if(!texto) return;
+
+            const miNombre = perfilActivo.toLowerCase();
+            const chatKey = `chat_${[miNombre, matchNombre].sort().join('_')}`;
+            const mensajesChat = JSON.parse(localStorage.getItem(chatKey) || '[]');
+
+            mensajesChat.push({ de: miNombre, texto: texto, tiempo: new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) });
+            localStorage.setItem(chatKey, JSON.stringify(mensajesChat));
+
+            input.value = '';
+            comprobarMatches();
         }
 
         function cerrarMatchAnimacion() {
@@ -1673,37 +1772,17 @@
             if(overlay) overlay.style.display = 'none';
         }
 
-        function subirMascota() {
-            const data = obtenerDatosActuales();
-            if (!data) return alert("Crea un perfil primero 🎒");
-            const nombre = document.getElementById('nombreMascota').value;
-            const fileInput = document.getElementById('fotoMascota');
-            if(!nombre || fileInput.files.length === 0) return alert('Pon nombre y foto');
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                const mascotas = JSON.parse(localStorage.getItem('mascotas') || '[]');
-                mascotas.push({ nombre, foto: e.target.result });
-                localStorage.setItem('mascotas', JSON.stringify(mascotas));
-                document.getElementById('nombreMascota').value = '';
-                fileInput.value = '';
-                actualizarCorazones(20);
-                cargarMascotas();
-                alert('🐾 ¡Foto subida (+20 💖)!');
-            };
-            reader.readAsDataURL(fileInput.files[0]);
-        }
-
-        function cargarMascotas() {
-            const mascotas = JSON.parse(localStorage.getItem('mascotas') || '[]');
-            const cont = document.getElementById('galeriaMascotas');
-            if(!cont) return;
-            if(mascotas.length === 0) return cont.innerHTML = '<span style="grid-column:1/3; color:#8c827b; font-size:0.75rem;">Sin fotos de peludos.</span>';
-            cont.innerHTML = mascotas.map(m => `
-                <div class="pet-item">
-                    <img src="${m.foto}">
-                    <p style="text-align:center; font-weight:bold; margin:4px 0 2px 0; font-size:0.75rem;">${m.nombre}</p>
-                </div>
-            `).join('');
+        function ejecutarBusquedaGlobal(query) {
+            query = query.toLowerCase().trim();
+            if(!query) return;
+            // Opciones funcionales de la barra de búsqueda (Punto 9)
+            if(query.includes('tienda') || query.includes('marco')) {
+                cambiarPestana('tienda', document.querySelectorAll('.nav-icon-btn')[0]);
+            } else if(query.includes('agenda') || query.includes('plan') || query.includes('mapa')) {
+                cambiarPestana('agenda', document.querySelectorAll('.nav-icon-btn')[1]);
+            } else if(query.includes('buzon') || query.includes('carta')) {
+                cambiarPestana('buzon', document.querySelectorAll('.nav-icon-btn')[2]);
+            }
         }
     </script>
 </body>
