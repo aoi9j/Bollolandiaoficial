@@ -10,6 +10,9 @@
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Cinzel:wght@700&display=swap" rel="stylesheet">
 
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+
     <style>
         :root {
             --bg-main: #fcf8f2;
@@ -574,9 +577,9 @@
             margin-top: 10px;
             background: #e2dcd3;
             overflow: hidden;
+            z-index: 1;
         }
 
-        /* Estilos boutique unificados para marcos y opciones */
         .boutique-btn {
             width: 100%;
             padding: 14px 20px;
@@ -613,7 +616,6 @@
             border: none;
         }
     </style>
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 </head>
 <body onload="inicializarAppSegura()">
@@ -697,7 +699,7 @@
             💌
             <div class="notif-dot" id="dotBuzon"></div>
         </button>
-        <button class="nav-icon-btn" onclick="cambiarPestana('extras', this)" title="Mochila / Perfil">🎒</button>
+        <button class="nav-icon-btn" onclick="cambiarPestana('extras', this)" title="Perfil y Marcos">🎒</button>
 
         <select id="selectPerfilActivo" class="select-perfil-sidebar" onchange="cambiarPerfilActivo(this.value)" title="Cambiar Perfil">
         </select>
@@ -805,7 +807,7 @@
             <div id="agenda" class="tab-content" style="display:none;">
                 <div class="card">
                     <h3>📅 Calendario</h3>
-                    <p style="font-size:0.75rem; color:#8c827b; margin-top:-4px;">💡 <em>Consejo: Pincha arriba en el mes y año para saltar rápidamente a tu fecha de nacimiento o cualquier otro mes. Pincha en cualquier día para anotar tu cumpleaños y ganar +15 💖 automático.</em></p>
+                    <p style="font-size:0.75rem; color:#8c827b; margin-top:-4px;">💡 <em>Pincha arriba en el mes y año para saltar a cualquier fecha. Pincha en cualquier día para anotar tu cumpleaños y ganar +15 💖 automático.</em></p>
                     
                     <div id="calendarContainer">
                         <div id="calendar"></div>
@@ -813,7 +815,7 @@
                 </div>
 
                 <div class="card">
-                    <h3>📍 Quedadas</h3>
+                    <h3>📍 Quedadas y Mapa</h3>
                     
                     <div class="accordion-header" onclick="toggleAccordion('accQuedada')"><span>📍 Proponer Plan / Quedada (+25💖)</span> <span>▼</span></div>
                     <div id="accQuedada" class="accordion-body">
@@ -867,7 +869,7 @@
 
             <div id="extras" class="tab-content" style="display:none;">
                 <div class="card" id="formRegistroCarnet">
-                    <h3>🎒 Crear Carnet y Mochila</h3>
+                    <h3>🎒 Crear Carnet</h3>
                     <p style="font-size:0.75rem; color:#8c827b; margin-top:-4px;">Regístrate con tu apodo y código exclusivo.</p>
                     
                     <input type="text" id="inName" placeholder="Tu Apodo / Nombre" maxlength="15">
@@ -973,6 +975,9 @@
         }
 
         function inicializarAppSegura() {
+            // LIMPIEZA DE CACHÉ DE PRUEBAS DE QUEDADAS Y MAPA
+            localStorage.removeItem("quedadas");
+
             const db = obtenerBaseDatosGlobal();
             const nombres = Object.keys(db);
 
