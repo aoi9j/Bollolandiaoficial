@@ -146,6 +146,7 @@
 
         .hero-card h2 { margin: 0; font-size: 1.15rem; color: #4a3e3a; font-weight: 800; }
         .hero-card p { margin: 6px 0 0 0; font-size: 0.78rem; color: #7a6e67; line-height: 1.4; }
+        .hero-bio-display { margin-top: 8px; font-size: 0.8rem; color: var(--accent-coral); font-weight: 700; display: none; }
 
         .stats-grid {
             display: grid;
@@ -382,7 +383,7 @@
 
         .card-body { display: flex; padding: 12px; gap: 12px; align-items: flex-start; }
 
-        /* Contenedor adaptado para incluir la biografía justo encima de la foto */
+        /* Columna izquierda adaptada para albergar la nota tipo Instagram arriba de la foto */
         .card-left-column {
             display: flex;
             flex-direction: column;
@@ -391,18 +392,31 @@
             width: 85px;
         }
 
-        .card-bio-box {
+        .card-note-box {
             font-size: 0.62rem;
-            color: #554b45;
-            background: rgba(255, 255, 255, 0.65);
-            border: 1px dashed var(--border-soft);
-            border-radius: 8px;
-            padding: 4px 6px;
+            color: #4a403b;
+            background: #ffffff;
+            border: 1px solid var(--border-soft);
+            border-radius: 10px;
+            padding: 5px 6px;
             text-align: center;
             word-break: break-word;
             line-height: 1.1;
-            max-height: 45px;
-            overflow: hidden;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+            position: relative;
+        }
+        /* Pequeño rabillo de bocadillo estilo nota */
+        .card-note-box::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 50%;
+            transform: translateX(-50%) rotate(45deg);
+            width: 6px;
+            height: 6px;
+            background: #ffffff;
+            border-right: 1px solid var(--border-soft);
+            border-bottom: 1px solid var(--border-soft);
         }
 
         .card-photo-box {
@@ -483,7 +497,7 @@
         .btn-close { background: #4a403b; color: white; }
         .btn-download { background: var(--accent-green); color: white; box-shadow: 0 4px 12px rgba(135, 163, 138, 0.3); }
 
-        /* MARCOS 100% ULTRA PREMIUM EXCLUSIVOS Y VARIADOS */
+        /* MARCOS ULTRA PREMIUM */
         .marco-plasma {
             position: absolute; inset: -6px; border-radius: 16px; z-index: 2; pointer-events: none;
             background: linear-gradient(135deg, #ff0055, #ff5e00, #ffb703);
@@ -621,7 +635,6 @@
             border: none;
         }
 
-        /* CHAT ESTILO WHATSAPP/INSTAGRAM MODERNO */
         .chat-box-container {
             background: #fbf9f6;
             border: 1.5px solid var(--border-soft);
@@ -692,9 +705,9 @@
                 <div class="header-sub">DRIVER LICENSE / CARNET SÁFICO</div>
             </div>
             <div class="card-body">
-                <!-- Columna izquierda: Biografía justo encima de la foto -->
+                <!-- Columna izquierda con la nota estilo Instagram encima de la foto -->
                 <div class="card-left-column">
-                    <div class="card-bio-box" id="cardBioOut" title="Biografía">Sin bio...</div>
+                    <div class="card-note-box" id="cardNoteOut" title="Nota actual">Nota...</div>
                     <div class="card-photo-box" id="cardPhotoBox" onclick="dispararCambioFotoDirecto()" title="Pincha aquí para cambiar tu foto">
                         <span style="font-size: 2rem;">👤</span>
                     </div>
@@ -767,6 +780,8 @@
         <div class="hero-card">
             <div>
                 <h2>Hola de nuevo, <span id="dashboardUserName">Mia</span>! ✨</h2>
+                <!-- Biografía mostrada aquí únicamente cuando se accede a la mochila -->
+                <div class="hero-bio-display" id="heroBioDisplay"></div>
                 <p>Disfruta de tu espacio seguro y conecta con tus amigas hoy.</p>
             </div>
             <div style="font-size: 3.2rem;">🌸</div>
@@ -801,7 +816,7 @@
                 <div class="card" style="background: linear-gradient(135deg, #fef9e7, #fcf4db); border: 1.5px solid #f3e5ab;">
                     <h3 style="color: #8c6d1f; display:flex; align-items:center; gap:6px;">📢 Buzón de Actualizaciones</h3>
                     <p style="font-size:0.78rem; color:#6b5314; line-height:1.4; margin:0;">
-                        <strong>¡Novedades en Bollolandia!</strong> Se ha actualizado el mapa interactivo, la sincronización de caché a 0, notificaciones de cumpleaños, chat en directo tras hacer match y la opción para añadir biografía en tu carnet. ✨
+                        <strong>¡Novedades en Bollolandia!</strong> Se han añadido las notas estilo Instagram sobre la foto de perfil en el carnet y la biografía dinámica en la mochila. ✨
                     </p>
                 </div>
 
@@ -931,8 +946,11 @@
                     
                     <input type="text" id="inName" placeholder="Tu Apodo / Nombre" maxlength="15">
                     
-                    <!-- Campo añadido para la Biografía -->
-                    <textarea id="inBio" placeholder="Escribe tu biografía corta..." rows="2" maxlength="60"></textarea>
+                    <!-- Campo para nota de Instagram -->
+                    <input type="text" id="inNote" placeholder="💬 Escribe tu nota (ej: Cómeme un pie)..." maxlength="30">
+                    
+                    <!-- Campo para Biografía -->
+                    <textarea id="inBio" placeholder="Escribe tu biografía corta..." rows="2" maxlength="80"></textarea>
                     
                     <select id="inMision">
                         <option value="" disabled selected>Selecciona tu misión...</option>
@@ -958,10 +976,14 @@
 
                     <div id="inventarioMarcos" class="boutique-frames-list"></div>
 
-                    <!-- Edición rápida de biografía desde la mochila -->
+                    <!-- Edición rápida de Nota y Biografía desde la mochila -->
                     <div style="margin-top: 14px; border-top: 1px solid var(--border-soft); padding-top: 10px;">
-                        <h4 style="font-size: 0.8rem; color: var(--text-main); margin-bottom: 4px;">✏️ Editar Biografía</h4>
-                        <input type="text" id="inputEditarBio" placeholder="Actualiza tu biografía..." maxlength="60" style="margin-bottom:6px;">
+                        <h4 style="font-size: 0.8rem; color: var(--text-main); margin-bottom: 4px;">💬 Actualizar Nota del Carnet</h4>
+                        <input type="text" id="inputEditarNote" placeholder="Tu nota actual..." maxlength="30" style="margin-bottom:6px;">
+                        <button class="btn-principal" style="padding: 8px; font-size: 0.78rem; margin-bottom: 10px;" onclick="guardarNotaEditada()">Guardar Nota</button>
+
+                        <h4 style="font-size: 0.8rem; color: var(--text-main); margin-bottom: 4px;">✏️ Actualizar Biografía (Visible en Mochila)</h4>
+                        <textarea id="inputEditarBio" placeholder="Tu biografía..." rows="2" maxlength="80" style="margin-bottom:6px;"></textarea>
                         <button class="btn-principal" style="padding: 8px; font-size: 0.78rem;" onclick="guardarBioEditada()">Actualizar Bio</button>
                     </div>
 
@@ -1118,6 +1140,11 @@
                 renderizarInventarioMarcos();
                 cargarBuzonPersonal();
                 comprobarNotificacionesBuzon();
+
+                if(userData.note) {
+                    const inputNoteEdit = document.getElementById("inputEditarNote");
+                    if(inputNoteEdit) inputNoteEdit.value = userData.note;
+                }
                 if(userData.bio) {
                     const inputBioEdit = document.getElementById("inputEditarBio");
                     if(inputBioEdit) inputBioEdit.value = userData.bio;
@@ -1127,6 +1154,7 @@
                 document.getElementById("seccionMiCarnet").style.display = "none";
                 document.getElementById("heartCount").innerText = "0";
                 document.getElementById("statHearts").innerText = "0";
+                document.getElementById("heroBioDisplay").style.display = "none";
             }
             comprobarMatches();
         }
@@ -1153,6 +1181,16 @@
             document.querySelectorAll('.nav-icon-btn').forEach(el => el.classList.remove('active'));
             document.getElementById(idPestana).style.display = 'block';
             if(btn) btn.classList.add('active');
+
+            // Mostrar biografía debajo del saludo SÓLO en la pestaña de la mochila (extras)
+            const heroBio = document.getElementById("heroBioDisplay");
+            const userData = obtenerDatosActuales();
+            if (idPestana === 'extras' && userData && userData.bio) {
+                heroBio.innerText = `"${userData.bio}"`;
+                heroBio.style.display = "block";
+            } else {
+                heroBio.style.display = "none";
+            }
             
             if(idPestana === 'buzon') {
                 marcarBuzonComoLeido();
@@ -1207,16 +1245,25 @@
             }
         }
 
+        function guardarNotaEditada() {
+            const nuevaNota = document.getElementById("inputEditarNote").value.trim();
+            actualizarDatosActuales({ note: nuevaNota });
+            const userData = obtenerDatosActuales();
+            cargarDatosCarnet(userData);
+            alert("✨ ¡Nota actualizada en tu carnet!");
+        }
+
         function guardarBioEditada() {
             const nuevaBio = document.getElementById("inputEditarBio").value.trim();
             actualizarDatosActuales({ bio: nuevaBio });
-            const userData = obtenerDatosActuales();
-            cargarDatosCarnet(userData);
-            alert("✨ ¡Biografía actualizada en tu carnet!");
+            const heroBio = document.getElementById("heroBioDisplay");
+            heroBio.innerText = `"${nuevaBio}"`;
+            alert("✨ ¡Biografía actualizada!");
         }
 
         function crearCarnet() {
             const name = document.getElementById("inName").value.trim();
+            const note = document.getElementById("inNote").value.trim();
             const bio = document.getElementById("inBio").value.trim();
             const mision = document.getElementById("inMision").value;
             const codigoIngresado = document.getElementById("inCodigo").value.trim();
@@ -1240,7 +1287,7 @@
             const today = new Date().toLocaleDateString();
 
             const nuevoUsuario = {
-                name, bio: bio || "Sin bio...", mision, cardId, date: today, photo: carnetFotoBase64, isGold: esGold, isSilver: esSilver,
+                name, note: note || "Nota...", bio: bio || "Sin bio...", mision, cardId, date: today, photo: carnetFotoBase64, isGold: esGold, isSilver: esSilver,
                 hearts: esGold ? 9999 : 100,
                 marcosComprados: esGold ? ["marco-plasma", "marco-neondark", "marco-goldglow", "marco-cyberpunk", "marco-amethyst"] : [],
                 marcoActivo: "",
@@ -1262,7 +1309,7 @@
         function cargarDatosCarnet(data) {
             document.getElementById("dashboardUserName").innerText = data.name;
             document.getElementById("cardNameOut").innerText = data.name;
-            document.getElementById("cardBioOut").innerText = data.bio || "Sin bio...";
+            document.getElementById("cardNoteOut").innerText = data.note || "Nota...";
             document.getElementById("cardMisionOut").innerText = data.mision;
             document.getElementById("cardSignatureOut").innerText = data.name;
             document.getElementById("cardIdOut").innerText = data.cardId;
