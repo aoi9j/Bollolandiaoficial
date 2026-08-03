@@ -52,6 +52,11 @@
             border: 1px solid var(--border-soft);
         }
 
+        .sidebar-avatar-wrapper {
+            position: relative;
+            margin-bottom: 20px;
+        }
+
         .sidebar-avatar {
             width: 44px;
             height: 44px;
@@ -60,9 +65,41 @@
             overflow: hidden;
             border: 2px solid #fff;
             box-shadow: 0 4px 10px rgba(0,0,0,0.08);
-            margin-bottom: 20px;
             display: flex; align-items: center; justify-content: center;
             position: relative;
+            cursor: pointer;
+        }
+
+        /* Burbuja de Nota estilo Instagram en el menú principal */
+        .sidebar-note-badge {
+            position: absolute;
+            top: -10px;
+            left: 50px;
+            background: #fff;
+            border: 1.5px solid var(--accent-coral);
+            color: var(--text-main);
+            font-size: 0.65rem;
+            padding: 4px 8px;
+            border-radius: 12px;
+            white-space: nowrap;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            max-width: 120px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            z-index: 101;
+            display: none;
+        }
+        .sidebar-note-badge::before {
+            content: '';
+            position: absolute;
+            left: -5px;
+            top: 50%;
+            transform: translateY(-50%) rotate(45deg);
+            width: 6px;
+            height: 6px;
+            background: #fff;
+            border-left: 1.5px solid var(--accent-coral);
+            border-bottom: 1.5px solid var(--accent-coral);
         }
 
         .nav-icon-btn {
@@ -386,35 +423,25 @@
         .card-left-column {
             display: flex;
             flex-direction: column;
-            align-items: center;
-            gap: 4px;
+            gap: 6px;
             flex-shrink: 0;
-            width: 90px;
+            width: 85px;
         }
 
-        /* --- NUEVOS ESTILOS EXACTOS NOTAS INSTAGRAM --- */
-        .instagram-note-bubble {
-            background: #262626;
-            color: #fff;
-            border: 1px solid #363636;
-            border-radius: 14px;
-            padding: 5px 8px;
-            font-size: 0.65rem;
+        .card-note-box {
+            font-size: 0.62rem;
+            color: #4a403b;
+            background: #ffffff;
+            border: 1px solid var(--border-soft);
+            border-radius: 10px;
+            padding: 5px 6px;
             text-align: center;
-            max-width: 90px;
-            min-height: 22px;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
-            position: relative;
-            cursor: pointer;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.25);
             word-break: break-word;
+            line-height: 1.1;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+            position: relative;
         }
-
-        .instagram-note-bubble::after {
+        .card-note-box::after {
             content: '';
             position: absolute;
             bottom: -4px;
@@ -422,23 +449,10 @@
             transform: translateX(-50%) rotate(45deg);
             width: 6px;
             height: 6px;
-            background: #262626;
-            border-right: 1px solid #363636;
-            border-bottom: 1px solid #363636;
+            background: #ffffff;
+            border-right: 1px solid var(--border-soft);
+            border-bottom: 1px solid var(--border-soft);
         }
-
-        .note-music-tag {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 3px;
-            font-size: 0.58rem;
-            color: #a8a8a8;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-        /* --------------------------------------------- */
 
         .card-photo-box {
             width: 85px; height: 95px;
@@ -726,9 +740,7 @@
             </div>
             <div class="card-body">
                 <div class="card-left-column">
-                    <!-- Nota estilo Instagram posicionada sobre la foto -->
-                    <div class="instagram-note-bubble" id="cardNoteOut" onclick="editarNotaRapida()" title="Pincha para cambiar tu nota estilo Instagram">Nota...</div>
-                    
+                    <div class="card-note-box" id="cardNoteOut" title="Nota actual">Nota...</div>
                     <div class="card-photo-box" id="cardPhotoBox" onclick="dispararCambioFotoDirecto()" title="Pincha aquí para cambiar tu foto">
                         <span style="font-size: 2rem;">👤</span>
                     </div>
@@ -774,8 +786,12 @@
     <input type="file" id="inputFotoDirectoCarnet" accept="image/*" style="display: none;" onchange="procesarFotoDirectoCarnet(this)">
 
     <div class="sidebar-left">
-        <div class="sidebar-avatar" id="btnMochilaHeader" onclick="abrirModalCarnet()" style="cursor: pointer;" title="Ver mi Carnet">
-            👤<div id="miniMarcoLayer"></div>
+        <!-- Avatar y Nota flotante estilo Instagram en el menú principal -->
+        <div class="sidebar-avatar-wrapper">
+            <div class="sidebar-avatar" id="btnMochilaHeader" onclick="abrirModalCarnet()" title="Ver mi Carnet">
+                👤<div id="miniMarcoLayer"></div>
+            </div>
+            <div id="sidebarNoteBadge" class="sidebar-note-badge"></div>
         </div>
 
         <button class="nav-icon-btn active" onclick="cambiarPestana('tienda', this)" title="Tienda">🛍️</button>
@@ -836,7 +852,7 @@
                 <div class="card" style="background: linear-gradient(135deg, #fef9e7, #fcf4db); border: 1.5px solid #f3e5ab;">
                     <h3 style="color: #8c6d1f; display:flex; align-items:center; gap:6px;">📢 Buzón de Actualizaciones</h3>
                     <p style="font-size:0.78rem; color:#6b5314; line-height:1.4; margin:0;">
-                        <strong>¡Novedades en Bollolandia!</strong> Ya están aquí las <strong>Notas estilo Instagram</strong> interactivas sobre tu foto en el carnet. ¡Pincha en tu nota para cambiar tu estado o añadir música! ✨
+                        <strong>¡Novedades en Bollolandia!</strong> Notas estilo IG visibles en el menú principal que caducan a las 24h y grabación de notas de voz integradas. ✨
                     </p>
                 </div>
 
@@ -965,7 +981,7 @@
                     <p style="font-size:0.75rem; color:#8c827b; margin-top:-4px;">Regístrate con tu apodo y código exclusivo.</p>
                     
                     <input type="text" id="inName" placeholder="Tu Apodo / Nombre" maxlength="15">
-                    <input type="text" id="inNote" placeholder="💬 Estado de tu nota (ej: Escuchando música 🎶)..." maxlength="30">
+                    <input type="text" id="inNote" placeholder="💬 Escribe tu nota (ej: Cómeme un pie)..." maxlength="30">
                     <textarea id="inBio" placeholder="Escribe tu biografía corta..." rows="2" maxlength="80"></textarea>
                     
                     <select id="inMision">
@@ -993,9 +1009,14 @@
                     <div id="inventarioMarcos" class="boutique-frames-list"></div>
 
                     <div style="margin-top: 14px; border-top: 1px solid var(--border-soft); padding-top: 10px;">
-                        <h4 style="font-size: 0.8rem; color: var(--text-main); margin-bottom: 4px;">💬 Actualizar Nota Estilo Instagram</h4>
-                        <input type="text" id="inputEditarNote" placeholder="Escribe tu nota o música..." maxlength="35" style="margin-bottom:6px;">
-                        <button class="btn-principal" style="padding: 8px; font-size: 0.78rem; margin-bottom: 10px;" onclick="guardarNotaEditada()">Actualizar Nota</button>
+                        <h4 style="font-size: 0.8rem; color: var(--text-main); margin-bottom: 4px;">💬 Actualizar Nota del Carnet (Duración 24h)</h4>
+                        <input type="text" id="inputEditarNote" placeholder="Tu nota actual..." maxlength="30" style="margin-bottom:6px;">
+                        <button class="btn-principal" style="padding: 8px; font-size: 0.78rem; margin-bottom: 10px;" onclick="guardarNotaEditada()">Guardar Nota</button>
+
+                        <!-- Grabador de Audio Integrado -->
+                        <h4 style="font-size: 0.8rem; color: var(--text-main); margin-bottom: 4px;">🎙️ Nota de Voz (Estilo Audio)</h4>
+                        <button class="btn-principal" id="btnGrabarAudio" style="background: linear-gradient(135deg, var(--accent-coral), var(--accent-peach)); padding: 8px; font-size: 0.78rem; margin-bottom: 6px;" onclick="toggleGrabarAudio()">🎙️ Grabar Nota de Voz</button>
+                        <audio id="audioReproductorPerfil" controls style="width:100%; display:none; margin-bottom:10px;"></audio>
 
                         <h4 style="font-size: 0.8rem; color: var(--text-main); margin-bottom: 4px;">✏️ Actualizar Biografía (Visible en Mochila)</h4>
                         <textarea id="inputEditarBio" placeholder="Tu biografía..." rows="2" maxlength="80" style="margin-bottom:6px;"></textarea>
@@ -1051,6 +1072,8 @@
         let calendarInstance = null;
         let mapInstance = null;
         let marcadoresMapa = [];
+        let mediaRecorder = null;
+        let audioChunks = [];
 
         function obtenerBaseDatosGlobal() {
             return JSON.parse(localStorage.getItem("bollolandia_usuarios") || "{}");
@@ -1062,7 +1085,20 @@
 
         function obtenerDatosActuales() {
             const db = obtenerBaseDatosGlobal();
-            return db[perfilActivo] || null;
+            if (!perfilActivo || !db[perfilActivo]) return null;
+            
+            // Comprobación de caducidad de nota (24 horas)
+            const userData = db[perfilActivo];
+            if (userData.noteTimestamp) {
+                const ahora = new Date().getTime();
+                const horasTranscurridas = (ahora - userData.noteTimestamp) / (1000 * 60 * 60);
+                if (horasTranscurridas >= 24) {
+                    userData.note = "";
+                    userData.noteTimestamp = null;
+                    guardarBaseDatosGlobal(db);
+                }
+            }
+            return userData;
         }
 
         function actualizarDatosActuales(nuevosDatos) {
@@ -1148,6 +1184,8 @@
             actualizarSelectorPerfiles();
             const userData = obtenerDatosActuales();
 
+            const badgeNotaMenu = document.getElementById("sidebarNoteBadge");
+
             if (userData) {
                 document.getElementById("formRegistroCarnet").style.display = "none";
                 document.getElementById("seccionMiCarnet").style.display = "block";
@@ -1159,10 +1197,27 @@
                 if(userData.note) {
                     const inputNoteEdit = document.getElementById("inputEditarNote");
                     if(inputNoteEdit) inputNoteEdit.value = userData.note;
+                    
+                    // Mostrar nota estilo Instagram en el menú principal
+                    if(badgeNotaMenu) {
+                        badgeNotaMenu.innerText = userData.note;
+                        badgeNotaMenu.style.display = "block";
+                    }
+                } else {
+                    if(badgeNotaMenu) badgeNotaMenu.style.display = "none";
                 }
+
                 if(userData.bio) {
                     const inputBioEdit = document.getElementById("inputEditarBio");
                     if(inputBioEdit) inputBioEdit.value = userData.bio;
+                }
+
+                if(userData.audioUrl) {
+                    const rep = document.getElementById("audioReproductorPerfil");
+                    if(rep) {
+                        rep.src = userData.audioUrl;
+                        rep.style.display = "block";
+                    }
                 }
             } else {
                 document.getElementById("formRegistroCarnet").style.display = "block";
@@ -1170,6 +1225,7 @@
                 document.getElementById("heartCount").innerText = "0";
                 document.getElementById("statHearts").innerText = "0";
                 document.getElementById("heroBioDisplay").style.display = "none";
+                if(badgeNotaMenu) badgeNotaMenu.style.display = "none";
             }
             comprobarMatches();
         }
@@ -1259,25 +1315,53 @@
             }
         }
 
-        function editarNotaRapida() {
-            const notaActual = obtenerDatosActuales()?.note || "";
-            const nuevaNota = prompt("💬 Actualiza tu nota estilo Instagram (puedes poner texto o música, ej: 🎵 Coldplay - Viva La Vida):", notaActual);
-            if (nuevaNota !== null) {
-                actualizarDatosActuales({ note: nuevaNota.trim() || "Nota..." });
-                const userData = obtenerDatosActuales();
-                cargarDatosCarnet(userData);
-                if(document.getElementById("inputEditarNote")) {
-                    document.getElementById("inputEditarNote").value = userData.note;
-                }
-            }
-        }
-
         function guardarNotaEditada() {
             const nuevaNota = document.getElementById("inputEditarNote").value.trim();
-            actualizarDatosActuales({ note: nuevaNota || "Nota..." });
-            const userData = obtenerDatosActuales();
-            cargarDatosCarnet(userData);
-            alert("✨ ¡Nota estilo Instagram actualizada en tu carnet!");
+            const timestampActual = new Date().getTime();
+            actualizarDatosActuales({ note: nuevaNota, noteTimestamp: timestampActual });
+            sincronizarInterfazUsuario();
+            alert("✨ ¡Nota actualizada en tu carnet y en el menú (caducará en 24h)!");
+        }
+
+        // Lógica de Grabación de Audio Estilo Nota de Voz
+        async function toggleGrabarAudio() {
+            const btn = document.getElementById("btnGrabarAudio");
+            const reproductor = document.getElementById("audioReproductorPerfil");
+
+            if (!mediaRecorder || mediaRecorder.state === "inactive") {
+                try {
+                    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                    mediaRecorder = new MediaRecorder(stream);
+                    audioChunks = [];
+
+                    mediaRecorder.ondataavailable = event => {
+                        audioChunks.push(event.data);
+                    };
+
+                    mediaRecorder.onstop = () => {
+                        const audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
+                        const reader = new FileReader();
+                        reader.readAsDataURL(audioBlob);
+                        reader.onloadend = function() {
+                            const base64Audio = reader.result;
+                            actualizarDatosActuales({ audioUrl: base64Audio });
+                            reproductor.src = base64Audio;
+                            reproductor.style.display = "block";
+                            alert("🎙️ ¡Nota de voz guardada correctamente!");
+                        };
+                    };
+
+                    mediaRecorder.start();
+                    btn.textContent = "⏹️ Detener y Guardar Audio";
+                    btn.style.background = "#d9534f";
+                } catch (e) {
+                    alert("No se pudo acceder al micrófono.");
+                }
+            } else {
+                mediaRecorder.stop();
+                btn.textContent = "🎙️ Grabar Nota de Voz";
+                btn.style.background = "linear-gradient(135deg, var(--accent-coral), var(--accent-peach))";
+            }
         }
 
         function guardarBioEditada() {
@@ -1312,13 +1396,15 @@
             const formattedNum = counter.toString().padStart(7, '0');
             const cardId = esGold ? `BL-GOLD-001` : `BL-${formattedNum}`;
             const today = new Date().toLocaleDateString();
+            const timestampActual = note ? new Date().getTime() : null;
 
             const nuevoUsuario = {
-                name, note: note || "¡Hola Bollolandia! ✨", bio: bio || "Sin bio...", mision, cardId, date: today, photo: carnetFotoBase64, isGold: esGold, isSilver: esSilver,
+                name, note: note || "Nota...", noteTimestamp: timestampActual, bio: bio || "Sin bio...", mision, cardId, date: today, photo: carnetFotoBase64, isGold: esGold, isSilver: esSilver,
                 hearts: esGold ? 9999 : 100,
                 marcosComprados: esGold ? ["marco-plasma", "marco-neondark", "marco-goldglow", "marco-cyberpunk", "marco-amethyst"] : [],
                 marcoActivo: "",
-                buzonCartas: []
+                buzonCartas: [],
+                audioUrl: ""
             };
 
             const db = obtenerBaseDatosGlobal();
@@ -1336,16 +1422,7 @@
         function cargarDatosCarnet(data) {
             document.getElementById("dashboardUserName").innerText = data.name;
             document.getElementById("cardNameOut").innerText = data.name;
-            
-            // Carga de la nota con soporte opcional para icono de música si empieza por 🎵 o 🎧
-            const notaElement = document.getElementById("cardNoteOut");
-            const textoNota = data.note || "Nota...";
-            if (textoNota.startsWith("🎵") || textoNota.startsWith("🎧")) {
-                notaElement.innerHTML = `<div class="note-music-tag"><span>${textoNota}</span></div>`;
-            } else {
-                notaElement.innerText = textoNota;
-            }
-
+            document.getElementById("cardNoteOut").innerText = data.note || "Nota...";
             document.getElementById("cardMisionOut").innerText = data.mision;
             document.getElementById("cardSignatureOut").innerText = data.name;
             document.getElementById("cardIdOut").innerText = data.cardId;
