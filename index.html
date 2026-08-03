@@ -30,7 +30,7 @@
             overflow-x: hidden;
         }
 
-        /* BARRA LATERAL FLOTANTE (ESTILO REFERENCIA) */
+        /* BARRA LATERAL FLOTANTE */
         .sidebar-left {
             position: fixed;
             top: 16px;
@@ -127,11 +127,11 @@
             gap: 6px;
         }
 
-        /* BANNER PRINCIPAL TIPO TARJETA 3D */
+        /* BANNER PRINCIPAL LIMPIO (SIN BOTÓN DE CARNET) */
         .hero-card {
             background: linear-gradient(135deg, #fff3ee, #faebd7);
             border-radius: 22px;
-            padding: 20px;
+            padding: 22px;
             margin-bottom: 16px;
             box-shadow: 0 10px 25px rgba(242, 139, 114, 0.12);
             border: 1px solid rgba(255, 179, 150, 0.3);
@@ -143,21 +143,9 @@
         }
 
         .hero-card h2 { margin: 0; font-size: 1.15rem; color: #4a3e3a; font-weight: 800; }
-        .hero-card p { margin: 4px 0 12px 0; font-size: 0.75rem; color: #7a6e67; }
+        .hero-card p { margin: 6px 0 0 0; font-size: 0.78rem; color: #7a6e67; line-height: 1.4; }
 
-        .btn-hero-action {
-            background: linear-gradient(135deg, var(--accent-coral), var(--accent-peach));
-            color: white;
-            border: none;
-            padding: 8px 14px;
-            border-radius: 14px;
-            font-weight: bold;
-            font-size: 0.75rem;
-            cursor: pointer;
-            box-shadow: 0 4px 12px rgba(242, 139, 114, 0.35);
-        }
-
-        /* TARJETAS DE ESTADÍSTICAS / MÉTRICAS */
+        /* ESTADÍSTICAS */
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
@@ -233,20 +221,39 @@
             padding: 10px;
         }
 
-        .btn-logout {
-            background: #fff1f1;
-            color: #d9534f;
-            border: 1px solid #f9d6d6;
-            padding: 10px;
+        /* BOTONES DE SESIÓN SEPARADOS Y SEGUROS */
+        .btn-sesion-safe {
+            background: #f4efe6;
+            color: var(--text-main);
+            border: 1px solid var(--border-soft);
+            padding: 11px;
             border-radius: 14px;
             font-weight: bold;
             font-size: 0.8rem;
             cursor: pointer;
-            margin-top: 14px;
+            width: 100%;
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 6px;
+            margin-top: 10px;
+        }
+
+        .btn-danger-safe {
+            background: #fff5f5;
+            color: #d9534f;
+            border: 1px solid #ffdcdc;
+            padding: 11px;
+            border-radius: 14px;
+            font-weight: bold;
+            font-size: 0.8rem;
+            cursor: pointer;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            margin-top: 8px;
         }
 
         .btn-mapa {
@@ -426,30 +433,38 @@
         .modal-buttons { display: flex; flex-direction: column; gap: 8px; width: 320px; margin-top: 14px; }
         .btn-action { width: 100%; padding: 10px; border: none; border-radius: 14px; font-size: 0.85rem; cursor: pointer; font-weight: bold; text-align: center; }
         .btn-close { background: #4a403b; color: white; }
-        .btn-download { background: #87a38a; color: white; box-shadow: 0 4px 12px rgba(135, 163, 138, 0.3); }
+        .btn-download { background: var(--accent-green); color: white; box-shadow: 0 4px 12px rgba(135, 163, 138, 0.3); }
 
-        /* MARCOS ANIMADOS */
+        /* MARCOS PREMIUM MEJORADOS (ESTÉTICA BOUTIQUE) */
         .marco-arcoiris {
-            position: absolute; inset: -3px; border-radius: 10px;
-            background: linear-gradient(45deg, #ff0000, #ff7f00, #ffff00, #00ff00, #0000ff, #4b0082, #8b00ff);
-            background-size: 400% 400%; z-index: 2; animation: gradientBorder 4s ease infinite;
+            position: absolute; inset: -3px; border-radius: 12px;
+            background: linear-gradient(45deg, #ff9a9e, #fad0c4, #ffd1ff, #a1c4fd, #c2e9fb);
+            background-size: 400% 400%; z-index: 2; animation: gradientBorder 5s ease infinite;
             pointer-events: none; mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
             -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
             -webkit-mask-composite: xor; mask-composite: exclude; padding: 3px;
         }
-        .marco-neon {
-            position: absolute; inset: 0; border: 3px solid #f28b72; border-radius: 10px; z-index: 2; pointer-events: none; animation: pulseNeon 1.5s infinite alternate;
+        .marco-sakura {
+            position: absolute; inset: -3px; border: 2.5px solid #ff9ebb; border-radius: 12px; z-index: 2; pointer-events: none;
+            box-shadow: 0 0 10px rgba(255, 158, 187, 0.6), inset 0 0 10px rgba(255, 158, 187, 0.4);
+            animation: pulseSakura 2s infinite alternate;
         }
-        .marco-oro {
-            position: absolute; inset: 0; border: 3px dashed #ffd700; border-radius: 10px; z-index: 2; pointer-events: none; animation: spinGold 6s linear infinite;
+        .marco-stardust {
+            position: absolute; inset: -3px; border: 2.5px solid #ffe66d; border-radius: 12px; z-index: 2; pointer-events: none;
+            box-shadow: 0 0 12px rgba(255, 230, 109, 0.8);
+            animation: spinGold 8s linear infinite;
         }
-        .marco-corazones {
-            position: absolute; inset: 0; border: 3px solid #ff4757; border-radius: 10px; z-index: 2; pointer-events: none; animation: pulseHearts 1s infinite alternate;
+        .marco-diamond {
+            position: absolute; inset: -3px; border: 2.5px solid #a8ede; border-radius: 12px; z-index: 2; pointer-events: none;
+            background: linear-gradient(135deg, rgba(255,255,255,0.4), rgba(168,237,234,0.3));
+            box-shadow: 0 0 14px rgba(168, 237, 234, 0.9);
+            animation: pulseDiamond 1.8s infinite alternate;
         }
+
         @keyframes gradientBorder { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
-        @keyframes pulseNeon { 0% { box-shadow: 0 0 6px #f28b72; border-color: #f28b72; } 100% { box-shadow: 0 0 14px #ffb396; border-color: #ffb396; } }
-        @keyframes spinGold { 0% { transform: rotate(0deg); border-color: #ffd700; } 50% { border-color: #f28b72; } 100% { transform: rotate(360deg); border-color: #ffd700; } }
-        @keyframes pulseHearts { 0% { box-shadow: 0 0 6px #ff4757; transform: scale(1); } 100% { box-shadow: 0 0 14px #ff6b81; transform: scale(1.02); } }
+        @keyframes pulseSakura { 0% { box-shadow: 0 0 6px #ff9ebb; border-color: #ff9ebb; } 100% { box-shadow: 0 0 15px #ffb3c6; border-color: #ffc2d1; } }
+        @keyframes spinGold { 0% { transform: rotate(0deg); border-color: #ffe66d; } 50% { border-color: #ffb396; } 100% { transform: rotate(360deg); border-color: #ffe66d; } }
+        @keyframes pulseDiamond { 0% { box-shadow: 0 0 8px rgba(168,237,234,0.7); transform: scale(1); } 100% { box-shadow: 0 0 16px rgba(168,237,234,1); transform: scale(1.02); } }
 
         .ruleta-box {
             background: linear-gradient(135deg, #fff3ee, #faebd7);
@@ -461,12 +476,12 @@
             display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 12px rgba(0,0,0,0.1); font-size: 1.5rem; transition: transform 3s cubic-bezier(0.15, 0.9, 0.2, 1);
         }
 
-        .shop-item { border: 1.5px solid var(--border-soft); border-radius: 14px; padding: 10px; background: #fff; display: flex; flex-direction: column; justify-content: space-between; }
-        .shop-flex { display: flex; align-items: center; gap: 8px; }
-        .preview-box { width: 40px; height: 50px; background: #e2dcd3; border-radius: 8px; position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 1.1rem; border: 1px solid #d4c8b8; }
-        .shop-item-info h4 { margin: 0 0 2px 0; font-size: 0.8rem; color: var(--text-main); font-weight: 700; }
-        .shop-item-info p { margin: 0; font-size: 0.7rem; color: #8c827b; }
-        .btn-buy { background: linear-gradient(135deg, var(--accent-coral), var(--accent-peach)); color: white; border: none; padding: 6px; border-radius: 10px; font-weight: bold; font-size: 0.75rem; cursor: pointer; width: 100%; margin-top: 8px; }
+        .shop-item { border: 1.5px solid var(--border-soft); border-radius: 16px; padding: 12px; background: #fff; display: flex; flex-direction: column; justify-content: space-between; box-shadow: 0 4px 12px rgba(0,0,0,0.02); }
+        .shop-flex { display: flex; align-items: center; gap: 10px; }
+        .preview-box { width: 44px; height: 52px; background: #faf5f0; border-radius: 10px; position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 1.2rem; border: 1px solid #e2dcd3; }
+        .shop-item-info h4 { margin: 0 0 2px 0; font-size: 0.82rem; color: var(--text-main); font-weight: 700; }
+        .shop-item-info p { margin: 0; font-size: 0.68rem; color: #8c827b; }
+        .btn-buy { background: linear-gradient(135deg, var(--accent-coral), var(--accent-peach)); color: white; border: none; padding: 7px; border-radius: 10px; font-weight: bold; font-size: 0.75rem; cursor: pointer; width: 100%; margin-top: 10px; box-shadow: 0 3px 8px rgba(242, 139, 114, 0.25); }
 
         .carta-item {
             background: #fffdf9;
@@ -485,7 +500,6 @@
             position: absolute; top: 4px; right: 4px; width: 8px; height: 8px; background: #d9534f; border-radius: 50%; display: none;
         }
 
-        /* Selector de perfiles integrado en la barra */
         .select-perfil-sidebar {
             width: 60px;
             font-size: 0.6rem;
@@ -566,9 +580,9 @@
         </div>
     </div>
 
-    <!-- BARRA LATERAL IZQUIERDA (Estilo app de música de la foto) -->
+    <!-- BARRA LATERAL IZQUIERDA -->
     <div class="sidebar-left">
-        <div class="sidebar-avatar" id="btnMochilaHeader" onclick="abrirModalCarnet()" style="cursor: pointer;" title="Abrir Mochila">
+        <div class="sidebar-avatar" id="btnMochilaHeader" onclick="abrirModalCarnet()" style="cursor: pointer;" title="Ver mi Carnet">
             👤<div id="miniMarcoLayer"></div>
         </div>
 
@@ -586,7 +600,7 @@
     </div>
 
     <div class="main-wrapper">
-        <!-- TOP HEADER CON BÚSQUEDA Y CORAZONES -->
+        <!-- TOP HEADER -->
         <div class="top-header">
             <div class="top-search">
                 <span>🔍</span>
@@ -597,17 +611,16 @@
             </div>
         </div>
 
-        <!-- HERO BANNER TIPO DASHBOARD -->
+        <!-- HERO BANNER LIMPIO (SIN BOTÓN DE CARNET) -->
         <div class="hero-card">
             <div>
                 <h2>Hola de nuevo, <span id="dashboardUserName">Mia</span>! ✨</h2>
                 <p>Disfruta de tu espacio seguro y conecta con tus amigas hoy.</p>
-                <button class="btn-hero-action" onclick="abrirModalCarnet()">Ver mi Carnet 🎒</button>
             </div>
             <div style="font-size: 3.2rem;">🌸</div>
         </div>
 
-        <!-- MÉTRICAS TIPO ESTADÍSTICAS -->
+        <!-- ESTADÍSTICAS -->
         <div class="stats-grid">
             <div class="stat-card">
                 <div class="icon-box">💖</div>
@@ -644,39 +657,39 @@
                 </div>
 
                 <div class="card">
-                    <h3>🛍️ Tienda de Marcos y Extras</h3>
+                    <h3>🛍️ Boutique de Marcos y Efectos</h3>
                     
                     <div class="grid-shop">
                         <div class="shop-item">
                             <div class="shop-flex">
                                 <div class="preview-box"><span>🌸</span><div class="marco-arcoiris"></div></div>
-                                <div class="shop-item-info"><h4>🌈 Arcoíris</h4><p>Multicolor.</p></div>
+                                <div class="shop-item-info"><h4>🌈 Arcoíris</h4><p>Multicolor pastel.</p></div>
                             </div>
                             <button class="btn-buy" onclick="comprarMarco('marco-arcoiris', 'Arcoíris Sáfico', 30)">30 💖</button>
                         </div>
 
                         <div class="shop-item">
                             <div class="shop-flex">
-                                <div class="preview-box"><span>✨</span><div class="marco-neon"></div></div>
-                                <div class="shop-item-info"><h4>🔮 Neón</h4><p>Cyberpunk.</p></div>
+                                <div class="preview-box"><span>🌸</span><div class="marco-sakura"></div></div>
+                                <div class="shop-item-info"><h4>🌸 Sakura</h4><p>Pétalos suaves.</p></div>
                             </div>
-                            <button class="btn-buy" onclick="comprarMarco('marco-neon', 'Neón Cyberpunk', 35)">35 💖</button>
+                            <button class="btn-buy" onclick="comprarMarco('marco-sakura', 'Sakura Glow', 35)">35 💖</button>
                         </div>
 
                         <div class="shop-item">
                             <div class="shop-flex">
-                                <div class="preview-box"><span>👑</span><div class="marco-oro"></div></div>
-                                <div class="shop-item-info"><h4>⚡ Dorado</h4><p>Giratorio.</p></div>
+                                <div class="preview-box"><span>✨</span><div class="marco-stardust"></div></div>
+                                <div class="shop-item-info"><h4>✨ Stardust</h4><p>Polvo estelar.</p></div>
                             </div>
-                            <button class="btn-buy" onclick="comprarMarco('marco-oro', 'Anillo Dorado', 40)">40 💖</button>
+                            <button class="btn-buy" onclick="comprarMarco('marco-stardust', 'Stardust Gold', 40)">40 💖</button>
                         </div>
 
                         <div class="shop-item">
                             <div class="shop-flex">
-                                <div class="preview-box"><span>💖</span><div class="marco-corazones"></div></div>
-                                <div class="shop-item-info"><h4>💘 Latido</h4><p>Pulso fucsia.</p></div>
+                                <div class="preview-box"><span>💎</span><div class="marco-diamond"></div></div>
+                                <div class="shop-item-info"><h4>💎 Diamond</h4><p>Cristal noble.</p></div>
                             </div>
-                            <button class="btn-buy" onclick="comprarMarco('marco-corazones', 'Latido de Amor', 30)">30 💖</button>
+                            <button class="btn-buy" onclick="comprarMarco('marco-diamond', 'Diamond Shimmer', 35)">35 💖</button>
                         </div>
                     </div>
                 </div>
@@ -771,11 +784,15 @@
                     <button class="btn-principal" onclick="abrirModalCarnet()" style="margin-top: 6px;">👁️ Ver Carnet Oficial</button>
 
                     <div style="margin-top: 14px; border-top: 1px solid var(--border-soft); padding-top: 10px;">
-                        <h4 style="font-size: 0.85rem; color: var(--text-main); margin-bottom: 8px;">🖼️ Tus Marcos Animados</h4>
+                        <h4 style="font-size: 0.85rem; color: var(--text-main); margin-bottom: 8px;">🖼️ Tus Marcos y Efectos</h4>
                         <div id="inventarioMarcos" style="display: flex; gap: 6px; flex-wrap: wrap;"></div>
                     </div>
 
-                    <button class="btn-logout" onclick="cerrarSesion()">🚪 Cerrar Sesión / Borrar Perfil</button>
+                    <!-- BOTONES DE SESIÓN SEPARADOS Y SEGUROS -->
+                    <div style="margin-top: 16px; border-top: 1px solid var(--border-soft); padding-top: 12px;">
+                        <button class="btn-sesion-safe" onclick="cerrarSesionSegura()">🔄 Cerrar Sesión (Cambiar de Perfil)</button>
+                        <button class="btn-danger-safe" onclick="borrarPerfilActual()">⚠️ Borrar Perfil Permanentemente</button>
+                    </div>
                 </div>
 
                 <div class="card" style="margin-top: 14px;">
@@ -944,7 +961,7 @@
             const nuevoUsuario = {
                 name, mision, cardId, date: today, photo: carnetFotoBase64, isGold: esGold,
                 hearts: esGold ? 9999 : 100,
-                marcosComprados: esGold ? ["marco-arcoiris", "marco-neon", "marco-oro", "marco-corazones"] : [],
+                marcosComprados: esGold ? ["marco-arcoiris", "marco-sakura", "marco-stardust", "marco-diamond"] : [],
                 marcoActivo: "",
                 buzonCartas: []
             };
@@ -994,8 +1011,16 @@
             aplicarMarcoGuardado();
         }
 
-        function cerrarSesion() {
-            if (confirm(`¿Eliminar perfil de ${perfilActivo}?`)) {
+        /* ACCIONES DE SESIÓN SEPARADAS Y SEGURAS */
+        function cerrarSesionSegura() {
+            perfilActivo = "";
+            localStorage.removeItem("perfil_activo");
+            sincronizarInterfazUsuario();
+            alert("🔄 Has cerrado sesión correctamente. Puedes seleccionar otro perfil o registrarte.");
+        }
+
+        function borrarPerfilActual() {
+            if (confirm(`⚠️ ¿Estás totalmente segura de borrar el perfil de ${perfilActivo}? Esta acción eliminará sus datos y no se puede deshacer.`)) {
                 const db = obtenerBaseDatosGlobal();
                 delete db[perfilActivo];
                 guardarBaseDatosGlobal(db);
@@ -1003,6 +1028,7 @@
                 perfilActivo = remaining.length > 0 ? remaining[0] : "";
                 localStorage.setItem("perfil_activo", perfilActivo);
                 sincronizarInterfazUsuario();
+                alert("🗑️ Perfil eliminado correctamente.");
             }
         }
 
@@ -1035,7 +1061,7 @@
                 const premios = [
                     { tipo: 'corazones', valor: 30, texto: '¡+30 💖 extra!' },
                     { tipo: 'marco', id: 'marco-arcoiris', nombre: 'Arcoíris Sáfico', texto: '¡Ganaste el marco Arcoíris 🌈' },
-                    { tipo: 'marco', id: 'marco-neon', nombre: 'Neón Cyberpunk', texto: '¡Ganaste el marco Neón ✨' },
+                    { tipo: 'marco', id: 'marco-sakura', nombre: 'Sakura Glow', texto: '¡Ganaste el marco Sakura 🌸' },
                     { tipo: 'corazones', valor: 50, texto: '¡Premio gordo! +50 💖 🎉' }
                 ];
                 const premio = premios[Math.floor(Math.random() * premios.length)];
@@ -1079,15 +1105,15 @@
             if (!data) return;
 
             let marcos = data.marcosComprados || [];
-            if (data.isGold) marcos = ["marco-arcoiris", "marco-neon", "marco-oro", "marco-corazones"];
+            if (data.isGold) marcos = ["marco-arcoiris", "marco-sakura", "marco-stardust", "marco-diamond"];
 
             if (marcos.length === 0) {
-                contenedor.innerHTML = `<span style="font-size: 0.75rem; color: #8c827b;">Sin marcos.</span>`;
+                contenedor.innerHTML = `<span style="font-size: 0.75rem; color: #8c827b;">Sin marcos todavía.</span>`;
                 return;
             }
 
             let html = `<button onclick="quitarMarco()" style="padding:5px 9px; font-size:0.7rem; border-radius:8px; background:#e2dcd3; border:none; cursor:pointer; font-weight:bold;">Ninguno</button>`;
-            const nombres = { 'marco-arcoiris': '🌈 Arcoíris', 'marco-neon': '✨ Neón', 'marco-oro': '👑 Oro', 'marco-corazones': '💖 Latido' };
+            const nombres = { 'marco-arcoiris': '🌈 Arcoíris', 'marco-sakura': '🌸 Sakura', 'marco-stardust': '✨ Stardust', 'marco-diamond': '💎 Diamond' };
 
             marcos.forEach(m => {
                 let activo = data.marcoActivo === m;
@@ -1117,7 +1143,7 @@
             if (miniMarcoLayer) miniMarcoLayer.innerHTML = "";
 
             if (data && data.marcoActivo) {
-                const clase = { 'marco-arcoiris': 'marco-arcoiris', 'marco-neon': 'marco-neon', 'marco-oro': 'marco-oro', 'marco-corazones': 'marco-corazones' }[data.marcoActivo];
+                const clase = { 'marco-arcoiris': 'marco-arcoiris', 'marco-sakura': 'marco-sakura', 'marco-stardust': 'marco-stardust', 'marco-diamond': 'marco-diamond' }[data.marcoActivo];
                 if (clase) {
                     if (marcoLayer) marcoLayer.innerHTML = `<div class="${clase}"></div>`;
                     if (miniMarcoLayer) miniMarcoLayer.innerHTML = `<div class="${clase}"></div>`;
