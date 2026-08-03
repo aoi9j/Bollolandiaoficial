@@ -17,7 +17,6 @@
             --texto: #4a3e4e;
             --morado: #6c5ce7;
             --fucsia: #ff85a1;
-            --oro-main: #ffd700;
         }
 
         body {
@@ -31,11 +30,11 @@
 
         header {
             background: linear-gradient(135deg, var(--rosa), var(--lila));
-            padding: 14px 15px;
+            padding: 16px 20px;
             text-align: center;
-            border-bottom-left-radius: 20px;
-            border-bottom-right-radius: 20px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            border-bottom-left-radius: 24px;
+            border-bottom-right-radius: 24px;
+            box-shadow: 0 4px 20px rgba(108, 92, 231, 0.15);
             position: relative;
             display: flex;
             align-items: center;
@@ -45,29 +44,27 @@
         .header-title-box {
             text-align: center;
             flex: 1;
-            padding: 0 5px;
         }
 
-        h1 { margin: 0; font-size: 1.15rem; color: #fff; text-shadow: 0 1px 2px rgba(0,0,0,0.1); }
-        p.subtitulo { margin: 2px 0 0; color: #fff; font-size: 0.7rem; opacity: 0.95; }
+        h1 { margin: 0; font-size: 1.3rem; color: #fff; text-shadow: 0 2px 4px rgba(0,0,0,0.1); font-weight: 800; }
+        p.subtitulo { margin: 3px 0 0; color: #fff; font-size: 0.75rem; opacity: 0.95; font-weight: 500; }
 
-        /* MOCHILA / PERFIL SUPERIOR DERECHA */
         .mochila-header-btn {
             background: rgba(255, 255, 255, 0.95);
             border: 2px solid var(--morado);
-            border-radius: 12px;
-            padding: 3px 6px;
+            border-radius: 14px;
+            padding: 4px 8px;
             display: flex;
             align-items: center;
-            gap: 5px;
+            gap: 6px;
             cursor: pointer;
-            box-shadow: 0 3px 8px rgba(0,0,0,0.12);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
             transition: transform 0.1s ease;
         }
         .mochila-header-btn:active { transform: scale(0.96); }
 
         .mochila-avatar {
-            width: 30px; height: 30px;
+            width: 32px; height: 32px;
             border-radius: 50%;
             border: 1px solid var(--morado);
             background: #e2e8f0;
@@ -78,20 +75,20 @@
 
         .user-selector-box {
             position: absolute;
-            top: 4px;
-            left: 10px;
+            top: 6px;
+            left: 12px;
             background: rgba(255, 255, 255, 0.95);
-            padding: 1px 4px;
-            border-radius: 8px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            padding: 2px 6px;
+            border-radius: 10px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.08);
             z-index: 10;
         }
 
         .user-selector-box select {
-            padding: 1px;
+            padding: 2px 4px;
             margin: 0;
-            font-size: 0.65rem;
-            border-radius: 4px;
+            font-size: 0.7rem;
+            border-radius: 6px;
             border: 1px solid var(--lila);
             background: #fff;
             color: var(--morado);
@@ -100,40 +97,55 @@
 
         .hearts-counter {
             background: rgba(255, 255, 255, 0.95);
-            padding: 4px 7px;
-            border-radius: 10px;
+            padding: 6px 10px;
+            border-radius: 12px;
             font-weight: bold;
             color: #d63384;
-            font-size: 0.7rem;
-            box-shadow: 0 3px 8px rgba(0,0,0,0.12);
+            font-size: 0.75rem;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
             display: flex;
             align-items: center;
-            gap: 2px;
+            gap: 4px;
         }
 
-        .container { padding: 12px; max-width: 500px; margin: 0 auto; }
+        .container { padding: 16px; max-width: 500px; margin: 0 auto; }
         .tab-content { display: none; }
-        .tab-content.active { display: block; }
+        .tab-content.active { display: block; animation: fadeIn 0.3s ease; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(4px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
 
         .card {
             background: var(--tarjeta);
-            border-radius: 14px;
-            padding: 14px;
-            margin-bottom: 12px;
-            box-shadow: 0 4px 12px rgba(189, 178, 255, 0.2);
+            border-radius: 18px;
+            padding: 18px;
+            margin-bottom: 16px;
+            box-shadow: 0 8px 24px rgba(189, 178, 255, 0.25);
+            border: 1px solid rgba(255, 198, 255, 0.4);
         }
 
-        h2 { color: var(--morado); margin-top: 0; font-size: 1rem; margin-bottom: 10px; }
+        h2 { color: var(--morado); margin-top: 0; font-size: 1.1rem; margin-bottom: 14px; font-weight: 700; }
 
         input, select, textarea, button {
             width: 100%;
-            padding: 9px;
-            margin: 5px 0;
-            border-radius: 8px;
-            border: 1px solid #e2d4f0;
+            padding: 11px 14px;
+            margin: 6px 0;
+            border-radius: 12px;
+            border: 1.5px solid #e2d4f0;
             box-sizing: border-box;
-            font-size: 0.85rem;
+            font-size: 0.9rem;
             font-family: inherit;
+            background: #faf8fc;
+            transition: all 0.2s ease;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: var(--morado);
+            background: #fff;
+            box-shadow: 0 0 0 3px rgba(108, 92, 231, 0.1);
         }
 
         .btn-principal {
@@ -142,7 +154,10 @@
             font-weight: bold;
             border: none;
             cursor: pointer;
+            box-shadow: 0 4px 12px rgba(160, 196, 255, 0.4);
+            transition: transform 0.1s ease, box-shadow 0.2s ease;
         }
+        .btn-principal:active { transform: scale(0.98); }
 
         .btn-flechazo {
             background: linear-gradient(135deg, var(--rosa), var(--fucsia));
@@ -150,18 +165,21 @@
             font-weight: bold;
             border: none;
             cursor: pointer;
+            box-shadow: 0 4px 12px rgba(255, 133, 161, 0.4);
+            transition: transform 0.1s ease;
         }
+        .btn-flechazo:active { transform: scale(0.98); }
 
         .btn-logout {
             background: #fee2e2;
             color: #dc2626;
             border: 1px solid #fca5a5;
-            padding: 8px;
-            border-radius: 8px;
+            padding: 10px;
+            border-radius: 12px;
             font-weight: bold;
-            font-size: 0.75rem;
+            font-size: 0.8rem;
             cursor: pointer;
-            margin-top: 10px;
+            margin-top: 14px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -169,109 +187,113 @@
         }
 
         .btn-mapa {
-            background: #e8def8;
+            background: #f3e8ff;
             color: var(--morado);
             border: none;
-            padding: 5px 8px;
-            border-radius: 6px;
+            padding: 6px 12px;
+            border-radius: 8px;
             font-weight: bold;
             text-decoration: none;
             display: inline-block;
-            margin-top: 4px;
-            font-size: 0.75rem;
+            margin-top: 6px;
+            font-size: 0.8rem;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.05);
         }
 
-        /* ACORDEONES DESPLEGABLES */
         .accordion-header {
             background: #f8f7fc;
-            border: 1px solid #e2d4f0;
-            padding: 9px 11px;
-            border-radius: 10px;
+            border: 1.5px solid #e2d4f0;
+            padding: 12px 14px;
+            border-radius: 14px;
             font-weight: bold;
             color: var(--morado);
             cursor: pointer;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            font-size: 0.85rem;
-            margin-bottom: 8px;
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+            transition: background 0.2s ease;
         }
-        .accordion-body {
-            display: none;
-            padding: 4px 2px 8px 2px;
-        }
+        .accordion-header:hover { background: #f0edf9; }
+        .accordion-body { display: none; padding: 6px 2px 10px 2px; }
         .accordion-body.open { display: block; }
 
-        .grid-shop { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 8px; }
-        .grid-pets { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 8px; }
-        .pet-item img { width: 100%; height: 90px; object-fit: cover; border-radius: 8px; }
+        .grid-shop { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px; }
+        .grid-pets { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px; }
+        .pet-item { background: #faf8fc; border-radius: 12px; padding: 6px; border: 1px solid #e2d4f0; }
+        .pet-item img { width: 100%; height: 100px; object-fit: cover; border-radius: 8px; }
 
         #matchOverlay {
             display: none;
             position: fixed;
             top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(255, 240, 245, 0.95);
+            background: rgba(255, 240, 245, 0.96);
             z-index: 9999;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             text-align: center;
             padding: 20px;
+            backdrop-filter: blur(5px);
         }
 
         #cartaFlotanteBox {
             display: none;
             position: fixed;
-            bottom: 75px;
-            left: 12px;
-            right: 12px;
+            bottom: 85px;
+            left: 16px;
+            right: 16px;
             background: #fff;
             border: 2px solid var(--fucsia);
-            border-radius: 12px;
-            padding: 12px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            border-radius: 16px;
+            padding: 14px;
+            box-shadow: 0 12px 30px rgba(255, 133, 161, 0.25);
             z-index: 9998;
             animation: bounceIn 0.4s ease;
             cursor: pointer;
         }
 
         @keyframes bounceIn {
-            0% { transform: translateY(50px); opacity: 0; }
+            0% { transform: translateY(40px); opacity: 0; }
             100% { transform: translateY(0); opacity: 1; }
         }
 
         .file-input-label {
-            background: #f1f5f9;
+            background: #faf8fc;
             border: 2px dashed var(--morado);
-            padding: 9px;
-            border-radius: 8px;
+            padding: 12px;
+            border-radius: 12px;
             cursor: pointer;
-            font-size: 0.75rem;
+            font-size: 0.8rem;
             color: var(--morado);
             font-weight: bold;
             text-align: center;
             display: block;
-            margin: 5px 0;
+            margin: 6px 0;
+            transition: background 0.2s ease;
         }
+        .file-input-label:hover { background: #f0edf9; }
 
         .card-modal {
             display: none;
             position: fixed;
             top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(0, 0, 0, 0.7);
+            background: rgba(0, 0, 0, 0.65);
+            backdrop-filter: blur(4px);
             z-index: 10000;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            padding: 15px;
+            padding: 16px;
         }
 
         .mclovin-card {
             width: 320px;
             background: white;
-            border-radius: 12px;
+            border-radius: 16px;
             border: 2px solid #b0b0b0;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.3);
             overflow: hidden;
             background-image: linear-gradient(120deg, #fbcfe8 0%, #fed7aa 30%, #fef08a 60%, #bae6fd 100%);
             font-family: 'Arial', sans-serif;
@@ -283,11 +305,11 @@
         .mclovin-card.gold-edition {
             background-image: linear-gradient(135deg, #bf953f 0%, #fcf6ba 25%, #b38728 50%, #fbf5b7 75%, #aa771c 100%);
             border: 2px solid #ffd700;
-            box-shadow: 0 0 20px rgba(255, 215, 0, 0.6);
+            box-shadow: 0 0 25px rgba(255, 215, 0, 0.7);
         }
 
         .card-header {
-            padding: 6px 8px;
+            padding: 8px 10px;
             text-align: center;
             background: #0284c7;
             color: white;
@@ -299,41 +321,38 @@
             border-bottom: 2px solid #fff;
         }
 
-        .header-main { font-size: 0.8rem; font-weight: 900; color: #fef08a; text-transform: uppercase; }
-        .header-sub { font-size: 0.6rem; font-weight: bold; color: #ffffff; letter-spacing: 1px; }
+        .header-main { font-size: 0.85rem; font-weight: 900; color: #fef08a; text-transform: uppercase; }
+        .header-sub { font-size: 0.65rem; font-weight: bold; color: #ffffff; letter-spacing: 1px; }
 
-        .card-body { display: flex; padding: 10px; gap: 10px; align-items: flex-start; }
+        .card-body { display: flex; padding: 12px; gap: 12px; align-items: flex-start; }
 
         .card-photo-box {
-            width: 80px; height: 100px;
+            width: 85px; height: 105px;
             background: #e2e8f0;
             border: 2px solid #0284c7;
-            border-radius: 6px;
+            border-radius: 8px;
             overflow: hidden;
             display: flex;
             justify-content: center;
             align-items: center;
-            box-shadow: 2px 2px 5px rgba(0,0,0,0.15);
+            box-shadow: 3px 3px 8px rgba(0,0,0,0.15);
             flex-shrink: 0;
             position: relative;
         }
 
-        .mclovin-card.gold-edition .card-photo-box {
-            border: 2px solid #b8860b;
-        }
-
+        .mclovin-card.gold-edition .card-photo-box { border: 2px solid #b8860b; }
         .card-photo-img { width: 100%; height: 100%; object-fit: cover; }
-        .card-info { flex: 1; font-size: 0.65rem; color: #1e293b; font-weight: bold; text-align: left; }
-        .info-row { margin-bottom: 3px; }
-        .label-red { color: #b91c1c; font-size: 0.55rem; text-transform: uppercase; }
+        .card-info { flex: 1; font-size: 0.7rem; color: #1e293b; font-weight: bold; text-align: left; }
+        .info-row { margin-bottom: 4px; }
+        .label-red { color: #b91c1c; font-size: 0.6rem; text-transform: uppercase; }
         .mclovin-card.gold-edition .label-red { color: #5c3d00; }
-        .val-bold { font-size: 0.8rem; font-weight: 900; color: #000; text-transform: uppercase; }
-        .val-mision { font-size: 0.65rem; color: #1e3a8a; line-height: 1.15; display: block; margin-top: 1px; }
+        .val-bold { font-size: 0.85rem; font-weight: 900; color: #000; text-transform: uppercase; }
+        .val-mision { font-size: 0.7rem; color: #1e3a8a; line-height: 1.2; display: block; margin-top: 2px; }
         .mclovin-card.gold-edition .val-mision { color: #3d2700; }
 
         .signature { 
             font-family: 'Great Vibes', cursive; 
-            font-size: 1.2rem; 
+            font-size: 1.3rem; 
             color: #0f172a;
             line-height: 1;
             transform: rotate(-2deg);
@@ -344,27 +363,26 @@
         .founder-seal {
             display: none;
             position: absolute;
-            bottom: 6px;
-            right: 6px;
+            bottom: 8px;
+            right: 8px;
             background: #785212;
             color: #fff3a0;
-            padding: 2px 5px;
-            border-radius: 4px;
-            font-size: 0.5rem;
+            padding: 3px 6px;
+            border-radius: 6px;
+            font-size: 0.55rem;
             font-weight: 900;
             border: 1px solid #ffd700;
         }
-
         .gold-edition .founder-seal { display: block; }
 
-        .modal-buttons { display: flex; flex-direction: column; gap: 6px; width: 320px; margin-top: 12px; }
-        .btn-action { width: 100%; padding: 8px; border: none; border-radius: 8px; font-size: 0.8rem; cursor: pointer; font-weight: bold; text-align: center; }
+        .modal-buttons { display: flex; flex-direction: column; gap: 8px; width: 320px; margin-top: 14px; }
+        .btn-action { width: 100%; padding: 10px; border: none; border-radius: 12px; font-size: 0.85rem; cursor: pointer; font-weight: bold; text-align: center; }
         .btn-close { background: #333; color: white; }
-        .btn-download { background: #10b981; color: white; }
+        .btn-download { background: #10b981; color: white; box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3); }
 
         /* MARCOS ANIMADOS */
         .marco-arcoiris {
-            position: absolute; inset: -3px; border-radius: 8px;
+            position: absolute; inset: -3px; border-radius: 10px;
             background: linear-gradient(45deg, #ff0000, #ff7f00, #ffff00, #00ff00, #0000ff, #4b0082, #8b00ff);
             background-size: 400% 400%; z-index: 2; animation: gradientBorder 4s ease infinite;
             pointer-events: none; mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
@@ -372,84 +390,84 @@
             -webkit-mask-composite: xor; mask-composite: exclude; padding: 3px;
         }
         .marco-neon {
-            position: absolute; inset: 0; border: 3px solid #ff758c; border-radius: 6px; z-index: 2; pointer-events: none; animation: pulseNeon 1.5s infinite alternate;
+            position: absolute; inset: 0; border: 3px solid #ff758c; border-radius: 8px; z-index: 2; pointer-events: none; animation: pulseNeon 1.5s infinite alternate;
         }
         .marco-oro {
-            position: absolute; inset: 0; border: 3px dashed #ffd700; border-radius: 6px; z-index: 2; pointer-events: none; animation: spinGold 6s linear infinite;
+            position: absolute; inset: 0; border: 3px dashed #ffd700; border-radius: 8px; z-index: 2; pointer-events: none; animation: spinGold 6s linear infinite;
         }
         .marco-corazones {
-            position: absolute; inset: 0; border: 3px solid #ff4757; border-radius: 6px; z-index: 2; pointer-events: none; animation: pulseHearts 1s infinite alternate;
+            position: absolute; inset: 0; border: 3px solid #ff4757; border-radius: 8px; z-index: 2; pointer-events: none; animation: pulseHearts 1s infinite alternate;
         }
         @keyframes gradientBorder { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
-        @keyframes pulseNeon { 0% { box-shadow: 0 0 4px #ff758c, inset 0 0 4px #ff758c; border-color: #ff758c; } 100% { box-shadow: 0 0 12px #ff7eb3, inset 0 0 8px #ff7eb3; border-color: #ff7eb3; } }
+        @keyframes pulseNeon { 0% { box-shadow: 0 0 6px #ff758c, inset 0 0 6px #ff758c; border-color: #ff758c; } 100% { box-shadow: 0 0 14px #ff7eb3, inset 0 0 10px #ff7eb3; border-color: #ff7eb3; } }
         @keyframes spinGold { 0% { transform: rotate(0deg); border-color: #ffd700; } 50% { border-color: #ff6b81; } 100% { transform: rotate(360deg); border-color: #ffd700; } }
-        @keyframes pulseHearts { 0% { box-shadow: 0 0 4px #ff4757; transform: scale(1); } 100% { box-shadow: 0 0 12px #ff6b81; transform: scale(1.02); } }
+        @keyframes pulseHearts { 0% { box-shadow: 0 0 6px #ff4757; transform: scale(1); } 100% { box-shadow: 0 0 14px #ff6b81; transform: scale(1.02); } }
 
-        /* TIENDA & RULETA */
         .ruleta-box {
             background: linear-gradient(135deg, #fdf4ff, #fae8ff);
-            border: 2px dashed #d946ef; border-radius: 12px; padding: 12px; text-align: center; margin-bottom: 10px;
+            border: 2px dashed #d946ef; border-radius: 16px; padding: 16px; text-align: center; margin-bottom: 14px;
         }
         .ruleta-wheel {
-            width: 70px; height: 70px; margin: 6px auto; border-radius: 50%;
+            width: 80px; height: 80px; margin: 10px auto; border-radius: 50%;
             background: conic-gradient(#f43f5e 0deg 90deg, #fbbf24 90deg 180deg, #38bdf8 180deg 270deg, #a855f7 270deg 360deg);
-            display: flex; align-items: center; justify-content: center; box-shadow: 0 3px 10px rgba(0,0,0,0.15); font-size: 1.3rem; transition: transform 3s cubic-bezier(0.15, 0.9, 0.2, 1);
+            display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 12px rgba(0,0,0,0.15); font-size: 1.5rem; transition: transform 3s cubic-bezier(0.15, 0.9, 0.2, 1);
         }
 
-        .shop-item { border: 1px solid #e2d4f0; border-radius: 10px; padding: 8px; background: #fff; display: flex; flex-direction: column; justify-content: space-between; }
-        .shop-flex { display: flex; align-items: center; gap: 6px; }
-        .preview-box { width: 35px; height: 45px; background: #e2e8f0; border-radius: 6px; position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 1rem; border: 1px solid #ccc; }
-        .shop-item-info h4 { margin: 0 0 2px 0; font-size: 0.75rem; color: var(--morado); }
-        .shop-item-info p { margin: 0; font-size: 0.65rem; color: #666; }
-        .btn-buy { background: linear-gradient(135deg, var(--rosa), var(--fucsia)); color: white; border: none; padding: 5px; border-radius: 6px; font-weight: bold; font-size: 0.7rem; cursor: pointer; width: 100%; margin-top: 6px; }
+        .shop-item { border: 1.5px solid #e2d4f0; border-radius: 14px; padding: 10px; background: #fff; display: flex; flex-direction: column; justify-content: space-between; box-shadow: 0 4px 12px rgba(0,0,0,0.03); }
+        .shop-flex { display: flex; align-items: center; gap: 8px; }
+        .preview-box { width: 40px; height: 50px; background: #e2e8f0; border-radius: 8px; position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 1.1rem; border: 1px solid #ccc; }
+        .shop-item-info h4 { margin: 0 0 2px 0; font-size: 0.8rem; color: var(--morado); font-weight: 700; }
+        .shop-item-info p { margin: 0; font-size: 0.7rem; color: #666; }
+        .btn-buy { background: linear-gradient(135deg, var(--rosa), var(--fucsia)); color: white; border: none; padding: 6px; border-radius: 8px; font-weight: bold; font-size: 0.75rem; cursor: pointer; width: 100%; margin-top: 8px; }
 
-        /* BUZÓN */
         .carta-item {
             background: #fffbeb;
-            border: 1px solid #fde68a;
-            border-radius: 8px;
-            padding: 8px;
-            margin-bottom: 8px;
-            font-size: 0.8rem;
+            border: 1.5px solid #fde68a;
+            border-radius: 12px;
+            padding: 10px;
+            margin-bottom: 10px;
+            font-size: 0.85rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.02);
         }
         .carta-item.no-leida {
-            border-left: 4px solid var(--fucsia);
+            border-left: 5px solid var(--fucsia);
             background: #fff5f7;
         }
 
-        /* NAVEGACIÓN INFERIOR (4 PESTAÑAS) */
         .nav-tabs {
-            display: flex; justify-content: space-around; background: #fff; position: fixed; bottom: 0; left: 0; right: 0; padding: 8px 2px; box-shadow: 0 -2px 10px rgba(0,0,0,0.08); z-index: 99;
+            display: flex; justify-content: space-around; background: #fff; position: fixed; bottom: 0; left: 0; right: 0; padding: 10px 4px; box-shadow: 0 -4px 20px rgba(0,0,0,0.08); z-index: 99;
+            border-top-left-radius: 20px; border-top-right-radius: 20px;
         }
         .tab-btn {
-            background: none; border: none; font-size: 0.6rem; color: #888; display: flex; flex-direction: column; align-items: center; gap: 2px; font-weight: bold; flex: 1; padding: 0; margin: 0; cursor: pointer; position: relative;
+            background: none; border: none; font-size: 0.65rem; color: #888; display: flex; flex-direction: column; align-items: center; gap: 3px; font-weight: bold; flex: 1; padding: 0; margin: 0; cursor: pointer; position: relative;
+            transition: color 0.2s ease;
         }
         .tab-btn.active { color: var(--morado); }
-        .tab-btn span { font-size: 1.1rem; }
+        .tab-btn span { font-size: 1.2rem; }
         .notif-dot {
-            position: absolute; top: 0; right: 22%; width: 7px; height: 7px; background: #ef4444; border-radius: 50%; display: none;
+            position: absolute; top: 0; right: 22%; width: 8px; height: 8px; background: #ef4444; border-radius: 50%; display: none; box-shadow: 0 0 6px #ef4444;
         }
 
-        footer { text-align: center; padding: 12px; font-size: 0.75rem; color: #666; }
+        footer { text-align: center; padding: 16px; font-size: 0.8rem; color: #666; font-weight: 500; }
     </style>
 </head>
 <body>
 
     <div id="cartaFlotanteBox" onclick="abrirBuzonDesdeFlotante()">
-        <div style="display:flex; align-items:center; gap:8px;">
-            <span style="font-size:1.5rem;">💌</span>
+        <div style="display:flex; align-items:center; gap:10px;">
+            <span style="font-size:1.6rem;">💌</span>
             <div>
-                <strong style="color:var(--morado); font-size:0.8rem;" id="flotanteRemitente">¡Nueva carta!</strong>
-                <p style="margin:2px 0 0 0; font-size:0.7rem; color:#555;" id="flotanteTexto">Te han enviado un mensaje secreto.</p>
+                <strong style="color:var(--morado); font-size:0.85rem;" id="flotanteRemitente">¡Nueva carta!</strong>
+                <p style="margin:2px 0 0 0; font-size:0.75rem; color:#555;" id="flotanteTexto">Te han enviado un mensaje secreto.</p>
             </div>
         </div>
     </div>
 
     <div id="matchOverlay" onclick="cerrarMatchAnimacion()">
-        <div style="font-size: 60px;">💖🏹</div>
-        <div style="font-size: 1.2rem; color: var(--fucsia); font-weight: bold; margin-top: 8px;">¡FLECHAZO MUTUO! 🌸</div>
-        <p id="matchTextoAnimado" style="font-size:0.9rem; color:var(--texto); font-weight:600;"></p>
-        <p style="font-size:0.7rem; color:#888; margin-top:10px;">(Toca la pantalla para cerrar)</p>
+        <div style="font-size: 70px;">💖🏹</div>
+        <div style="font-size: 1.3rem; color: var(--fucsia); font-weight: bold; margin-top: 10px;">¡FLECHAZO MUTUO! 🌸</div>
+        <p id="matchTextoAnimado" style="font-size:0.95rem; color:var(--texto); font-weight:600; margin-top: 6px;"></p>
+        <p style="font-size:0.75rem; color:#888; margin-top:12px;">(Toca la pantalla para cerrar)</p>
     </div>
 
     <!-- MODAL DEL CARNET -->
@@ -484,7 +502,7 @@
                         <span class="label-red">MISIÓN PRINCIPAL:</span><br>
                         <span class="val-mision" id="cardMisionOut">---</span>
                     </div>
-                    <div class="info-row" style="margin-top: 2px;">
+                    <div class="info-row" style="margin-top: 4px;">
                         <span class="label-red">FIRMA:</span><br>
                         <span class="signature" id="cardSignatureOut">---</span>
                     </div>
@@ -511,12 +529,11 @@
             <p class="subtitulo">Espacio seguro ✨</p>
         </div>
 
-        <div style="display: flex; align-items: center; gap: 5px;">
-            <!-- MOCHILA / PERFIL SUPERIOR DERECHA -->
+        <div style="display: flex; align-items: center; gap: 6px;">
             <div class="mochila-header-btn" id="btnMochilaHeader" onclick="abrirModalCarnet()" style="display: none;" title="Abrir Mochila / Carnet">
                 <div class="mochila-avatar" id="miniAvatarBox">👤<div id="miniMarcoLayer"></div></div>
-                <div style="font-size:0.65rem; font-weight:bold; color:var(--morado); line-height: 1; text-align: left;">
-                    🎒 <span id="badgeNameOut" style="max-width: 45px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; display: block;">Perfil</span>
+                <div style="font-size:0.7rem; font-weight:bold; color:var(--morado); line-height: 1; text-align: left;">
+                    🎒 <span id="badgeNameOut" style="max-width: 50px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; display: block;">Perfil</span>
                 </div>
             </div>
 
@@ -529,10 +546,10 @@
         <!-- PESTAÑA 1: TIENDA Y PREMIOS -->
         <div id="tienda" class="tab-content active">
             <div class="ruleta-box">
-                <h2 style="margin-top:0; color:#c026d3; font-size:0.95rem;">🎡 La Ruleta Sáfica</h2>
-                <p style="font-size:0.7rem; color:#666;">Gira para ganar premios (Cuesta 20 💖).</p>
+                <h2 style="margin-top:0; color:#c026d3; font-size:1rem;">🎡 La Ruleta Sáfica</h2>
+                <p style="font-size:0.75rem; color:#666;">Gira para ganar premios (Cuesta 20 💖).</p>
                 <div class="ruleta-wheel" id="ruletaWheel">🎨</div>
-                <button class="btn-principal" style="background: linear-gradient(135deg, #ec4899, #8b5cf6); padding: 7px; font-size:0.8rem;" onclick="girarRuleta()">🎯 Girar Ruleta (20 💖)</button>
+                <button class="btn-principal" style="background: linear-gradient(135deg, #ec4899, #8b5cf6); padding: 9px; font-size:0.85rem;" onclick="girarRuleta()">🎯 Girar Ruleta (20 💖)</button>
             </div>
 
             <div class="card">
@@ -572,9 +589,9 @@
                     </div>
                 </div>
 
-                <div style="margin-top: 10px; border: 1px solid var(--fucsia); padding: 8px; border-radius: 10px; background: #fff5f7;">
-                    <div style="font-size:0.8rem; font-weight:bold; color:var(--fucsia);">💌 Pase Especial de Cartas</div>
-                    <p style="font-size:0.7rem; color:#555; margin:2px 0 6px 0;">Habilita funciones avanzadas en el buzón.</p>
+                <div style="margin-top: 12px; border: 1.5px solid var(--fucsia); padding: 12px; border-radius: 14px; background: #fff5f7;">
+                    <div style="font-size:0.85rem; font-weight:bold; color:var(--fucsia);">💌 Pase Especial de Cartas</div>
+                    <p style="font-size:0.75rem; color:#555; margin:3px 0 8px 0;">Habilita funciones avanzadas en el buzón.</p>
                     <button class="btn-buy" style="margin-top:0;" onclick="comprarItem('Carta / Reto al Crush', 25)">Comprar por 25 💖</button>
                 </div>
             </div>
@@ -592,7 +609,7 @@
                     <button class="btn-principal" onclick="agregarCumple()">Guardar Cumple</button>
                 </div>
 
-                <div class="accordion-header" onclick="toggleAccordion('accQuedada')" style="margin-top:6px;"><span>📍 Proponer Plan / Quedada (+25💖)</span> <span>▼</span></div>
+                <div class="accordion-header" onclick="toggleAccordion('accQuedada')" style="margin-top:8px;"><span>📍 Proponer Plan / Quedada (+25💖)</span> <span>▼</span></div>
                 <div id="accQuedada" class="accordion-body">
                     <input type="text" id="tituloQuedada" placeholder="Plan (ej: Café y chismes...)">
                     <input type="text" id="lugarQuedada" placeholder="Lugar o Ciudad">
@@ -603,10 +620,10 @@
 
             <div class="card">
                 <h2>🎉 Próximos Eventos</h2>
-                <h3 style="font-size:0.8rem; color:var(--morado); margin:6px 0 2px 0;">🎂 Cumpleaños:</h3>
-                <div id="listaCumples" style="font-size:0.75rem; margin-bottom:8px;">Aún no hay cumpleaños.</div>
-                <h3 style="font-size:0.8rem; color:var(--morado); margin:6px 0 2px 0;">📍 Quedadas:</h3>
-                <div id="listaQuedadas" style="font-size:0.75rem;">Aún no hay planes.</div>
+                <h3 style="font-size:0.85rem; color:var(--morado); margin:8px 0 4px 0;">🎂 Cumpleaños:</h3>
+                <div id="listaCumples" style="font-size:0.8rem; margin-bottom:10px;">Aún no hay cumpleaños.</div>
+                <h3 style="font-size:0.85rem; color:var(--morado); margin:8px 0 4px 0;">📍 Quedadas:</h3>
+                <div id="listaQuedadas" style="font-size:0.8rem;">Aún no hay planes.</div>
             </div>
         </div>
 
@@ -620,11 +637,11 @@
                     <select id="selectDestinataria">
                         <option value="" disabled selected>Selecciona destinataria...</option>
                     </select>
-                    <textarea id="textoCarta" placeholder="Escribe tu mensaje..." rows="2"></textarea>
+                    <textarea id="textoCarta" placeholder="Escribe tu mensaje..." rows="3"></textarea>
                     <button class="btn-flechazo" onclick="enviarCartaBuzon()">Enviar Carta</button>
                 </div>
 
-                <div class="accordion-header" onclick="toggleAccordion('accFlechazo')" style="margin-top:6px;"><span>💘 Mandar Flechazo Anónimo</span> <span>▼</span></div>
+                <div class="accordion-header" onclick="toggleAccordion('accFlechazo')" style="margin-top:8px;"><span>💘 Mandar Flechazo Anónimo</span> <span>▼</span></div>
                 <div id="accFlechazo" class="accordion-body">
                     <input type="text" id="destinoFlechazo" placeholder="¿A quién le mandas el flechazo?">
                     <button class="btn-flechazo" onclick="enviarFlechazo()">Mandar Flechazo</button>
@@ -633,7 +650,7 @@
 
             <div class="card">
                 <h2>📥 Tu Buzón & Matches</h2>
-                <div id="miBuzonContenedor" style="font-size:0.75rem; margin-bottom: 8px;">No tienes cartas.</div>
+                <div id="miBuzonContenedor" style="font-size:0.8rem; margin-bottom: 10px;">No tienes cartas.</div>
                 <div id="misMatches"></div>
             </div>
         </div>
@@ -642,7 +659,7 @@
         <div id="extras" class="tab-content">
             <div class="card" id="formRegistroCarnet">
                 <h2>🎒 Crear Carnet y Mochila</h2>
-                <p style="font-size:0.75rem; color:#666; margin-top:-4px;">Regístrate con tu apodo y código exclusivo.</p>
+                <p style="font-size:0.8rem; color:#666; margin-top:-4px;">Regístrate con tu apodo y código exclusivo.</p>
                 
                 <input type="text" id="inName" placeholder="Tu Apodo / Nombre" maxlength="15">
                 
@@ -668,31 +685,31 @@
 
             <div class="card" id="seccionMiCarnet" style="display: none;">
                 <h2>🎒 Gestión de Mochila 🌸</h2>
-                <p style="font-size: 0.75rem; color: #555; margin-top: -4px;">Toca arriba en tu icono de mochila 🎒 o aquí abajo para ver tu carnet oficial en grande.</p>
+                <p style="font-size: 0.8rem; color: #555; margin-top: -4px;">Toca arriba en tu icono de mochila 🎒 o aquí abajo para ver tu carnet oficial en grande.</p>
                 
-                <button class="btn-principal" onclick="abrirModalCarnet()" style="margin-top: 4px;">👁️ Ver Carnet Oficial</button>
+                <button class="btn-principal" onclick="abrirModalCarnet()" style="margin-top: 6px;">👁️ Ver Carnet Oficial</button>
 
-                <div style="margin-top: 10px; border-top: 1px solid #eee; padding-top: 8px;">
-                    <h3 style="font-size: 0.85rem; color: var(--morado); margin-bottom: 6px;">🖼️ Tus Marcos Animados</h3>
-                    <div id="inventarioMarcos" style="display: flex; gap: 5px; flex-wrap: wrap;"></div>
+                <div style="margin-top: 14px; border-top: 1px solid #eee; padding-top: 10px;">
+                    <h3 style="font-size: 0.9rem; color: var(--morado); margin-bottom: 8px;">🖼️ Tus Marcos Animados</h3>
+                    <div id="inventarioMarcos" style="display: flex; gap: 6px; flex-wrap: wrap;"></div>
                 </div>
 
                 <button class="btn-logout" onclick="cerrarSesion()">🚪 Cerrar Sesión / Borrar Perfil</button>
             </div>
 
-            <div class="card" style="margin-top: 12px;">
+            <div class="card" style="margin-top: 14px;">
                 <h2>🐾 Galería Peluda</h2>
                 <input type="text" id="nombreMascota" placeholder="Nombre del animalito">
                 <input type="file" id="fotoMascota" accept="image/*">
                 <button class="btn-principal" onclick="subirMascota()">Publicar Foto (+20💖)</button>
-                <div id="galeriaMascotas" class="grid-pets" style="margin-top:8px;"></div>
+                <div id="galeriaMascotas" class="grid-pets" style="margin-top:10px;"></div>
             </div>
 
             <div class="card">
                 <h2>📢 Actualizaciones</h2>
-                <div style="background:#f8fafc; border-left:3px solid var(--morado); padding:8px; border-radius:4px; font-size:0.7rem;">
-                    <strong style="color:var(--morado);">✨ Versión 4.0 - Súper Completa</strong>
-                    <p style="margin:2px 0 0 0; color:#444;">Incluye tienda con ruleta interactiva, agenda de quedadas con mapas de Google Maps, sistema de buzón con alertas flotantes y perfiles guardados.</p>
+                <div style="background:#f8fafc; border-left:4px solid var(--morado); padding:10px; border-radius:6px; font-size:0.75rem;">
+                    <strong style="color:var(--morado);">✨ Versión 4.0 - Rediseño Visual</strong>
+                    <p style="margin:4px 0 0 0; color:#444;">Interfaz pulida conservando estrictamente toda la estructura lógica original.</p>
                 </div>
             </div>
         </div>
@@ -1002,17 +1019,17 @@
             if (data.isGold) marcos = ["marco-arcoiris", "marco-neon", "marco-oro", "marco-corazones"];
 
             if (marcos.length === 0) {
-                contenedor.innerHTML = `<span style="font-size: 0.7rem; color: #888;">Sin marcos.</span>`;
+                contenedor.innerHTML = `<span style="font-size: 0.75rem; color: #888;">Sin marcos.</span>`;
                 return;
             }
 
-            let html = `<button onclick="quitarMarco()" style="padding:4px 7px; font-size:0.65rem; border-radius:6px; background:#e2e8f0; border:none; cursor:pointer; font-weight:bold;">Ninguno</button>`;
+            let html = `<button onclick="quitarMarco()" style="padding:5px 9px; font-size:0.7rem; border-radius:8px; background:#e2e8f0; border:none; cursor:pointer; font-weight:bold;">Ninguno</button>`;
             const nombres = { 'marco-arcoiris': '🌈 Arcoíris', 'marco-neon': '✨ Neón', 'marco-oro': '👑 Oro', 'marco-corazones': '💖 Latido' };
 
             marcos.forEach(m => {
                 let activo = data.marcoActivo === m;
                 let btnStyle = activo ? "background:var(--morado); color:white;" : "background:#fff; color:var(--morado); border:1px solid var(--morado);";
-                html += `<button onclick="equiparMarco('${m}')" style="padding:4px 7px; font-size:0.65rem; border-radius:6px; cursor:pointer; font-weight:bold; ${btnStyle}">${nombres[m] || 'Marco'} ${activo ? '✓' : ''}</button>`;
+                html += `<button onclick="equiparMarco('${m}')" style="padding:5px 9px; font-size:0.7rem; border-radius:8px; cursor:pointer; font-weight:bold; ${btnStyle}">${nombres[m] || 'Marco'} ${activo ? '✓' : ''}</button>`;
             });
             contenedor.innerHTML = html;
         }
@@ -1086,17 +1103,17 @@
 
             const cartas = data.buzonCartas || [];
             if (cartas.length === 0) {
-                contenedor.innerHTML = `<p style="color:#888; font-size:0.75rem;">Buzón vacío.</p>`;
+                contenedor.innerHTML = `<p style="color:#888; font-size:0.8rem;">Buzón vacío.</p>`;
                 return;
             }
 
             contenedor.innerHTML = cartas.map((c) => `
                 <div class="carta-item ${c.leida ? '' : 'no-leida'}">
-                    <div style="display:flex; justify-content:space-between; font-weight:bold; color:var(--morado); font-size:0.7rem;">
+                    <div style="display:flex; justify-content:space-between; font-weight:bold; color:var(--morado); font-size:0.75rem;">
                         <span>💌 De: ${c.de}</span>
-                        <span style="color:#888; font-size:0.65rem;">${c.fecha}</span>
+                        <span style="color:#888; font-size:0.7rem;">${c.fecha}</span>
                     </div>
-                    <p style="margin:4px 0 0 0; color:#333; font-size:0.75rem; white-space: pre-wrap;">${c.texto}</p>
+                    <p style="margin:6px 0 0 0; color:#333; font-size:0.8rem; white-space: pre-wrap;">${c.texto}</p>
                 </div>
             `).join('');
         }
@@ -1217,8 +1234,8 @@
 
             if(matches.length > 0) {
                 cont.innerHTML = matches.map(m => `
-                    <div style="background:#ffe5ec; border:1px dashed var(--fucsia); border-radius:8px; padding:8px; text-align:center; margin-top:6px;">
-                        <strong style="color:#d63384; font-size:0.8rem;">¡HAY MATCH MUTUO CON ${m.de.toUpperCase()}! 🌸💖</strong>
+                    <div style="background:#ffe5ec; border:1.5px dashed var(--fucsia); border-radius:12px; padding:10px; text-align:center; margin-top:8px;">
+                        <strong style="color:#d63384; font-size:0.85rem;">¡HAY MATCH MUTUO CON ${m.de.toUpperCase()}! 🌸💖</strong>
                     </div>
                 `).join('');
             } else {
@@ -1250,11 +1267,11 @@
             const mascotas = JSON.parse(localStorage.getItem('mascotas') || '[]');
             const cont = document.getElementById('galeriaMascotas');
             if(!cont) return;
-            if(mascotas.length === 0) return cont.innerHTML = '<span style="grid-column:1/3; color:#888; font-size:0.7rem;">Sin fotos de peludos.</span>';
+            if(mascotas.length === 0) return cont.innerHTML = '<span style="grid-column:1/3; color:#888; font-size:0.75rem;">Sin fotos de peludos.</span>';
             cont.innerHTML = mascotas.map(m => `
                 <div class="pet-item">
                     <img src="${m.foto}">
-                    <p style="text-align:center; font-weight:bold; margin:2px 0; font-size:0.7rem;">${m.nombre}</p>
+                    <p style="text-align:center; font-weight:bold; margin:4px 0 2px 0; font-size:0.75rem;">${m.nombre}</p>
                 </div>
             `).join('');
         }
