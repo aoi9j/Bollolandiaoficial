@@ -435,7 +435,7 @@
         .btn-close { background: #4a403b; color: white; }
         .btn-download { background: var(--accent-green); color: white; box-shadow: 0 4px 12px rgba(135, 163, 138, 0.3); }
 
-        /* MARCOS ANIMADOS EXACTOS A REFERENCIA GIF/PLASMA */
+        /* MARCOS ANIMADOS ESTILO PLASMA PROFESIONAL */
         .marco-plasma {
             position: absolute; inset: -4px; border-radius: 14px; z-index: 2; pointer-events: none;
             background: conic-gradient(from 0deg, #ff2200, #ff7700, #ffcc00, #ff2200);
@@ -443,16 +443,26 @@
             animation: plasmaSpin 1.2s linear infinite, plasmaGlow 0.8s ease-in-out infinite alternate;
             mix-blend-mode: screen;
         }
-        .marco-arcoiris {
-            position: absolute; inset: -3px; border-radius: 12px;
-            background: linear-gradient(45deg, #ff9a9e, #fad0c4, #ffd1ff, #a1c4fd, #c2e9fb, #ff9a9e);
-            background-size: 400% 400%; z-index: 2; animation: gradientBorder 4s ease infinite;
-            pointer-events: none; box-shadow: 0 0 12px rgba(161,196,253,0.8);
+        .marco-neondark {
+            position: absolute; inset: -4px; border-radius: 14px; z-index: 2; pointer-events: none;
+            background: conic-gradient(from 0deg, #8a2be2, #ff007f, #9400d3, #8a2be2);
+            box-shadow: 0 0 15px #ff007f, inset 0 0 12px #9400d3;
+            animation: plasmaSpin 1.4s linear infinite, plasmaGlow 0.9s ease-in-out infinite alternate;
+            mix-blend-mode: screen;
         }
-        .marco-sakura {
-            position: absolute; inset: -3px; border: 3px solid #ff9ebb; border-radius: 12px; z-index: 2; pointer-events: none;
-            box-shadow: 0 0 12px #ff9ebb, inset 0 0 10px #ffb3c6;
-            animation: pulseSakura 1.5s infinite alternate;
+        .marco-goldglow {
+            position: absolute; inset: -4px; border-radius: 14px; z-index: 2; pointer-events: none;
+            background: conic-gradient(from 0deg, #ffd700, #ffaa00, #ffee55, #ffd700);
+            box-shadow: 0 0 16px #ffd700, inset 0 0 12px #ffea75;
+            animation: plasmaSpin 1.6s linear infinite, plasmaGlow 1s ease-in-out infinite alternate;
+            mix-blend-mode: screen;
+        }
+        .marco-cyberpunk {
+            position: absolute; inset: -4px; border-radius: 14px; z-index: 2; pointer-events: none;
+            background: conic-gradient(from 0deg, #00ffff, #ff00ff, #00ff66, #00ffff);
+            box-shadow: 0 0 16px #00ffff, inset 0 0 12px #ff00ff;
+            animation: plasmaSpin 1s linear infinite, plasmaGlow 0.7s ease-in-out infinite alternate;
+            mix-blend-mode: screen;
         }
 
         @keyframes plasmaSpin {
@@ -463,8 +473,6 @@
             0% { transform: scale(0.98); opacity: 0.85; }
             100% { transform: scale(1.03); opacity: 1; }
         }
-        @keyframes gradientBorder { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
-        @keyframes pulseSakura { 0% { box-shadow: 0 0 6px #ff9ebb; border-color: #ff9ebb; transform: scale(1); } 100% { box-shadow: 0 0 16px #ffc2d1; border-color: #ffd1dc; transform: scale(1.01); } }
 
         /* RULETA VISUAL DE PREMIOS MEJORADA */
         .ruleta-container {
@@ -532,6 +540,8 @@
         .fc { font-family: inherit; }
         .fc .fc-toolbar-title { font-size: 0.9rem !important; color: var(--text-main); }
         .fc .fc-button { background: var(--accent-green) !important; border: none !important; font-size: 0.75rem !important; padding: 4px 8px !important; }
+        .fc-daygrid-day { cursor: pointer; }
+        .fc-daygrid-day:hover { background-color: rgba(135, 163, 138, 0.1); }
 
         #mapContainer {
             width: 100%;
@@ -543,7 +553,7 @@
             overflow: hidden;
         }
     </style>
-    <!-- Leaflet CSS y JS para mapas funcionales -->
+    <!-- Leaflet CSS y JS para mapas funcionales con chinchetas -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 </head>
@@ -559,7 +569,7 @@
         </div>
     </div>
 
-    <!-- MODAL FLECHAZO MUTUO (SOLO CHICAS Y CERRABLE) -->
+    <!-- MODAL FLECHAZO MUTUO -->
     <div id="matchOverlay" style="display:none; position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.6); backdrop-filter:blur(4px); z-index:10001; flex-direction:column; justify-content:center; align-items:center; padding:16px;" onclick="cerrarMatchAnimacion()">
         <div style="background:#fff; padding:24px; border-radius:20px; text-align:center; max-width:320px; border:2px solid var(--accent-coral); box-shadow:0 10px 25px rgba(0,0,0,0.2);" onclick="event.stopPropagation()">
             <div style="font-size: 50px;">💖🏹</div>
@@ -616,7 +626,6 @@
         </div>
     </div>
 
-    <!-- Input oculto global para cambiar foto pinchando directamente en el carnet -->
     <input type="file" id="inputFotoDirectoCarnet" accept="image/*" style="display: none;" onchange="procesarFotoDirectoCarnet(this)">
 
     <!-- BARRA LATERAL IZQUIERDA -->
@@ -695,7 +704,7 @@
                     <div class="ruleta-premios-grid">
                         <div class="premio-card-visual">✨ <span>+30 Puntos Extra</span></div>
                         <div class="premio-card-visual">🔥 <span>Marco Plasma Fire</span></div>
-                        <div class="premio-card-visual">🌈 <span>Marco Arcoíris</span></div>
+                        <div class="premio-card-visual">💜 <span>Marco Neon Dark</span></div>
                         <div class="premio-card-visual">💖 <span>+50 Premios Gordos</span></div>
                     </div>
 
@@ -717,58 +726,60 @@
 
                         <div class="shop-item">
                             <div class="shop-flex">
-                                <div class="preview-box"><span>🌸</span><div class="marco-arcoiris"></div></div>
-                                <div class="shop-item-info"><h4>🌈 Arcoíris</h4><p>Multicolor pastel.</p></div>
+                                <div class="preview-box"><span>💜</span><div class="marco-neondark"></div></div>
+                                <div class="shop-item-info"><h4>💜 Neon Dark</h4><p>Vibración neón.</p></div>
                             </div>
-                            <button class="btn-buy" onclick="comprarMarco('marco-arcoiris', 'Arcoíris Sáfico', 30)">30 💖</button>
+                            <button class="btn-buy" onclick="comprarMarco('marco-neondark', 'Neon Dark', 35)">35 💖</button>
                         </div>
 
                         <div class="shop-item">
                             <div class="shop-flex">
-                                <div class="preview-box"><span>🌸</span><div class="marco-sakura"></div></div>
-                                <div class="shop-item-info"><h4>🌸 Sakura</h4><p>Pétalos suaves.</p></div>
+                                <div class="preview-box"><span>👑</span><div class="marco-goldglow"></div></div>
+                                <div class="shop-item-info"><h4>👑 Gold Glow</h4><p>Resplandor dorado.</p></div>
                             </div>
-                            <button class="btn-buy" onclick="comprarMarco('marco-sakura', 'Sakura Glow', 35)">35 💖</button>
+                            <button class="btn-buy" onclick="comprarMarco('marco-goldglow', 'Gold Glow', 50)">50 💖</button>
+                        </div>
+
+                        <div class="shop-item">
+                            <div class="shop-flex">
+                                <div class="preview-box"><span>⚡</span><div class="marco-cyberpunk"></div></div>
+                                <div class="shop-item-info"><h4>⚡ Cyberpunk</h4><p>Estilo futurista.</p></div>
+                            </div>
+                            <button class="btn-buy" onclick="comprarMarco('marco-cyberpunk', 'Cyberpunk', 40)">40 💖</button>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- PESTAÑA 2: AGENDA Y PLANES CON CALENDARIO Y MAPA INTERACTIVO -->
+            <!-- PESTAÑA 2: AGENDA Y PLANES -->
             <div id="agenda" class="tab-content" style="display:none;">
                 <div class="card">
-                    <h3>📅 Agenda, Calendario y Quedadas</h3>
+                    <h3>📅 Calendario, Cumpleaños y Quedadas</h3>
+                    <p style="font-size:0.75rem; color:#8c827b; margin-top:-4px;">💡 <em>Consejo: Pincha directamente en cualquier día del calendario para anotar cumpleaños y ganar +15 💖 automático.</em></p>
                     
                     <!-- CALENDARIO FUNCIONAL -->
                     <div id="calendarContainer">
                         <div id="calendar"></div>
                     </div>
 
-                    <div class="accordion-header" onclick="toggleAccordion('accCumple')"><span>🎂 Añadir Cumpleaños (+15💖)</span> <span>▼</span></div>
-                    <div id="accCumple" class="accordion-body">
-                        <input type="text" id="nombreCumple" placeholder="Nombre de la cumpleañera">
-                        <input type="date" id="fechaCumple">
-                        <button class="btn-principal" onclick="agregarCumple()">Guardar Cumple</button>
-                    </div>
-
                     <div class="accordion-header" onclick="toggleAccordion('accQuedada')" style="margin-top:8px;"><span>📍 Proponer Plan / Quedada (+25💖)</span> <span>▼</span></div>
                     <div id="accQuedada" class="accordion-body">
                         <input type="text" id="tituloQuedada" placeholder="Plan (ej: Café y chismes...)">
-                        <input type="text" id="lugarQuedada" placeholder="Lugar o Ciudad (ej: Madrid)">
+                        <input type="text" id="lugarQuedada" placeholder="Lugar o Ciudad (ej: Madrid, Barcelona...)">
                         <input type="datetime-local" id="fechaQuedada">
                         <button class="btn-principal" onclick="agregarQuedada()">Publicar Plan</button>
                     </div>
                 </div>
 
                 <div class="card">
-                    <h3>🎉 Próximos Eventos y Mapa</h3>
-                    <h4 style="font-size:0.8rem; color:var(--accent-green); margin:8px 0 4px 0;">🎂 Cumpleaños:</h4>
+                    <h3>🎉 Próximos Eventos y Mapa con Chinchetas</h3>
+                    <h4 style="font-size:0.8rem; color:var(--accent-green); margin:8px 0 4px 0;">🎂 Cumpleaños Anotados:</h4>
                     <div id="listaCumples" style="font-size:0.8rem; margin-bottom:10px;">Aún no hay cumpleaños.</div>
                     <h4 style="font-size:0.8rem; color:var(--accent-green); margin:8px 0 4px 0;">📍 Quedadas:</h4>
                     <div id="listaQuedadas" style="font-size:0.8rem;">Aún no hay planes.</div>
 
-                    <!-- MAPA FUNCIONAL CON LEAFLET -->
-                    <h4 style="font-size:0.8rem; color:var(--accent-green); margin:12px 0 4px 0;">🗺️ Mapa Interactivo de Quedadas:</h4>
+                    <!-- MAPA CON CHINCHETAS -->
+                    <h4 style="font-size:0.8rem; color:var(--accent-green); margin:12px 0 4px 0;">🗺️ Mapa Interactivo con Chinchetas:</h4>
                     <div id="mapContainer"></div>
                 </div>
             </div>
@@ -832,7 +843,6 @@
                     <h3>🎒 Gestión de Mochila 🌸</h3>
                     <p style="font-size: 0.75rem; color: #8c827b; margin-top: -4px;">Cambia tu foto de perfil tantas veces como quieras directamente pinchando en la foto de tu carnet, o usa el botón:</p>
 
-                    <!-- CAMBIO DE FOTO ILIMITADO -->
                     <label for="inPhotoUpdate" class="file-input-label" id="photoUpdateLabel">📷 Cambiar Foto de Perfil</label>
                     <input type="file" id="inPhotoUpdate" accept="image/*" style="display: none;" onchange="actualizarFotoPerfilIlimitada()">
 
@@ -841,7 +851,6 @@
                         <div id="inventarioMarcos" style="display: flex; gap: 6px; flex-wrap: wrap;"></div>
                     </div>
 
-                    <!-- BOTONES DE SESIÓN SEPARADOS Y SEGUROS -->
                     <div style="margin-top: 16px; border-top: 1px solid var(--border-soft); padding-top: 12px;">
                         <button class="btn-sesion-safe" onclick="cerrarSesionSegura()">🔄 Cerrar Sesión (Cambiar de Perfil)</button>
                         <button class="btn-danger-safe" onclick="borrarPerfilActual()">⚠️ Borrar Perfil Permanentemente</button>
@@ -868,6 +877,7 @@
         let perfilActivo = localStorage.getItem("perfil_activo") || "";
         let calendarInstance = null;
         let mapInstance = null;
+        let marcadoresMapa = [];
 
         function obtenerBaseDatosGlobal() {
             return JSON.parse(localStorage.getItem("bollolandia_usuarios") || "{}");
@@ -996,7 +1006,6 @@
             }
         }
 
-        /* CAMBIO DE FOTO ILIMITADO DESDE EL CARNET O LA MOCHILA */
         function dispararCambioFotoDirecto() {
             document.getElementById('inputFotoDirectoCarnet').click();
         }
@@ -1059,7 +1068,7 @@
             const nuevoUsuario = {
                 name, mision, cardId, date: today, photo: carnetFotoBase64, isGold: esGold,
                 hearts: esGold ? 9999 : 100,
-                marcosComprados: esGold ? ["marco-plasma", "marco-arcoiris", "marco-sakura"] : [],
+                marcosComprados: esGold ? ["marco-plasma", "marco-neondark", "marco-goldglow", "marco-cyberpunk"] : [],
                 marcoActivo: "",
                 buzonCartas: []
             };
@@ -1158,7 +1167,7 @@
                 const premios = [
                     { tipo: 'corazones', valor: 30, texto: '¡+30 💖 extra!' },
                     { tipo: 'marco', id: 'marco-plasma', nombre: 'Plasma Fire', texto: '🔥 ¡Ganaste el marco Plasma Fire!' },
-                    { tipo: 'marco', id: 'marco-arcoiris', nombre: 'Arcoíris Sáfico', texto: '🌈 ¡Ganaste el marco Arcoíris!' },
+                    { tipo: 'marco', id: 'marco-neondark', nombre: 'Neon Dark', texto: '💜 ¡Ganaste el marco Neon Dark!' },
                     { tipo: 'corazones', valor: 50, texto: '🎉 ¡Premio gordo! +50 💖' }
                 ];
                 const premio = premios[Math.floor(Math.random() * premios.length)];
@@ -1202,7 +1211,7 @@
             if (!data) return;
 
             let marcos = data.marcosComprados || [];
-            if (data.isGold) marcos = ["marco-plasma", "marco-arcoiris", "marco-sakura"];
+            if (data.isGold) marcos = ["marco-plasma", "marco-neondark", "marco-goldglow", "marco-cyberpunk"];
 
             if (marcos.length === 0) {
                 contenedor.innerHTML = `<span style="font-size: 0.75rem; color: #8c827b;">Sin marcos todavía.</span>`;
@@ -1210,7 +1219,7 @@
             }
 
             let html = `<button onclick="quitarMarco()" style="padding:5px 9px; font-size:0.7rem; border-radius:8px; background:#e2dcd3; border:none; cursor:pointer; font-weight:bold;">Ninguno</button>`;
-            const nombres = { 'marco-plasma': '🔥 Plasma', 'marco-arcoiris': '🌈 Arcoíris', 'marco-sakura': '🌸 Sakura' };
+            const nombres = { 'marco-plasma': '🔥 Plasma', 'marco-neondark': '💜 Neon', 'marco-goldglow': '👑 Gold', 'marco-cyberpunk': '⚡ Cyber' };
 
             marcos.forEach(m => {
                 let activo = data.marcoActivo === m;
@@ -1240,7 +1249,7 @@
             if (miniMarcoLayer) miniMarcoLayer.innerHTML = "";
 
             if (data && data.marcoActivo) {
-                const clase = { 'marco-plasma': 'marco-plasma', 'marco-arcoiris': 'marco-arcoiris', 'marco-sakura': 'marco-sakura' }[data.marcoActivo];
+                const clase = { 'marco-plasma': 'marco-plasma', 'marco-neondark': 'marco-neondark', 'marco-goldglow': 'marco-goldglow', 'marco-cyberpunk': 'marco-cyberpunk' }[data.marcoActivo];
                 if (clase) {
                     if (marcoLayer) marcoLayer.innerHTML = `<div class="${clase}"></div>`;
                     if (miniMarcoLayer) miniMarcoLayer.innerHTML = `<div class="${clase}"></div>`;
@@ -1333,7 +1342,7 @@
             cambiarPestana('buzon', document.querySelectorAll('.nav-icon-btn')[2]);
         }
 
-        /* INICIALIZACIÓN DE CALENDARIO Y MAPA LEAFLET */
+        /* INICIALIZACIÓN DE CALENDARIO Y MAPA CON CHINCHETAS */
         function inicializarCalendarioYMapa() {
             const calendarEl = document.getElementById('calendar');
             if (calendarEl && !calendarInstance) {
@@ -1346,7 +1355,21 @@
                         center: 'title',
                         right: 'next'
                     },
-                    events: obtenerEventosCalendario()
+                    events: obtenerEventosCalendario(),
+                    dateClick: function(info) {
+                        const data = obtenerDatosActuales();
+                        if (!data) return alert("Crea un perfil primero para anotar cumpleaños 🎒");
+                        const nombre = prompt(`🎂 Escribe el nombre de la cumpleañera para el día ${info.dateStr}:`);
+                        if (nombre && nombre.trim() !== "") {
+                            const cumples = JSON.parse(localStorage.getItem('cumples') || '[]');
+                            cumples.push({ nombre: nombre.trim(), fecha: info.dateStr });
+                            localStorage.setItem('cumples', JSON.stringify(cumples));
+                            actualizarCorazones(15);
+                            cargarCumples();
+                            calendarInstance.addEvent({ title: `🎂 ${nombre.trim()}`, start: info.dateStr, color: '#f28b72' });
+                            alert(`🎂 ¡Cumpleaños de ${nombre.trim()} guardado! Has ganado +15 💖`);
+                        }
+                    }
                 });
                 calendarInstance.render();
             }
@@ -1376,54 +1399,49 @@
 
         function actualizarPuntosMapa() {
             if (!mapInstance) return;
+
+            // Limpiar marcadores anteriores para evitar duplicados
+            marcadoresMapa.forEach(m => mapInstance.removeLayer(m));
+            marcadoresMapa = [];
+
             const quedadas = JSON.parse(localStorage.getItem('quedadas') || '[]');
-            // Coordenadas aproximadas de ciudades de referencia para mostrar pines funcionales
+            
+            // Coordenadas ampliadas para ciudades de referencia con chinchetas visuales
             const coordenadasCiudades = {
                 'madrid': [40.4168, -3.7038],
                 'barcelona': [41.3851, 2.1734],
                 'valencia': [39.4699, -0.3763],
                 'sevilla': [37.3891, -5.9845],
                 'bilbao': [43.2630, -2.9350],
-                'malaga': [36.7213, -4.4214]
+                'malaga': [36.7213, -4.4214],
+                'zaragoza': [41.6488, -0.8891],
+                'granada': [37.1773, -3.5986],
+                'alicante': [38.3452, -0.4810]
             };
 
             quedadas.forEach(q => {
                 let lugarLower = q.lugar.toLowerCase().trim();
-                let coords = [40.4168, -3.7038]; // por defecto Madrid si no se encuentra
+                let coords = [40.4168, -3.7038]; // por defecto Madrid si no coincide exacto
                 for (let ciudad in coordenadasCiudades) {
                     if (lugarLower.includes(ciudad)) {
                         coords = coordenadasCiudades[ciudad];
                         break;
                     }
                 }
-                L.marker(coords).addTo(mapInstance).bindPopup(`<b>${q.titulo}</b><br>${q.lugar}`);
-            });
-        }
 
-        function agregarCumple() {
-            const data = obtenerDatosActuales();
-            if (!data) return alert("Crea un perfil primero 🎒");
-            const nombre = document.getElementById('nombreCumple').value;
-            const fecha = document.getElementById('fechaCumple').value;
-            if(!nombre || !fecha) return alert('Rellena los campos');
-            const cumples = JSON.parse(localStorage.getItem('cumples') || '[]');
-            cumples.push({ nombre, fecha });
-            localStorage.setItem('cumples', JSON.stringify(cumples));
-            document.getElementById('nombreCumple').value = '';
-            document.getElementById('fechaCumple').value = '';
-            actualizarCorazones(15);
-            cargarCumples();
-            if(calendarInstance) {
-                calendarInstance.addEvent({ title: `🎂 ${nombre}`, start: fecha, color: '#f28b72' });
-            }
-            alert('🎂 ¡Cumpleaños guardado (+15 💖)!');
+                // Crear pin / chincheta personalizada con Leaflet
+                const marcador = L.marker(coords).addTo(mapInstance)
+                    .bindPopup(`<b>📍 ${q.titulo}</b><br>Lugar: ${q.lugar}<br>Fecha: ${q.fecha.replace('T', ' ')}`);
+                
+                marcadoresMapa.push(marcador);
+            });
         }
 
         function cargarCumples() {
             const cumples = JSON.parse(localStorage.getItem('cumples') || '[]');
             const cont = document.getElementById('listaCumples');
             if(!cont) return;
-            if(cumples.length === 0) return cont.innerHTML = 'Aún no hay cumpleaños.';
+            if(cumples.length === 0) return cont.innerHTML = 'Aún no hay cumpleaños anotados.';
             cont.innerHTML = cumples.map(c => `🎂 <strong>${c.nombre}</strong> (${c.fecha})<br>`).join('');
         }
 
@@ -1433,21 +1451,25 @@
             const titulo = document.getElementById('tituloQuedada').value;
             const lugar = document.getElementById('lugarQuedada').value;
             const fecha = document.getElementById('fechaQuedada').value;
-            if(!titulo || !lugar || !fecha) return alert('Rellena los datos');
+            if(!titulo || !lugar || !fecha) return alert('Rellena todos los datos de la quedada');
+            
             const quedadas = JSON.parse(localStorage.getItem('quedadas') || '[]');
             quedadas.push({ titulo, lugar, fecha });
             localStorage.setItem('quedadas', JSON.stringify(quedadas));
+            
             document.getElementById('tituloQuedada').value = '';
             document.getElementById('lugarQuedada').value = '';
             document.getElementById('fechaQuedada').value = '';
+            
             actualizarCorazones(25);
             cargarQuedadas();
             document.getElementById("statQuedadas").innerText = quedadas.length;
+            
             if(calendarInstance) {
                 calendarInstance.addEvent({ title: `📍 ${titulo}`, start: fecha, color: '#87a38a' });
             }
             actualizarPuntosMapa();
-            alert('📍 ¡Plan publicado (+25 💖)!');
+            alert('📍 ¡Plan publicado y chincheta añadida al mapa (+25 💖)!');
         }
 
         function cargarQuedadas() {
@@ -1458,7 +1480,7 @@
             if(quedadas.length === 0) return cont.innerHTML = 'Aún no hay planes.';
             cont.innerHTML = quedadas.map(q => {
                 const mapUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(q.lugar)}`;
-                return `📍 <strong>${q.titulo}</strong> (${q.lugar})<br><a href="${mapUrl}" target="_blank" class="btn-mapa">🗺️ Ver Google Maps</a><br>`;
+                return `📍 <strong>${q.titulo}</strong> (${q.lugar})<br><a href="${mapUrl}" target="_blank" class="btn-mapa">🗺️ Abrir en Google Maps</a><br>`;
             }).join('');
         }
 
@@ -1495,7 +1517,6 @@
                     </div>
                 `).join('');
                 
-                // Mostrar overlay animado si hay match nuevo
                 const overlay = document.getElementById('matchOverlay');
                 if(overlay && overlay.style.display !== 'flex') {
                     document.getElementById('matchTextoAnimado').innerText = `¡Se gustan mutuamente en Bollolandia! 💖`;
@@ -1555,4 +1576,3 @@
     </script>
 </body>
 </html>
-```[cite: 2]
