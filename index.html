@@ -127,7 +127,7 @@
             gap: 6px;
         }
 
-        /* BANNER PRINCIPAL LIMPIO (SIN BOTÓN DE CARNET) */
+        /* BANNER PRINCIPAL */
         .hero-card {
             background: linear-gradient(135deg, #fff3ee, #faebd7);
             border-radius: 22px;
@@ -221,7 +221,6 @@
             padding: 10px;
         }
 
-        /* BOTONES DE SESIÓN SEPARADOS Y SEGUROS */
         .btn-sesion-safe {
             background: #f4efe6;
             color: var(--text-main);
@@ -292,20 +291,6 @@
         .pet-item img { width: 100%; height: 95px; object-fit: cover; border-radius: 10px; }
 
         /* MODAL Y CARNET */
-        #matchOverlay {
-            display: none;
-            position: fixed;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(252, 248, 242, 0.96);
-            z-index: 9999;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            padding: 20px;
-            backdrop-filter: blur(5px);
-        }
-
         #cartaFlotanteBox {
             display: none;
             position: fixed;
@@ -435,7 +420,14 @@
         .btn-close { background: #4a403b; color: white; }
         .btn-download { background: var(--accent-green); color: white; box-shadow: 0 4px 12px rgba(135, 163, 138, 0.3); }
 
-        /* MARCOS PREMIUM MEJORADOS (ESTÉTICA BOUTIQUE) */
+        /* MARCOS ANIMADOS ESTILO GIF / PLASMA FIRE */
+        .marco-plasma {
+            position: absolute; inset: -4px; border-radius: 14px; z-index: 2; pointer-events: none;
+            background: radial-gradient(circle, rgba(255,69,0,0.3) 0%, rgba(255,0,0,0.6) 70%);
+            box-shadow: 0 0 15px rgba(255, 69, 0, 0.9), inset 0 0 10px rgba(255, 140, 0, 0.8);
+            animation: plasmaGlow 1.5s infinite alternate ease-in-out;
+            mix-blend-mode: screen;
+        }
         .marco-arcoiris {
             position: absolute; inset: -3px; border-radius: 12px;
             background: linear-gradient(45deg, #ff9a9e, #fad0c4, #ffd1ff, #a1c4fd, #c2e9fb);
@@ -449,31 +441,29 @@
             box-shadow: 0 0 10px rgba(255, 158, 187, 0.6), inset 0 0 10px rgba(255, 158, 187, 0.4);
             animation: pulseSakura 2s infinite alternate;
         }
-        .marco-stardust {
-            position: absolute; inset: -3px; border: 2.5px solid #ffe66d; border-radius: 12px; z-index: 2; pointer-events: none;
-            box-shadow: 0 0 12px rgba(255, 230, 109, 0.8);
-            animation: spinGold 8s linear infinite;
-        }
-        .marco-diamond {
-            position: absolute; inset: -3px; border: 2.5px solid #a8ede; border-radius: 12px; z-index: 2; pointer-events: none;
-            background: linear-gradient(135deg, rgba(255,255,255,0.4), rgba(168,237,234,0.3));
-            box-shadow: 0 0 14px rgba(168, 237, 234, 0.9);
-            animation: pulseDiamond 1.8s infinite alternate;
-        }
 
+        @keyframes plasmaGlow {
+            0% { transform: scale(1); opacity: 0.8; filter: hue-rotate(0deg); }
+            100% { transform: scale(1.04); opacity: 1; filter: hue-rotate(15deg); }
+        }
         @keyframes gradientBorder { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
         @keyframes pulseSakura { 0% { box-shadow: 0 0 6px #ff9ebb; border-color: #ff9ebb; } 100% { box-shadow: 0 0 15px #ffb3c6; border-color: #ffc2d1; } }
-        @keyframes spinGold { 0% { transform: rotate(0deg); border-color: #ffe66d; } 50% { border-color: #ffb396; } 100% { transform: rotate(360deg); border-color: #ffe66d; } }
-        @keyframes pulseDiamond { 0% { box-shadow: 0 0 8px rgba(168,237,234,0.7); transform: scale(1); } 100% { box-shadow: 0 0 16px rgba(168,237,234,1); transform: scale(1.02); } }
 
-        .ruleta-box {
+        /* RULETA VISUAL DE PREMIOS MEJORADA */
+        .ruleta-container {
             background: linear-gradient(135deg, #fff3ee, #faebd7);
             border: 2px dashed var(--accent-coral); border-radius: 18px; padding: 16px; text-align: center; margin-bottom: 14px;
         }
+        .ruleta-premios-grid {
+            display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin: 12px 0;
+        }
+        .premio-card-visual {
+            background: #fff; border: 1px solid var(--border-soft); border-radius: 12px; padding: 8px; font-size: 0.75rem; font-weight: bold; color: var(--text-main); display: flex; align-items: center; gap: 6px; box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+        }
         .ruleta-wheel {
-            width: 80px; height: 80px; margin: 10px auto; border-radius: 50%;
-            background: conic-gradient(#f28b72 0deg 90deg, #fce38a 90deg 180deg, #87a38a 180deg 270deg, #ffb396 270deg 360deg);
-            display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 12px rgba(0,0,0,0.1); font-size: 1.5rem; transition: transform 3s cubic-bezier(0.15, 0.9, 0.2, 1);
+            width: 70px; height: 70px; margin: 8px auto; border-radius: 50%;
+            background: conic-gradient(#f28b72 0deg 90deg, #ff4500 90deg 180deg, #ffb396 180deg 270deg, #87a38a 270deg 360deg);
+            display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 12px rgba(0,0,0,0.15); font-size: 1.4rem; transition: transform 3s cubic-bezier(0.15, 0.9, 0.2, 1);
         }
 
         .shop-item { border: 1.5px solid var(--border-soft); border-radius: 16px; padding: 12px; background: #fff; display: flex; flex-direction: column; justify-content: space-between; box-shadow: 0 4px 12px rgba(0,0,0,0.02); }
@@ -611,7 +601,7 @@
             </div>
         </div>
 
-        <!-- HERO BANNER LIMPIO (SIN BOTÓN DE CARNET) -->
+        <!-- HERO BANNER -->
         <div class="hero-card">
             <div>
                 <h2>Hola de nuevo, <span id="dashboardUserName">Mia</span>! ✨</h2>
@@ -647,19 +637,35 @@
         <!-- PESTAÑAS CONTENIDO -->
         <div class="container-contenido">
 
-            <!-- PESTAÑA 1: TIENDA Y PREMIOS -->
+            <!-- PESTAÑA 1: TIENDA Y RULETA VISUAL -->
             <div id="tienda" class="tab-content">
-                <div class="ruleta-box">
-                    <h3 style="margin-top:0; color:var(--accent-coral); font-size:0.95rem;">🎡 La Ruleta Sáfica</h3>
-                    <p style="font-size:0.75rem; color:#8c827b;">Gira para ganar premios (Cuesta 20 💖).</p>
-                    <div class="ruleta-wheel" id="ruletaWheel">🎨</div>
-                    <button class="btn-principal" style="background: linear-gradient(135deg, var(--accent-coral), var(--accent-peach)); font-size:0.8rem;" onclick="girarRuleta()">🎯 Girar Ruleta (20 💖)</button>
+                <div class="ruleta-container">
+                    <h3 style="margin-top:0; color:var(--accent-coral); font-size:0.95rem;">🎡 La Ruleta de Premios Sáfica</h3>
+                    <p style="font-size:0.75rem; color:#8c827b; margin-bottom: 8px;">Gira para conseguir cualquiera de estos tesoros:</p>
+                    
+                    <div class="ruleta-premios-grid">
+                        <div class="premio-card-visual">✨ <span>+30 Puntos Extra</span></div>
+                        <div class="premio-card-visual">🔥 <span>Marco Plasma Fire</span></div>
+                        <div class="premio-card-visual">🌈 <span>Marco Arcoíris</span></div>
+                        <div class="premio-card-visual">💖 <span>+50 Premios Gordos</span></div>
+                    </div>
+
+                    <div class="ruleta-wheel" id="ruletaWheel">🎯</div>
+                    <button class="btn-principal" style="background: linear-gradient(135deg, var(--accent-coral), var(--accent-peach)); font-size:0.8rem; margin-top:8px;" onclick="girarRuleta()">🎯 Girar Ruleta (20 💖)</button>
                 </div>
 
                 <div class="card">
-                    <h3>🛍️ Boutique de Marcos y Efectos</h3>
+                    <h3>🛍️ Boutique de Marcos Animados</h3>
                     
                     <div class="grid-shop">
+                        <div class="shop-item">
+                            <div class="shop-flex">
+                                <div class="preview-box"><span>🔥</span><div class="marco-plasma"></div></div>
+                                <div class="shop-item-info"><h4>🔥 Plasma Fire</h4><p>Energía ígnea.</p></div>
+                            </div>
+                            <button class="btn-buy" onclick="comprarMarco('marco-plasma', 'Plasma Fire', 45)">45 💖</button>
+                        </div>
+
                         <div class="shop-item">
                             <div class="shop-flex">
                                 <div class="preview-box"><span>🌸</span><div class="marco-arcoiris"></div></div>
@@ -674,22 +680,6 @@
                                 <div class="shop-item-info"><h4>🌸 Sakura</h4><p>Pétalos suaves.</p></div>
                             </div>
                             <button class="btn-buy" onclick="comprarMarco('marco-sakura', 'Sakura Glow', 35)">35 💖</button>
-                        </div>
-
-                        <div class="shop-item">
-                            <div class="shop-flex">
-                                <div class="preview-box"><span>✨</span><div class="marco-stardust"></div></div>
-                                <div class="shop-item-info"><h4>✨ Stardust</h4><p>Polvo estelar.</p></div>
-                            </div>
-                            <button class="btn-buy" onclick="comprarMarco('marco-stardust', 'Stardust Gold', 40)">40 💖</button>
-                        </div>
-
-                        <div class="shop-item">
-                            <div class="shop-flex">
-                                <div class="preview-box"><span>💎</span><div class="marco-diamond"></div></div>
-                                <div class="shop-item-info"><h4>💎 Diamond</h4><p>Cristal noble.</p></div>
-                            </div>
-                            <button class="btn-buy" onclick="comprarMarco('marco-diamond', 'Diamond Shimmer', 35)">35 💖</button>
                         </div>
                     </div>
                 </div>
@@ -753,7 +743,7 @@
                 </div>
             </div>
 
-            <!-- PESTAÑA 4: EXTRAS (PERFIL Y MASCOTAS) -->
+            <!-- PESTAÑA 4: EXTRAS (PERFIL, FOTO ILIMITADA Y MASCOTAS) -->
             <div id="extras" class="tab-content" style="display:none;">
                 <div class="card" id="formRegistroCarnet">
                     <h3>🎒 Crear Carnet y Mochila</h3>
@@ -781,10 +771,14 @@
 
                 <div class="card" id="seccionMiCarnet" style="display: none;">
                     <h3>🎒 Gestión de Mochila 🌸</h3>
-                    <button class="btn-principal" onclick="abrirModalCarnet()" style="margin-top: 6px;">👁️ Ver Carnet Oficial</button>
+                    <p style="font-size: 0.75rem; color: #8c827b; margin-top: -4px;">Cambia tu foto de perfil tantas veces como quieras:</p>
+
+                    <!-- CAMBIO DE FOTO ILIMITADO -->
+                    <label for="inPhotoUpdate" class="file-input-label" id="photoUpdateLabel">📷 Cambiar Foto de Perfil</label>
+                    <input type="file" id="inPhotoUpdate" accept="image/*" style="display: none;" onchange="actualizarFotoPerfilIlimitada()">
 
                     <div style="margin-top: 14px; border-top: 1px solid var(--border-soft); padding-top: 10px;">
-                        <h4 style="font-size: 0.85rem; color: var(--text-main); margin-bottom: 8px;">🖼️ Tus Marcos y Efectos</h4>
+                        <h4 style="font-size: 0.85rem; color: var(--text-main); margin-bottom: 8px;">🖼️ Tus Marcos Animados</h4>
                         <div id="inventarioMarcos" style="display: flex; gap: 6px; flex-wrap: wrap;"></div>
                     </div>
 
@@ -935,6 +929,24 @@
             }
         }
 
+        /* CAMBIO DE FOTO ILIMITADO DESDE LA MOCHILA */
+        function actualizarFotoPerfilIlimitada() {
+            const file = document.getElementById('inPhotoUpdate').files[0];
+            const label = document.getElementById('photoUpdateLabel');
+            if (file) {
+                const reader = new FileReader();
+                reader.onloadend = function() {
+                    const nuevaFoto = reader.result;
+                    actualizarDatosActuales({ photo: nuevaFoto });
+                    const userData = obtenerDatosActuales();
+                    cargarDatosCarnet(userData);
+                    label.innerText = "✨ ¡Foto actualizada!";
+                    setTimeout(() => { label.innerText = "📷 Cambiar Foto de Perfil"; }, 2500);
+                }
+                reader.readAsDataURL(file);
+            }
+        }
+
         function crearCarnet() {
             const name = document.getElementById("inName").value.trim();
             const mision = document.getElementById("inMision").value;
@@ -961,7 +973,7 @@
             const nuevoUsuario = {
                 name, mision, cardId, date: today, photo: carnetFotoBase64, isGold: esGold,
                 hearts: esGold ? 9999 : 100,
-                marcosComprados: esGold ? ["marco-arcoiris", "marco-sakura", "marco-stardust", "marco-diamond"] : [],
+                marcosComprados: esGold ? ["marco-plasma", "marco-arcoiris", "marco-sakura"] : [],
                 marcoActivo: "",
                 buzonCartas: []
             };
@@ -1011,7 +1023,6 @@
             aplicarMarcoGuardado();
         }
 
-        /* ACCIONES DE SESIÓN SEPARADAS Y SEGURAS */
         function cerrarSesionSegura() {
             perfilActivo = "";
             localStorage.removeItem("perfil_activo");
@@ -1060,9 +1071,9 @@
             setTimeout(() => {
                 const premios = [
                     { tipo: 'corazones', valor: 30, texto: '¡+30 💖 extra!' },
-                    { tipo: 'marco', id: 'marco-arcoiris', nombre: 'Arcoíris Sáfico', texto: '¡Ganaste el marco Arcoíris 🌈' },
-                    { tipo: 'marco', id: 'marco-sakura', nombre: 'Sakura Glow', texto: '¡Ganaste el marco Sakura 🌸' },
-                    { tipo: 'corazones', valor: 50, texto: '¡Premio gordo! +50 💖 🎉' }
+                    { tipo: 'marco', id: 'marco-plasma', nombre: 'Plasma Fire', texto: '🔥 ¡Ganaste el marco Plasma Fire!' },
+                    { tipo: 'marco', id: 'marco-arcoiris', nombre: 'Arcoíris Sáfico', texto: '🌈 ¡Ganaste el marco Arcoíris!' },
+                    { tipo: 'corazones', valor: 50, texto: '🎉 ¡Premio gordo! +50 💖' }
                 ];
                 const premio = premios[Math.floor(Math.random() * premios.length)];
 
@@ -1105,7 +1116,7 @@
             if (!data) return;
 
             let marcos = data.marcosComprados || [];
-            if (data.isGold) marcos = ["marco-arcoiris", "marco-sakura", "marco-stardust", "marco-diamond"];
+            if (data.isGold) marcos = ["marco-plasma", "marco-arcoiris", "marco-sakura"];
 
             if (marcos.length === 0) {
                 contenedor.innerHTML = `<span style="font-size: 0.75rem; color: #8c827b;">Sin marcos todavía.</span>`;
@@ -1113,7 +1124,7 @@
             }
 
             let html = `<button onclick="quitarMarco()" style="padding:5px 9px; font-size:0.7rem; border-radius:8px; background:#e2dcd3; border:none; cursor:pointer; font-weight:bold;">Ninguno</button>`;
-            const nombres = { 'marco-arcoiris': '🌈 Arcoíris', 'marco-sakura': '🌸 Sakura', 'marco-stardust': '✨ Stardust', 'marco-diamond': '💎 Diamond' };
+            const nombres = { 'marco-plasma': '🔥 Plasma', 'marco-arcoiris': '🌈 Arcoíris', 'marco-sakura': '🌸 Sakura' };
 
             marcos.forEach(m => {
                 let activo = data.marcoActivo === m;
@@ -1143,7 +1154,7 @@
             if (miniMarcoLayer) miniMarcoLayer.innerHTML = "";
 
             if (data && data.marcoActivo) {
-                const clase = { 'marco-arcoiris': 'marco-arcoiris', 'marco-sakura': 'marco-sakura', 'marco-stardust': 'marco-stardust', 'marco-diamond': 'marco-diamond' }[data.marcoActivo];
+                const clase = { 'marco-plasma': 'marco-plasma', 'marco-arcoiris': 'marco-arcoiris', 'marco-sakura': 'marco-sakura' }[data.marcoActivo];
                 if (clase) {
                     if (marcoLayer) marcoLayer.innerHTML = `<div class="${clase}"></div>`;
                     if (miniMarcoLayer) miniMarcoLayer.innerHTML = `<div class="${clase}"></div>`;
