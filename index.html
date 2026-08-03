@@ -1160,7 +1160,6 @@
                 document.getElementById("formRegistroCarnet").style.display = "none";
                 document.getElementById("seccionMiCarnet").style.display = "block";
                 
-                // Asegurar inventario inicial de marcos
                 if (!userData.marcosDesbloqueados) {
                     userData.marcosDesbloqueados = ['marco-multicolor'];
                     actualizarDatosActuales({ marcosDesbloqueados: userData.marcosDesbloqueados });
