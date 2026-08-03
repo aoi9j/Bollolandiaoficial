@@ -3,179 +3,242 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rincón de Bollolandia</title>
+    <title>Bollolandia - Dashboard</title>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Cinzel:wght@700&display=swap" rel="stylesheet">
 
     <style>
         :root {
-            --rosa: #ffc6ff;
-            --lila: #bdb2ff;
-            --fondo: #fff0f5;
-            --tarjeta: #ffffff;
-            --texto: #4a3e4e;
-            --morado: #6c5ce7;
-            --fucsia: #ff85a1;
+            --bg-main: #fcf8f2;
+            --sidebar-bg: #f4efe6;
+            --card-bg: #ffffff;
+            --text-main: #4a403b;
+            --accent-coral: #f28b72;
+            --accent-peach: #ffb396;
+            --accent-green: #87a38a;
+            --accent-yellow: #fce38a;
+            --border-soft: #ede6dc;
         }
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            background-color: var(--fondo);
-            color: var(--texto);
+            background-color: var(--bg-main);
+            color: var(--text-main);
             margin: 0;
-            padding: 0 0 85px 0;
+            padding: 0 0 90px 0;
             overflow-x: hidden;
         }
 
-        header {
-            background: linear-gradient(135deg, var(--rosa), var(--lila));
-            padding: 16px 20px;
-            text-align: center;
-            border-bottom-left-radius: 24px;
-            border-bottom-right-radius: 24px;
-            box-shadow: 0 4px 20px rgba(108, 92, 231, 0.15);
+        /* BARRA LATERAL FLOTANTE (ESTILO REFERENCIA) */
+        .sidebar-left {
+            position: fixed;
+            top: 16px;
+            left: 12px;
+            bottom: 16px;
+            width: 72px;
+            background: var(--sidebar-bg);
+            border-radius: 24px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 16px 0;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            z-index: 100;
+            border: 1px solid var(--border-soft);
+        }
+
+        .sidebar-avatar {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: #e2dcd3;
+            overflow: hidden;
+            border: 2px solid #fff;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+            margin-bottom: 20px;
+            display: flex; align-items: center; justify-content: center;
             position: relative;
+        }
+
+        .nav-icon-btn {
+            background: none;
+            border: none;
+            width: 44px;
+            height: 44px;
+            border-radius: 14px;
             display: flex;
             align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            cursor: pointer;
+            color: #8c827b;
+            margin-bottom: 8px;
+            transition: all 0.2s ease;
+            position: relative;
+        }
+
+        .nav-icon-btn.active {
+            background: #fff;
+            color: var(--accent-coral);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+        }
+
+        .main-wrapper {
+            margin-left: 92px;
+            padding: 16px 16px 16px 0;
+            max-width: 580px;
+        }
+
+        /* HEADER SUPERIOR */
+        .top-header {
+            display: flex;
             justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
         }
 
-        .header-title-box {
-            text-align: center;
-            flex: 1;
+        .top-search {
+            background: #fff;
+            border: 1px solid var(--border-soft);
+            border-radius: 20px;
+            padding: 8px 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            width: 220px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+        }
+        .top-search input {
+            border: none; background: none; outline: none; font-size: 0.8rem; width: 100%; color: var(--text-main);
         }
 
-        h1 { margin: 0; font-size: 1.3rem; color: #fff; text-shadow: 0 2px 4px rgba(0,0,0,0.1); font-weight: 800; }
-        p.subtitulo { margin: 3px 0 0; color: #fff; font-size: 0.75rem; opacity: 0.95; font-weight: 500; }
-
-        .mochila-header-btn {
-            background: rgba(255, 255, 255, 0.95);
-            border: 2px solid var(--morado);
-            border-radius: 14px;
-            padding: 4px 8px;
+        .header-pill-badge {
+            background: #fff;
+            border: 1px solid var(--border-soft);
+            padding: 6px 12px;
+            border-radius: 16px;
+            font-weight: bold;
+            font-size: 0.75rem;
+            color: var(--accent-coral);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.02);
             display: flex;
             align-items: center;
             gap: 6px;
-            cursor: pointer;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-            transition: transform 0.1s ease;
-        }
-        .mochila-header-btn:active { transform: scale(0.96); }
-
-        .mochila-avatar {
-            width: 32px; height: 32px;
-            border-radius: 50%;
-            border: 1px solid var(--morado);
-            background: #e2e8f0;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 0.9rem; overflow: hidden; flex-shrink: 0;
-            position: relative;
         }
 
-        .user-selector-box {
-            position: absolute;
-            top: 6px;
-            left: 12px;
-            background: rgba(255, 255, 255, 0.95);
-            padding: 2px 6px;
-            border-radius: 10px;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.08);
-            z-index: 10;
-        }
-
-        .user-selector-box select {
-            padding: 2px 4px;
-            margin: 0;
-            font-size: 0.7rem;
-            border-radius: 6px;
-            border: 1px solid var(--lila);
-            background: #fff;
-            color: var(--morado);
-            font-weight: bold;
-        }
-
-        .hearts-counter {
-            background: rgba(255, 255, 255, 0.95);
-            padding: 6px 10px;
-            border-radius: 12px;
-            font-weight: bold;
-            color: #d63384;
-            font-size: 0.75rem;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        /* BANNER PRINCIPAL TIPO TARJETA 3D */
+        .hero-card {
+            background: linear-gradient(135deg, #fff3ee, #faebd7);
+            border-radius: 22px;
+            padding: 20px;
+            margin-bottom: 16px;
+            box-shadow: 0 10px 25px rgba(242, 139, 114, 0.12);
+            border: 1px solid rgba(255, 179, 150, 0.3);
             display: flex;
+            justify-content: space-between;
             align-items: center;
-            gap: 4px;
+            position: relative;
+            overflow: hidden;
         }
 
-        .container { padding: 16px; max-width: 500px; margin: 0 auto; }
-        .tab-content { display: none; }
-        .tab-content.active { display: block; animation: fadeIn 0.3s ease; }
+        .hero-card h2 { margin: 0; font-size: 1.15rem; color: #4a3e3a; font-weight: 800; }
+        .hero-card p { margin: 4px 0 12px 0; font-size: 0.75rem; color: #7a6e67; }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(4px); }
-            to { opacity: 1; transform: translateY(0); }
+        .btn-hero-action {
+            background: linear-gradient(135deg, var(--accent-coral), var(--accent-peach));
+            color: white;
+            border: none;
+            padding: 8px 14px;
+            border-radius: 14px;
+            font-weight: bold;
+            font-size: 0.75rem;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(242, 139, 114, 0.35);
         }
 
-        .card {
-            background: var(--tarjeta);
+        /* TARJETAS DE ESTADÍSTICAS / MÉTRICAS */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin-bottom: 16px;
+        }
+
+        .stat-card {
+            background: var(--card-bg);
             border-radius: 18px;
+            padding: 12px 8px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+            border: 1px solid var(--border-soft);
+        }
+        .stat-card .icon-box {
+            width: 28px; height: 28px; border-radius: 10px; background: #faf5f0; display: flex; align-items: center; justify-content: center; margin: 0 auto 6px auto; font-size: 0.85rem;
+        }
+        .stat-card .val { font-size: 0.95rem; font-weight: 800; color: var(--text-main); }
+        .stat-card .label { font-size: 0.65rem; color: #8c827b; margin-top: 2px; }
+
+        /* CONTENEDORES GENERALES */
+        .card {
+            background: var(--card-bg);
+            border-radius: 20px;
             padding: 18px;
             margin-bottom: 16px;
-            box-shadow: 0 8px 24px rgba(189, 178, 255, 0.25);
-            border: 1px solid rgba(255, 198, 255, 0.4);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.03);
+            border: 1px solid var(--border-soft);
         }
 
-        h2 { color: var(--morado); margin-top: 0; font-size: 1.1rem; margin-bottom: 14px; font-weight: 700; }
+        h3 { color: var(--text-main); margin-top: 0; font-size: 1rem; margin-bottom: 12px; font-weight: 700; }
 
         input, select, textarea, button {
             width: 100%;
             padding: 11px 14px;
             margin: 6px 0;
-            border-radius: 12px;
-            border: 1.5px solid #e2d4f0;
+            border-radius: 14px;
+            border: 1.5px solid var(--border-soft);
             box-sizing: border-box;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             font-family: inherit;
-            background: #faf8fc;
+            background: #fbf9f6;
             transition: all 0.2s ease;
         }
 
         input:focus, select:focus, textarea:focus {
             outline: none;
-            border-color: var(--morado);
+            border-color: var(--accent-coral);
             background: #fff;
-            box-shadow: 0 0 0 3px rgba(108, 92, 231, 0.1);
+            box-shadow: 0 0 0 3px rgba(242, 139, 114, 0.12);
         }
 
         .btn-principal {
-            background: linear-gradient(135deg, #a0c4ff, var(--lila));
+            background: linear-gradient(135deg, var(--accent-green), #6b8a6e);
             color: white;
             font-weight: bold;
             border: none;
             cursor: pointer;
-            box-shadow: 0 4px 12px rgba(160, 196, 255, 0.4);
-            transition: transform 0.1s ease, box-shadow 0.2s ease;
+            box-shadow: 0 4px 12px rgba(135, 163, 138, 0.3);
+            border-radius: 14px;
+            padding: 10px;
         }
-        .btn-principal:active { transform: scale(0.98); }
 
         .btn-flechazo {
-            background: linear-gradient(135deg, var(--rosa), var(--fucsia));
+            background: linear-gradient(135deg, var(--accent-coral), var(--accent-peach));
             color: white;
             font-weight: bold;
             border: none;
             cursor: pointer;
-            box-shadow: 0 4px 12px rgba(255, 133, 161, 0.4);
-            transition: transform 0.1s ease;
+            box-shadow: 0 4px 12px rgba(242, 139, 114, 0.3);
+            border-radius: 14px;
+            padding: 10px;
         }
-        .btn-flechazo:active { transform: scale(0.98); }
 
         .btn-logout {
-            background: #fee2e2;
-            color: #dc2626;
-            border: 1px solid #fca5a5;
+            background: #fff1f1;
+            color: #d9534f;
+            border: 1px solid #f9d6d6;
             padding: 10px;
-            border-radius: 12px;
+            border-radius: 14px;
             font-weight: bold;
             font-size: 0.8rem;
             cursor: pointer;
@@ -187,48 +250,46 @@
         }
 
         .btn-mapa {
-            background: #f3e8ff;
-            color: var(--morado);
+            background: #f0f4f1;
+            color: var(--accent-green);
             border: none;
             padding: 6px 12px;
-            border-radius: 8px;
+            border-radius: 10px;
             font-weight: bold;
             text-decoration: none;
             display: inline-block;
             margin-top: 6px;
-            font-size: 0.8rem;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+            font-size: 0.75rem;
         }
 
         .accordion-header {
-            background: #f8f7fc;
-            border: 1.5px solid #e2d4f0;
+            background: #fbf9f6;
+            border: 1.5px solid var(--border-soft);
             padding: 12px 14px;
             border-radius: 14px;
             font-weight: bold;
-            color: var(--morado);
+            color: var(--text-main);
             cursor: pointer;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            font-size: 0.9rem;
-            margin-bottom: 10px;
-            transition: background 0.2s ease;
+            font-size: 0.85rem;
+            margin-bottom: 8px;
         }
-        .accordion-header:hover { background: #f0edf9; }
         .accordion-body { display: none; padding: 6px 2px 10px 2px; }
         .accordion-body.open { display: block; }
 
         .grid-shop { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px; }
         .grid-pets { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px; }
-        .pet-item { background: #faf8fc; border-radius: 12px; padding: 6px; border: 1px solid #e2d4f0; }
-        .pet-item img { width: 100%; height: 100px; object-fit: cover; border-radius: 8px; }
+        .pet-item { background: #fbf9f6; border-radius: 14px; padding: 8px; border: 1px solid var(--border-soft); }
+        .pet-item img { width: 100%; height: 95px; object-fit: cover; border-radius: 10px; }
 
+        /* MODAL Y CARNET */
         #matchOverlay {
             display: none;
             position: fixed;
             top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(255, 240, 245, 0.96);
+            background: rgba(252, 248, 242, 0.96);
             z-index: 9999;
             flex-direction: column;
             align-items: center;
@@ -241,45 +302,36 @@
         #cartaFlotanteBox {
             display: none;
             position: fixed;
-            bottom: 85px;
-            left: 16px;
-            right: 16px;
+            bottom: 20px;
+            right: 20px;
             background: #fff;
-            border: 2px solid var(--fucsia);
-            border-radius: 16px;
+            border: 2px solid var(--accent-coral);
+            border-radius: 18px;
             padding: 14px;
-            box-shadow: 0 12px 30px rgba(255, 133, 161, 0.25);
+            box-shadow: 0 12px 30px rgba(242, 139, 114, 0.25);
             z-index: 9998;
-            animation: bounceIn 0.4s ease;
             cursor: pointer;
-        }
-
-        @keyframes bounceIn {
-            0% { transform: translateY(40px); opacity: 0; }
-            100% { transform: translateY(0); opacity: 1; }
         }
 
         .file-input-label {
-            background: #faf8fc;
-            border: 2px dashed var(--morado);
+            background: #fbf9f6;
+            border: 2px dashed var(--accent-green);
             padding: 12px;
-            border-radius: 12px;
+            border-radius: 14px;
             cursor: pointer;
             font-size: 0.8rem;
-            color: var(--morado);
+            color: var(--accent-green);
             font-weight: bold;
             text-align: center;
             display: block;
             margin: 6px 0;
-            transition: background 0.2s ease;
         }
-        .file-input-label:hover { background: #f0edf9; }
 
         .card-modal {
             display: none;
             position: fixed;
             top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(0, 0, 0, 0.65);
+            background: rgba(0, 0, 0, 0.6);
             backdrop-filter: blur(4px);
             z-index: 10000;
             flex-direction: column;
@@ -291,12 +343,11 @@
         .mclovin-card {
             width: 320px;
             background: white;
-            border-radius: 16px;
-            border: 2px solid #b0b0b0;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+            border-radius: 18px;
+            border: 2px solid #d4c8b8;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
             overflow: hidden;
-            background-image: linear-gradient(120deg, #fbcfe8 0%, #fed7aa 30%, #fef08a 60%, #bae6fd 100%);
-            font-family: 'Arial', sans-serif;
+            background-image: linear-gradient(120deg, #fff3ee 0%, #faebd7 40%, #fef9e7 80%, #edf7ed 100%);
             box-sizing: border-box;
             color: #333;
             position: relative;
@@ -311,9 +362,9 @@
         .card-header {
             padding: 8px 10px;
             text-align: center;
-            background: #0284c7;
+            background: var(--accent-green);
             color: white;
-            border-bottom: 2px solid #f59e0b;
+            border-bottom: 2px solid #d4c8b8;
         }
 
         .mclovin-card.gold-edition .card-header {
@@ -321,16 +372,16 @@
             border-bottom: 2px solid #fff;
         }
 
-        .header-main { font-size: 0.85rem; font-weight: 900; color: #fef08a; text-transform: uppercase; }
-        .header-sub { font-size: 0.65rem; font-weight: bold; color: #ffffff; letter-spacing: 1px; }
+        .header-main { font-size: 0.85rem; font-weight: 900; color: #fff; text-transform: uppercase; }
+        .header-sub { font-size: 0.65rem; font-weight: bold; color: #f0f4f1; letter-spacing: 1px; }
 
         .card-body { display: flex; padding: 12px; gap: 12px; align-items: flex-start; }
 
         .card-photo-box {
             width: 85px; height: 105px;
-            background: #e2e8f0;
-            border: 2px solid #0284c7;
-            border-radius: 8px;
+            background: #e2dcd3;
+            border: 2px solid var(--accent-green);
+            border-radius: 10px;
             overflow: hidden;
             display: flex;
             justify-content: center;
@@ -340,15 +391,12 @@
             position: relative;
         }
 
-        .mclovin-card.gold-edition .card-photo-box { border: 2px solid #b8860b; }
         .card-photo-img { width: 100%; height: 100%; object-fit: cover; }
-        .card-info { flex: 1; font-size: 0.7rem; color: #1e293b; font-weight: bold; text-align: left; }
+        .card-info { flex: 1; font-size: 0.7rem; color: #4a403b; font-weight: bold; text-align: left; }
         .info-row { margin-bottom: 4px; }
-        .label-red { color: #b91c1c; font-size: 0.6rem; text-transform: uppercase; }
-        .mclovin-card.gold-edition .label-red { color: #5c3d00; }
+        .label-red { color: #b94a48; font-size: 0.6rem; text-transform: uppercase; }
         .val-bold { font-size: 0.85rem; font-weight: 900; color: #000; text-transform: uppercase; }
-        .val-mision { font-size: 0.7rem; color: #1e3a8a; line-height: 1.2; display: block; margin-top: 2px; }
-        .mclovin-card.gold-edition .val-mision { color: #3d2700; }
+        .val-mision { font-size: 0.7rem; color: #2d5a27; line-height: 1.2; display: block; margin-top: 2px; }
 
         .signature { 
             font-family: 'Great Vibes', cursive; 
@@ -376,9 +424,9 @@
         .gold-edition .founder-seal { display: block; }
 
         .modal-buttons { display: flex; flex-direction: column; gap: 8px; width: 320px; margin-top: 14px; }
-        .btn-action { width: 100%; padding: 10px; border: none; border-radius: 12px; font-size: 0.85rem; cursor: pointer; font-weight: bold; text-align: center; }
-        .btn-close { background: #333; color: white; }
-        .btn-download { background: #10b981; color: white; box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3); }
+        .btn-action { width: 100%; padding: 10px; border: none; border-radius: 14px; font-size: 0.85rem; cursor: pointer; font-weight: bold; text-align: center; }
+        .btn-close { background: #4a403b; color: white; }
+        .btn-download { background: #87a38a; color: white; box-shadow: 0 4px 12px rgba(135, 163, 138, 0.3); }
 
         /* MARCOS ANIMADOS */
         .marco-arcoiris {
@@ -390,84 +438,85 @@
             -webkit-mask-composite: xor; mask-composite: exclude; padding: 3px;
         }
         .marco-neon {
-            position: absolute; inset: 0; border: 3px solid #ff758c; border-radius: 8px; z-index: 2; pointer-events: none; animation: pulseNeon 1.5s infinite alternate;
+            position: absolute; inset: 0; border: 3px solid #f28b72; border-radius: 10px; z-index: 2; pointer-events: none; animation: pulseNeon 1.5s infinite alternate;
         }
         .marco-oro {
-            position: absolute; inset: 0; border: 3px dashed #ffd700; border-radius: 8px; z-index: 2; pointer-events: none; animation: spinGold 6s linear infinite;
+            position: absolute; inset: 0; border: 3px dashed #ffd700; border-radius: 10px; z-index: 2; pointer-events: none; animation: spinGold 6s linear infinite;
         }
         .marco-corazones {
-            position: absolute; inset: 0; border: 3px solid #ff4757; border-radius: 8px; z-index: 2; pointer-events: none; animation: pulseHearts 1s infinite alternate;
+            position: absolute; inset: 0; border: 3px solid #ff4757; border-radius: 10px; z-index: 2; pointer-events: none; animation: pulseHearts 1s infinite alternate;
         }
         @keyframes gradientBorder { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
-        @keyframes pulseNeon { 0% { box-shadow: 0 0 6px #ff758c, inset 0 0 6px #ff758c; border-color: #ff758c; } 100% { box-shadow: 0 0 14px #ff7eb3, inset 0 0 10px #ff7eb3; border-color: #ff7eb3; } }
-        @keyframes spinGold { 0% { transform: rotate(0deg); border-color: #ffd700; } 50% { border-color: #ff6b81; } 100% { transform: rotate(360deg); border-color: #ffd700; } }
+        @keyframes pulseNeon { 0% { box-shadow: 0 0 6px #f28b72; border-color: #f28b72; } 100% { box-shadow: 0 0 14px #ffb396; border-color: #ffb396; } }
+        @keyframes spinGold { 0% { transform: rotate(0deg); border-color: #ffd700; } 50% { border-color: #f28b72; } 100% { transform: rotate(360deg); border-color: #ffd700; } }
         @keyframes pulseHearts { 0% { box-shadow: 0 0 6px #ff4757; transform: scale(1); } 100% { box-shadow: 0 0 14px #ff6b81; transform: scale(1.02); } }
 
         .ruleta-box {
-            background: linear-gradient(135deg, #fdf4ff, #fae8ff);
-            border: 2px dashed #d946ef; border-radius: 16px; padding: 16px; text-align: center; margin-bottom: 14px;
+            background: linear-gradient(135deg, #fff3ee, #faebd7);
+            border: 2px dashed var(--accent-coral); border-radius: 18px; padding: 16px; text-align: center; margin-bottom: 14px;
         }
         .ruleta-wheel {
             width: 80px; height: 80px; margin: 10px auto; border-radius: 50%;
-            background: conic-gradient(#f43f5e 0deg 90deg, #fbbf24 90deg 180deg, #38bdf8 180deg 270deg, #a855f7 270deg 360deg);
-            display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 12px rgba(0,0,0,0.15); font-size: 1.5rem; transition: transform 3s cubic-bezier(0.15, 0.9, 0.2, 1);
+            background: conic-gradient(#f28b72 0deg 90deg, #fce38a 90deg 180deg, #87a38a 180deg 270deg, #ffb396 270deg 360deg);
+            display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 12px rgba(0,0,0,0.1); font-size: 1.5rem; transition: transform 3s cubic-bezier(0.15, 0.9, 0.2, 1);
         }
 
-        .shop-item { border: 1.5px solid #e2d4f0; border-radius: 14px; padding: 10px; background: #fff; display: flex; flex-direction: column; justify-content: space-between; box-shadow: 0 4px 12px rgba(0,0,0,0.03); }
+        .shop-item { border: 1.5px solid var(--border-soft); border-radius: 14px; padding: 10px; background: #fff; display: flex; flex-direction: column; justify-content: space-between; }
         .shop-flex { display: flex; align-items: center; gap: 8px; }
-        .preview-box { width: 40px; height: 50px; background: #e2e8f0; border-radius: 8px; position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 1.1rem; border: 1px solid #ccc; }
-        .shop-item-info h4 { margin: 0 0 2px 0; font-size: 0.8rem; color: var(--morado); font-weight: 700; }
-        .shop-item-info p { margin: 0; font-size: 0.7rem; color: #666; }
-        .btn-buy { background: linear-gradient(135deg, var(--rosa), var(--fucsia)); color: white; border: none; padding: 6px; border-radius: 8px; font-weight: bold; font-size: 0.75rem; cursor: pointer; width: 100%; margin-top: 8px; }
+        .preview-box { width: 40px; height: 50px; background: #e2dcd3; border-radius: 8px; position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 1.1rem; border: 1px solid #d4c8b8; }
+        .shop-item-info h4 { margin: 0 0 2px 0; font-size: 0.8rem; color: var(--text-main); font-weight: 700; }
+        .shop-item-info p { margin: 0; font-size: 0.7rem; color: #8c827b; }
+        .btn-buy { background: linear-gradient(135deg, var(--accent-coral), var(--accent-peach)); color: white; border: none; padding: 6px; border-radius: 10px; font-weight: bold; font-size: 0.75rem; cursor: pointer; width: 100%; margin-top: 8px; }
 
         .carta-item {
-            background: #fffbeb;
-            border: 1.5px solid #fde68a;
-            border-radius: 12px;
+            background: #fffdf9;
+            border: 1.5px solid #f9f1e7;
+            border-radius: 14px;
             padding: 10px;
             margin-bottom: 10px;
             font-size: 0.85rem;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.02);
         }
         .carta-item.no-leida {
-            border-left: 5px solid var(--fucsia);
-            background: #fff5f7;
+            border-left: 5px solid var(--accent-coral);
+            background: #fff5f2;
         }
 
-        .nav-tabs {
-            display: flex; justify-content: space-around; background: #fff; position: fixed; bottom: 0; left: 0; right: 0; padding: 10px 4px; box-shadow: 0 -4px 20px rgba(0,0,0,0.08); z-index: 99;
-            border-top-left-radius: 20px; border-top-right-radius: 20px;
-        }
-        .tab-btn {
-            background: none; border: none; font-size: 0.65rem; color: #888; display: flex; flex-direction: column; align-items: center; gap: 3px; font-weight: bold; flex: 1; padding: 0; margin: 0; cursor: pointer; position: relative;
-            transition: color 0.2s ease;
-        }
-        .tab-btn.active { color: var(--morado); }
-        .tab-btn span { font-size: 1.2rem; }
         .notif-dot {
-            position: absolute; top: 0; right: 22%; width: 8px; height: 8px; background: #ef4444; border-radius: 50%; display: none; box-shadow: 0 0 6px #ef4444;
+            position: absolute; top: 4px; right: 4px; width: 8px; height: 8px; background: #d9534f; border-radius: 50%; display: none;
         }
 
-        footer { text-align: center; padding: 16px; font-size: 0.8rem; color: #666; font-weight: 500; }
+        /* Selector de perfiles integrado en la barra */
+        .select-perfil-sidebar {
+            width: 60px;
+            font-size: 0.6rem;
+            padding: 2px;
+            border-radius: 8px;
+            border: 1px solid var(--border-soft);
+            background: #fff;
+            color: var(--text-main);
+            margin-top: auto;
+            margin-bottom: 10px;
+            text-align: center;
+        }
     </style>
 </head>
 <body>
 
     <div id="cartaFlotanteBox" onclick="abrirBuzonDesdeFlotante()">
         <div style="display:flex; align-items:center; gap:10px;">
-            <span style="font-size:1.6rem;">💌</span>
+            <span style="font-size:1.5rem;">💌</span>
             <div>
-                <strong style="color:var(--morado); font-size:0.85rem;" id="flotanteRemitente">¡Nueva carta!</strong>
-                <p style="margin:2px 0 0 0; font-size:0.75rem; color:#555;" id="flotanteTexto">Te han enviado un mensaje secreto.</p>
+                <strong style="color:var(--text-main); font-size:0.8rem;" id="flotanteRemitente">¡Nueva carta!</strong>
+                <p style="margin:2px 0 0 0; font-size:0.7rem; color:#8c827b;" id="flotanteTexto">Mensaje secreto recibido.</p>
             </div>
         </div>
     </div>
 
     <div id="matchOverlay" onclick="cerrarMatchAnimacion()">
-        <div style="font-size: 70px;">💖🏹</div>
-        <div style="font-size: 1.3rem; color: var(--fucsia); font-weight: bold; margin-top: 10px;">¡FLECHAZO MUTUO! 🌸</div>
-        <p id="matchTextoAnimado" style="font-size:0.95rem; color:var(--texto); font-weight:600; margin-top: 6px;"></p>
-        <p style="font-size:0.75rem; color:#888; margin-top:12px;">(Toca la pantalla para cerrar)</p>
+        <div style="font-size: 60px;">💖🏹</div>
+        <div style="font-size: 1.2rem; color: var(--accent-coral); font-weight: bold; margin-top: 10px;">¡FLECHAZO MUTUO! 🌸</div>
+        <p id="matchTextoAnimado" style="font-size:0.9rem; color:var(--text-main); font-weight:600; margin-top: 6px;"></p>
+        <p style="font-size:0.7rem; color:#8c827b; margin-top:10px;">(Toca la pantalla para cerrar)</p>
     </div>
 
     <!-- MODAL DEL CARNET -->
@@ -484,7 +533,7 @@
                 <div class="card-info">
                     <div class="info-row">
                         <span class="label-red">LICENCE NO.</span><br>
-                        <span class="val-bold" id="cardIdOut" style="color: #b91c1c;">BL-0000001</span>
+                        <span class="val-bold" id="cardIdOut" style="color: #b94a48;">BL-0000001</span>
                     </div>
                     <div class="info-row" style="display: flex; gap: 8px;">
                         <div>
@@ -517,214 +566,228 @@
         </div>
     </div>
 
-    <header>
-        <div class="user-selector-box">
-            <select id="selectPerfilActivo" onchange="cambiarPerfilActivo(this.value)">
-                <!-- JavaScript -->
-            </select>
+    <!-- BARRA LATERAL IZQUIERDA (Estilo app de música de la foto) -->
+    <div class="sidebar-left">
+        <div class="sidebar-avatar" id="btnMochilaHeader" onclick="abrirModalCarnet()" style="cursor: pointer;" title="Abrir Mochila">
+            👤<div id="miniMarcoLayer"></div>
         </div>
 
-        <div class="header-title-box">
-            <h1>🌸 Bollolandia</h1>
-            <p class="subtitulo">Espacio seguro ✨</p>
-        </div>
+        <button class="nav-icon-btn active" onclick="cambiarPestana('tienda', this)" title="Tienda">🛍️</button>
+        <button class="nav-icon-btn" onclick="cambiarPestana('agenda', this)" title="Agenda">📅</button>
+        <button class="nav-icon-btn" onclick="cambiarPestana('buzon', this)" title="Buzón">
+            💌
+            <div class="notif-dot" id="dotBuzon"></div>
+        </button>
+        <button class="nav-icon-btn" onclick="cambiarPestana('extras', this)" title="Mochila / Perfil">🎒</button>
 
-        <div style="display: flex; align-items: center; gap: 6px;">
-            <div class="mochila-header-btn" id="btnMochilaHeader" onclick="abrirModalCarnet()" style="display: none;" title="Abrir Mochila / Carnet">
-                <div class="mochila-avatar" id="miniAvatarBox">👤<div id="miniMarcoLayer"></div></div>
-                <div style="font-size:0.7rem; font-weight:bold; color:var(--morado); line-height: 1; text-align: left;">
-                    🎒 <span id="badgeNameOut" style="max-width: 50px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; display: block;">Perfil</span>
-                </div>
-            </div>
-
-            <div class="hearts-counter">💖 <span id="heartCount">0</span></div>
-        </div>
-    </header>
-
-    <div class="container">
-
-        <!-- PESTAÑA 1: TIENDA Y PREMIOS -->
-        <div id="tienda" class="tab-content active">
-            <div class="ruleta-box">
-                <h2 style="margin-top:0; color:#c026d3; font-size:1rem;">🎡 La Ruleta Sáfica</h2>
-                <p style="font-size:0.75rem; color:#666;">Gira para ganar premios (Cuesta 20 💖).</p>
-                <div class="ruleta-wheel" id="ruletaWheel">🎨</div>
-                <button class="btn-principal" style="background: linear-gradient(135deg, #ec4899, #8b5cf6); padding: 9px; font-size:0.85rem;" onclick="girarRuleta()">🎯 Girar Ruleta (20 💖)</button>
-            </div>
-
-            <div class="card">
-                <h2>🛍️ Tienda de Marcos y Extras</h2>
-                
-                <div class="grid-shop">
-                    <div class="shop-item">
-                        <div class="shop-flex">
-                            <div class="preview-box"><span>🌸</span><div class="marco-arcoiris"></div></div>
-                            <div class="shop-item-info"><h4>🌈 Arcoíris</h4><p>Multicolor.</p></div>
-                        </div>
-                        <button class="btn-buy" onclick="comprarMarco('marco-arcoiris', 'Arcoíris Sáfico', 30)">30 💖</button>
-                    </div>
-
-                    <div class="shop-item">
-                        <div class="shop-flex">
-                            <div class="preview-box"><span>✨</span><div class="marco-neon"></div></div>
-                            <div class="shop-item-info"><h4>🔮 Neón</h4><p>Cyberpunk.</p></div>
-                        </div>
-                        <button class="btn-buy" onclick="comprarMarco('marco-neon', 'Neón Cyberpunk', 35)">35 💖</button>
-                    </div>
-
-                    <div class="shop-item">
-                        <div class="shop-flex">
-                            <div class="preview-box"><span>👑</span><div class="marco-oro"></div></div>
-                            <div class="shop-item-info"><h4>⚡ Dorado</h4><p>Giratorio.</p></div>
-                        </div>
-                        <button class="btn-buy" onclick="comprarMarco('marco-oro', 'Anillo Dorado', 40)">40 💖</button>
-                    </div>
-
-                    <div class="shop-item">
-                        <div class="shop-flex">
-                            <div class="preview-box"><span>💖</span><div class="marco-corazones"></div></div>
-                            <div class="shop-item-info"><h4>💘 Latido</h4><p>Pulso fucsia.</p></div>
-                        </div>
-                        <button class="btn-buy" onclick="comprarMarco('marco-corazones', 'Latido de Amor', 30)">30 💖</button>
-                    </div>
-                </div>
-
-                <div style="margin-top: 12px; border: 1.5px solid var(--fucsia); padding: 12px; border-radius: 14px; background: #fff5f7;">
-                    <div style="font-size:0.85rem; font-weight:bold; color:var(--fucsia);">💌 Pase Especial de Cartas</div>
-                    <p style="font-size:0.75rem; color:#555; margin:3px 0 8px 0;">Habilita funciones avanzadas en el buzón.</p>
-                    <button class="btn-buy" style="margin-top:0;" onclick="comprarItem('Carta / Reto al Crush', 25)">Comprar por 25 💖</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- PESTAÑA 2: AGENDA Y PLANES -->
-        <div id="agenda" class="tab-content">
-            <div class="card">
-                <h2>📅 Agenda y Quedadas</h2>
-                
-                <div class="accordion-header" onclick="toggleAccordion('accCumple')"><span>🎂 Añadir Cumpleaños (+15💖)</span> <span>▼</span></div>
-                <div id="accCumple" class="accordion-body">
-                    <input type="text" id="nombreCumple" placeholder="Nombre de la cumpleañera">
-                    <input type="date" id="fechaCumple">
-                    <button class="btn-principal" onclick="agregarCumple()">Guardar Cumple</button>
-                </div>
-
-                <div class="accordion-header" onclick="toggleAccordion('accQuedada')" style="margin-top:8px;"><span>📍 Proponer Plan / Quedada (+25💖)</span> <span>▼</span></div>
-                <div id="accQuedada" class="accordion-body">
-                    <input type="text" id="tituloQuedada" placeholder="Plan (ej: Café y chismes...)">
-                    <input type="text" id="lugarQuedada" placeholder="Lugar o Ciudad">
-                    <input type="datetime-local" id="fechaQuedada">
-                    <button class="btn-principal" onclick="agregarQuedada()">Publicar Plan</button>
-                </div>
-            </div>
-
-            <div class="card">
-                <h2>🎉 Próximos Eventos</h2>
-                <h3 style="font-size:0.85rem; color:var(--morado); margin:8px 0 4px 0;">🎂 Cumpleaños:</h3>
-                <div id="listaCumples" style="font-size:0.8rem; margin-bottom:10px;">Aún no hay cumpleaños.</div>
-                <h3 style="font-size:0.85rem; color:var(--morado); margin:8px 0 4px 0;">📍 Quedadas:</h3>
-                <div id="listaQuedadas" style="font-size:0.8rem;">Aún no hay planes.</div>
-            </div>
-        </div>
-
-        <!-- PESTAÑA 3: BUZÓN Y FLECHAZOS -->
-        <div id="buzon" class="tab-content">
-            <div class="card">
-                <h2>💌 Buzón y Conexiones</h2>
-                
-                <div class="accordion-header" onclick="toggleAccordion('accEnviarCarta')"><span>📨 Enviar Carta Secreta</span> <span>▼</span></div>
-                <div id="accEnviarCarta" class="accordion-body">
-                    <select id="selectDestinataria">
-                        <option value="" disabled selected>Selecciona destinataria...</option>
-                    </select>
-                    <textarea id="textoCarta" placeholder="Escribe tu mensaje..." rows="3"></textarea>
-                    <button class="btn-flechazo" onclick="enviarCartaBuzon()">Enviar Carta</button>
-                </div>
-
-                <div class="accordion-header" onclick="toggleAccordion('accFlechazo')" style="margin-top:8px;"><span>💘 Mandar Flechazo Anónimo</span> <span>▼</span></div>
-                <div id="accFlechazo" class="accordion-body">
-                    <input type="text" id="destinoFlechazo" placeholder="¿A quién le mandas el flechazo?">
-                    <button class="btn-flechazo" onclick="enviarFlechazo()">Mandar Flechazo</button>
-                </div>
-            </div>
-
-            <div class="card">
-                <h2>📥 Tu Buzón & Matches</h2>
-                <div id="miBuzonContenedor" style="font-size:0.8rem; margin-bottom: 10px;">No tienes cartas.</div>
-                <div id="misMatches"></div>
-            </div>
-        </div>
-
-        <!-- PESTAÑA 4: EXTRAS (PERFIL, REGISTRO Y MASCOTAS) -->
-        <div id="extras" class="tab-content">
-            <div class="card" id="formRegistroCarnet">
-                <h2>🎒 Crear Carnet y Mochila</h2>
-                <p style="font-size:0.8rem; color:#666; margin-top:-4px;">Regístrate con tu apodo y código exclusivo.</p>
-                
-                <input type="text" id="inName" placeholder="Tu Apodo / Nombre" maxlength="15">
-                
-                <select id="inMision">
-                    <option value="" disabled selected>Selecciona tu misión...</option>
-                    <option value="Traer el chisme fresco">✨ Traer el chisme fresco</option>
-                    <option value="Organizar las previas">🍻 Organizar las previas</option>
-                    <option value="Dar los mejores abrazos">🫂 Dar los mejores abrazos</option>
-                    <option value="Servir drama libre">Aesthetic & Drama Libre</option>
-                    <option value="Analizar las red flags">🚩 Analizadora de Red Flags</option>
-                    <option value="Ser la DJ oficial">🎧 DJ oficial del grupo</option>
-                    <option value="Crisis existenciales 3 AM">🌙 Crisis existenciales 3 AM</option>
-                    <option value="Adoptar gatitos y llorar">🐱 Adoptar gatitos y llorar</option>
-                </select>
-
-                <label for="inPhoto" class="file-input-label" id="photoLabel">📷 Subir Foto de Perfil</label>
-                <input type="file" id="inPhoto" accept="image/*" style="display: none;" onchange="procesarFotoCarnet()">
-
-                <input type="password" id="inCodigo" placeholder="🔒 Código de acceso exclusivo">
-
-                <button class="btn-principal" onclick="crearCarnet()">✨ Validar y Guardar en Mochila</button>
-            </div>
-
-            <div class="card" id="seccionMiCarnet" style="display: none;">
-                <h2>🎒 Gestión de Mochila 🌸</h2>
-                <p style="font-size: 0.8rem; color: #555; margin-top: -4px;">Toca arriba en tu icono de mochila 🎒 o aquí abajo para ver tu carnet oficial en grande.</p>
-                
-                <button class="btn-principal" onclick="abrirModalCarnet()" style="margin-top: 6px;">👁️ Ver Carnet Oficial</button>
-
-                <div style="margin-top: 14px; border-top: 1px solid #eee; padding-top: 10px;">
-                    <h3 style="font-size: 0.9rem; color: var(--morado); margin-bottom: 8px;">🖼️ Tus Marcos Animados</h3>
-                    <div id="inventarioMarcos" style="display: flex; gap: 6px; flex-wrap: wrap;"></div>
-                </div>
-
-                <button class="btn-logout" onclick="cerrarSesion()">🚪 Cerrar Sesión / Borrar Perfil</button>
-            </div>
-
-            <div class="card" style="margin-top: 14px;">
-                <h2>🐾 Galería Peluda</h2>
-                <input type="text" id="nombreMascota" placeholder="Nombre del animalito">
-                <input type="file" id="fotoMascota" accept="image/*">
-                <button class="btn-principal" onclick="subirMascota()">Publicar Foto (+20💖)</button>
-                <div id="galeriaMascotas" class="grid-pets" style="margin-top:10px;"></div>
-            </div>
-
-            <div class="card">
-                <h2>📢 Actualizaciones</h2>
-                <div style="background:#f8fafc; border-left:4px solid var(--morado); padding:10px; border-radius:6px; font-size:0.75rem;">
-                    <strong style="color:var(--morado);">✨ Versión 4.0 - Rediseño Visual</strong>
-                    <p style="margin:4px 0 0 0; color:#444;">Interfaz pulida conservando estrictamente toda la estructura lógica original.</p>
-                </div>
-            </div>
-        </div>
-
+        <select id="selectPerfilActivo" class="select-perfil-sidebar" onchange="cambiarPerfilActivo(this.value)" title="Cambiar Perfil">
+            <!-- JS -->
+        </select>
     </div>
 
-    <footer>
-        <p>✨ "Un espacio donde siempre puedes ser tú misma." ✨</p>
-    </footer>
+    <div class="main-wrapper">
+        <!-- TOP HEADER CON BÚSQUEDA Y CORAZONES -->
+        <div class="top-header">
+            <div class="top-search">
+                <span>🔍</span>
+                <input type="text" placeholder="Buscar chismes, eventos...">
+            </div>
+            <div class="header-pill-badge">
+                💖 <span id="heartCount">0</span>
+            </div>
+        </div>
 
-    <div class="nav-tabs" id="navTabs" style="display: none;">
-        <button class="tab-btn active" onclick="cambiarPestana('tienda', this)"><span>🛍️</span>Tienda</button>
-        <button class="tab-btn" onclick="cambiarPestana('agenda', this)"><span>📅</span>Agenda</button>
-        <button class="tab-btn" onclick="cambiarPestana('buzon', this)"><span>💌</span>Buzón<div class="notif-dot" id="dotBuzon"></div></button>
-        <button class="tab-btn" onclick="cambiarPestana('extras', this)"><span>🎒</span>Mochila</button>
+        <!-- HERO BANNER TIPO DASHBOARD -->
+        <div class="hero-card">
+            <div>
+                <h2>Hola de nuevo, <span id="dashboardUserName">Mia</span>! ✨</h2>
+                <p>Disfruta de tu espacio seguro y conecta con tus amigas hoy.</p>
+                <button class="btn-hero-action" onclick="abrirModalCarnet()">Ver mi Carnet 🎒</button>
+            </div>
+            <div style="font-size: 3.2rem;">🌸</div>
+        </div>
+
+        <!-- MÉTRICAS TIPO ESTADÍSTICAS -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="icon-box">💖</div>
+                <div class="val" id="statHearts">0</div>
+                <div class="label">Puntos 💖</div>
+            </div>
+            <div class="stat-card">
+                <div class="icon-box">💌</div>
+                <div class="val" id="statCartas">0</div>
+                <div class="label">Cartas</div>
+            </div>
+            <div class="stat-card">
+                <div class="icon-box">🎉</div>
+                <div class="val" id="statQuedadas">0</div>
+                <div class="label">Planes</div>
+            </div>
+            <div class="stat-card">
+                <div class="icon-box">🔥</div>
+                <div class="val">VIP</div>
+                <div class="label">Estado</div>
+            </div>
+        </div>
+
+        <!-- PESTAÑAS CONTENIDO -->
+        <div class="container-contenido">
+
+            <!-- PESTAÑA 1: TIENDA Y PREMIOS -->
+            <div id="tienda" class="tab-content">
+                <div class="ruleta-box">
+                    <h3 style="margin-top:0; color:var(--accent-coral); font-size:0.95rem;">🎡 La Ruleta Sáfica</h3>
+                    <p style="font-size:0.75rem; color:#8c827b;">Gira para ganar premios (Cuesta 20 💖).</p>
+                    <div class="ruleta-wheel" id="ruletaWheel">🎨</div>
+                    <button class="btn-principal" style="background: linear-gradient(135deg, var(--accent-coral), var(--accent-peach)); font-size:0.8rem;" onclick="girarRuleta()">🎯 Girar Ruleta (20 💖)</button>
+                </div>
+
+                <div class="card">
+                    <h3>🛍️ Tienda de Marcos y Extras</h3>
+                    
+                    <div class="grid-shop">
+                        <div class="shop-item">
+                            <div class="shop-flex">
+                                <div class="preview-box"><span>🌸</span><div class="marco-arcoiris"></div></div>
+                                <div class="shop-item-info"><h4>🌈 Arcoíris</h4><p>Multicolor.</p></div>
+                            </div>
+                            <button class="btn-buy" onclick="comprarMarco('marco-arcoiris', 'Arcoíris Sáfico', 30)">30 💖</button>
+                        </div>
+
+                        <div class="shop-item">
+                            <div class="shop-flex">
+                                <div class="preview-box"><span>✨</span><div class="marco-neon"></div></div>
+                                <div class="shop-item-info"><h4>🔮 Neón</h4><p>Cyberpunk.</p></div>
+                            </div>
+                            <button class="btn-buy" onclick="comprarMarco('marco-neon', 'Neón Cyberpunk', 35)">35 💖</button>
+                        </div>
+
+                        <div class="shop-item">
+                            <div class="shop-flex">
+                                <div class="preview-box"><span>👑</span><div class="marco-oro"></div></div>
+                                <div class="shop-item-info"><h4>⚡ Dorado</h4><p>Giratorio.</p></div>
+                            </div>
+                            <button class="btn-buy" onclick="comprarMarco('marco-oro', 'Anillo Dorado', 40)">40 💖</button>
+                        </div>
+
+                        <div class="shop-item">
+                            <div class="shop-flex">
+                                <div class="preview-box"><span>💖</span><div class="marco-corazones"></div></div>
+                                <div class="shop-item-info"><h4>💘 Latido</h4><p>Pulso fucsia.</p></div>
+                            </div>
+                            <button class="btn-buy" onclick="comprarMarco('marco-corazones', 'Latido de Amor', 30)">30 💖</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PESTAÑA 2: AGENDA Y PLANES -->
+            <div id="agenda" class="tab-content" style="display:none;">
+                <div class="card">
+                    <h3>📅 Agenda y Quedadas</h3>
+                    
+                    <div class="accordion-header" onclick="toggleAccordion('accCumple')"><span>🎂 Añadir Cumpleaños (+15💖)</span> <span>▼</span></div>
+                    <div id="accCumple" class="accordion-body">
+                        <input type="text" id="nombreCumple" placeholder="Nombre de la cumpleañera">
+                        <input type="date" id="fechaCumple">
+                        <button class="btn-principal" onclick="agregarCumple()">Guardar Cumple</button>
+                    </div>
+
+                    <div class="accordion-header" onclick="toggleAccordion('accQuedada')" style="margin-top:8px;"><span>📍 Proponer Plan / Quedada (+25💖)</span> <span>▼</span></div>
+                    <div id="accQuedada" class="accordion-body">
+                        <input type="text" id="tituloQuedada" placeholder="Plan (ej: Café y chismes...)">
+                        <input type="text" id="lugarQuedada" placeholder="Lugar o Ciudad">
+                        <input type="datetime-local" id="fechaQuedada">
+                        <button class="btn-principal" onclick="agregarQuedada()">Publicar Plan</button>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3>🎉 Próximos Eventos</h3>
+                    <h4 style="font-size:0.8rem; color:var(--accent-green); margin:8px 0 4px 0;">🎂 Cumpleaños:</h4>
+                    <div id="listaCumples" style="font-size:0.8rem; margin-bottom:10px;">Aún no hay cumpleaños.</div>
+                    <h4 style="font-size:0.8rem; color:var(--accent-green); margin:8px 0 4px 0;">📍 Quedadas:</h4>
+                    <div id="listaQuedadas" style="font-size:0.8rem;">Aún no hay planes.</div>
+                </div>
+            </div>
+
+            <!-- PESTAÑA 3: BUZÓN Y FLECHAZOS -->
+            <div id="buzon" class="tab-content" style="display:none;">
+                <div class="card">
+                    <h3>💌 Buzón y Conexiones</h3>
+                    
+                    <div class="accordion-header" onclick="toggleAccordion('accEnviarCarta')"><span>📨 Enviar Carta Secreta</span> <span>▼</span></div>
+                    <div id="accEnviarCarta" class="accordion-body">
+                        <select id="selectDestinataria">
+                            <option value="" disabled selected>Selecciona destinataria...</option>
+                        </select>
+                        <textarea id="textoCarta" placeholder="Escribe tu mensaje..." rows="3"></textarea>
+                        <button class="btn-flechazo" onclick="enviarCartaBuzon()">Enviar Carta</button>
+                    </div>
+
+                    <div class="accordion-header" onclick="toggleAccordion('accFlechazo')" style="margin-top:8px;"><span>💘 Mandar Flechazo Anónimo</span> <span>▼</span></div>
+                    <div id="accFlechazo" class="accordion-body">
+                        <input type="text" id="destinoFlechazo" placeholder="¿A quién le mandas el flechazo?">
+                        <button class="btn-flechazo" onclick="enviarFlechazo()">Mandar Flechazo</button>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3>📥 Tu Buzón & Matches</h3>
+                    <div id="miBuzonContenedor" style="font-size:0.8rem; margin-bottom: 10px;">No tienes cartas.</div>
+                    <div id="misMatches"></div>
+                </div>
+            </div>
+
+            <!-- PESTAÑA 4: EXTRAS (PERFIL Y MASCOTAS) -->
+            <div id="extras" class="tab-content" style="display:none;">
+                <div class="card" id="formRegistroCarnet">
+                    <h3>🎒 Crear Carnet y Mochila</h3>
+                    <p style="font-size:0.75rem; color:#8c827b; margin-top:-4px;">Regístrate con tu apodo y código exclusivo.</p>
+                    
+                    <input type="text" id="inName" placeholder="Tu Apodo / Nombre" maxlength="15">
+                    
+                    <select id="inMision">
+                        <option value="" disabled selected>Selecciona tu misión...</option>
+                        <option value="Traer el chisme fresco">✨ Traer el chisme fresco</option>
+                        <option value="Organizar las previas">🍻 Organizar las previas</option>
+                        <option value="Dar los mejores abrazos">🫂 Dar los mejores abrazos</option>
+                        <option value="Servir drama libre">Aesthetic & Drama Libre</option>
+                        <option value="Analizar las red flags">🚩 Analizadora de Red Flags</option>
+                        <option value="Ser la DJ oficial">🎧 DJ oficial del grupo</option>
+                    </select>
+
+                    <label for="inPhoto" class="file-input-label" id="photoLabel">📷 Subir Foto de Perfil</label>
+                    <input type="file" id="inPhoto" accept="image/*" style="display: none;" onchange="procesarFotoCarnet()">
+
+                    <input type="password" id="inCodigo" placeholder="🔒 Código de acceso exclusivo">
+
+                    <button class="btn-principal" onclick="crearCarnet()">✨ Validar y Guardar</button>
+                </div>
+
+                <div class="card" id="seccionMiCarnet" style="display: none;">
+                    <h3>🎒 Gestión de Mochila 🌸</h3>
+                    <button class="btn-principal" onclick="abrirModalCarnet()" style="margin-top: 6px;">👁️ Ver Carnet Oficial</button>
+
+                    <div style="margin-top: 14px; border-top: 1px solid var(--border-soft); padding-top: 10px;">
+                        <h4 style="font-size: 0.85rem; color: var(--text-main); margin-bottom: 8px;">🖼️ Tus Marcos Animados</h4>
+                        <div id="inventarioMarcos" style="display: flex; gap: 6px; flex-wrap: wrap;"></div>
+                    </div>
+
+                    <button class="btn-logout" onclick="cerrarSesion()">🚪 Cerrar Sesión / Borrar Perfil</button>
+                </div>
+
+                <div class="card" style="margin-top: 14px;">
+                    <h3>🐾 Galería Peluda</h3>
+                    <input type="text" id="nombreMascota" placeholder="Nombre del animalito">
+                    <input type="file" id="fotoMascota" accept="image/*">
+                    <button class="btn-principal" onclick="subirMascota()">Publicar Foto (+20💖)</button>
+                    <div id="galeriaMascotas" class="grid-pets" style="margin-top:10px;"></div>
+                </div>
+            </div>
+
+        </div>
     </div>
 
     <script>
@@ -768,7 +831,7 @@
             const nombres = Object.keys(db);
 
             if (nombres.length === 0) {
-                select.innerHTML = `<option value="">Sin perfiles</option>`;
+                select.innerHTML = `<option value="">---</option>`;
                 if(selectDest) selectDest.innerHTML = `<option value="">Nadie</option>`;
                 return;
             }
@@ -792,20 +855,17 @@
             const userData = obtenerDatosActuales();
 
             if (userData) {
-                document.getElementById("navTabs").style.display = "flex";
                 document.getElementById("formRegistroCarnet").style.display = "none";
                 document.getElementById("seccionMiCarnet").style.display = "block";
-                document.getElementById("btnMochilaHeader").style.display = "flex";
                 cargarDatosCarnet(userData);
                 renderizarInventarioMarcos();
                 cargarBuzonPersonal();
                 comprobarNotificacionesBuzon();
             } else {
-                document.getElementById("navTabs").style.display = "flex";
                 document.getElementById("formRegistroCarnet").style.display = "block";
                 document.getElementById("seccionMiCarnet").style.display = "none";
-                document.getElementById("btnMochilaHeader").style.display = "none";
                 document.getElementById("heartCount").innerText = "0";
+                document.getElementById("statHearts").innerText = "0";
             }
             comprobarMatches();
         }
@@ -816,6 +876,7 @@
 
             if (data.isGold) {
                 document.getElementById("heartCount").innerText = "∞";
+                document.getElementById("statHearts").innerText = "∞";
                 return;
             }
 
@@ -823,12 +884,13 @@
             if (data.hearts < 0) data.hearts = 0;
             actualizarDatosActuales({ hearts: data.hearts });
             document.getElementById("heartCount").innerText = data.hearts;
+            document.getElementById("statHearts").innerText = data.hearts;
         }
 
         function cambiarPestana(idPestana, btn) {
-            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
-            document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
-            document.getElementById(idPestana).classList.add('active');
+            document.querySelectorAll('.tab-content').forEach(el => el.style.display = 'none');
+            document.querySelectorAll('.nav-icon-btn').forEach(el => el.classList.remove('active'));
+            document.getElementById(idPestana).style.display = 'block';
             if(btn) btn.classList.add('active');
             
             if(idPestana === 'buzon') {
@@ -849,8 +911,8 @@
                 reader.onloadend = function() {
                     carnetFotoBase64 = reader.result;
                     label.innerText = "✅ Foto cargada";
-                    label.style.borderColor = "#10b981";
-                    label.style.color = "#10b981";
+                    label.style.borderColor = "var(--accent-green)";
+                    label.style.color = "var(--accent-green)";
                 }
                 reader.readAsDataURL(file);
             }
@@ -900,8 +962,7 @@
         }
 
         function cargarDatosCarnet(data) {
-            document.getElementById("badgeNameOut").innerText = data.name;
-
+            document.getElementById("dashboardUserName").innerText = data.name;
             document.getElementById("cardNameOut").innerText = data.name;
             document.getElementById("cardMisionOut").innerText = data.mision;
             document.getElementById("cardSignatureOut").innerText = data.name;
@@ -914,18 +975,20 @@
                 cardElement.classList.add("gold-edition");
                 document.getElementById("cardHeaderTitle").innerText = "GOLD • ESPAÑA 👑";
                 document.getElementById("heartCount").innerText = "∞";
+                document.getElementById("statHearts").innerText = "∞";
             } else {
                 cardElement.classList.remove("gold-edition");
                 document.getElementById("cardHeaderTitle").innerText = "ESPAÑA • BOLLOLANDIA 🌈";
                 document.getElementById("heartCount").innerText = data.hearts || 0;
+                document.getElementById("statHearts").innerText = data.hearts || 0;
             }
 
             if (data.photo) {
                 document.getElementById("cardPhotoBox").innerHTML = `<img src="${data.photo}" class="card-photo-img"><div id="marcoLayer"></div>`;
-                document.getElementById("miniAvatarBox").innerHTML = `<img src="${data.photo}" style="width:100%;height:100%;object-fit:cover;"><div id="miniMarcoLayer"></div>`;
+                document.getElementById("btnMochilaHeader").innerHTML = `<img src="${data.photo}" style="width:100%;height:100%;object-fit:cover;"><div id="miniMarcoLayer"></div>`;
             } else {
                 document.getElementById("cardPhotoBox").innerHTML = `<span style="font-size: 2rem;">👤</span><div id="marcoLayer"></div>`;
-                document.getElementById("miniAvatarBox").innerHTML = `👤<div id="miniMarcoLayer"></div>`;
+                document.getElementById("btnMochilaHeader").innerHTML = `👤<div id="miniMarcoLayer"></div>`;
             }
 
             aplicarMarcoGuardado();
@@ -994,7 +1057,7 @@
 
         function comprarMarco(idMarco, nombreMarco, precio) {
             const data = obtenerDatosActuales();
-            if (!data) return alert("Crea un perfil primero para comprar en la tienda 🎒");
+            if (!data) return alert("Crea un perfil primero para comprar 🎒");
             let marcos = data.marcosComprados || [];
             if (marcos.includes(idMarco)) return alert("✨ ¡Ya tienes este marco!");
             
@@ -1019,16 +1082,16 @@
             if (data.isGold) marcos = ["marco-arcoiris", "marco-neon", "marco-oro", "marco-corazones"];
 
             if (marcos.length === 0) {
-                contenedor.innerHTML = `<span style="font-size: 0.75rem; color: #888;">Sin marcos.</span>`;
+                contenedor.innerHTML = `<span style="font-size: 0.75rem; color: #8c827b;">Sin marcos.</span>`;
                 return;
             }
 
-            let html = `<button onclick="quitarMarco()" style="padding:5px 9px; font-size:0.7rem; border-radius:8px; background:#e2e8f0; border:none; cursor:pointer; font-weight:bold;">Ninguno</button>`;
+            let html = `<button onclick="quitarMarco()" style="padding:5px 9px; font-size:0.7rem; border-radius:8px; background:#e2dcd3; border:none; cursor:pointer; font-weight:bold;">Ninguno</button>`;
             const nombres = { 'marco-arcoiris': '🌈 Arcoíris', 'marco-neon': '✨ Neón', 'marco-oro': '👑 Oro', 'marco-corazones': '💖 Latido' };
 
             marcos.forEach(m => {
                 let activo = data.marcoActivo === m;
-                let btnStyle = activo ? "background:var(--morado); color:white;" : "background:#fff; color:var(--morado); border:1px solid var(--morado);";
+                let btnStyle = activo ? "background:var(--accent-coral); color:white;" : "background:#fff; color:var(--text-main); border:1px solid var(--border-soft);";
                 html += `<button onclick="equiparMarco('${m}')" style="padding:5px 9px; font-size:0.7rem; border-radius:8px; cursor:pointer; font-weight:bold; ${btnStyle}">${nombres[m] || 'Marco'} ${activo ? '✓' : ''}</button>`;
             });
             contenedor.innerHTML = html;
@@ -1060,14 +1123,6 @@
                     if (miniMarcoLayer) miniMarcoLayer.innerHTML = `<div class="${clase}"></div>`;
                 }
             }
-        }
-
-        function comprarItem(itemNombre, precio) {
-            const data = obtenerDatosActuales();
-            if (!data) return alert("Crea un perfil primero 🎒");
-            if (!data.isGold && data.hearts < precio) return alert(`⛔ Necesitas ${precio} 💖.`);
-            if (!data.isGold) actualizarCorazones(-precio);
-            alert(`🎉 ¡Canjeado con éxito!`);
         }
 
         function enviarCartaBuzon() {
@@ -1102,18 +1157,20 @@
             if (!contenedor || !data) return;
 
             const cartas = data.buzonCartas || [];
+            document.getElementById("statCartas").innerText = cartas.length;
+
             if (cartas.length === 0) {
-                contenedor.innerHTML = `<p style="color:#888; font-size:0.8rem;">Buzón vacío.</p>`;
+                contenedor.innerHTML = `<p style="color:#8c827b; font-size:0.8rem;">Buzón vacío.</p>`;
                 return;
             }
 
             contenedor.innerHTML = cartas.map((c) => `
                 <div class="carta-item ${c.leida ? '' : 'no-leida'}">
-                    <div style="display:flex; justify-content:space-between; font-weight:bold; color:var(--morado); font-size:0.75rem;">
+                    <div style="display:flex; justify-content:space-between; font-weight:bold; color:var(--text-main); font-size:0.75rem;">
                         <span>💌 De: ${c.de}</span>
-                        <span style="color:#888; font-size:0.7rem;">${c.fecha}</span>
+                        <span style="color:#8c827b; font-size:0.7rem;">${c.fecha}</span>
                     </div>
-                    <p style="margin:6px 0 0 0; color:#333; font-size:0.8rem; white-space: pre-wrap;">${c.texto}</p>
+                    <p style="margin:6px 0 0 0; color:#4a403b; font-size:0.8rem; white-space: pre-wrap;">${c.texto}</p>
                 </div>
             `).join('');
         }
@@ -1130,7 +1187,7 @@
                 dot.style.display = "block";
                 const ultima = noLeidas[noLeidas.length - 1];
                 document.getElementById("flotanteRemitente").innerText = `¡Carta de ${ultima.de}!`;
-                document.getElementById("flotanteTexto").innerText = ultima.texto.substring(0, 30) + "...";
+                document.getElementById("flotanteTexto").innerText = ultima.texto.substring(0, 25) + "...";
                 flotante.style.display = "block";
             } else {
                 dot.style.display = "none";
@@ -1150,7 +1207,7 @@
         }
 
         function abrirBuzonDesdeFlotante() {
-            cambiarPestana('buzon', document.querySelectorAll('.tab-btn')[2]);
+            cambiarPestana('buzon', document.querySelectorAll('.nav-icon-btn')[2]);
         }
 
         function agregarCumple() {
@@ -1192,12 +1249,14 @@
             document.getElementById('fechaQuedada').value = '';
             actualizarCorazones(25);
             cargarQuedadas();
+            document.getElementById("statQuedadas").innerText = quedadas.length;
             alert('📍 ¡Plan publicado (+25 💖)!');
         }
 
         function cargarQuedadas() {
             const quedadas = JSON.parse(localStorage.getItem('quedadas') || '[]');
             const cont = document.getElementById('listaQuedadas');
+            document.getElementById("statQuedadas").innerText = quedadas.length;
             if(!cont) return;
             if(quedadas.length === 0) return cont.innerHTML = 'Aún no hay planes.';
             cont.innerHTML = quedadas.map(q => {
@@ -1234,8 +1293,8 @@
 
             if(matches.length > 0) {
                 cont.innerHTML = matches.map(m => `
-                    <div style="background:#ffe5ec; border:1.5px dashed var(--fucsia); border-radius:12px; padding:10px; text-align:center; margin-top:8px;">
-                        <strong style="color:#d63384; font-size:0.85rem;">¡HAY MATCH MUTUO CON ${m.de.toUpperCase()}! 🌸💖</strong>
+                    <div style="background:#fff3ee; border:1.5px dashed var(--accent-coral); border-radius:14px; padding:10px; text-align:center; margin-top:8px;">
+                        <strong style="color:var(--accent-coral); font-size:0.85rem;">¡HAY MATCH MUTUO CON ${m.de.toUpperCase()}! 🌸💖</strong>
                     </div>
                 `).join('');
             } else {
@@ -1267,7 +1326,7 @@
             const mascotas = JSON.parse(localStorage.getItem('mascotas') || '[]');
             const cont = document.getElementById('galeriaMascotas');
             if(!cont) return;
-            if(mascotas.length === 0) return cont.innerHTML = '<span style="grid-column:1/3; color:#888; font-size:0.75rem;">Sin fotos de peludos.</span>';
+            if(mascotas.length === 0) return cont.innerHTML = '<span style="grid-column:1/3; color:#8c827b; font-size:0.75rem;">Sin fotos de peludos.</span>';
             cont.innerHTML = mascotas.map(m => `
                 <div class="pet-item">
                     <img src="${m.foto}">
