@@ -73,6 +73,7 @@
             cursor: pointer;
         }
 
+        /* Nota actual visible al lado de la foto de perfil en el menú lateral */
         .sidebar-note-bubble {
             position: absolute;
             left: 60px;
@@ -816,6 +817,7 @@
             <div class="sidebar-avatar" id="btnMochilaHeader" onclick="abrirModalCarnet()" title="Ver mi Carnet">
                 👤<div id="miniMarcoLayer"></div>
             </div>
+            <!-- Nota actual al lado de la foto de perfil -->
             <div class="sidebar-note-bubble" id="sidebarNoteBubble" onclick="modificarNotaInteractiva()" style="display: none;" title="Haz clic para modificar la nota"></div>
         </div>
 
@@ -842,9 +844,9 @@
         <div class="hero-card">
             <div>
                 <h2>Hola de nuevo, <span id="dashboardUserName">Mia</span>! ✨</h2>
-                <div class="hero-bio-container" id="heroBioContainer">
+                <div class="hero-bio-container" id="heroBioContainer" style="display: none;">
                     <span class="hero-bio-label">Bio:</span>
-                    <div class="hero-bio-display" id="heroBioDisplay" contenteditable="true" onblur="guardarBioDirecta(this.innerText)" title="Haz clic para editar tu biografía directamente"></div>
+                    <div class="hero-bio-display" id="heroBioDisplay"></div>
                 </div>
                 <p>Disfruta de tu espacio seguro y conecta con tus amigas hoy.</p>
             </div>
@@ -882,7 +884,7 @@
                 <div class="card" style="background: linear-gradient(135deg, #fef9e7, #fcf4db); border: 1.5px solid #f3e5ab;">
                     <h3 style="color: #8c6d1f; display:flex; align-items:center; gap:6px;">📢 Buzón de Actualizaciones</h3>
                     <p style="font-size:0.78rem; color:#6b5314; line-height:1.4; margin:0;">
-                        <strong>¡Novedades en Bollolandia!</strong> Se han actualizado las notas interactivas (edición directa sin menús y micrófono integrado) y biografía editable dinámica. ✨
+                        <strong>¡Novedades en Bollolandia!</strong> Se han optimizado las notas en la barra lateral junto a tu foto de perfil y se han limpiado elementos antiguos. ✨
                     </p>
                 </div>
 
@@ -1011,7 +1013,7 @@
                     <p style="font-size:0.75rem; color:#8c827b; margin-top:-4px;">Regístrate con tu apodo y código exclusivo.</p>
                     
                     <input type="text" id="inName" placeholder="Tu Apodo / Nombre" maxlength="15">
-                    <input type="text" id="inNote" placeholder="💬 Escribe tu nota..." maxlength="30">
+                    <input type="text" id="inNote" placeholder="💬 Escribe tu nota (ej: Cómeme un pie)..." maxlength="30">
                     <textarea id="inBio" placeholder="Escribe tu biografía corta..." rows="2" maxlength="80"></textarea>
                     
                     <select id="inMision">
@@ -1037,15 +1039,6 @@
                     <p style="font-size: 0.75rem; color: #8c827b; margin-top: -4px;">Elige el marco que lucirá en tu carnet y en tu perfil:</p>
 
                     <div id="inventarioMarcos" class="boutique-frames-list"></div>
-
-                    <div style="margin-top: 14px; border-top: 1px solid var(--border-soft); padding-top: 10px;">
-                        <h4 style="font-size: 0.8rem; color: var(--text-main); margin-bottom: 4px;">💬 Actualizar Nota del Carnet</h4>
-                        <div style="display:flex; gap:6px; align-items:center;">
-                            <input type="text" id="inputEditarNote" placeholder="Tu nota actual..." maxlength="30" style="margin-bottom:6px; flex:1;">
-                            <button type="button" onclick="document.getElementById('inputAudioNotaDirecto').click()" title="Añadir nota de voz" style="background:#fbf9f6; border:1.5px solid var(--border-soft); border-radius:14px; width:44px; height:44px; cursor:pointer; font-size:1.1rem; display:flex; align-items:center; justify-content:center; margin-bottom:6px;">🎤</button>
-                        </div>
-                        <button class="btn-principal" style="padding: 8px; font-size: 0.78rem; margin-bottom: 10px;" onclick="guardarNotaEditada()">Guardar Nota</button>
-                    </div>
 
                     <div style="margin-top: 16px; border-top: 1px solid var(--border-soft); padding-top: 12px;">
                         <h4 style="font-size: 0.8rem; color: var(--text-main); margin-bottom: 6px;">⚙️ Gestión de Perfiles</h4>
@@ -1202,11 +1195,6 @@
                 renderizarInventarioMarcos();
                 cargarBuzonPersonal();
                 comprobarNotificacionesBuzon();
-
-                if(userData.note) {
-                    const inputNoteEdit = document.getElementById("inputEditarNote");
-                    if(inputNoteEdit) inputNoteEdit.value = userData.note;
-                }
             } else {
                 document.getElementById("formRegistroCarnet").style.display = "block";
                 document.getElementById("seccionMiCarnet").style.display = "none";
@@ -1294,26 +1282,25 @@
             }
         }
 
-        function guardarNotaEditada() {
-            const nuevaNota = document.getElementById("inputEditarNote").value.trim();
-            const timestamp = new Date().getTime();
-            actualizarDatosActuales({ note: nuevaNota, noteTimestamp: timestamp, noteAudio: null });
-            const userData = obtenerDatosActuales();
-            cargarDatosCarnet(userData);
-            alert("✨ ¡Nota actualizada en tu carnet!");
-        }
-
+        // Modificación interactiva de nota haciendo clic y opción de añadir texto o audio
         function modificarNotaInteractiva() {
             const userData = obtenerDatosActuales();
             if (!userData) return alert("Crea un perfil primero 🎒");
             
-            const textoNuevo = prompt("Escribe tu nueva nota (máx 30 caracteres):", userData.note || "");
-            if (textoNuevo !== null) {
-                const nuevaNota = textoNuevo.trim().substring(0, 30);
-                const timestamp = new Date().getTime();
-                actualizarDatosActuales({ note: nuevaNota, noteTimestamp: timestamp, noteAudio: null });
+            const accion = prompt("Elige qué deseas hacer con tu nota:\n1. Escribir texto nuevo\n2. Borrar nota actual", "1");
+            if (accion === "1") {
+                const textoNuevo = prompt("Escribe tu nueva nota (máx 30 caracteres):", userData.note || "");
+                if (textoNuevo !== null) {
+                    const nuevaNota = textoNuevo.trim().substring(0, 30);
+                    const timestamp = new Date().getTime();
+                    actualizarDatosActuales({ note: nuevaNota, noteTimestamp: timestamp, noteAudio: null });
+                    cargarDatosCarnet(obtenerDatosActuales());
+                    alert("✨ ¡Nota actualizada!");
+                }
+            } else if (accion === "2") {
+                actualizarDatosActuales({ note: "", noteTimestamp: null, noteAudio: null });
                 cargarDatosCarnet(obtenerDatosActuales());
-                alert("✨ ¡Nota actualizada!");
+                alert("🗑️ Nota eliminada.");
             }
         }
 
@@ -1326,7 +1313,7 @@
                     const timestamp = new Date().getTime();
                     actualizarDatosActuales({ note: "🎵 [Nota de Voz]", noteAudio: audioBase64, noteTimestamp: timestamp });
                     cargarDatosCarnet(obtenerDatosActuales());
-                    alert("🎙️ ¡Nota de voz añadida con éxito a tu nota!");
+                    alert("🎙️ ¡Nota de voz añadida con éxito!");
                 }
                 reader.readAsDataURL(file);
             }
@@ -1338,11 +1325,6 @@
             audio.play().catch(err => {
                 alert("No se pudo reproducir el audio automáticamente.");
             });
-        }
-
-        function guardarBioDirecta(nuevaBioText) {
-            const bioLimpia = nuevaBioText.trim();
-            actualizarDatosActuales({ bio: bioLimpia });
         }
 
         function comprobarRestriccionTemporalNota() {
@@ -1431,8 +1413,8 @@
 
             const heroBioContainer = document.getElementById("heroBioContainer");
             const heroBioDisplay = document.getElementById("heroBioDisplay");
-            if (data.bio !== undefined) {
-                heroBioDisplay.innerText = data.bio;
+            if (data.bio) {
+                heroBioDisplay.innerText = `"${data.bio}"`;
                 heroBioContainer.style.display = "block";
             } else {
                 heroBioDisplay.innerText = "";
