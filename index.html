@@ -691,7 +691,7 @@
             border-color: #00ff87;
         }
 
-        /* MARCO EXCLUSIVO DE FUNDADORA: FUEGO & HUMO ROJO (MOVIBLE Y TRANSPARENTE EN EL CENTRO) */
+        /* MARCO EXCLUSIVO DE FUNDADORA: FUEGO & HUMO ROJO (TRANSPARENTE EN EL CENTRO) */
         .marco-fundadora {
             inset: -8px;
             background: radial-gradient(circle, transparent 55%, rgba(255,0,51,0.2) 75%, transparent 100%);
@@ -757,26 +757,6 @@
             font-style: italic;
             color: var(--accent-coral);
             font-weight: 600;
-        }
-
-        /* Panel de control de movimiento de marco de Fundadora */
-        .fundadora-controls-box {
-            background: #fff5f2;
-            border: 1.5px dashed #ff0033;
-            border-radius: 14px;
-            padding: 12px;
-            margin-bottom: 14px;
-        }
-        .fundadora-controls-box label {
-            font-size: 0.75rem;
-            font-weight: bold;
-            color: #b94a48;
-            display: block;
-            margin-top: 6px;
-        }
-        .fundadora-controls-box input[type=range] {
-            padding: 0;
-            margin: 4px 0 8px 0;
         }
     </style>
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
@@ -1046,21 +1026,6 @@
                         <!-- Se llena dinámicamente -->
                     </div>
 
-                    <!-- Panel Exclusivo de Ajuste de Posición para la FUNDADORA -->
-                    <div id="panelAjusteFundadora" class="fundadora-controls-box" style="display: none;">
-                        <h4 style="margin: 0 0 6px 0; color: #ff0033; font-size: 0.85rem;">🔥 Marco Fundadora: Ajuste 100% Movible</h4>
-                        <p style="font-size: 0.7rem; color: #8c827b; margin-top: 0;">Mueve el marco para encajarlo perfectamente sobre tu foto sin opacarla:</p>
-                        
-                        <label>Posición Horizontal (X): <span id="valFX">0px</span></label>
-                        <input type="range" id="sliderFX" min="-25" max="25" value="0" oninput="moverMarcoFundadora()">
-
-                        <label>Posición Vertical (Y): <span id="valFY">0px</span></label>
-                        <input type="range" id="sliderFY" min="-25" max="25" value="0" oninput="moverMarcoFundadora()">
-
-                        <label>Escala / Tamaño: <span id="valFS">1.0x</span></label>
-                        <input type="range" id="sliderFS" min="0.8" max="1.4" step="0.05" value="1" oninput="moverMarcoFundadora()">
-                    </div>
-
                     <div style="margin-top: 16px; border-top: 1px solid var(--border-soft); padding-top: 12px;">
                         <h4 style="font-size: 0.8rem; color: var(--text-main); margin-bottom: 6px;">⚙️ Gestión de Perfiles</h4>
                         <select id="selectPerfilActivo" style="margin-bottom: 8px;" onchange="cambiarPerfilActivo(this.value)">
@@ -1167,7 +1132,6 @@
                     const datosMia = db[nombreFundadora];
                     datosMia.isGold = true; 
                     
-                    // Asegurar que la fundadora tenga desbloqueado su marco exclusivo
                     if (!datosMia.marcosDesbloqueados) datosMia.marcosDesbloqueados = ['marco-multicolor'];
                     if (!datosMia.marcosDesbloqueados.includes('marco-fundadora')) {
                         datosMia.marcosDesbloqueados.push('marco-fundadora');
@@ -1240,27 +1204,6 @@
                 }
                 actualizarDatosActuales({ marcosDesbloqueados: userData.marcosDesbloqueados });
 
-                // Aplicar coordenadas del marco movible de Fundadora si existen
-                if (userData.fundadoraPos) {
-                    document.documentElement.style.setProperty('--fundadora-x', userData.fundadoraPos.x + 'px');
-                    document.documentElement.style.setProperty('--fundadora-y', userData.fundadoraPos.y + 'px');
-                    document.documentElement.style.setProperty('--fundadora-scale', userData.fundadoraPos.s);
-                    
-                    document.getElementById("sliderFX").value = userData.fundadoraPos.x;
-                    document.getElementById("sliderFY").value = userData.fundadoraPos.y;
-                    document.getElementById("sliderFS").value = userData.fundadoraPos.s;
-
-                    document.getElementById("valFX").innerText = userData.fundadoraPos.x + 'px';
-                    document.getElementById("valFY").innerText = userData.fundadoraPos.y + 'px';
-                    document.getElementById("valFS").innerText = userData.fundadoraPos.s + 'x';
-                }
-
-                if (userData.isGold) {
-                    document.getElementById("panelAjusteFundadora").style.display = "block";
-                } else {
-                    document.getElementById("panelAjusteFundadora").style.display = "none";
-                }
-
                 cargarDatosCarnet(userData);
                 renderizarBoutiqueMarcos();
                 renderizarMisMarcosEquipar();
@@ -1275,24 +1218,6 @@
                 document.getElementById("heroBioDisplay").innerText = "";
             }
             comprobarMatches();
-        }
-
-        function moverMarcoFundadora() {
-            const x = document.getElementById("sliderFX").value;
-            const y = document.getElementById("sliderFY").value;
-            const s = document.getElementById("sliderFS").value;
-
-            document.getElementById("valFX").innerText = x + 'px';
-            document.getElementById("valFY").innerText = y + 'px';
-            document.getElementById("valFS").innerText = s + 'x';
-
-            document.documentElement.style.setProperty('--fundadora-x', x + 'px');
-            document.documentElement.style.setProperty('--fundadora-y', y + 'px');
-            document.documentElement.style.setProperty('--fundadora-scale', s);
-
-            actualizarDatosActuales({
-                fundadoraPos: { x: parseInt(x), y: parseInt(y), s: parseFloat(s) }
-            });
         }
 
         function actualizarCorazones(cantidad) {
@@ -1349,7 +1274,6 @@
             const desbloqueados = data.marcosDesbloqueados || ['marco-multicolor'];
 
             grid.innerHTML = MARCOS_CATALOGO.map(m => {
-                // Si es exclusivo de Fundadora y la chica no es Fundadora, no se muestra en la tienda pública
                 if (m.exclusivoFundadora && !data.isGold) return '';
 
                 const tiene = desbloqueados.includes(m.id);
