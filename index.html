@@ -24,6 +24,10 @@
             --accent-green: #87a38a;
             --accent-yellow: #fce38a;
             --border-soft: #ede6dc;
+            /* Posicionamiento dinámico del marco de Fundadora */
+            --fundadora-x: 0px;
+            --fundadora-y: 0px;
+            --fundadora-scale: 1;
         }
 
         body {
@@ -348,7 +352,7 @@
         .accordion-body { display: none; padding: 6px 2px 10px 2px; }
         .accordion-body.open { display: block; }
 
-        .grid-shop { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px; }
+        .grid-shop { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 10px; }
 
         #cartaFlotanteBox {
             display: none;
@@ -574,12 +578,22 @@
             display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 12px rgba(0,0,0,0.15); font-size: 1.4rem; transition: transform 3s cubic-bezier(0.15, 0.9, 0.2, 1);
         }
 
-        .shop-item { border: 1.5px solid var(--border-soft); border-radius: 16px; padding: 12px; background: #fff; display: flex; flex-direction: column; justify-content: space-between; box-shadow: 0 4px 12px rgba(0,0,0,0.02); }
-        .shop-flex { display: flex; align-items: center; gap: 10px; }
-        .preview-box { width: 44px; height: 52px; background: #faf5f0; border-radius: 10px; position: relative; overflow: visible; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 1.2rem; border: 1px solid #e2dcd3; }
-        .shop-item-info h4 { margin: 0 0 2px 0; font-size: 0.82rem; color: var(--text-main); font-weight: 700; }
-        .shop-item-info p { margin: 0; font-size: 0.68rem; color: #8c827b; }
-        .btn-buy { background: linear-gradient(135deg, var(--accent-coral), var(--accent-peach)); color: white; border: none; padding: 7px; border-radius: 10px; font-weight: bold; font-size: 0.75rem; cursor: pointer; width: 100%; margin-top: 10px; box-shadow: 0 3px 8px rgba(242, 139, 114, 0.25); }
+        .shop-item { border: 1.5px solid var(--border-soft); border-radius: 16px; padding: 12px; background: #fff; display: flex; flex-direction: column; justify-content: space-between; box-shadow: 0 4px 12px rgba(0,0,0,0.02); text-align: center; }
+        .shop-flex { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+        .preview-box { width: 54px; height: 54px; background: #faf5f0; border-radius: 50%; position: relative; overflow: visible; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 1.2rem; border: 1px solid #e2dcd3; margin-bottom: 4px; }
+        .shop-item-info h4 { margin: 0 0 4px 0; font-size: 0.82rem; color: var(--text-main); font-weight: 700; }
+        .price-badge-tag {
+            display: inline-block;
+            background: #fff3ee;
+            border: 1px solid var(--accent-coral);
+            color: var(--accent-coral);
+            font-weight: 800;
+            font-size: 0.75rem;
+            padding: 3px 8px;
+            border-radius: 12px;
+            margin-top: 2px;
+        }
+        .btn-buy { background: linear-gradient(135deg, var(--accent-coral), var(--accent-peach)); color: white; border: none; padding: 8px; border-radius: 10px; font-weight: bold; font-size: 0.75rem; cursor: pointer; width: 100%; margin-top: 10px; box-shadow: 0 3px 8px rgba(242, 139, 114, 0.25); }
 
         .carta-item {
             background: #fffdf9;
@@ -623,11 +637,16 @@
             z-index: 1;
         }
 
-        /* --- EFECTOS DE MARCOS DE NEÓN Y HUMOS CIRCULARES --- */
+        /* --- EFECTOS DE MARCOS DE NEÓN Y HUMO (COLORES FIJOS) --- */
         @keyframes smokeRotate {
-            0% { transform: rotate(0deg) scale(1); filter: hue-rotate(0deg); opacity: 0.8; }
-            50% { transform: rotate(180deg) scale(1.08); filter: hue-rotate(180deg); opacity: 1; }
-            100% { transform: rotate(360deg) scale(1); filter: hue-rotate(360deg); opacity: 0.8; }
+            0% { transform: rotate(0deg) scale(1); opacity: 0.85; }
+            50% { transform: rotate(180deg) scale(1.06); opacity: 1; }
+            100% { transform: rotate(360deg) scale(1); opacity: 0.85; }
+        }
+
+        @keyframes redSmokePulse {
+            0% { box-shadow: 0 0 12px #ff0033, 0 0 25px #ff3300, inset 0 0 8px #ff0000; }
+            100% { box-shadow: 0 0 22px #ff0033, 0 0 40px #ff0055, inset 0 0 14px #ff3333; }
         }
 
         .marco-neon-humo {
@@ -638,50 +657,48 @@
             animation: smokeRotate 6s linear infinite;
             pointer-events: none;
             z-index: 5;
-            box-shadow: inset 0 0 10px rgba(255,255,255,0.5);
         }
 
-        /* Marco Exclusivo Fundadora (Corona Solar / Eclipse) */
-        @keyframes eclipseCorona {
-            0% { box-shadow: 0 0 15px #ffd700, 0 0 30px #ff8c00, inset 0 0 15px #ffffff; border-color: #ffd700; }
-            50% { box-shadow: 0 0 25px #ff4500, 0 0 45px #ffd700, inset 0 0 20px #ffdab9; border-color: #ff8c00; }
-            100% { box-shadow: 0 0 15px #ffd700, 0 0 30px #ff8c00, inset 0 0 15px #ffffff; border-color: #ffd700; }
-        }
-        .marco-eclipse {
-            background: radial-gradient(circle, rgba(0,0,0,0.85) 60%, rgba(255,140,0,0.4) 85%, rgba(255,215,0,0.8) 100%);
-            border: 3px solid #ffd700;
-            animation: eclipseCorona 4s ease-in-out infinite;
-        }
-
+        /* COLORES FIJOS E INDIVIDUALES PARA CADA MARCO */
         .marco-multicolor {
-            background: radial-gradient(circle, rgba(255,0,127,0.15) 0%, rgba(79,172,254,0.15) 70%, transparent 100%);
-            box-shadow: 0 0 15px #ff007f, 0 0 25px #00f2fe;
+            background: radial-gradient(circle, rgba(255,0,127,0.12) 0%, rgba(0,242,254,0.12) 70%, transparent 100%);
+            box-shadow: 0 0 12px #ff007f, 0 0 22px #00f2fe;
             border-color: #ff007f;
         }
         .marco-rosa {
-            background: radial-gradient(circle, rgba(255,105,180,0.2) 0%, rgba(255,20,147,0.1) 70%, transparent 100%);
-            box-shadow: 0 0 15px #ff69b4, 0 0 25px #ff1493;
-            border-color: #ff69b4;
+            background: radial-gradient(circle, rgba(255,20,147,0.15) 0%, transparent 70%);
+            box-shadow: 0 0 15px #ff1493, 0 0 25px #ff69b4;
+            border-color: #ff1493;
         }
         .marco-azul {
-            background: radial-gradient(circle, rgba(0,242,254,0.2) 0%, rgba(79,172,254,0.1) 70%, transparent 100%);
-            box-shadow: 0 0 15px #00f2fe, 0 0 25px #4facfe;
-            border-color: #00f2fe;
+            background: radial-gradient(circle, rgba(0,210,255,0.15) 0%, transparent 70%);
+            box-shadow: 0 0 15px #00d2ff, 0 0 25px #0072ff;
+            border-color: #00d2ff;
         }
         .marco-morado {
-            background: radial-gradient(circle, rgba(161,100,255,0.2) 0%, rgba(121,40,202,0.1) 70%, transparent 100%);
-            box-shadow: 0 0 15px #a164ff, 0 0 25px #7928ca;
-            border-color: #a164ff;
+            background: radial-gradient(circle, rgba(157,80,187,0.15) 0%, transparent 70%);
+            box-shadow: 0 0 15px #9d50bb, 0 0 25px #6e48aa;
+            border-color: #9d50bb;
         }
         .marco-dorado {
-            background: radial-gradient(circle, rgba(255,215,0,0.2) 0%, rgba(218,165,32,0.1) 70%, transparent 100%);
-            box-shadow: 0 0 15px #ffd700, 0 0 25px #daa520;
+            background: radial-gradient(circle, rgba(255,215,0,0.15) 0%, transparent 70%);
+            box-shadow: 0 0 15px #ffd700, 0 0 25px #ff8c00;
             border-color: #ffd700;
         }
         .marco-verde {
-            background: radial-gradient(circle, rgba(0,255,127,0.2) 0%, rgba(46,139,87,0.1) 70%, transparent 100%);
-            box-shadow: 0 0 15px #00ff7f, 0 0 25px #2e8b57;
-            border-color: #00ff7f;
+            background: radial-gradient(circle, rgba(0,255,135,0.15) 0%, transparent 70%);
+            box-shadow: 0 0 15px #00ff87, 0 0 25px #60efff;
+            border-color: #00ff87;
+        }
+
+        /* MARCO EXCLUSIVO DE FUNDADORA: FUEGO & HUMO ROJO (MOVIBLE Y TRANSPARENTE EN EL CENTRO) */
+        .marco-fundadora {
+            inset: -8px;
+            background: radial-gradient(circle, transparent 55%, rgba(255,0,51,0.2) 75%, transparent 100%);
+            box-shadow: 0 0 18px #ff0033, 0 0 32px #ff3300, inset 0 0 10px #ff0000;
+            border: 3.5px solid #ff0033;
+            animation: redSmokePulse 3s ease-in-out infinite alternate, smokeRotate 7s linear infinite;
+            transform: translate(var(--fundadora-x), var(--fundadora-y)) scale(var(--fundadora-scale));
         }
 
         .chat-box-container {
@@ -740,6 +757,26 @@
             font-style: italic;
             color: var(--accent-coral);
             font-weight: 600;
+        }
+
+        /* Panel de control de movimiento de marco de Fundadora */
+        .fundadora-controls-box {
+            background: #fff5f2;
+            border: 1.5px dashed #ff0033;
+            border-radius: 14px;
+            padding: 12px;
+            margin-bottom: 14px;
+        }
+        .fundadora-controls-box label {
+            font-size: 0.75rem;
+            font-weight: bold;
+            color: #b94a48;
+            display: block;
+            margin-top: 6px;
+        }
+        .fundadora-controls-box input[type=range] {
+            padding: 0;
+            margin: 4px 0 8px 0;
         }
     </style>
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
@@ -889,9 +926,9 @@
 
             <div id="tienda" class="tab-content">
                 <div class="card" style="background: linear-gradient(135deg, #fef9e7, #fcf4db); border: 1.5px solid #f3e5ab;">
-                    <h3 style="color: #8c6d1f; display:flex; align-items:center; gap:6px;">📢 Buzón de Actualizaciones</h3>
+                    <h3 style="color: #8c6d1f; display:flex; align-items:center; gap:6px;">📢 Boutique de Marcos</h3>
                     <p style="font-size:0.78rem; color:#6b5314; line-height:1.4; margin:0;">
-                        <strong>¡Boutique de Marcos actualizada!</strong> Los marcos de neón ahora están separados por colores independientes para que cada chica elija su estilo favorito. ✨
+                        <strong>¡Colores individuales y fijos!</strong> Cada marco mantiene su color correspondiente. Compra tus favoritos con tus puntos 💖 y equípatelos cuando quieras. ✨
                     </p>
                 </div>
 
@@ -909,10 +946,10 @@
                 </div>
 
                 <div class="card">
-                    <h3>🛍️ Boutique de Marcos (Colores Separados)</h3>
-                    <p style="font-size:0.75rem; color:#8c827b; margin-top:-4px;">Elige y adquiere tu color de neón preferido de forma individual.</p>
+                    <h3>🛍️ Colección de Marcos Neón</h3>
+                    <p style="font-size:0.75rem; color:#8c827b; margin-top:-4px;">Precios en 💖 indicados abajo de cada marco:</p>
                     <div class="grid-shop" id="tiendaMarcosGrid">
-                        <!-- Se llena dinámicamente con JS -->
+                        <!-- Se llena dinámicamente -->
                     </div>
                 </div>
             </div>
@@ -980,7 +1017,7 @@
                     <p style="font-size:0.75rem; color:#8c827b; margin-top:-4px;">Regístrate con tu apodo y código exclusivo.</p>
                     
                     <input type="text" id="inName" placeholder="Tu Apodo / Nombre" maxlength="15">
-                    <input type="text" id="inNote" placeholder="💬 Escribe tu nota (ej: Cómeme un pie)..." maxlength="30">
+                    <input type="text" id="inNote" placeholder="💬 Escribe tu nota..." maxlength="30">
                     <textarea id="inBio" placeholder="Escribe tu biografía corta..." rows="2" maxlength="80"></textarea>
                     
                     <select id="inMision">
@@ -1003,10 +1040,25 @@
 
                 <div class="card" id="seccionMiCarnet" style="display: none;">
                     <h3 style="margin-bottom: 8px;">🖼️ Tus Marcos Desbloqueados</h3>
-                    <p style="font-size: 0.75rem; color: #8c827b; margin-top: -4px;">Elige entre los colores que ya has comprado:</p>
+                    <p style="font-size: 0.75rem; color: #8c827b; margin-top: -4px;">Selecciona el marco que deseas equipar:</p>
 
                     <div id="listaMisMarcosEquipar" style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 14px;">
-                        <!-- Se llena dinámicamente con JS -->
+                        <!-- Se llena dinámicamente -->
+                    </div>
+
+                    <!-- Panel Exclusivo de Ajuste de Posición para la FUNDADORA -->
+                    <div id="panelAjusteFundadora" class="fundadora-controls-box" style="display: none;">
+                        <h4 style="margin: 0 0 6px 0; color: #ff0033; font-size: 0.85rem;">🔥 Marco Fundadora: Ajuste 100% Movible</h4>
+                        <p style="font-size: 0.7rem; color: #8c827b; margin-top: 0;">Mueve el marco para encajarlo perfectamente sobre tu foto sin opacarla:</p>
+                        
+                        <label>Posición Horizontal (X): <span id="valFX">0px</span></label>
+                        <input type="range" id="sliderFX" min="-25" max="25" value="0" oninput="moverMarcoFundadora()">
+
+                        <label>Posición Vertical (Y): <span id="valFY">0px</span></label>
+                        <input type="range" id="sliderFY" min="-25" max="25" value="0" oninput="moverMarcoFundadora()">
+
+                        <label>Escala / Tamaño: <span id="valFS">1.0x</span></label>
+                        <input type="range" id="sliderFS" min="0.8" max="1.4" step="0.05" value="1" oninput="moverMarcoFundadora()">
                     </div>
 
                     <div style="margin-top: 16px; border-top: 1px solid var(--border-soft); padding-top: 12px;">
@@ -1059,13 +1111,13 @@
         const CODIGO_FUNDADORA = "BL-FUNDADORA-GOLD";
 
         const MARCOS_CATALOGO = [
-            { id: 'marco-eclipse', nombre: '🌑 Eclipse Solar (Exclusivo Fundadora)', precio: 0, exclusivoFundadora: true },
-            { id: 'marco-multicolor', nombre: '🌈 Multicolour', precio: 0, exclusivoFundadora: false },
-            { id: 'marco-rosa', nombre: '🌸 Rosa Neón', precio: 50, exclusivoFundadora: false },
-            { id: 'marco-azul', nombre: '💧 Azul Eléctrico', precio: 50, exclusivoFundadora: false },
-            { id: 'marco-morado', nombre: '🔮 Morado Místico', precio: 75, exclusivoFundadora: false },
-            { id: 'marco-dorado', nombre: '✨ Oro Sáfico', precio: 100, exclusivoFundadora: false },
-            { id: 'marco-verde', nombre: '🌿 Verde Esmeralda', precio: 60, exclusivoFundadora: false }
+            { id: 'marco-multicolor', nombre: '🌈 Multicolour', precio: 0 },
+            { id: 'marco-rosa', nombre: '🌸 Rosa Neón', precio: 50 },
+            { id: 'marco-azul', nombre: '💧 Azul Eléctrico', precio: 50 },
+            { id: 'marco-morado', nombre: '🔮 Morado Místico', precio: 75 },
+            { id: 'marco-dorado', nombre: '✨ Oro Sáfico', precio: 100 },
+            { id: 'marco-verde', nombre: '🌿 Verde Esmeralda', precio: 60 },
+            { id: 'marco-fundadora', nombre: '🔥 Fuego Rojo (Fundadora)', precio: 0, exclusivoFundadora: true }
         ];
 
         let carnetFotoBase64 = "";
@@ -1114,12 +1166,12 @@
                 if (nombreFundadora && db[nombreFundadora]) {
                     const datosMia = db[nombreFundadora];
                     datosMia.isGold = true; 
-                    // Asegurar marco eclipse exclusivo para fundadora
+                    
+                    // Asegurar que la fundadora tenga desbloqueado su marco exclusivo
                     if (!datosMia.marcosDesbloqueados) datosMia.marcosDesbloqueados = ['marco-multicolor'];
-                    if (!datosMia.marcosDesbloqueados.includes('marco-eclipse')) {
-                        datosMia.marcosDesbloqueados.push('marco-eclipse');
+                    if (!datosMia.marcosDesbloqueados.includes('marco-fundadora')) {
+                        datosMia.marcosDesbloqueados.push('marco-fundadora');
                     }
-                    datosMia.marcoColor = 'marco-eclipse';
 
                     const nuevaDb = {};
                     nuevaDb[nombreFundadora] = datosMia;
@@ -1180,15 +1232,34 @@
                 document.getElementById("formRegistroCarnet").style.display = "none";
                 document.getElementById("seccionMiCarnet").style.display = "block";
                 
-                // Asegurar inventario inicial de marcos y exclusivo de fundadora
                 if (!userData.marcosDesbloqueados) {
                     userData.marcosDesbloqueados = ['marco-multicolor'];
                 }
-                if (userData.isGold && !userData.marcosDesbloqueados.includes('marco-eclipse')) {
-                    userData.marcosDesbloqueados.push('marco-eclipse');
-                    userData.marcoColor = 'marco-eclipse';
+                if (userData.isGold && !userData.marcosDesbloqueados.includes('marco-fundadora')) {
+                    userData.marcosDesbloqueados.push('marco-fundadora');
                 }
-                actualizarDatosActuales({ marcosDesbloqueados: userData.marcosDesbloqueados, marcoColor: userData.marcoColor });
+                actualizarDatosActuales({ marcosDesbloqueados: userData.marcosDesbloqueados });
+
+                // Aplicar coordenadas del marco movible de Fundadora si existen
+                if (userData.fundadoraPos) {
+                    document.documentElement.style.setProperty('--fundadora-x', userData.fundadoraPos.x + 'px');
+                    document.documentElement.style.setProperty('--fundadora-y', userData.fundadoraPos.y + 'px');
+                    document.documentElement.style.setProperty('--fundadora-scale', userData.fundadoraPos.s);
+                    
+                    document.getElementById("sliderFX").value = userData.fundadoraPos.x;
+                    document.getElementById("sliderFY").value = userData.fundadoraPos.y;
+                    document.getElementById("sliderFS").value = userData.fundadoraPos.s;
+
+                    document.getElementById("valFX").innerText = userData.fundadoraPos.x + 'px';
+                    document.getElementById("valFY").innerText = userData.fundadoraPos.y + 'px';
+                    document.getElementById("valFS").innerText = userData.fundadoraPos.s + 'x';
+                }
+
+                if (userData.isGold) {
+                    document.getElementById("panelAjusteFundadora").style.display = "block";
+                } else {
+                    document.getElementById("panelAjusteFundadora").style.display = "none";
+                }
 
                 cargarDatosCarnet(userData);
                 renderizarBoutiqueMarcos();
@@ -1204,6 +1275,24 @@
                 document.getElementById("heroBioDisplay").innerText = "";
             }
             comprobarMatches();
+        }
+
+        function moverMarcoFundadora() {
+            const x = document.getElementById("sliderFX").value;
+            const y = document.getElementById("sliderFY").value;
+            const s = document.getElementById("sliderFS").value;
+
+            document.getElementById("valFX").innerText = x + 'px';
+            document.getElementById("valFY").innerText = y + 'px';
+            document.getElementById("valFS").innerText = s + 'x';
+
+            document.documentElement.style.setProperty('--fundadora-x', x + 'px');
+            document.documentElement.style.setProperty('--fundadora-y', y + 'px');
+            document.documentElement.style.setProperty('--fundadora-scale', s);
+
+            actualizarDatosActuales({
+                fundadoraPos: { x: parseInt(x), y: parseInt(y), s: parseFloat(s) }
+            });
         }
 
         function actualizarCorazones(cantidad) {
@@ -1260,7 +1349,9 @@
             const desbloqueados = data.marcosDesbloqueados || ['marco-multicolor'];
 
             grid.innerHTML = MARCOS_CATALOGO.map(m => {
-                if (m.exclusivoFundadora && !data.isGold) return ''; // Ocultar el marco exclusivo a quien no sea fundadora
+                // Si es exclusivo de Fundadora y la chica no es Fundadora, no se muestra en la tienda pública
+                if (m.exclusivoFundadora && !data.isGold) return '';
+
                 const tiene = desbloqueados.includes(m.id);
                 return `
                     <div class="shop-item">
@@ -1271,12 +1362,12 @@
                             </div>
                             <div class="shop-item-info">
                                 <h4>${m.nombre}</h4>
-                                <p>${m.precio === 0 ? 'Gratis' : m.precio + ' 💖'}</p>
+                                <div class="price-badge-tag">${m.precio === 0 ? 'Gratis / Exclusivo' : m.precio + ' 💖'}</div>
                             </div>
                         </div>
                         ${tiene 
                             ? `<button class="btn-buy" style="background:#87a38a; cursor:default;" disabled>✅ En propiedad</button>`
-                            : `<button class="btn-buy" onclick="comprarMarco('${m.id}', ${m.precio})">Comprar (${m.precio} 💖)</button>`
+                            : `<button class="btn-buy" onclick="comprarMarco('${m.id}', ${m.precio})">Comprar por ${m.precio} 💖</button>`
                         }
                     </div>
                 `;
@@ -1294,7 +1385,6 @@
 
             contenedor.innerHTML = desbloqueados.map(idMarco => {
                 const info = MARCOS_CATALOGO.find(m => m.id === idMarco) || { nombre: idMarco };
-                if (info.exclusivoFundadora && !data.isGold) return '';
                 const esActual = actual === idMarco;
                 return `
                     <button class="btn-principal" style="font-size:0.75rem; background:${esActual ? 'var(--accent-coral)' : 'var(--accent-green)'};" onclick="cambiarColorMarco('${idMarco}')">
@@ -1310,11 +1400,6 @@
 
             const desbloqueados = data.marcosDesbloqueados || ['marco-multicolor'];
             if (desbloqueados.includes(idMarco)) return alert("¡Ya tienes este marco en tu colección!");
-
-            const marcoInfo = MARCOS_CATALOGO.find(m => m.id === idMarco);
-            if (marcoInfo && marcoInfo.exclusivoFundadora && !data.isGold) {
-                return alert("⛔ Este marco es exclusivo para la FUNDADORA.");
-            }
 
             if (!data.isGold && (data.hearts || 0) < precio) {
                 return alert(`⛔ No tienes suficientes corazones. Te faltan puntos 💖.`);
@@ -1462,13 +1547,14 @@
             const today = new Date().toLocaleDateString();
             const timestamp = note ? new Date().getTime() : null;
 
-            const marcosIniciales = esGold ? ["marco-multicolor", "marco-eclipse"] : ["marco-multicolor"];
-            const colorInicial = esGold ? "marco-eclipse" : "marco-multicolor";
+            const marcosIniciales = ["marco-multicolor"];
+            if (esGold) marcosIniciales.push("marco-fundadora");
 
             const nuevoUsuario = {
                 name, note: note || "", noteTimestamp: timestamp, noteAudio: null, bio: bio || "", mision, cardId, date: today, photo: carnetFotoBase64, isGold: esGold, isSilver: esSilver,
-                marcoColor: colorInicial,
+                marcoColor: esGold ? "marco-fundadora" : "marco-multicolor",
                 marcosDesbloqueados: marcosIniciales,
+                fundadoraPos: { x: 0, y: 0, s: 1 },
                 hearts: esGold ? 9999 : 100,
                 buzonCartas: []
             };
@@ -1553,7 +1639,7 @@
                 if(sealNormal) sealNormal.style.display = "block";
             }
 
-            const colorClase = data.marcoColor || (data.isGold ? "marco-eclipse" : "marco-multicolor");
+            const colorClase = data.marcoColor || "marco-multicolor";
             const heroAvatarBox = document.getElementById("heroProfileAvatarBox");
             if (data.photo) {
                 document.getElementById("cardPhotoBox").innerHTML = `<img src="${data.photo}" class="card-photo-img"><div id="marcoLayer" class="marco-neon-humo ${colorClase}"></div>`;
