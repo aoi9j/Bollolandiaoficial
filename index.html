@@ -538,7 +538,8 @@
             font-size: 0.75rem;
         }
         .fc { font-family: inherit; }
-        .fc .fc-toolbar-title { font-size: 0.9rem !important; color: var(--text-main); }
+        .fc .fc-toolbar-title { font-size: 0.9rem !important; color: var(--text-main); cursor: pointer; }
+        .fc .fc-toolbar-title:hover { color: var(--accent-coral); text-decoration: underline; }
         .fc .fc-button { background: var(--accent-green) !important; border: none !important; font-size: 0.75rem !important; padding: 4px 8px !important; }
         .fc-daygrid-day { cursor: pointer; }
         .fc-daygrid-day:hover { background-color: rgba(135, 163, 138, 0.1); }
@@ -754,32 +755,31 @@
             <!-- PESTAÑA 2: AGENDA Y PLANES -->
             <div id="agenda" class="tab-content" style="display:none;">
                 <div class="card">
-                    <h3>📅 Calendario, Cumpleaños y Quedadas</h3>
-                    <p style="font-size:0.75rem; color:#8c827b; margin-top:-4px;">💡 <em>Consejo: Pincha directamente en cualquier día del calendario para anotar cumpleaños y ganar +15 💖 automático.</em></p>
+                    <h3>📅 Calendario</h3>
+                    <p style="font-size:0.75rem; color:#8c827b; margin-top:-4px;">💡 <em>Consejo: Pincha arriba en el mes y año para saltar rápidamente a tu fecha de nacimiento o cualquier otro mes. Pincha en cualquier día para anotar tu cumpleaños y ganar +15 💖 automático.</em></p>
                     
                     <!-- CALENDARIO FUNCIONAL -->
                     <div id="calendarContainer">
                         <div id="calendar"></div>
                     </div>
+                </div>
 
-                    <div class="accordion-header" onclick="toggleAccordion('accQuedada')" style="margin-top:8px;"><span>📍 Proponer Plan / Quedada (+25💖)</span> <span>▼</span></div>
+                <div class="card">
+                    <h3>📍 Quedadas</h3>
+                    
+                    <div class="accordion-header" onclick="toggleAccordion('accQuedada')"><span>📍 Proponer Plan / Quedada (+25💖)</span> <span>▼</span></div>
                     <div id="accQuedada" class="accordion-body">
                         <input type="text" id="tituloQuedada" placeholder="Plan (ej: Café y chismes...)">
                         <input type="text" id="lugarQuedada" placeholder="Lugar o Ciudad (ej: Madrid, Barcelona...)">
                         <input type="datetime-local" id="fechaQuedada">
                         <button class="btn-principal" onclick="agregarQuedada()">Publicar Plan</button>
                     </div>
-                </div>
 
-                <div class="card">
-                    <h3>🎉 Próximos Eventos y Mapa con Chinchetas</h3>
-                    <h4 style="font-size:0.8rem; color:var(--accent-green); margin:8px 0 4px 0;">🎂 Cumpleaños Anotados:</h4>
-                    <div id="listaCumples" style="font-size:0.8rem; margin-bottom:10px;">Aún no hay cumpleaños.</div>
-                    <h4 style="font-size:0.8rem; color:var(--accent-green); margin:8px 0 4px 0;">📍 Quedadas:</h4>
+                    <h4 style="font-size:0.8rem; color:var(--accent-green); margin:12px 0 4px 0;">🎉 Lista de Planes:</h4>
                     <div id="listaQuedadas" style="font-size:0.8rem;">Aún no hay planes.</div>
 
                     <!-- MAPA CON CHINCHETAS -->
-                    <h4 style="font-size:0.8rem; color:var(--accent-green); margin:12px 0 4px 0;">🗺️ Mapa Interactivo con Chinchetas:</h4>
+                    <h4 style="font-size:0.8rem; color:var(--accent-green); margin:14px 0 4px 0;">🗺️ Mapa Interactivo con Chinchetas:</h4>
                     <div id="mapContainer"></div>
                 </div>
             </div>
@@ -866,6 +866,35 @@
                 </div>
             </div>
 
+        </div>
+    </div>
+
+    <!-- MODAL SELECTOR DE FECHA / CUMPLEAÑOS -->
+    <div id="modalSelectorFecha" class="card-modal" onclick="cerrarModalFechaCustom()">
+        <div style="background:#fff; padding:20px; border-radius:18px; width:280px; text-align:center; border:2px solid var(--accent-green); box-shadow:0 10px 25px rgba(0,0,0,0.2);" onclick="event.stopPropagation()">
+            <h3 style="color:var(--text-main); font-size:0.95rem; margin-bottom:8px;">📅 Seleccionar Mes y Año</h3>
+            <p style="font-size:0.75rem; color:#8c827b; margin-bottom:12px;">Elige a qué fecha deseas saltar en el calendario:</p>
+            <div style="display:flex; gap:8px; margin-bottom:12px;">
+                <select id="selectMesModal" style="flex:1; margin:0;">
+                    <option value="0">Enero</option>
+                    <option value="1">Febrero</option>
+                    <option value="2">Marzo</option>
+                    <option value="3">Abril</option>
+                    <option value="4">Mayo</option>
+                    <option value="5">Junio</option>
+                    <option value="6">Julio</option>
+                    <option value="7">Agosto</option>
+                    <option value="8">Septiembre</option>
+                    <option value="9">Octubre</option>
+                    <option value="10">Noviembre</option>
+                    <option value="11">Diciembre</option>
+                </select>
+                <select id="selectAnioModal" style="width:90px; margin:0;">
+                    <!-- Se llena por JS -->
+                </select>
+            </div>
+            <button class="btn-principal" onclick="irAFechaSeleccionada()">✨ Ir a la Fecha</button>
+            <button class="btn-action btn-close" style="margin-top:8px; width:100%;" onclick="cerrarModalFechaCustom()">Cancelar</button>
         </div>
     </div>
 
@@ -1356,22 +1385,42 @@
                         right: 'next'
                     },
                     events: obtenerEventosCalendario(),
+                    datesSet: function() {
+                        // Asignar evento al título del calendario superior para abrir el selector de fecha/año rápido
+                        const titleEl = document.querySelector('.fc-toolbar-title');
+                        if (titleEl && !titleEl.hasAttribute('data-custom-click')) {
+                            titleEl.setAttribute('data-custom-click', 'true');
+                            titleEl.style.cursor = 'pointer';
+                            titleEl.title = 'Pincha para elegir mes y año';
+                            titleEl.addEventListener('click', abrirModalFechaCustom);
+                        }
+                    },
                     dateClick: function(info) {
                         const data = obtenerDatosActuales();
-                        if (!data) return alert("Crea un perfil primero para anotar cumpleaños 🎒");
-                        const nombre = prompt(`🎂 Escribe el nombre de la cumpleañera para el día ${info.dateStr}:`);
+                        if (!data) return alert("Crea un perfil primero para anotar tu cumpleaños 🎒");
+                        const nombre = prompt(`🎂 Anota el nombre para tu cumpleaños en el día ${info.dateStr}:`);
                         if (nombre && nombre.trim() !== "") {
                             const cumples = JSON.parse(localStorage.getItem('cumples') || '[]');
                             cumples.push({ nombre: nombre.trim(), fecha: info.dateStr });
                             localStorage.setItem('cumples', JSON.stringify(cumples));
                             actualizarCorazones(15);
-                            cargarCumples();
                             calendarInstance.addEvent({ title: `🎂 ${nombre.trim()}`, start: info.dateStr, color: '#f28b72' });
                             alert(`🎂 ¡Cumpleaños de ${nombre.trim()} guardado! Has ganado +15 💖`);
                         }
                     }
                 });
                 calendarInstance.render();
+            }
+
+            // Llenar select de años del modal rápido
+            const selectAnio = document.getElementById('selectAnioModal');
+            if(selectAnio && selectAnio.options.length === 0) {
+                const anioActual = new Date().getFullYear();
+                let aniosHTML = '';
+                for(let y = anioActual - 90; y <= anioActual + 5; y++) {
+                    aniosHTML += `<option value="${y}" ${y === anioActual ? 'selected' : ''}>${y}</option>`;
+                }
+                selectAnio.innerHTML = aniosHTML;
             }
 
             const mapEl = document.getElementById('mapContainer');
@@ -1382,6 +1431,24 @@
                 }).addTo(mapInstance);
                 actualizarPuntosMapa();
             }
+        }
+
+        function abrirModalFechaCustom() {
+            document.getElementById('modalSelectorFecha').style.display = 'flex';
+        }
+
+        function cerrarModalFechaCustom() {
+            document.getElementById('modalSelectorFecha').style.display = 'none';
+        }
+
+        function irAFechaSeleccionada() {
+            const mes = document.getElementById('selectMesModal').value;
+            const anio = document.getElementById('selectAnioModal').value;
+            if (calendarInstance) {
+                const fechaStr = `${anio}-${(parseInt(mes)+1).toString().padStart(2, '0')}-01`;
+                calendarInstance.gotoDate(fechaStr);
+            }
+            cerrarModalFechaCustom();
         }
 
         function obtenerEventosCalendario() {
@@ -1435,14 +1502,6 @@
                 
                 marcadoresMapa.push(marcador);
             });
-        }
-
-        function cargarCumples() {
-            const cumples = JSON.parse(localStorage.getItem('cumples') || '[]');
-            const cont = document.getElementById('listaCumples');
-            if(!cont) return;
-            if(cumples.length === 0) return cont.innerHTML = 'Aún no hay cumpleaños anotados.';
-            cont.innerHTML = cumples.map(c => `🎂 <strong>${c.nombre}</strong> (${c.fecha})<br>`).join('');
         }
 
         function agregarQuedada() {
@@ -1566,8 +1625,11 @@
         }
 
         window.addEventListener("DOMContentLoaded", function() {
+            // Limpiar datos de prueba anteriores para dejarlo completamente limpio
+            localStorage.removeItem('cumples');
+            localStorage.removeItem('quedadas');
+
             sincronizarInterfazUsuario();
-            cargarCumples();
             cargarQuedadas();
             cargarMascotas();
             inicializarCalendarioYMapa();
