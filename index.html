@@ -383,7 +383,6 @@
 
         .card-body { display: flex; padding: 12px; gap: 12px; align-items: flex-start; }
 
-        /* Columna izquierda adaptada para albergar la nota tipo Instagram arriba de la foto */
         .card-left-column {
             display: flex;
             flex-direction: column;
@@ -405,7 +404,6 @@
             box-shadow: 0 2px 6px rgba(0,0,0,0.05);
             position: relative;
         }
-        /* Pequeño rabillo de bocadillo estilo nota */
         .card-note-box::after {
             content: '';
             position: absolute;
@@ -497,7 +495,6 @@
         .btn-close { background: #4a403b; color: white; }
         .btn-download { background: var(--accent-green); color: white; box-shadow: 0 4px 12px rgba(135, 163, 138, 0.3); }
 
-        /* MARCOS ULTRA PREMIUM */
         .marco-plasma {
             position: absolute; inset: -6px; border-radius: 16px; z-index: 2; pointer-events: none;
             background: linear-gradient(135deg, #ff0055, #ff5e00, #ffb703);
@@ -705,7 +702,6 @@
                 <div class="header-sub">DRIVER LICENSE / CARNET SÁFICO</div>
             </div>
             <div class="card-body">
-                <!-- Columna izquierda con la nota estilo Instagram encima de la foto -->
                 <div class="card-left-column">
                     <div class="card-note-box" id="cardNoteOut" title="Nota actual">Nota...</div>
                     <div class="card-photo-box" id="cardPhotoBox" onclick="dispararCambioFotoDirecto()" title="Pincha aquí para cambiar tu foto">
@@ -780,7 +776,6 @@
         <div class="hero-card">
             <div>
                 <h2>Hola de nuevo, <span id="dashboardUserName">Mia</span>! ✨</h2>
-                <!-- Biografía mostrada aquí únicamente cuando se accede a la mochila -->
                 <div class="hero-bio-display" id="heroBioDisplay"></div>
                 <p>Disfruta de tu espacio seguro y conecta con tus amigas hoy.</p>
             </div>
@@ -945,11 +940,7 @@
                     <p style="font-size:0.75rem; color:#8c827b; margin-top:-4px;">Regístrate con tu apodo y código exclusivo.</p>
                     
                     <input type="text" id="inName" placeholder="Tu Apodo / Nombre" maxlength="15">
-                    
-                    <!-- Campo para nota de Instagram -->
                     <input type="text" id="inNote" placeholder="💬 Escribe tu nota (ej: Cómeme un pie)..." maxlength="30">
-                    
-                    <!-- Campo para Biografía -->
                     <textarea id="inBio" placeholder="Escribe tu biografía corta..." rows="2" maxlength="80"></textarea>
                     
                     <select id="inMision">
@@ -976,7 +967,6 @@
 
                     <div id="inventarioMarcos" class="boutique-frames-list"></div>
 
-                    <!-- Edición rápida de Nota y Biografía desde la mochila -->
                     <div style="margin-top: 14px; border-top: 1px solid var(--border-soft); padding-top: 10px;">
                         <h4 style="font-size: 0.8rem; color: var(--text-main); margin-bottom: 4px;">💬 Actualizar Nota del Carnet</h4>
                         <input type="text" id="inputEditarNote" placeholder="Tu nota actual..." maxlength="30" style="margin-bottom:6px;">
@@ -1119,7 +1109,7 @@
             }
 
             if(select) {
-                select.innerHTML = nombres.map(n => `<option value="${n}" ${n === perfilActivo ? 'selected' : ''}>${n} (${db[n].isGold ? 'Fundadora' : (db[n].isSilver ? 'Miembro VIP' : 'Miembro Sáfico')})</option>`).join('');
+                select.innerHTML = nombres.map(n => `<option value="${n}" ${n === perfilActivo ? 'selected' : ''}>${n} (${db[n].isGold ? 'FUNDADORA' : (db[n].isSilver ? 'Miembro VIP' : 'Miembro Sáfico')})</option>`).join('');
             }
             
             if(selectDest) {
@@ -1182,7 +1172,6 @@
             document.getElementById(idPestana).style.display = 'block';
             if(btn) btn.classList.add('active');
 
-            // Mostrar biografía debajo del saludo SÓLO en la pestaña de la mochila (extras)
             const heroBio = document.getElementById("heroBioDisplay");
             const userData = obtenerDatosActuales();
             if (idPestana === 'extras' && userData && userData.bio) {
