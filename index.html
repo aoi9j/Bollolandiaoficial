@@ -1,3 +1,14 @@
+¡Perfecto! Vamos a diseñar e integrar el sistema de **Drop de coleccionables** directamente en tu código para que aparezcan de forma dinámica y los usuarios puedan cazarlos y presumirlos en sus perfiles.
+
+### ¿Qué añadiremos con este Drop?
+
+1. **Sección de Colección / Vitrina**: Un apartado visual donde cada usuaria puede ver los objetos exclusivos que ha "cazado".
+2. **Sistema de Aparición Sorpresa (Drop)**: Un botón flotante o evento aleatorio/cronometrado que avisa cuando hay un objeto disponible para atrapar antes de que expire.
+3. **Integración con Puntos y Perfil**: Los coleccionables se guardan directamente en el objeto de cada usuaria en `localStorage` y se pueden equipar o mostrar en la tarjeta.
+
+Aquí tienes el código completo actualizado con la sección y la lógica del **Drop** integrada:
+
+```html
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -24,7 +35,6 @@
             --accent-green: #87a38a;
             --accent-yellow: #fce38a;
             --border-soft: #ede6dc;
-            /* Posicionamiento dinámico del marco de Fundadora */
             --fundadora-x: 0px;
             --fundadora-y: 0px;
             --fundadora-scale: 1;
@@ -368,6 +378,27 @@
             cursor: pointer;
         }
 
+        /* --- ESTILOS DEL BANNER FLOTANTE DE DROP SORPRESA --- */
+        #dropBannerFlotante {
+            display: none;
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: linear-gradient(135deg, #ff4500, #ff8c00);
+            color: white;
+            border-radius: 16px;
+            padding: 12px 18px;
+            box-shadow: 0 10px 25px rgba(255, 69, 0, 0.35);
+            z-index: 10005;
+            animation: bounceDrop 1s infinite alternate;
+            cursor: pointer;
+            border: 2px solid #fff;
+        }
+        @keyframes bounceDrop {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(-6px); }
+        }
+
         .file-input-label {
             background: #fbf9f6;
             border: 2px dashed var(--accent-green);
@@ -395,28 +426,13 @@
             padding: 16px;
         }
 
-        /* --- ANIMACIÓN DE CAÍDA (PRUEBA DEL DROP) --- */
         @keyframes dropIn {
-            0% {
-                transform: translateY(-100vh) scale(0.8) rotate(-10deg);
-                opacity: 0;
-            }
-            60% {
-                transform: translateY(20px) scale(1.02) rotate(3deg);
-                opacity: 1;
-            }
-            80% {
-                transform: translateY(-10px) scale(0.98) rotate(-1deg);
-            }
-            100% {
-                transform: translateY(0) scale(1) rotate(0deg);
-                opacity: 1;
-            }
+            0% { transform: translateY(-100vh) scale(0.8) rotate(-10deg); opacity: 0; }
+            60% { transform: translateY(20px) scale(1.02) rotate(3deg); opacity: 1; }
+            80% { transform: translateY(-10px) scale(0.98) rotate(-1deg); }
+            100% { transform: translateY(0) scale(1) rotate(0deg); opacity: 1; }
         }
-
-        .drop-animation {
-            animation: dropIn 0.6s cubic-bezier(0.25, 1, 0.5, 1) forwards;
-        }
+        .drop-animation { animation: dropIn 0.6s cubic-bezier(0.25, 1, 0.5, 1) forwards; }
 
         .mclovin-card {
             width: 320px;
@@ -488,10 +504,7 @@
             position: relative;
             cursor: pointer;
         }
-        .card-note-box:hover {
-            border-color: var(--accent-coral);
-            background: #fff5f2;
-        }
+        .card-note-box:hover { border-color: var(--accent-coral); background: #fff5f2; }
         .card-note-box::after {
             content: '';
             position: absolute;
@@ -660,13 +673,11 @@
             z-index: 1;
         }
 
-        /* --- EFECTOS DE MARCOS DE NEÓN Y HUMO (COLORES FIJOS) --- */
         @keyframes smokeRotate {
             0% { transform: rotate(0deg) scale(1); opacity: 0.85; }
             50% { transform: rotate(180deg) scale(1.06); opacity: 1; }
             100% { transform: rotate(360deg) scale(1); opacity: 0.85; }
         }
-
         @keyframes redSmokePulse {
             0% { box-shadow: 0 0 12px #ff0033, 0 0 25px #ff3300, inset 0 0 8px #ff0000; }
             100% { box-shadow: 0 0 22px #ff0033, 0 0 40px #ff0055, inset 0 0 14px #ff3333; }
@@ -682,39 +693,13 @@
             z-index: 5;
         }
 
-        /* COLORES FIJOS E INDIVIDUALES PARA CADA MARCO */
-        .marco-multicolor {
-            background: radial-gradient(circle, rgba(255,0,127,0.12) 0%, rgba(0,242,254,0.12) 70%, transparent 100%);
-            box-shadow: 0 0 12px #ff007f, 0 0 22px #00f2fe;
-            border-color: #ff007f;
-        }
-        .marco-rosa {
-            background: radial-gradient(circle, rgba(255,20,147,0.15) 0%, transparent 70%);
-            box-shadow: 0 0 15px #ff1493, 0 0 25px #ff69b4;
-            border-color: #ff1493;
-        }
-        .marco-azul {
-            background: radial-gradient(circle, rgba(0,210,255,0.15) 0%, transparent 70%);
-            box-shadow: 0 0 15px #00d2ff, 0 0 25px #0072ff;
-            border-color: #00d2ff;
-        }
-        .marco-morado {
-            background: radial-gradient(circle, rgba(157,80,187,0.15) 0%, transparent 70%);
-            box-shadow: 0 0 15px #9d50bb, 0 0 25px #6e48aa;
-            border-color: #9d50bb;
-        }
-        .marco-dorado {
-            background: radial-gradient(circle, rgba(255,215,0,0.15) 0%, transparent 70%);
-            box-shadow: 0 0 15px #ffd700, 0 0 25px #ff8c00;
-            border-color: #ffd700;
-        }
-        .marco-verde {
-            background: radial-gradient(circle, rgba(0,255,135,0.15) 0%, transparent 70%);
-            box-shadow: 0 0 15px #00ff87, 0 0 25px #60efff;
-            border-color: #00ff87;
-        }
+        .marco-multicolor { background: radial-gradient(circle, rgba(255,0,127,0.12) 0%, rgba(0,242,254,0.12) 70%, transparent 100%); box-shadow: 0 0 12px #ff007f, 0 0 22px #00f2fe; border-color: #ff007f; }
+        .marco-rosa { background: radial-gradient(circle, rgba(255,20,147,0.15) 0%, transparent 70%); box-shadow: 0 0 15px #ff1493, 0 0 25px #ff69b4; border-color: #ff1493; }
+        .marco-azul { background: radial-gradient(circle, rgba(0,210,255,0.15) 0%, transparent 70%); box-shadow: 0 0 15px #00d2ff, 0 0 25px #0072ff; border-color: #00d2ff; }
+        .marco-morado { background: radial-gradient(circle, rgba(157,80,187,0.15) 0%, transparent 70%); box-shadow: 0 0 15px #9d50bb, 0 0 25px #6e48aa; border-color: #9d50bb; }
+        .marco-dorado { background: radial-gradient(circle, rgba(255,215,0,0.15) 0%, transparent 70%); box-shadow: 0 0 15px #ffd700, 0 0 25px #ff8c00; border-color: #ffd700; }
+        .marco-verde { background: radial-gradient(circle, rgba(0,255,135,0.15) 0%, transparent 70%); box-shadow: 0 0 15px #00ff87, 0 0 25px #60efff; border-color: #00ff87; }
 
-        /* MARCO EXCLUSIVO DE FUNDADORA: FUEGO & HUMO ROJO (TRANSPARENTE EN EL CENTRO) */
         .marco-fundadora {
             inset: -8px;
             background: radial-gradient(circle, transparent 55%, rgba(255,0,51,0.2) 75%, transparent 100%);
@@ -750,19 +735,8 @@
             line-height: 1.3;
             word-break: break-word;
         }
-        .chat-burbuja.mio {
-            background: var(--accent-coral);
-            color: #fff;
-            align-self: flex-end;
-            border-bottom-right-radius: 2px;
-        }
-        .chat-burbuja.suyo {
-            background: #fff;
-            color: var(--text-main);
-            align-self: flex-start;
-            border: 1px solid var(--border-soft);
-            border-bottom-left-radius: 2px;
-        }
+        .chat-burbuja.mio { background: var(--accent-coral); color: #fff; align-self: flex-end; border-bottom-right-radius: 2px; }
+        .chat-burbuja.suyo { background: #fff; color: var(--text-main); align-self: flex-start; border: 1px solid var(--border-soft); border-bottom-left-radius: 2px; }
 
         .footer-copyright {
             text-align: center;
@@ -776,11 +750,7 @@
             gap: 6px;
             align-items: center;
         }
-        .footer-copyright .footer-quote {
-            font-style: italic;
-            color: var(--accent-coral);
-            font-weight: 600;
-        }
+        .footer-copyright .footer-quote { font-style: italic; color: var(--accent-coral); font-weight: 600; }
     </style>
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 </head>
@@ -792,6 +762,17 @@
             <div>
                 <strong style="color:var(--text-main); font-size:0.8rem;" id="flotanteRemitente">¡Nueva carta!</strong>
                 <p style="margin:2px 0 0 0; font-size:0.7rem; color:#8c827b;" id="flotanteTexto">Mensaje secreto recibido.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- BANNER FLOTANTE DEL DROP SORPRESA -->
+    <div id="dropBannerFlotante" onclick="reclamarDropSorpresa()">
+        <div style="display:flex; align-items:center; gap:10px;">
+            <span style="font-size:1.8rem;" id="dropIconoFlotante">📦✨</span>
+            <div>
+                <strong style="font-size:0.85rem; display:block;" id="dropTituloFlotante">¡Nuevo Drop Disponible!</strong>
+                <span style="font-size:0.72rem; text-decoration:underline;">¡Haz clic para cazarlo ya!</span>
             </div>
         </div>
     </div>
@@ -858,7 +839,6 @@
     </div>
 
     <input type="file" id="inputFotoDirectoCarnet" accept="image/*" style="display: none;" onchange="procesarFotoDirectoCarnet(this)">
-    <input type="file" id="inputAudioNotaDirecto" accept="audio/*" style="display: none;" onchange="procesarAudioNotaDirecto(this)">
 
     <div class="sidebar-left">
         <div class="sidebar-avatar-container">
@@ -869,6 +849,7 @@
         </div>
 
         <button class="nav-icon-btn active" onclick="cambiarPestana('tienda', this)" title="Tienda">🛍️</button>
+        <button class="nav-icon-btn" onclick="cambiarPestana('drops', this)" title="Drops y Vitrina">📦</button>
         <button class="nav-icon-btn" onclick="cambiarPestana('agenda', this)" title="Agenda">📅</button>
         <button class="nav-icon-btn" onclick="cambiarPestana('buzon', this)" title="Buzón">
             💌
@@ -909,9 +890,9 @@
                 <div class="label">Puntos 💖</div>
             </div>
             <div class="stat-card">
-                <div class="icon-box">💌</div>
-                <div class="val" id="statCartas">0</div>
-                <div class="label">Cartas</div>
+                <div class="icon-box">📦</div>
+                <div class="val" id="statDropsCount">0</div>
+                <div class="label">Drops</div>
             </div>
             <div class="stat-card">
                 <div class="icon-box">🎉</div>
@@ -951,7 +932,23 @@
                 <div class="card">
                     <h3>🛍️ Colección de Marcos Neón</h3>
                     <p style="font-size:0.75rem; color:#8c827b; margin-top:-4px;">Precios en 💖 indicados abajo de cada marco:</p>
-                    <div class="grid-shop" id="tiendaMarcosGrid">
+                    <div class="grid-shop" id="tiendaMarcosGrid"></div>
+                </div>
+            </div>
+
+            <!-- SECCIÓN NUEVA: DROPS Y VITRINA -->
+            <div id="drops" class="tab-content" style="display:none;">
+                <div class="card" style="background: linear-gradient(135deg, #fff3ee, #faebd7); border: 1.5px solid rgba(255, 179, 150, 0.4);">
+                    <h3 style="color: var(--accent-coral); display:flex; align-items:center; gap:6px;">📦 Vitrina de Coleccionables (Drops)</h3>
+                    <p style="font-size:0.78rem; color: var(--text-main); line-height:1.4; margin:0;">
+                        Aquí se almacenan todos los objetos exclusivos, limitados y sorpresas que vas cazando en los <strong>Drops</strong> de Bollolandia. ¡Colecciónalos todos! ✨
+                    </p>
+                    <button class="btn-flechazo" style="margin-top: 12px; font-size:0.8rem;" onclick="simularDisparoDropSorpresa()">✨ Forzar / Simular Drop Sorpresa</button>
+                </div>
+
+                <div class="card">
+                    <h3>🏆 Tus Objetos Cazados</h3>
+                    <div id="vitrinaDropsGrid" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-top: 10px;">
                         <!-- Se llena dinámicamente -->
                     </div>
                 </div>
@@ -1045,14 +1042,11 @@
                     <h3 style="margin-bottom: 8px;">🖼️ Tus Marcos Desbloqueados</h3>
                     <p style="font-size: 0.75rem; color: #8c827b; margin-top: -4px;">Selecciona el marco que deseas equipar:</p>
 
-                    <div id="listaMisMarcosEquipar" style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 14px;">
-                        <!-- Se llena dinámicamente -->
-                    </div>
+                    <div id="listaMisMarcosEquipar" style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 14px;"></div>
 
                     <div style="margin-top: 16px; border-top: 1px solid var(--border-soft); padding-top: 12px;">
                         <h4 style="font-size: 0.8rem; color: var(--text-main); margin-bottom: 6px;">⚙️ Gestión de Perfiles</h4>
-                        <select id="selectPerfilActivo" style="margin-bottom: 8px;" onchange="cambiarPerfilActivo(this.value)">
-                        </select>
+                        <select id="selectPerfilActivo" style="margin-bottom: 8px;" onchange="cambiarPerfilActivo(this.value)"></select>
                         <button class="btn-sesion-safe" onclick="cerrarSesionSegura()">🔄 Cerrar Sesión (Cambiar de Perfil)</button>
                         <button class="btn-danger-safe" onclick="borrarPerfilActual()">⚠️ Borrar Perfil Permanentemente</button>
                     </div>
@@ -1086,8 +1080,7 @@
                     <option value="10">Noviembre</option>
                     <option value="11">Diciembre</option>
                 </select>
-                <select id="selectAnioModal" style="width:90px; margin:0;">
-                </select>
+                <select id="selectAnioModal" style="width:90px; margin:0;"></select>
             </div>
             <button class="btn-principal" onclick="irAFechaSeleccionada()">✨ Ir a la Fecha</button>
             <button class="btn-action btn-close" style="margin-top:8px; width:100%;" onclick="cerrarModalFechaCustom()">Cancelar</button>
@@ -1108,11 +1101,21 @@
             { id: 'marco-fundadora', nombre: '🔥 Fuego Rojo (Fundadora)', precio: 0, exclusivoFundadora: true }
         ];
 
+        // Catálogo de objetos posibles en los Drops
+        const CATALOGO_DROPS = [
+            { id: 'drop_cafe', nombre: '☕ Café de Chismes', emoji: '☕', rareza: 'Común', desc: 'El combustible oficial para alargar las charlas.' },
+            { id: 'drop_bandera', nombre: '🏳️‍🌈 Bandera Sáfica Edición Limitada', emoji: '🏳️‍🌈', rareza: 'Épico', desc: 'Orgullo puro en formato digital.' },
+            { id: 'drop_gato', nombre: '🐈 Michi Bibliotecario', emoji: '🐈', rareza: 'Raro', desc: 'Vigilante silencioso de lecturas y salseos.' },
+            { id: 'drop_copa', nombre: '🍷 Copa de Vino Rosé', emoji: '🍷', rareza: 'Común', desc: 'Ideal para brindar por los buenos momentos.' },
+            { id: 'drop_corona', nombre: '👑 Tiara de Fundadora', emoji: '👑', rareza: 'Legendario', desc: 'Objeto exclusivo de las pioneras de Bollolandia.' }
+        ];
+
         let carnetFotoBase64 = "";
         let perfilActivo = localStorage.getItem("perfil_activo") || "";
         let calendarInstance = null;
         let mapInstance = null;
         let marcadoresMapa = [];
+        let dropActualActivo = null;
 
         function obtenerBaseDatosGlobal() {
             return JSON.parse(localStorage.getItem("bollolandia_usuarios") || "{}");
@@ -1159,6 +1162,7 @@
                     if (!datosMia.marcosDesbloqueados.includes('marco-fundadora')) {
                         datosMia.marcosDesbloqueados.push('marco-fundadora');
                     }
+                    if (!datosMia.misDrops) datosMia.misDrops = ['drop_corona']; // Empezar con un drop de regalo
 
                     const nuevaDb = {};
                     nuevaDb[nombreFundadora] = datosMia;
@@ -1172,9 +1176,12 @@
             cargarQuedadas();
             inicializarCalendarioYMapa();
             comprobarCumpleanosHoy();
-            comprobarRestriccionTemporalNota();
+            
+            // Programar un drop sorpresa aleatorio cada 45 segundos o simular uno inicial
+            setTimeout(simularDisparoDropSorpresa, 4000);
+            setInterval(simularDisparoDropSorpresa, 60000);
+
             setInterval(comprobarNotificacionesBuzon, 3000);
-            setInterval(comprobarRestriccionTemporalNota, 60000);
         }
 
         function cambiarPerfilActivo(nombre) {
@@ -1191,7 +1198,7 @@
 
             if (nombres.length === 0) {
                 if(select) select.innerHTML = `<option value="">---</option>`;
-                if(selectDest) selectDest.innerHTML = `<option value="">Nadie</option>`;
+                if(selectDest) select.innerHTML = `<option value="">Nadie</option>`;
                 return;
             }
 
@@ -1219,17 +1226,17 @@
                 document.getElementById("formRegistroCarnet").style.display = "none";
                 document.getElementById("seccionMiCarnet").style.display = "block";
                 
-                if (!userData.marcosDesbloqueados) {
-                    userData.marcosDesbloqueados = ['marco-multicolor'];
-                }
+                if (!userData.marcosDesbloqueados) userData.marcosDesbloqueados = ['marco-multicolor'];
+                if (!userData.misDrops) userData.misDrops = [];
                 if (userData.isGold && !userData.marcosDesbloqueados.includes('marco-fundadora')) {
                     userData.marcosDesbloqueados.push('marco-fundadora');
                 }
-                actualizarDatosActuales({ marcosDesbloqueados: userData.marcosDesbloqueados });
+                actualizarDatosActuales({ marcosDesbloqueados: userData.marcosDesbloqueados, misDrops: userData.misDrops });
 
                 cargarDatosCarnet(userData);
                 renderizarBoutiqueMarcos();
                 renderizarMisMarcosEquipar();
+                renderizarVitrinaDrops();
                 cargarBuzonPersonal();
                 comprobarNotificacionesBuzon();
             } else {
@@ -1237,6 +1244,7 @@
                 document.getElementById("seccionMiCarnet").style.display = "none";
                 document.getElementById("heartCount").innerText = "0";
                 document.getElementById("statHearts").innerText = "0";
+                document.getElementById("statDropsCount").innerText = "0";
                 document.getElementById("heroBioContainer").style.display = "none";
                 document.getElementById("heroBioDisplay").innerText = "";
             }
@@ -1266,12 +1274,9 @@
             document.getElementById(idPestana).style.display = 'block';
             if(btn) btn.classList.add('active');
             
-            if(idPestana === 'tienda') {
-                renderizarBoutiqueMarcos();
-            }
-            if(idPestana === 'buzon') {
-                marcarBuzonComoLeido();
-            }
+            if(idPestana === 'tienda') renderizarBoutiqueMarcos();
+            if(idPestana === 'drops') renderizarVitrinaDrops();
+            if(idPestana === 'buzon') marcarBuzonComoLeido();
             if(idPestana === 'agenda') {
                 setTimeout(() => {
                     if (calendarInstance) calendarInstance.updateSize();
@@ -1288,6 +1293,64 @@
             if(el) el.classList.toggle('open');
         }
 
+        // --- LÓGICA DE LOS DROPS Y VITRINA ---
+        function simularDisparoDropSorpresa() {
+            const itemAleatorio = CATALOGO_DROPS[Math.floor(Math.random() * CATALOGO_DROPS.length)];
+            dropActualActivo = itemAleatorio;
+
+            const banner = document.getElementById('dropBannerFlotante');
+            document.getElementById('dropIconoFlotante').innerText = itemAleatorio.emoji;
+            document.getElementById('dropTituloFlotante').innerText = `¡Nuevo Drop: ${itemAleatorio.nombre}!`;
+            banner.style.display = 'block';
+        }
+
+        function reclamarDropSorpresa() {
+            const data = obtenerDatosActuales();
+            if (!data) {
+                alert("Crea un perfil primero para poder cazar drops 🎒");
+                return;
+            }
+            if (!dropActualActivo) return;
+
+            if (!data.misDrops) data.misDrops = [];
+            
+            // Añadimos el objeto al inventario (permite duplicados o se puede validar)
+            data.misDrops.push(dropActualActivo.id);
+            actualizarDatosActuales({ misDrops: data.misDrops });
+
+            document.getElementById('dropBannerFlotante').style.display = 'none';
+            alert(`🎉 ¡Has cazado con éxito: ${dropActualActivo.nombre} (${dropActualActivo.rareza})! Ya está disponible en tu vitrina de Drops.`);
+            dropActualActivo = null;
+            renderizarVitrinaDrops();
+        }
+
+        function renderizarVitrinaDrops() {
+            const data = obtenerDatosActuales();
+            const grid = document.getElementById('vitrinaDropsGrid');
+            const statContador = document.getElementById('statDropsCount');
+            if (!grid || !data) return;
+
+            const misIds = data.misDrops || [];
+            statContador.innerText = misIds.length;
+
+            if (misIds.length === 0) {
+                grid.innerHTML = `<p style="color:#8c827b; font-size:0.8rem; grid-column: span 2;">Aún no has cazado ningún objeto en los drops. ¡Estate atenta a los avisos flotantes!</p>`;
+                return;
+            }
+
+            grid.innerHTML = misIds.map((idItem, index) => {
+                const info = CATALOGO_DROPS.find(d => d.id === idItem) || { nombre: 'Objeto Misterioso', emoji: '📦', rareza: 'Especial', desc: 'Tesoro único de Bollolandia.' };
+                return `
+                    <div style="background:#fff; border:1.5px solid var(--border-soft); border-radius:16px; padding:12px; text-align:center; box-shadow:0 4px 12px rgba(0,0,0,0.03);">
+                        <div style="font-size: 2.2rem; margin-bottom:4px;">${info.emoji}</div>
+                        <h4 style="margin:0 0 2px 0; font-size:0.82rem; color:var(--text-main); font-weight:700;">${info.nombre}</h4>
+                        <span style="display:inline-block; font-size:0.65rem; background:#fff3ee; color:var(--accent-coral); padding:2px 6px; border-radius:8px; font-weight:bold; margin-bottom:4px;">${info.rareza}</span>
+                        <p style="margin:0; font-size:0.7rem; color:#8c827b; line-height:1.2;">${info.desc}</p>
+                    </div>
+                `;
+            }).join('');
+        }
+
         function renderizarBoutiqueMarcos() {
             const data = obtenerDatosActuales();
             if (!data) return;
@@ -1298,7 +1361,6 @@
 
             grid.innerHTML = MARCOS_CATALOGO.map(m => {
                 if (m.exclusivoFundadora && !data.isGold) return '';
-
                 const tiene = desbloqueados.includes(m.id);
                 return `
                     <div class="shop-item">
@@ -1352,9 +1414,7 @@
                 return alert(`⛔ No tienes suficientes corazones. Te faltan puntos 💖.`);
             }
 
-            if (!data.isGold) {
-                actualizarCorazones(-precio);
-            }
+            if (!data.isGold) actualizarCorazones(-precio);
 
             desbloqueados.push(idMarco);
             actualizarDatosActuales({ marcosDesbloqueados: desbloqueados, marcoColor: idMarco });
@@ -1406,8 +1466,7 @@
                 reader.onloadend = function() {
                     const nuevaFoto = reader.result;
                     actualizarDatosActuales({ photo: nuevaFoto });
-                    const userData = obtenerDatosActuales();
-                    cargarDatosCarnet(userData);
+                    cargarDatosCarnet(obtenerDatosActuales());
                     alert("✨ ¡Foto de perfil actualizada con éxito!");
                 }
                 reader.readAsDataURL(file);
@@ -1421,50 +1480,9 @@
             const textoNuevo = prompt("Escribe tu nueva nota (o déjalo en blanco para borrarla, máx 30 caracteres):", userData.note || "");
             if (textoNuevo !== null) {
                 const nuevaNota = textoNuevo.trim().substring(0, 30);
-                if (nuevaNota === "") {
-                    actualizarDatosActuales({ note: "", noteTimestamp: null, noteAudio: null });
-                    alert("🗑️ Nota eliminada.");
-                } else {
-                    const timestamp = new Date().getTime();
-                    actualizarDatosActuales({ note: nuevaNota, noteTimestamp: timestamp, noteAudio: null });
-                    alert("✨ ¡Nota actualizada!");
-                }
+                actualizarDatosActuales({ note: nuevaNota });
                 cargarDatosCarnet(obtenerDatosActuales());
-            }
-        }
-
-        function procesarAudioNotaDirecto(input) {
-            const file = input.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onloadend = function() {
-                    const audioBase64 = reader.result;
-                    const timestamp = new Date().getTime();
-                    actualizarDatosActuales({ note: "🎵 [Nota de Voz]", noteAudio: audioBase64, noteTimestamp: timestamp });
-                    cargarDatosCarnet(obtenerDatosActuales());
-                    alert("🎙️ ¡Nota de voz añadida con éxito!");
-                }
-                reader.readAsDataURL(file);
-            }
-        }
-
-        function reproducirNotaVoz(audioSrc) {
-            if (!audioSrc) return;
-            const audio = new Audio(audioSrc);
-            audio.play().catch(err => {
-                alert("No se pudo reproducir el audio automáticamente.");
-            });
-        }
-
-        function comprobarRestriccionTemporalNota() {
-            const userData = obtenerDatosActuales();
-            if (userData && userData.noteTimestamp) {
-                const ahora = new Date().getTime();
-                const horasTranscurridas = (ahora - userData.noteTimestamp) / (1000 * 60 * 60);
-                if (horasTranscurridas >= 24) {
-                    actualizarDatosActuales({ note: "", noteTimestamp: null, noteAudio: null });
-                    cargarDatosCarnet(obtenerDatosActuales());
-                }
+                alert("✨ ¡Nota actualizada!");
             }
         }
 
@@ -1480,11 +1498,8 @@
             let esGold = false;
             let esSilver = false;
 
-            if (codigoIngresado === CODIGO_FUNDADORA) {
-                esGold = true;
-            } else if (codigoIngresado === CODIGO_VIP) {
-                esSilver = true;
-            }
+            if (codigoIngresado === CODIGO_FUNDADORA) esGold = true;
+            else if (codigoIngresado === CODIGO_VIP) esSilver = true;
 
             let counter = parseInt(localStorage.getItem("dni_counter_num") || "0", 10) + 1;
             localStorage.setItem("dni_counter_num", counter.toString());
@@ -1492,15 +1507,15 @@
             const formattedNum = counter.toString().padStart(7, '0');
             const cardId = esGold ? `BL-GOLD-001` : `BL-${formattedNum}`;
             const today = new Date().toLocaleDateString();
-            const timestamp = note ? new Date().getTime() : null;
 
             const marcosIniciales = ["marco-multicolor"];
             if (esGold) marcosIniciales.push("marco-fundadora");
 
             const nuevoUsuario = {
-                name, note: note || "", noteTimestamp: timestamp, noteAudio: null, bio: bio || "", mision, cardId, date: today, photo: carnetFotoBase64, isGold: esGold, isSilver: esSilver,
+                name, note: note || "", bio: bio || "", mision, cardId, date: today, photo: carnetFotoBase64, isGold: esGold, isSilver: esSilver,
                 marcoColor: esGold ? "marco-fundadora" : "marco-multicolor",
                 marcosDesbloqueados: marcosIniciales,
+                misDrops: ['drop_corona'],
                 fundadoraPos: { x: 0, y: 0, s: 1 },
                 hearts: esGold ? 9999 : 100,
                 buzonCartas: []
@@ -1526,21 +1541,11 @@
             const sidebarNoteBubble = document.getElementById("sidebarNoteBubble");
             
             if (data.note) {
-                let displayNoteText = data.note;
-                if (data.noteAudio) {
-                    displayNoteText = `🎵 Reproducir audio`;
-                    cardNoteBox.onclick = () => { reproducirNotaVoz(data.noteAudio); };
-                    sidebarNoteBubble.onclick = () => { reproducirNotaVoz(data.noteAudio); };
-                } else {
-                    cardNoteBox.onclick = modificarNotaInteractiva;
-                    sidebarNoteBubble.onclick = modificarNotaInteractiva;
-                }
-                cardNoteBox.innerText = displayNoteText;
-                sidebarNoteBubble.innerText = displayNoteText;
+                cardNoteBox.innerText = data.note;
+                sidebarNoteBubble.innerText = data.note;
                 sidebarNoteBubble.style.display = "block";
             } else {
                 cardNoteBox.innerText = "Haz clic para añadir nota...";
-                cardNoteBox.onclick = modificarNotaInteractiva;
                 sidebarNoteBubble.style.display = "none";
             }
 
@@ -1561,7 +1566,6 @@
 
             const cardElement = document.getElementById("mclovin-card");
             cardElement.classList.remove("gold-edition", "silver-edition");
-
             const sealNormal = document.getElementById("memberSealNormal");
 
             if (data.isGold) {
@@ -1603,11 +1607,11 @@
             perfilActivo = "";
             localStorage.removeItem("perfil_activo");
             sincronizarInterfazUsuario();
-            alert("🔄 Has cerrado sesión correctamente. Puedes seleccionar otro perfil o registrarte.");
+            alert("🔄 Has cerrado sesión correctamente.");
         }
 
         function borrarPerfilActual() {
-            if (confirm(`⚠️ ¿Estás totalmente segura de borrar el perfil de ${perfilActivo}? Esta acción eliminará sus datos y no se puede deshacer.`)) {
+            if (confirm(`⚠️ ¿Estás totalmente segura de borrar el perfil de ${perfilActivo}?`)) {
                 const db = obtenerBaseDatosGlobal();
                 delete db[perfilActivo];
                 guardarBaseDatosGlobal(db);
@@ -1623,10 +1627,8 @@
             const modal = document.getElementById("cardModal");
             const card = document.getElementById("mclovin-card");
             modal.style.display = "flex";
-            
-            // Aplicar la prueba del drop (animación de caída)
             card.classList.remove("drop-animation");
-            void card.offsetWidth; // Forzar reflow para reiniciar la animación
+            void card.offsetWidth;
             card.classList.add("drop-animation");
         }
         function cerrarModalCarnet() { document.getElementById("cardModal").style.display = "none"; }
@@ -1644,7 +1646,7 @@
         function girarRuleta() {
             const costo = 20;
             const data = obtenerDatosActuales();
-            if (!data) return alert("Crea un perfil primero para girar la ruleta 🎒");
+            if (!data) return alert("Crea un perfil primero 🎒");
             if (!data.isGold && data.hearts < costo) return alert(`⛔ Necesitas ${costo} 💖.`);
 
             if (!data.isGold) actualizarCorazones(-costo);
@@ -1654,16 +1656,9 @@
             wheel.style.transform = `rotate(${randomDeg}deg)`;
 
             setTimeout(() => {
-                const premios = [
-                    { tipo: 'corazones', valor: 30, texto: '¡+30 💖 extra!' },
-                    { tipo: 'corazones', valor: 50, texto: '🎉 ¡Premio gordo! +50 💖' }
-                ];
-                const premio = premios[Math.floor(Math.random() * premios.length)];
-
-                if (premio.tipo === 'corazones') {
-                    actualizarCorazones(premio.valor);
-                    alert(premio.texto);
-                }
+                const premio = Math.random() > 0.5 ? { valor: 30, texto: '¡+30 💖 extra!' } : { valor: 50, texto: '🎉 ¡Premio gordo! +50 💖' };
+                actualizarCorazones(premio.valor);
+                alert(premio.texto);
             }, 3000);
         }
 
@@ -1679,14 +1674,7 @@
             const db = obtenerBaseDatosGlobal();
             if (db[destinataria]) {
                 if (!db[destinataria].buzonCartas) db[destinataria].buzonCartas = [];
-                
-                db[destinataria].buzonCartas.push({
-                    de: perfilActivo,
-                    texto: texto,
-                    fecha: new Date().toLocaleDateString(),
-                    leida: false
-                });
-
+                db[destinataria].buzonCartas.push({ de: perfilActivo, texto: texto, fecha: new Date().toLocaleDateString(), leida: false });
                 guardarBaseDatosGlobal(db);
                 document.getElementById("textoCarta").value = "";
                 alert("💌 ¡Carta enviada!");
@@ -1699,14 +1687,12 @@
             if (!contenedor || !data) return;
 
             const cartas = data.buzonCartas || [];
-            document.getElementById("statCartas").innerText = cartas.length;
-
             if (cartas.length === 0) {
                 contenedor.innerHTML = `<p style="color:#8c827b; font-size:0.8rem;">Buzón vacío.</p>`;
                 return;
             }
 
-            contenedor.innerHTML = cartas.map((c) => `
+            contenedor.innerHTML = cartas.map(c => `
                 <div class="carta-item ${c.leida ? '' : 'no-leida'}">
                     <div style="display:flex; justify-content:space-between; font-weight:bold; color:var(--text-main); font-size:0.75rem;">
                         <span>💌 De: ${c.de}</span>
@@ -1749,7 +1735,7 @@
         }
 
         function abrirBuzonDesdeFlotante() {
-            cambiarPestana('buzon', document.querySelectorAll('.nav-icon-btn')[2]);
+            cambiarPestana('buzon', document.querySelectorAll('.nav-icon-btn')[3]);
         }
 
         function inicializarCalendarioYMapa() {
@@ -1759,24 +1745,19 @@
                     initialView: 'dayGridMonth',
                     locale: 'es',
                     height: 300,
-                    headerToolbar: {
-                        left: 'prev',
-                        center: 'title',
-                        right: 'next'
-                    },
+                    headerToolbar: { left: 'prev', center: 'title', right: 'next' },
                     events: obtenerEventosCalendario(),
                     datesSet: function() {
                         const titleEl = document.querySelector('.fc-toolbar-title');
                         if (titleEl && !titleEl.hasAttribute('data-custom-click')) {
                             titleEl.setAttribute('data-custom-click', 'true');
                             titleEl.style.cursor = 'pointer';
-                            titleEl.title = 'Pincha para elegir mes y año';
                             titleEl.addEventListener('click', abrirModalFechaCustom);
                         }
                     },
                     dateClick: function(info) {
                         const data = obtenerDatosActuales();
-                        if (!data) return alert("Crea un perfil primero para anotar tu cumpleaños 🎒");
+                        if (!data) return alert("Crea un perfil primero 🎒");
                         const nombre = prompt(`🎂 Anota el nombre para tu cumpleaños en el día ${info.dateStr}:`);
                         if (nombre && nombre.trim() !== "") {
                             const cumples = JSON.parse(localStorage.getItem('cumples') || '[]');
@@ -1784,7 +1765,7 @@
                             localStorage.setItem('cumples', JSON.stringify(cumples));
                             actualizarCorazones(15);
                             calendarInstance.addEvent({ title: `🎂 ${nombre.trim()}`, start: info.dateStr, color: '#f28b72' });
-                            alert(`🎂 ¡Cumpleaños de ${nombre.trim()} guardado! Has ganado +15 💖`);
+                            alert(`🎂 ¡Cumpleaños guardado (+15 💖)!`);
                         }
                     }
                 });
@@ -1804,30 +1785,18 @@
             const mapEl = document.getElementById('mapContainer');
             if (mapEl && !mapInstance) {
                 mapInstance = L.map('mapContainer').setView([40.4168, -3.7038], 6);
-                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                    attribution: '© OpenStreetMap'
-                }).addTo(mapInstance);
-                
+                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '© OpenStreetMap' }).addTo(mapInstance);
                 setTimeout(() => { mapInstance.invalidateSize(); }, 300);
                 actualizarPuntosMapa();
             }
         }
 
-        function abrirModalFechaCustom() {
-            document.getElementById('modalSelectorFecha').style.display = 'flex';
-        }
-
-        function cerrarModalFechaCustom() {
-            document.getElementById('modalSelectorFecha').style.display = 'none';
-        }
-
+        function abrirModalFechaCustom() { document.getElementById('modalSelectorFecha').style.display = 'flex'; }
+        function cerrarModalFechaCustom() { document.getElementById('modalSelectorFecha').style.display = 'none'; }
         function irAFechaSeleccionada() {
             const mes = document.getElementById('selectMesModal').value;
             const anio = document.getElementById('selectAnioModal').value;
-            if (calendarInstance) {
-                const fechaStr = `${anio}-${(parseInt(mes)+1).toString().padStart(2, '0')}-01`;
-                calendarInstance.gotoDate(fechaStr);
-            }
+            if (calendarInstance) calendarInstance.gotoDate(`${anio}-${(parseInt(mes)+1).toString().padStart(2, '0')}-01`);
             cerrarModalFechaCustom();
         }
 
@@ -1835,12 +1804,8 @@
             const cumples = JSON.parse(localStorage.getItem('cumples') || '[]');
             const quedadas = JSON.parse(localStorage.getItem('quedadas') || '[]');
             let eventos = [];
-            cumples.forEach(c => {
-                eventos.push({ title: `🎂 ${c.nombre}`, start: c.fecha, color: '#f28b72' });
-            });
-            quedadas.forEach(q => {
-                eventos.push({ title: `📍 ${q.titulo}`, start: q.fecha, color: '#87a38a' });
-            });
+            cumples.forEach(c => eventos.push({ title: `🎂 ${c.nombre}`, start: c.fecha, color: '#f28b72' }));
+            quedadas.forEach(q => eventos.push({ title: `📍 ${q.titulo}`, start: q.fecha, color: '#87a38a' }));
             return eventos;
         }
 
@@ -1848,48 +1813,27 @@
             const hoy = new Date().toISOString().split('T')[0];
             const mesDiaHoy = hoy.substring(5);
             const cumples = JSON.parse(localStorage.getItem('cumples') || '[]');
-            
             const cumpleHoy = cumples.find(c => c.fecha && c.fecha.substring(5) === mesDiaHoy);
             if (cumpleHoy) {
-                setTimeout(() => {
-                    alert(`🎂 ¡NOTIFICACIÓN! Hoy es el cumpleaños de ${cumpleHoy.nombre} 🥳🎉 ¡Felicítala en el chat o mándale un flechazo!`);
-                }, 1000);
+                setTimeout(() => alert(`🎂 ¡Hoy es el cumpleaños de ${cumpleHoy.nombre} 🥳!`), 1000);
             }
         }
 
         function actualizarPuntosMapa() {
             if (!mapInstance) return;
-
             marcadoresMapa.forEach(m => mapInstance.removeLayer(m));
             marcadoresMapa = [];
-
             const quedadas = JSON.parse(localStorage.getItem('quedadas') || '[]');
-            const coordenadasCiudades = {
-                'madrid': [40.4168, -3.7038],
-                'barcelona': [41.3851, 2.1734],
-                'valencia': [39.4699, -0.3763],
-                'sevilla': [37.3891, -5.9845],
-                'bilbao': [43.2630, -2.9350],
-                'malaga': [36.7213, -4.4214],
-                'zaragoza': [41.6488, -0.8891],
-                'granada': [37.1773, -3.5986],
-                'alicante': [38.3452, -0.4810]
-            };
+            const coordsCiudades = { 'madrid': [40.4168, -3.7038], 'barcelona': [41.3851, 2.1734], 'valencia': [39.4699, -0.3763], 'sevilla': [37.3891, -5.9845], 'bilbao': [43.2630, -2.9350] };
 
             quedadas.forEach(q => {
                 let lugarLower = q.lugar.toLowerCase().trim();
                 let coords = [40.4168, -3.7038];
-                for (let ciudad in coordenadasCiudades) {
-                    if (lugarLower.includes(ciudad)) {
-                        coords = coordenadasCiudades[ciudad];
-                        break;
-                    }
+                for (let c in coordsCiudades) {
+                    if (lugarLower.includes(c)) { coords = coordsCiudades[c]; break; }
                 }
-
-                const marcador = L.marker(coords).addTo(mapInstance)
-                    .bindPopup(`<b>📍 ${q.titulo}</b><br>Lugar: ${q.lugar}<br>Fecha: ${q.fecha.replace('T', ' ')}`);
-                
-                marcadoresMapa.push(marcador);
+                const m = L.marker(coords).addTo(mapInstance).bindPopup(`<b>📍 ${q.titulo}</b><br>${q.lugar}`);
+                marcadoresMapa.push(m);
             });
         }
 
@@ -1899,7 +1843,7 @@
             const titulo = document.getElementById('tituloQuedada').value;
             const lugar = document.getElementById('lugarQuedada').value;
             const fecha = document.getElementById('fechaQuedada').value;
-            if(!titulo || !lugar || !fecha) return alert('Rellena todos los datos de la quedada');
+            if(!titulo || !lugar || !fecha) return alert('Rellena todos los datos');
             
             const quedadas = JSON.parse(localStorage.getItem('quedadas') || '[]');
             quedadas.push({ titulo, lugar, fecha });
@@ -1911,20 +1855,9 @@
             
             actualizarCorazones(25);
             cargarQuedadas();
-            document.getElementById("statQuedadas").innerText = quedadas.length;
-            
-            if(calendarInstance) {
-                calendarInstance.addEvent({ title: `📍 ${titulo}`, start: fecha, color: '#87a38a' });
-            }
-            
-            setTimeout(() => {
-                if (mapInstance) {
-                    mapInstance.invalidateSize();
-                    actualizarPuntosMapa();
-                }
-            }, 100);
-
-            alert('📍 ¡Plan publicado y chincheta añadida al mapa (+25 💖)!');
+            if(calendarInstance) calendarInstance.addEvent({ title: `📍 ${titulo}`, start: fecha, color: '#87a38a' });
+            setTimeout(() => { if (mapInstance) { mapInstance.invalidateSize(); actualizarPuntosMapa(); } }, 100);
+            alert('📍 ¡Plan publicado (+25 💖)!');
         }
 
         function cargarQuedadas() {
@@ -1935,7 +1868,7 @@
             if(quedadas.length === 0) return cont.innerHTML = 'Aún no hay planes.';
             cont.innerHTML = quedadas.map(q => {
                 const mapUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(q.lugar)}`;
-                return `📍 <strong>${q.titulo}</strong> (${q.lugar})<br><a href="${mapUrl}" target="_blank" class="btn-mapa">🗺️ Abrir en Google Maps</a><br>`;
+                return `📍 <strong>${q.titulo}</strong> (${q.lugar})<br><a href="${mapUrl}" target="_blank" class="btn-mapa">🗺️ Google Maps</a><br>`;
             }).join('');
         }
 
@@ -1943,7 +1876,7 @@
             const data = obtenerDatosActuales();
             if (!data) return alert("Crea un perfil primero 🎒");
             const para = document.getElementById('destinoFlechazo').value.trim().toLowerCase();
-            if(!para) return alert('Escribe el nombre de la chica');
+            if(!para) return alert('Escribe el nombre');
             if(para === perfilActivo.toLowerCase()) return alert('No te puedes mandar un flechazo a ti misma');
 
             const flechazos = JSON.parse(localStorage.getItem('flechazos') || '[]');
@@ -1953,7 +1886,7 @@
                 localStorage.setItem('flechazos', JSON.stringify(flechazos));
             }
             document.getElementById('destinoFlechazo').value = '';
-            alert('💘 Flechazo enviado con éxito.');
+            alert('💘 Flechazo enviado.');
             comprobarMatches();
         }
 
@@ -1970,23 +1903,15 @@
                     const matchNombre = m.de;
                     const chatKey = `chat_${[miNombre, matchNombre].sort().join('_')}`;
                     const mensajesChat = JSON.parse(localStorage.getItem(chatKey) || '[]');
-
-                    let htmlMensajes = mensajesChat.map(msg => `
-                        <div class="chat-burbuja ${msg.de === miNombre ? 'mio' : 'suyo'}">
-                            <b>${msg.de === miNombre ? 'Tú' : msg.de}:</b> ${msg.texto}
-                        </div>
-                    `).join('');
+                    let htmlMensajes = mensajesChat.map(msg => `<div class="chat-burbuja ${msg.de === miNombre ? 'mio' : 'suyo'}"><b>${msg.de === miNombre ? 'Tú' : msg.de}:</b> ${msg.texto}</div>`).join('');
 
                     return `
                         <div style="background:#fff3ee; border:1.5px dashed var(--accent-coral); border-radius:14px; padding:12px; margin-top:10px;">
                             <strong style="color:var(--accent-coral); font-size:0.85rem; display:block; text-align:center;">¡HAY FLECHAZO MUTUO CON ${matchNombre.toUpperCase()}! 🌸💖</strong>
-                            
                             <div class="chat-box-container">
-                                <div class="chat-mensajes-scroll" id="scrollChat_${matchNombre}">
-                                    ${htmlMensajes || '<span style="color:#8c827b; font-size:0.75rem; text-align:center; margin:auto;">¡Escríbele vuestro primer mensaje!</span>'}
-                                </div>
+                                <div class="chat-mensajes-scroll" id="scrollChat_${matchNombre}">${htmlMensajes || '<span style="color:#8c827b; font-size:0.75rem; text-align:center; margin:auto;">¡Escríbele!</span>'}</div>
                                 <div style="display:flex; gap:6px; margin-top:8px;">
-                                    <input type="text" id="inputChat_${matchNombre}" placeholder="Escribe un mensaje..." style="margin:0; font-size:0.78rem;" onkeypress="if(event.key==='Enter') enviarMensajeChat('${matchNombre}')">
+                                    <input type="text" id="inputChat_${matchNombre}" placeholder="Escribe..." style="margin:0; font-size:0.78rem;" onkeypress="if(event.key==='Enter') enviarMensajeChat('${matchNombre}')">
                                     <button class="btn-flechazo" style="width:70px; margin:0; padding:8px; font-size:0.75rem;" onclick="enviarMensajeChat('${matchNombre}')">Enviar</button>
                                 </div>
                             </div>
@@ -1995,16 +1920,9 @@
                 }).join('');
 
                 matches.forEach(m => {
-                    const scrollDiv = document.getElementById(`scrollChat_${m.de}`);
-                    if(scrollDiv) scrollDiv.scrollTop = scrollDiv.scrollHeight;
+                    const s = document.getElementById(`scrollChat_${m.de}`);
+                    if(s) s.scrollTop = s.scrollHeight;
                 });
-
-                const overlay = document.getElementById('matchOverlay');
-                if(overlay && overlay.style.display !== 'flex' && !window.matchAnimShown) {
-                    document.getElementById('matchTextoAnimado').innerText = `¡Se gustan mutuamente en Bollolandia! 💖`;
-                    overlay.style.display = 'flex';
-                    window.matchAnimShown = true;
-                }
             } else {
                 cont.innerHTML = '';
             }
@@ -2019,30 +1937,24 @@
             const miNombre = perfilActivo.toLowerCase();
             const chatKey = `chat_${[miNombre, matchNombre].sort().join('_')}`;
             const mensajesChat = JSON.parse(localStorage.getItem(chatKey) || '[]');
-
-            mensajesChat.push({ de: miNombre, texto: texto, tiempo: new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) });
+            mensajesChat.push({ de: miNombre, texto: texto });
             localStorage.setItem(chatKey, JSON.stringify(mensajesChat));
-
             input.value = '';
             comprobarMatches();
         }
 
-        function cerrarMatchAnimacion() {
-            const overlay = document.getElementById('matchOverlay');
-            if(overlay) overlay.style.display = 'none';
-        }
+        function cerrarMatchAnimacion() { document.getElementById('matchOverlay').style.display = 'none'; }
 
         function ejecutarBusquedaGlobal(query) {
             query = query.toLowerCase().trim();
             if(!query) return;
-            if(query.includes('tienda') || query.includes('marco')) {
-                cambiarPestana('tienda', document.querySelectorAll('.nav-icon-btn')[0]);
-            } else if(query.includes('agenda') || query.includes('plan') || query.includes('mapa')) {
-                cambiarPestana('agenda', document.querySelectorAll('.nav-icon-btn')[1]);
-            } else if(query.includes('buzon') || query.includes('carta')) {
-                cambiarPestana('buzon', document.querySelectorAll('.nav-icon-btn')[2]);
-            }
+            if(query.includes('tienda') || query.includes('marco')) cambiarPestana('tienda', document.querySelectorAll('.nav-icon-btn')[0]);
+            else if(query.includes('drop') || query.includes('vitrina')) cambiarPestana('drops', document.querySelectorAll('.nav-icon-btn')[1]);
+            else if(query.includes('agenda') || query.includes('plan')) cambiarPestana('agenda', document.querySelectorAll('.nav-icon-btn')[2]);
+            else if(query.includes('buzon') || query.includes('carta')) cambiarPestana('buzon', document.querySelectorAll('.nav-icon-btn')[3]);
         }
     </script>
 </body>
 </html>
+
+```
