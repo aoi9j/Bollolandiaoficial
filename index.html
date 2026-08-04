@@ -37,6 +37,12 @@
             --fundadora-x: 0px;
             --fundadora-y: 0px;
             --fundadora-scale: 1;
+
+            /* Variables añadidas para la Vitrina Premium individual */
+            --vitrine-bg-color: #121214;
+            --gold-glow: rgba(255, 183, 77, 0.4);
+            --gold-border: rgba(255, 204, 128, 0.6);
+            --glass-bg: rgba(255, 255, 255, 0.03);
         }
 
         body {
@@ -736,6 +742,94 @@
         .chat-burbuja.mio { background: var(--accent-coral); color: #fff; align-self: flex-end; border-bottom-right-radius: 2px; }
         .chat-burbuja.suyo { background: #fff; color: var(--text-main); align-self: flex-start; border: 1px solid var(--border-soft); border-bottom-left-radius: 2px; }
 
+        /* Estilos integrados para la Vitrina Premium Individual con luz LED cenital y brillo cálido */
+        .vitrine-card {
+            position: relative;
+            width: 220px;
+            height: 280px;
+            background: var(--glass-bg);
+            border-radius: 16px;
+            border: 1px solid var(--gold-border);
+            box-shadow: 
+                inset 0 0 25px var(--gold-glow),
+                0 10px 30px rgba(0, 0, 0, 0.5),
+                0 0 15px rgba(255, 183, 77, 0.2);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 15px;
+            overflow: hidden;
+            backdrop-filter: blur(5px);
+            margin: 10px auto;
+        }
+
+        .vitrine-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 70%;
+            height: 4px;
+            background: #ffe0b2;
+            box-shadow: 0 0 15px 4px #ffb74d;
+            border-radius: 0 0 4px 4px;
+        }
+
+        .vitrine-card::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(
+                135deg,
+                rgba(255, 255, 255, 0.08) 0%,
+                rgba(255, 255, 255, 0) 50%
+            );
+            pointer-events: none;
+        }
+
+        .figure-container {
+            width: 130px;
+            height: 160px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 2;
+            margin-bottom: 15px;
+        }
+
+        .figure-container img, .figure-container span {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+            filter: drop-shadow(0 10px 10px rgba(0, 0, 0, 0.6));
+        }
+
+        .drop-info {
+            z-index: 2;
+            text-align: center;
+            width: 100%;
+        }
+
+        .drop-title {
+            color: #ffe0b2;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin: 0 0 4px 0;
+            letter-spacing: 0.5px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .drop-subtitle {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.75rem;
+            margin: 0;
+        }
+
         .footer-copyright {
             text-align: center;
             margin-top: 30px;
@@ -934,7 +1028,7 @@
                 </div>
             </div>
 
-            <!-- SECCIÓN NUEVA: DROPS Y VITRINA CON VISOR 3D THREE.JS -->
+            <!-- SECCIÓN NUEVA: DROPS Y VITRINA CON VISOR 3D THREE.JS Y VITRINA PREMIUM -->
             <div id="drops" class="tab-content" style="display:none;">
                 <div class="card" style="background: linear-gradient(135deg, #fff3ee, #faebd7); border: 1.5px solid rgba(255, 179, 150, 0.4);">
                     <h3 style="color: var(--accent-coral); display:flex; align-items:center; gap:6px;">📦 Vitrina 3D Interactiva</h3>
@@ -952,7 +1046,7 @@
                 <div class="card">
                     <h3>🏆 Tus Objetos Cazados</h3>
                     <div id="vitrinaDropsGrid" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-top: 10px;">
-                        <!-- Se llena dinámicamente -->
+                        <!-- Se llena dinámicamente con el estilo de Vitrina Premium -->
                     </div>
                 </div>
             </div>
@@ -1433,11 +1527,14 @@
             grid.innerHTML = misIds.map((idItem) => {
                 const info = CATALOGO_DROPS.find(d => d.id === idItem) || { nombre: 'Objeto Misterioso', emoji: '📦', rareza: 'Especial', desc: 'Tesoro único de Bollolandia.' };
                 return `
-                    <div style="background:#fff; border:1.5px solid var(--border-soft); border-radius:16px; padding:12px; text-align:center; box-shadow:0 4px 12px rgba(0,0,0,0.03);">
-                        <div style="font-size: 2.2rem; margin-bottom:4px;">${info.emoji}</div>
-                        <h4 style="margin:0 0 2px 0; font-size:0.82rem; color:var(--text-main); font-weight:700;">${info.nombre}</h4>
-                        <span style="display:inline-block; font-size:0.65rem; background:#fff3ee; color:var(--accent-coral); padding:2px 6px; border-radius:8px; font-weight:bold; margin-bottom:4px;">${info.rareza}</span>
-                        <p style="margin:0; font-size:0.7rem; color:#8c827b; line-height:1.2;">${info.desc}</p>
+                    <div class="vitrine-card">
+                        <div class="figure-container">
+                            <span style="font-size: 3.5rem;">${info.emoji}</span>
+                        </div>
+                        <div class="drop-info">
+                            <h3 class="drop-title">${info.nombre}</h3>
+                            <p class="drop-subtitle">${info.rareza}</p>
+                        </div>
                     </div>
                 `;
             }).join('');
@@ -2029,7 +2126,7 @@
             const miNombre = perfilActivo.toLowerCase();
             const chatKey = `chat_${[miNombre, matchNombre].sort().join('_')}`;
             const mensajesChat = JSON.parse(localStorage.getItem(chatKey) || '[]');
-            mensajesChat.push({ de: miNombre, texto: texto, fecha: new Date().toLocaleTimeString() });
+            mensajesChat.push({ de: miNombre, texto: texto });
             localStorage.setItem(chatKey, JSON.stringify(mensajesChat));
             input.value = '';
             comprobarMatches();
