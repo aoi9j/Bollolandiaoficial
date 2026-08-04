@@ -1090,7 +1090,6 @@
             { id: 'marco-fundadora', nombre: '🔥 Fuego Rojo (Fundadora)', precio: 0, exclusivoFundadora: true }
         ];
 
-        // Catálogo de objetos posibles en los Drops
         const CATALOGO_DROPS = [
             { id: 'drop_cafe', nombre: '☕ Café de Chismes', emoji: '☕', rareza: 'Común', desc: 'El combustible oficial para alargar las charlas.' },
             { id: 'drop_bandera', nombre: '🏳️‍🌈 Bandera Sáfica Edición Limitada', emoji: '🏳️‍🌈', rareza: 'Épico', desc: 'Orgullo puro en formato digital.' },
@@ -1151,7 +1150,7 @@
                     if (!datosMia.marcosDesbloqueados.includes('marco-fundadora')) {
                         datosMia.marcosDesbloqueados.push('marco-fundadora');
                     }
-                    if (!datosMia.misDrops) datosMia.misDrops = ['drop_corona']; // Empezar con un drop de regalo
+                    if (!datosMia.misDrops) datosMia.misDrops = ['drop_corona'];
 
                     const nuevaDb = {};
                     nuevaDb[nombreFundadora] = datosMia;
@@ -1166,10 +1165,8 @@
             inicializarCalendarioYMapa();
             comprobarCumpleanosHoy();
             
-            // Programar un drop sorpresa aleatorio cada 45 segundos o simular uno inicial
             setTimeout(simularDisparoDropSorpresa, 4000);
             setInterval(simularDisparoDropSorpresa, 60000);
-
             setInterval(comprobarNotificacionesBuzon, 3000);
         }
 
@@ -1282,7 +1279,6 @@
             if(el) el.classList.toggle('open');
         }
 
-        // --- LÓGICA DE LOS DROPS Y VITRINA ---
         function simularDisparoDropSorpresa() {
             const itemAleatorio = CATALOGO_DROPS[Math.floor(Math.random() * CATALOGO_DROPS.length)];
             dropActualActivo = itemAleatorio;
@@ -1303,7 +1299,6 @@
 
             if (!data.misDrops) data.misDrops = [];
             
-            // Añadimos el objeto al inventario (permite duplicados o se puede validar)
             data.misDrops.push(dropActualActivo.id);
             actualizarDatosActuales({ misDrops: data.misDrops });
 
@@ -1327,7 +1322,7 @@
                 return;
             }
 
-            grid.innerHTML = misIds.map((idItem, index) => {
+            grid.innerHTML = misIds.map((idItem) => {
                 const info = CATALOGO_DROPS.find(d => d.id === idItem) || { nombre: 'Objeto Misterioso', emoji: '📦', rareza: 'Especial', desc: 'Tesoro único de Bollolandia.' };
                 return `
                     <div style="background:#fff; border:1.5px solid var(--border-soft); border-radius:16px; padding:12px; text-align:center; box-shadow:0 4px 12px rgba(0,0,0,0.03);">
@@ -1945,5 +1940,3 @@
     </script>
 </body>
 </html>
-
-```
