@@ -1499,6 +1499,29 @@
             return; 
         }
 
+        // --- FUNCIONES BÚSQUEDA GLOBAL ---
+        function ejecutarBusquedaGlobal(query) {
+            const q = query.toLowerCase().trim();
+            if (!q) return;
+
+            const db = obtenerBaseDatosGlobal();
+            const resultadosUsuarios = Object.keys(db).filter(nombre => nombre.toLowerCase().includes(q));
+
+            const quedadas = JSON.parse(localStorage.getItem('quedadas') || '[]');
+            const resultadosQuedadas = quedadas.filter(plan => 
+                plan.titulo.toLowerCase().includes(q) || plan.lugar.toLowerCase().includes(q)
+            );
+
+            console.log("Resultados búsqueda usuarias:", resultadosUsuarios);
+            console.log("Resultados búsqueda planes:", resultadosQuedadas);
+        }
+
+        // --- FUNCIONES ANIMACIÓN FLECHAZO / MATCH ---
+        function cerrarMatchAnimacion() {
+            const overlay = document.getElementById('matchOverlay');
+            if (overlay) overlay.style.display = 'none';
+        }
+
         // --- FUNCIONES BIO EDITABLE ---
         const bioInput = document.getElementById('bio-input');
         const charCount = document.getElementById('char-count');
@@ -2349,6 +2372,12 @@
 
             if(matches.length > 0) {
                 if(!window.lastMatchCount || window.lastMatchCount < matches.length) {
+                    const ultimoMatch = matches[matches.length - 1].de.toUpperCase();
+                    const textoAnim = document.getElementById('matchTextoAnimado');
+                    if (textoAnim) textoAnim.innerText = `¡Tú y ${ultimoMatch} os habéis enviado un flechazo! 💘`;
+                    const overlay = document.getElementById('matchOverlay');
+                    if (overlay) overlay.style.display = 'flex';
+
                     lanzarEfectoConfeti();
                     window.lastMatchCount = matches.length;
                 }
