@@ -145,37 +145,38 @@
             margin: 0;
         }
 
-        /* --- ESTILOS MOCHILA FOOTER & AJUSTES DESPLEGABLES --- */
-        .mochila-footer {
-            margin-top: 16px;
-            display: flex;
-            justify-content: flex-start;
-            position: relative;
+        /* --- ESTILOS BOTÓN Y MENÚ DE AJUSTES FIJO ABAJO A LA IZQUIERDA --- */
+        .global-settings-container {
+            position: fixed;
+            bottom: 20px;
+            left: 106px; /* Situado fuera de la barra lateral flotante (92px + margen) */
+            z-index: 10050;
         }
         .settings-btn {
             background: #1e1e1e;
             color: #fff;
             border: none;
             border-radius: 50%;
-            width: 36px;
-            height: 36px;
+            width: 42px;
+            height: 42px;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
             padding: 0;
             margin: 0;
+            font-size: 1.1rem;
         }
         .settings-dropdown {
             position: absolute;
-            bottom: 44px;
+            bottom: 52px;
             left: 0;
             background: #1e1e1e;
             border-radius: 8px;
             padding: 8px;
             box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-            z-index: 105;
+            z-index: 10051;
             display: flex;
             flex-direction: column;
             gap: 6px;
@@ -1066,6 +1067,17 @@
         <button class="nav-icon-btn" onclick="cambiarPestana('extras', this)" title="Perfil y Marcos">🎒</button>
     </div>
 
+    <!-- BOTÓN Y MENÚ DE AJUSTES FIJO ABAJO A LA IZQUIERDA (FUERA DE LA MOCHILA)[cite: 9] -->
+    <div class="global-settings-container">
+        <button class="settings-btn" onclick="toggleSettingsMenu()" title="Ajustes">
+            ⚙️
+        </button>
+        <div id="settings-menu" class="settings-dropdown" style="display: none;">
+            <button onclick="changeSession()">Cerrar sesión</button>
+            <button class="danger-btn" onclick="deleteProfile()">Borrar perfil</button>
+        </div>
+    </div>
+
     <div class="main-wrapper">
         <div class="top-header">
             <div class="top-search">
@@ -1278,18 +1290,6 @@
                     <div style="margin-top: 16px; border-top: 1px solid var(--border-soft); padding-top: 12px;">
                         <h4 style="font-size: 0.8rem; color: var(--text-main); margin-bottom: 6px;">⚙️ Gestión de Perfiles</h4>
                         <select id="selectPerfilActivo" style="margin-bottom: 8px;" onchange="cambiarPerfilActivo(this.value)"></select>
-                    </div>
-
-                    <!-- FOOTER Y MENÚ EN LA ESQUINA INFERIOR IZQUIERDA DE LA MOCHILA -->
-                    <div class="mochila-footer">
-                        <button class="settings-btn" onclick="toggleSettingsMenu()">
-                            ⚙️
-                        </button>
-                        <!-- Modal/Desplegable de Ajustes -->
-                        <div id="settings-menu" class="settings-dropdown" style="display: none;">
-                            <button onclick="changeSession()">Cerrar sesión</button>
-                            <button class="danger-btn" onclick="deleteProfile()">Borrar perfil</button>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -1513,7 +1513,7 @@
             }
         }
 
-        // --- NOTIFICACIONES Y DROPS DESACTIVADOS TEMPORALMENTE ---
+        // --- NOTIFICACIONES Y DROPS DESACTIVADOS TEMPORALMENTE[cite: 6] ---
         function triggerDropNotification(dropData) {
             return; 
         }
@@ -2410,7 +2410,7 @@
             mensajesChat.push({ de: miNombre, texto: texto, fecha: new Date().toLocaleTimeString() });
             localStorage.setItem(chatKey, JSON.stringify(mensajesChat));
             input.value = '';
-            comporbarMatches();
+            comprobarMatches();
         }
     </script>
 </body>
