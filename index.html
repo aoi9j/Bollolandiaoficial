@@ -1181,87 +1181,75 @@
                 </div>
             </div>
 
-            <!-- SECCIÓN CON DROPS Y VITRINA CON COMPONENTES UNIFICADOS -->
-            <!-- Sección de Drops 📦 -->
-<section id="drops-section" class="space-y-4">
-  
-  <!-- Contenedor de las 5 Vitrinas Idénticas -->
-  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-    
-    <!-- Vitrina 1 -->
-    <div class="bg-white p-4 rounded-2xl shadow-sm border border-orange-100 flex flex-col items-center justify-center aspect-square">
-      <div class="w-full h-full flex items-center justify-center">
-        <!-- Contenido / Modelo 3D de la Vitrina 1 -->
-        <div class="vitrina-3d-container w-full h-full">
-          <!-- Aquí va el canvas o visor 3D de la figura 1 -->
-          <div class="placeholder-figura bg-gray-100 w-full h-full rounded-xl flex items-center justify-center">
-            <span class="text-xs text-gray-400">Figura 1</span>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Vitrina 2 -->
-    <div class="bg-white p-4 rounded-2xl shadow-sm border border-orange-100 flex flex-col items-center justify-center aspect-square">
-      <div class="w-full h-full flex items-center justify-center">
-        <div class="vitrina-3d-container w-full h-full">
-          <div class="placeholder-figura bg-gray-100 w-full h-full rounded-xl flex items-center justify-center">
-            <span class="text-xs text-gray-400">Figura 2</span>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Vitrina 3 -->
-    <div class="bg-white p-4 rounded-2xl shadow-sm border border-orange-100 flex flex-col items-center justify-center aspect-square">
-      <div class="w-full h-full flex items-center justify-center">
-        <div class="vitrina-3d-container w-full h-full">
-          <div class="placeholder-figura bg-gray-100 w-full h-full rounded-xl flex items-center justify-center">
-            <span class="text-xs text-gray-400">Figura 3</span>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Vitrina 4 -->
-    <div class="bg-white p-4 rounded-2xl shadow-sm border border-orange-100 flex flex-col items-center justify-center aspect-square">
-      <div class="w-full h-full flex items-center justify-center">
-        <div class="vitrina-3d-container w-full h-full">
-          <div class="placeholder-figura bg-gray-100 w-full h-full rounded-xl flex items-center justify-center">
-            <span class="text-xs text-gray-400">Figura 4</span>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Vitrina 5 -->
-    <div class="bg-white p-4 rounded-2xl shadow-sm border border-orange-100 flex flex-col items-center justify-center aspect-square">
-      <div class="w-full h-full flex items-center justify-center">
-        <div class="vitrina-3d-container w-full h-full">
-          <div class="placeholder-figura bg-gray-100 w-full h-full rounded-xl flex items-center justify-center">
-            <span class="text-xs text-gray-400">Figura 5</span>
-          </div>
-        </div>
-      </div>
-    </div>
-
-  </div>
-</section>
+            <!-- SECCIÓN CON DROPS Y VITRINA ACTUALIZADA -->
             <div id="drops" class="tab-content" style="display:none;">
-                <div class="card" style="background: linear-gradient(135deg, #fff3ee, #faebd7); border: 1.5px solid rgba(255, 179, 150, 0.4);">
-                    <h3 style="color: var(--accent-coral); display:flex; align-items:center; gap:6px;">📦 Vitrina 3D Interactiva</h3>
-                    <p style="font-size:0.78rem; color: var(--text-main); line-height:1.4; margin:0;">
-                        Gira 360º la vitrina interactiva de cristal para examinar los objetos exclusivos y coleccionables cazados en Bollolandia. ✨
-                    </p>
-                    <button class="btn-flechazo" style="margin-top: 12px; font-size:0.8rem;" onclick="simularDisparoDropSorpresa()">✨ Forzar / Simular Drop Sorpresa</button>
-                </div>
+                <!-- Sección de Drops 📦 -->
+                <section id="drops-section" class="space-y-4">
+                  
+                  <!-- Contenedor de las 5 Vitrinas Idénticas -->
+                  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    
+                    <!-- Vitrina 1 -->
+                    <div class="bg-white p-4 rounded-2xl shadow-sm border border-orange-100 flex flex-col items-center justify-center aspect-square">
+                      <div class="w-full h-full flex items-center justify-center">
+                        <!-- Contenido / Modelo 3D de la Vitrina 1 -->
+                        <div class="vitrina-3d-container w-full h-full">
+                          <!-- Aquí va el canvas o visor 3D de la figura 1 -->
+                          <div class="placeholder-figura bg-gray-100 w-full h-full rounded-xl flex items-center justify-center">
+                            <span class="text-xs text-gray-400">Figura 1</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
 
-                <!-- Contenedor HTML donde flotará la vitrina 3D -->
-                <div class="card" style="padding: 10px; overflow: hidden;">
-                    <div id="vitrina-container" style="width: 100%; height: 350px; position: relative; touch-action: none; border-radius: 12px; background: radial-gradient(circle, #fcf8f2 0%, #f4efe6 100%);"></div>
-                </div>
+                    <!-- Vitrina 2 -->
+                    <div class="bg-white p-4 rounded-2xl shadow-sm border border-orange-100 flex flex-col items-center justify-center aspect-square">
+                      <div class="w-full h-full flex items-center justify-center">
+                        <div class="vitrina-3d-container w-full h-full">
+                          <div class="placeholder-figura bg-gray-100 w-full h-full rounded-xl flex items-center justify-center">
+                            <span class="text-xs text-gray-400">Figura 2</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
 
-                <div class="card">
+                    <!-- Vitrina 3 -->
+                    <div class="bg-white p-4 rounded-2xl shadow-sm border border-orange-100 flex flex-col items-center justify-center aspect-square">
+                      <div class="w-full h-full flex items-center justify-center">
+                        <div class="vitrina-3d-container w-full h-full">
+                          <div class="placeholder-figura bg-gray-100 w-full h-full rounded-xl flex items-center justify-center">
+                            <span class="text-xs text-gray-400">Figura 3</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- Vitrina 4 -->
+                    <div class="bg-white p-4 rounded-2xl shadow-sm border border-orange-100 flex flex-col items-center justify-center aspect-square">
+                      <div class="w-full h-full flex items-center justify-center">
+                        <div class="vitrina-3d-container w-full h-full">
+                          <div class="placeholder-figura bg-gray-100 w-full h-full rounded-xl flex items-center justify-center">
+                            <span class="text-xs text-gray-400">Figura 4</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- Vitrina 5 -->
+                    <div class="bg-white p-4 rounded-2xl shadow-sm border border-orange-100 flex flex-col items-center justify-center aspect-square">
+                      <div class="w-full h-full flex items-center justify-center">
+                        <div class="vitrina-3d-container w-full h-full">
+                          <div class="placeholder-figura bg-gray-100 w-full h-full rounded-xl flex items-center justify-center">
+                            <span class="text-xs text-gray-400">Figura 5</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                  </div>
+                </section>
+
+                <div class="card" style="margin-top: 16px;">
                     <h3>🏆 Tus Objetos Cazados</h3>
                     <div class="drops-grid" id="vitrinaDropsGrid">
                         <!-- Se llena dinámicamente -->
@@ -1583,15 +1571,6 @@
                 ocultarLoginOverlay();
                 cambiarPestana('extras', document.querySelectorAll('.nav-icon-btn')[4]);
             }
-        }
-
-        // --- NOTIFICACIONES Y DROPS DESACTIVADOS TEMPORALMENTE[cite: 6] ---
-        function triggerDropNotification(dropData) {
-            return; 
-        }
-
-        function simularDisparoDropSorpresa() {
-            return; 
         }
 
         // --- FUNCIONES BÚSQUEDA GLOBAL ---
@@ -2440,49 +2419,7 @@
                     lanzarEfectoConfeti();
                     window.lastMatchCount = matches.length;
                 }
-
-                cont.innerHTML = matches.map(m => {
-                    const matchNombre = m.de;
-                    const chatKey = `chat_${[miNombre, matchNombre].sort().join('_')}`;
-                    const mensajesChat = JSON.parse(localStorage.getItem(chatKey) || '[]');
-                    let htmlMensajes = mensajesChat.map(msg => `<div class="chat-burbuja ${msg.de === miNombre ? 'mio' : 'suyo'}"><b>${msg.de === miNombre ? 'Tú' : msg.de}:</b> ${msg.texto}</div>`).join('');
-
-                    return `
-                        <div style="background:#fff3ee; border:1.5px dashed var(--accent-coral); border-radius:14px; padding:12px; margin-top:10px;">
-                            <strong style="color:var(--accent-coral); font-size:0.85rem; display:block; text-align:center;">¡HAY FLECHAZO MUTUO CON ${matchNombre.toUpperCase()}! 🌸💖</strong>
-                            <div class="chat-box-container">
-                                <div class="chat-mensajes-scroll" id="scrollChat_${matchNombre}">${htmlMensajes || '<span style="color:#8c827b; font-size:0.75rem; text-align:center; margin:auto;">¡Escríbele!</span>'}</div>
-                                <div style="display:flex; gap:6px; margin-top:8px;">
-                                    <input type="text" id="inputChat_${matchNombre}" placeholder="Escribe..." style="margin:0; font-size:0.78rem;" onkeypress="if(event.key==='Enter') enviarMensajeChat('${matchNombre}')">
-                                    <button class="btn-flechazo" style="width:70px; margin:0; padding:8px; font-size:0.75rem;" onclick="enviarMensajeChat('${matchNombre}')">Enviar</button>
-                                </div>
-                            </div>
-                        </div>
-                    `;
-                }).join('');
-
-                matches.forEach(m => {
-                    const s = document.getElementById(`scrollChat_${m.de}`);
-                    if(s) s.scrollTop = s.scrollHeight;
-                });
-            } else {
-                cont.innerHTML = '';
             }
-        }
-
-        function enviarMensajeChat(matchNombre) {
-            const input = document.getElementById(`inputChat_${matchNombre}`);
-            if(!input) return;
-            const texto = input.value.trim();
-            if(!texto) return;
-
-            const miNombre = perfilActivo.toLowerCase();
-            const chatKey = `chat_${[miNombre, matchNombre].sort().join('_')}`;
-            const mensajesChat = JSON.parse(localStorage.getItem(chatKey) || '[]');
-            mensajesChat.push({ de: miNombre, texto: texto, fecha: new Date().toLocaleTimeString() });
-            localStorage.setItem(chatKey, JSON.stringify(mensajesChat));
-            input.value = '';
-            comprobarMatches();
         }
     </script>
 </body>
