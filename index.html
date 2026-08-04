@@ -5,27 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bollolandia - Dashboard</title>
 
-    <!-- Manifest PWA Integrado Correctamente mediante Data URI -->
-    <link rel="manifest" href='data:application/manifest+json;utf8,{
-      "name": "AOI App",
-      "short_name": "AOI",
-      "start_url": "/",
-      "display": "standalone",
-      "background_color": "#ffffff",
-      "theme_color": "#000000",
-      "icons": [
-        {
-          "src": "/icon-192.png",
-          "sizes": "192x192",
-          "type": "image/png"
-        },
-        {
-          "src": "/icon-512.png",
-          "sizes": "512x512",
-          "type": "image/png"
-        }
-      ]
-    }'>
+    <!-- Manifest PWA Integrado -->
+   <link rel="manifest" href="/manifest.json">
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.css" rel="stylesheet">
@@ -70,6 +51,34 @@
             margin: 0;
             padding: 0 0 90px 0;
             overflow-x: hidden;
+        }
+
+        /* --- ESTILOS LOGIN OVERLAY --- */
+        #loginOverlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.7);
+            backdrop-filter: blur(8px);
+            z-index: 20000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+        }
+        .login-card {
+            background: #ffffff;
+            border-radius: 24px;
+            padding: 28px 24px;
+            width: 100%;
+            max-width: 340px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.25);
+            border: 2px solid var(--accent-coral);
+            text-align: center;
+        }
+        .login-card h2 {
+            margin-top: 0;
+            color: var(--text-main);
+            font-size: 1.3rem;
         }
 
         /* --- ESTILOS COMPONENTE BIO & HEADER --- */
@@ -491,44 +500,6 @@
             border-radius: 14px;
             padding: 10px;
         }
-
-        .btn-sesion-safe {
-            background: #f4efe6;
-            color: var(--text-main);
-            border: 1px solid var(--border-soft);
-            padding: 12px 16px;
-            border-radius: 14px;
-            font-weight: 600;
-            font-size: 0.85rem;
-            cursor: pointer;
-            width: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            margin-top: 8px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
-        }
-        .btn-sesion-safe:hover { background: #eae3d8; }
-
-        .btn-danger-safe {
-            background: #fff3f3;
-            color: #d9534f;
-            border: 1px solid #f9dede;
-            padding: 12px 16px;
-            border-radius: 14px;
-            font-weight: 600;
-            font-size: 0.85rem;
-            cursor: pointer;
-            width: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            margin-top: 8px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
-        }
-        .btn-danger-safe:hover { background: #fde8e8; }
 
         .btn-mapa {
             background: #f0f4f1;
@@ -980,6 +951,17 @@
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 </head>
 <body onload="inicializarAppSegura()">
+
+    <!-- MODAL DE INICIO DE SESIÓN -->
+    <div id="loginOverlay" style="display: none;">
+        <div class="login-card">
+            <h2>🔑 Iniciar Sesión</h2>
+            <p style="font-size:0.8rem; color:#8c827b; margin-bottom: 14px;">Ingresa tus credenciales del carnet para continuar.</p>
+            <input type="text" id="loginName" placeholder="Nombre / Apodo del carnet">
+            <input type="password" id="loginCode" placeholder="Código (ej: BL-VIP-8317)">
+            <button class="btn-flechazo" style="margin-top: 10px;" onclick="procesarInicioSesion()">Entrar a Bollolandia ✨</button>
+        </div>
+    </div>
 
     <div id="cartaFlotanteBox" onclick="abrirBuzonDesdeFlotante()">
         <div style="display:flex; align-items:center; gap:10px;">
@@ -1493,9 +1475,46 @@
             }
         }
 
+        // --- INICIO DE SESIÓN INTEGRADO ---
+        function mostrarLoginOverlay() {
+            document.getElementById("loginOverlay").style.display = "flex";
+        }
+
+        function ocultarLoginOverlay() {
+            document.getElementById("loginOverlay").style.display = "none";
+        }
+
+        function procesarInicioSesion() {
+            const nombre = document.getElementById("loginName").value.trim();
+            const codigo = document.getElementById("loginCode").value.trim();
+
+            if (!nombre || !codigo) {
+                return alert("Por favor, ingresa tu apodo y el código.");
+            }
+
+            if (codigo !== CODIGO_VIP && codigo !== CODIGO_FUNDADORA) {
+                return alert("⛔ Código incorrecto. Verifica el código de tu carnet.");
+            }
+
+            const db = obtenerBaseDatosGlobal();
+            if (db[nombre]) {
+                perfilActivo = nombre;
+                localStorage.setItem("perfil_activo", perfilActivo);
+                ocultarLoginOverlay();
+                sincronizarInterfazUsuario();
+                lanzarEfectoConfeti();
+                alert(`✨ ¡Bienvenida de nuevo, ${nombre}!`);
+            } else {
+                alert(`ℹ️ El usuario "${nombre}" no está registrado. Redirigiendo a la creación de carnet...`);
+                document.getElementById("inName").value = nombre;
+                document.getElementById("inCodigo").value = codigo;
+                ocultarLoginOverlay();
+                cambiarPestana('extras', document.querySelectorAll('.nav-icon-btn')[4]);
+            }
+        }
+
         // --- NOTIFICACIONES Y DROPS ---
         function triggerDropNotification(dropData) {
-            // TEMPORALMENTE DESACTIVADO
             return; 
         }
 
@@ -1603,36 +1622,10 @@
 
         function inicializarAppSegura() {
             const db = obtenerBaseDatosGlobal();
-            const nombres = Object.keys(db);
-
-            if (nombres.length > 0) {
-                let nombreFundadora = "";
-                for (let n of nombres) {
-                    if (db[n].isGold) {
-                        nombreFundadora = n;
-                        break;
-                    }
-                }
-                if (!nombreFundadora && nombres.length > 0) {
-                    nombreFundadora = perfilActivo && db[perfilActivo] ? perfilActivo : nombres[0];
-                }
-
-                if (nombreFundadora && db[nombreFundadora]) {
-                    const datosMia = db[nombreFundadora];
-                    datosMia.isGold = true; 
-                    
-                    if (!datosMia.marcosDesbloqueados) datosMia.marcosDesbloqueados = ['marco-multicolor'];
-                    if (!datosMia.marcosDesbloqueados.includes('marco-fundadora')) {
-                        datosMia.marcosDesbloqueados.push('marco-fundadora');
-                    }
-                    if (!datosMia.misDrops) datosMia.misDrops = ['drop_corona'];
-
-                    const nuevaDb = {};
-                    nuevaDb[nombreFundadora] = datosMia;
-                    guardarBaseDatosGlobal(nuevaDb);
-                    perfilActivo = nombreFundadora;
-                    localStorage.setItem("perfil_activo", perfilActivo);
-                }
+            if (!perfilActivo || !db[perfilActivo]) {
+                mostrarLoginOverlay();
+            } else {
+                ocultarLoginOverlay();
             }
 
             sincronizarInterfazUsuario();
@@ -1959,6 +1952,7 @@
 
             if (codigoIngresado === CODIGO_FUNDADORA) esGold = true;
             else if (codigoIngresado === CODIGO_VIP) esSilver = true;
+            else return alert("⛔ El código ingresado no es válido. Usa BL-VIP-8317 o BL-FUNDADORA-GOLD.");
 
             let counter = parseInt(localStorage.getItem("dni_counter_num") || "0", 10) + 1;
             localStorage.setItem("dni_counter_num", counter.toString());
@@ -2064,6 +2058,7 @@
             perfilActivo = "";
             localStorage.removeItem("perfil_activo");
             sincronizarInterfazUsuario();
+            mostrarLoginOverlay();
             alert("🔄 Has cerrado sesión correctamente.");
         }
 
@@ -2072,10 +2067,10 @@
                 const db = obtenerBaseDatosGlobal();
                 delete db[perfilActivo];
                 guardarBaseDatosGlobal(db);
-                const remaining = Object.keys(db);
-                perfilActivo = remaining.length > 0 ? remaining[0] : "";
-                localStorage.setItem("perfil_activo", perfilActivo);
+                perfilActivo = "";
+                localStorage.removeItem("perfil_activo");
                 sincronizarInterfazUsuario();
+                mostrarLoginOverlay();
                 alert("🗑️ Perfil eliminado correctamente.");
             }
         }
