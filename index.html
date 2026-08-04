@@ -2029,21 +2029,10 @@
             const miNombre = perfilActivo.toLowerCase();
             const chatKey = `chat_${[miNombre, matchNombre].sort().join('_')}`;
             const mensajesChat = JSON.parse(localStorage.getItem(chatKey) || '[]');
-            mensajesChat.push({ de: miNombre, texto: texto });
+            mensajesChat.push({ de: miNombre, texto: texto, fecha: new Date().toLocaleTimeString() });
             localStorage.setItem(chatKey, JSON.stringify(mensajesChat));
             input.value = '';
             comprobarMatches();
-        }
-
-        function cerrarMatchAnimacion() { document.getElementById('matchOverlay').style.display = 'none'; }
-
-        function ejecutarBusquedaGlobal(query) {
-            query = query.toLowerCase().trim();
-            if(!query) return;
-            if(query.includes('tienda') || query.includes('marco')) cambiarPestana('tienda', document.querySelectorAll('.nav-icon-btn')[0]);
-            else if(query.includes('drop') || query.includes('vitrina')) cambiarPestana('drops', document.querySelectorAll('.nav-icon-btn')[1]);
-            else if(query.includes('agenda') || query.includes('plan')) cambiarPestana('agenda', document.querySelectorAll('.nav-icon-btn')[2]);
-            else if(query.includes('buzon') || query.includes('carta')) cambiarPestana('buzon', document.querySelectorAll('.nav-icon-btn')[3]);
         }
     </script>
 </body>
