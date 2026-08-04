@@ -145,61 +145,69 @@
             margin: 0;
         }
 
-        /* --- ESTILOS ENGRANAJE FIJO (UBICACIÓN CORREGIDA SEGÚN CÍRCULO ROJO) --- */
-        .mochila-footer {
-            position: absolute;
-            top: 14px;
-            right: 14px;
+        /* --- ESTILOS AJUSTES FIJOS EN LA ESQUINA INFERIOR IZQUIERDA DE LA PÁGINA --- */
+        .global-settings-container {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            z-index: 15000;
         }
         .settings-btn {
             background: #1e1e1e;
             color: #fff;
             border: none;
             border-radius: 50%;
-            width: 36px;
-            height: 36px;
+            width: 44px;
+            height: 44px;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
             padding: 0;
             margin: 0;
+            font-size: 1.2rem;
+            transition: transform 0.2s ease;
+        }
+        .settings-btn:hover {
+            transform: scale(1.05);
         }
         .settings-dropdown {
             position: absolute;
-            top: 54px;
-            right: 14px;
+            bottom: 54px;
+            left: 0;
             background: #1e1e1e;
-            border-radius: 8px;
+            border-radius: 12px;
             padding: 8px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-            z-index: 105;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+            z-index: 15001;
             display: flex;
             flex-direction: column;
             gap: 6px;
-            width: 140px;
+            width: 150px;
+            border: 1px solid rgba(255,255,255,0.1);
         }
         .settings-dropdown button {
             background: transparent;
             color: #fff;
             border: none;
-            padding: 8px;
+            padding: 10px 12px;
             text-align: left;
-            font-size: 0.78rem;
+            font-size: 0.8rem;
             cursor: pointer;
-            border-radius: 4px;
+            border-radius: 6px;
             margin: 0;
             width: 100%;
+            transition: background 0.2s ease;
         }
         .settings-dropdown button:hover {
-            background: rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.12);
         }
         .settings-dropdown button.danger-btn {
             color: #ff5555;
         }
         .settings-dropdown button.danger-btn:hover {
-            background: rgba(255, 85, 85, 0.15);
+            background: rgba(255, 85, 85, 0.2);
         }
 
         /* --- ESTILOS GRID DE DROPS Y VITRINA NUEVOS --- */
@@ -267,7 +275,7 @@
             position: fixed;
             top: 16px;
             left: 12px;
-            bottom: 16px;
+            bottom: 76px;
             width: 72px;
             background: var(--sidebar-bg);
             border-radius: 24px;
@@ -963,6 +971,18 @@
         </div>
     </div>
 
+    <!-- ENGRANAJE DE AJUSTES FIJO EN LA PARTE INQUIERDA INFERIOR DE LA PÁGINA -->
+    <div class="global-settings-container">
+        <button class="settings-btn" onclick="toggleSettingsMenu()" title="Ajustes">
+            ⚙️
+        </button>
+        <!-- Modal/Desplegable de Ajustes -->
+        <div id="settings-menu" class="settings-dropdown" style="display: none;">
+            <button onclick="changeSession()">Cerrar sesión</button>
+            <button class="danger-btn" onclick="deleteProfile()">Borrar perfil</button>
+        </div>
+    </div>
+
     <div id="cartaFlotanteBox" onclick="abrirBuzonDesdeFlotante()">
         <div style="display:flex; align-items:center; gap:10px;">
             <span style="font-size:1.5rem;">💌</span>
@@ -1268,20 +1288,7 @@
                     <button class="btn-principal" onclick="crearCarnet()">✨ Validar y Guardar</button>
                 </div>
 
-                <div class="card" id="seccionMiCarnet" style="display: none; position: relative;">
-                    <!-- ENGRANAJE FIJO UBICADO EXACTAMENTE DONDE SE INDICÓ EN EL CÍRCULO ROJO -->
-                    <div class="mochila-footer">
-                        <button class="settings-btn" onclick="toggleSettingsMenu()">
-                            ⚙️
-                        </button>
-                    </div>
-
-                    <!-- Modal/Desplegable de Ajustes -->
-                    <div id="settings-menu" class="settings-dropdown" style="display: none;">
-                        <button onclick="changeSession()">Cerrar sesión</button>
-                        <button class="danger-btn" onclick="deleteProfile()">Borrar perfil</button>
-                    </div>
-
+                <div class="card" id="seccionMiCarnet" style="display: none;">
                     <h3 style="margin-bottom: 8px;">🖼️ Tus Marcos Desbloqueados</h3>
                     <p style="font-size: 0.75rem; color: #8c827b; margin-top: -4px;">Selecciona el marco que deseas equipar:</p>
 
@@ -1513,6 +1520,7 @@
             }
         }
 
+        // --- NOTIFICACIONES Y DROPS DESACTIVADOS TEMPORALMENTE[cite: 6] ---
         function triggerDropNotification(dropData) {
             return; 
         }
@@ -1521,6 +1529,7 @@
             return; 
         }
 
+        // --- FUNCIONES BÚSQUEDA GLOBAL ---
         function ejecutarBusquedaGlobal(query) {
             const q = query.toLowerCase().trim();
             if (!q) return;
@@ -1537,11 +1546,13 @@
             console.log("Resultados búsqueda planes:", resultadosQuedadas);
         }
 
+        // --- FUNCIONES ANIMACIÓN FLECHAZO / MATCH ---
         function cerrarMatchAnimacion() {
             const overlay = document.getElementById('matchOverlay');
             if (overlay) overlay.style.display = 'none';
         }
 
+        // --- FUNCIONES BIO EDITABLE ---
         const bioInput = document.getElementById('bio-input');
         const charCount = document.getElementById('char-count');
 
@@ -1570,6 +1581,7 @@
             actualizarDatosActuales({ bio: newBio });
         }
 
+        // --- FUNCIONES MENÚ DE AJUSTES (DESPLEGABLE) ---
         function toggleSettingsMenu() {
             const menu = document.getElementById('settings-menu');
             if (menu) {
@@ -1587,6 +1599,7 @@
             borrarPerfilActual();
         }
 
+        // --- INICIALIZACIÓN GENERAL ---
         function lanzarEfectoConfeti() {
             if (typeof confetti === 'function') {
                 confetti({
