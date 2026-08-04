@@ -145,38 +145,36 @@
             margin: 0;
         }
 
-        /* --- ESTILOS BOTÓN Y MENÚ DE AJUSTES FIJO ABAJO A LA IZQUIERDA --- */
-        .global-settings-container {
-            position: fixed;
-            bottom: 20px;
-            left: 106px; /* Situado fuera de la barra lateral flotante (92px + margen) */
-            z-index: 10050;
+        /* --- ESTILOS ENGRANAJE FIJO (UBICACIÓN CORREGIDA SEGÚN CÍRCULO ROJO) --- */
+        .mochila-footer {
+            position: absolute;
+            top: 14px;
+            right: 14px;
         }
         .settings-btn {
             background: #1e1e1e;
             color: #fff;
             border: none;
             border-radius: 50%;
-            width: 42px;
-            height: 42px;
+            width: 36px;
+            height: 36px;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
             padding: 0;
             margin: 0;
-            font-size: 1.1rem;
         }
         .settings-dropdown {
             position: absolute;
-            bottom: 52px;
-            left: 0;
+            top: 54px;
+            right: 14px;
             background: #1e1e1e;
             border-radius: 8px;
             padding: 8px;
             box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-            z-index: 10051;
+            z-index: 105;
             display: flex;
             flex-direction: column;
             gap: 6px;
@@ -1067,17 +1065,6 @@
         <button class="nav-icon-btn" onclick="cambiarPestana('extras', this)" title="Perfil y Marcos">🎒</button>
     </div>
 
-    <!-- BOTÓN Y MENÚ DE AJUSTES FIJO ABAJO A LA IZQUIERDA (FUERA DE LA MOCHILA)[cite: 9] -->
-    <div class="global-settings-container">
-        <button class="settings-btn" onclick="toggleSettingsMenu()" title="Ajustes">
-            ⚙️
-        </button>
-        <div id="settings-menu" class="settings-dropdown" style="display: none;">
-            <button onclick="changeSession()">Cerrar sesión</button>
-            <button class="danger-btn" onclick="deleteProfile()">Borrar perfil</button>
-        </div>
-    </div>
-
     <div class="main-wrapper">
         <div class="top-header">
             <div class="top-search">
@@ -1281,7 +1268,20 @@
                     <button class="btn-principal" onclick="crearCarnet()">✨ Validar y Guardar</button>
                 </div>
 
-                <div class="card" id="seccionMiCarnet" style="display: none;">
+                <div class="card" id="seccionMiCarnet" style="display: none; position: relative;">
+                    <!-- ENGRANAJE FIJO UBICADO EXACTAMENTE DONDE SE INDICÓ EN EL CÍRCULO ROJO -->
+                    <div class="mochila-footer">
+                        <button class="settings-btn" onclick="toggleSettingsMenu()">
+                            ⚙️
+                        </button>
+                    </div>
+
+                    <!-- Modal/Desplegable de Ajustes -->
+                    <div id="settings-menu" class="settings-dropdown" style="display: none;">
+                        <button onclick="changeSession()">Cerrar sesión</button>
+                        <button class="danger-btn" onclick="deleteProfile()">Borrar perfil</button>
+                    </div>
+
                     <h3 style="margin-bottom: 8px;">🖼️ Tus Marcos Desbloqueados</h3>
                     <p style="font-size: 0.75rem; color: #8c827b; margin-top: -4px;">Selecciona el marco que deseas equipar:</p>
 
@@ -1513,7 +1513,6 @@
             }
         }
 
-        // --- NOTIFICACIONES Y DROPS DESACTIVADOS TEMPORALMENTE[cite: 6] ---
         function triggerDropNotification(dropData) {
             return; 
         }
@@ -1522,7 +1521,6 @@
             return; 
         }
 
-        // --- FUNCIONES BÚSQUEDA GLOBAL ---
         function ejecutarBusquedaGlobal(query) {
             const q = query.toLowerCase().trim();
             if (!q) return;
@@ -1539,13 +1537,11 @@
             console.log("Resultados búsqueda planes:", resultadosQuedadas);
         }
 
-        // --- FUNCIONES ANIMACIÓN FLECHAZO / MATCH ---
         function cerrarMatchAnimacion() {
             const overlay = document.getElementById('matchOverlay');
             if (overlay) overlay.style.display = 'none';
         }
 
-        // --- FUNCIONES BIO EDITABLE ---
         const bioInput = document.getElementById('bio-input');
         const charCount = document.getElementById('char-count');
 
@@ -1574,7 +1570,6 @@
             actualizarDatosActuales({ bio: newBio });
         }
 
-        // --- FUNCIONES MENÚ DE AJUSTES (DESPLEGABLE) ---
         function toggleSettingsMenu() {
             const menu = document.getElementById('settings-menu');
             if (menu) {
@@ -1592,7 +1587,6 @@
             borrarPerfilActual();
         }
 
-        // --- INICIALIZACIÓN GENERAL ---
         function lanzarEfectoConfeti() {
             if (typeof confetti === 'function') {
                 confetti({
