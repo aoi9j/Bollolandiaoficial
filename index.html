@@ -13,6 +13,16 @@
     <!-- Leaflet CSS -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 
+    <!-- Three.js Import Map -->
+    <script type="importmap">
+      {
+        "imports": {
+          "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+          "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+        }
+      }
+    </script>
+
     <style>
         :root {
             --bg-main: #fcf8f2;
@@ -367,7 +377,6 @@
             cursor: pointer;
         }
 
-        /* --- ESTILOS DEL BANNER FLOTANTE DE DROP SORPRESA --- */
         #dropBannerFlotante {
             display: none;
             position: fixed;
@@ -925,14 +934,19 @@
                 </div>
             </div>
 
-            <!-- SECCIÓN NUEVA: DROPS Y VITRINA -->
+            <!-- SECCIÓN NUEVA: DROPS Y VITRINA CON VISOR 3D THREE.JS -->
             <div id="drops" class="tab-content" style="display:none;">
                 <div class="card" style="background: linear-gradient(135deg, #fff3ee, #faebd7); border: 1.5px solid rgba(255, 179, 150, 0.4);">
-                    <h3 style="color: var(--accent-coral); display:flex; align-items:center; gap:6px;">📦 Vitrina de Coleccionables (Drops)</h3>
+                    <h3 style="color: var(--accent-coral); display:flex; align-items:center; gap:6px;">📦 Vitrina 3D Interactiva</h3>
                     <p style="font-size:0.78rem; color: var(--text-main); line-height:1.4; margin:0;">
-                        Aquí se almacenan todos los objetos exclusivos, limitados y sorpresas que vas cazando en los <strong>Drops</strong> de Bollolandia. ¡Colecciónalos todos! ✨
+                        Gira 360º la vitrina interactiva de cristal para examinar los objetos exclusivos y coleccionables cazados en Bollolandia. ✨
                     </p>
                     <button class="btn-flechazo" style="margin-top: 12px; font-size:0.8rem;" onclick="simularDisparoDropSorpresa()">✨ Forzar / Simular Drop Sorpresa</button>
+                </div>
+
+                <!-- Contenedor HTML donde flotará la vitrina 3D -->
+                <div class="card" style="padding: 10px; overflow: hidden;">
+                    <div id="vitrina-container" style="width: 100%; height: 350px; position: relative; touch-action: none; border-radius: 12px; background: radial-gradient(circle, #fcf8f2 0%, #f4efe6 100%);"></div>
                 </div>
 
                 <div class="card">
@@ -1075,6 +1089,100 @@
             <button class="btn-action btn-close" style="margin-top:8px; width:100%;" onclick="cerrarModalFechaCustom()">Cancelar</button>
         </div>
     </div>
+
+    <!-- SCRIPT DE THREE.JS PARA LA VITRINA 3D -->
+    <script type="module">
+        import * as THREE from 'three';
+        import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+
+        const container = document.getElementById('vitrina-container');
+        if (container) {
+            const scene = new THREE.Scene();
+            
+            const camera = new THREE.PerspectiveCamera(50, container.clientWidth / container.clientHeight, 0.1, 1000);
+            camera.position.set(0, 0, 5.5);
+
+            const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+            renderer.setSize(container.clientWidth, container.clientHeight);
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+            container.appendChild(renderer.domElement);
+
+            const controls = new OrbitControls(camera, renderer.domElement);
+            controls.enableZoom = false;
+            controls.enablePan = false;
+            controls.rotateSpeed = 0.8;
+            controls.dampingFactor = 0.05;
+            controls.enableDamping = true;
+
+            const ambientLight = new THREE.AmbientLight(0xffffff, 1.2);
+            scene.add(ambientLight);
+
+            const topLight = new THREE.PointLight(0xffffff, 2, 10);
+            topLight.position.set(0, 3, 0);
+            scene.add(topLight);
+
+            const vitrinaGroup = new THREE.Group();
+            scene.add(vitrinaGroup);
+
+            const glassMaterial = new THREE.MeshPhysicalMaterial({
+                color: 0xffffff,
+                metalness: 0.1,
+                roughness: 0.1,
+                transmission: 0.9,
+                transparent: true,
+                opacity: 0.25,
+                side: THREE.DoubleSide
+            });
+
+            const cajaGeo = new THREE.BoxGeometry(2.5, 2.5, 2.5);
+            const cajaMesh = new THREE.Mesh(cajaGeo, glassMaterial);
+            vitrinaGroup.add(cajaMesh);
+
+            const edgesGeo = new THREE.EdgesGeometry(cajaGeo);
+            const edgesMat = new THREE.LineBasicMaterial({ color: 0xe0f7fa, linewidth: 2 });
+            const wireframeBox = new THREE.LineSegments(edgesGeo, edgesMat);
+            vitrinaGroup.add(wireframeBox);
+
+            const baseGeo = new THREE.BoxGeometry(2.5, 0.4, 2.5);
+            const baseMat = new THREE.MeshStandardMaterial({ color: 0xcccccc, roughness: 0.4 });
+            const baseMesh = new THREE.Mesh(baseGeo, baseMat);
+            baseMesh.position.y = -1.25;
+            vitrinaGroup.add(baseMesh);
+
+            const dropGroup = new THREE.Group();
+            scene.add(dropGroup);
+
+            const prendaGeo = new THREE.CylinderGeometry(0.4, 0.6, 1.2, 16);
+            const prendaMat = new THREE.MeshStandardMaterial({ color: 0x333333, roughness: 0.5 });
+            const prendaEjemplo = new THREE.Mesh(prendaGeo, prendaMat);
+            prendaEjemplo.position.y = -0.5;
+            dropGroup.add(prendaEjemplo);
+
+            let clock = new THREE.Clock();
+
+            function animate() {
+                requestAnimationFrame(animate);
+                const elapsedTime = clock.getElapsedTime();
+                const floatOffset = Math.sin(elapsedTime * 2) * 0.05;
+                
+                vitrinaGroup.position.y = floatOffset;
+                dropGroup.position.y = floatOffset;
+
+                controls.update();
+                renderer.render(scene, camera);
+            }
+
+            animate();
+
+            window.addEventListener('resize', () => {
+                if(container && renderer && camera) {
+                    camera.aspect = container.clientWidth / container.clientHeight;
+                    camera.updateProjectionMatrix();
+                    renderer.setSize(container.clientWidth, container.clientHeight);
+                }
+            });
+        }
+    </script>
 
     <script>
         const CODIGO_VIP = "BL-VIP-8317";
