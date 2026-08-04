@@ -958,7 +958,7 @@
             <h2>🔑 Iniciar Sesión</h2>
             <p style="font-size:0.8rem; color:#8c827b; margin-bottom: 14px;">Ingresa tus credenciales del carnet para continuar.</p>
             <input type="text" id="loginName" placeholder="Nombre / Apodo del carnet">
-            <input type="password" id="loginCode" placeholder="Código (ej: BL-VIP-8317)">
+            <input type="password" id="loginCode" placeholder="Código">
             <button class="btn-flechazo" style="margin-top: 10px;" onclick="procesarInicioSesion()">Entrar a Bollolandia ✨</button>
         </div>
     </div>
@@ -1263,7 +1263,7 @@
                     <label for="inPhoto" class="file-input-label" id="photoLabel">📷 Subir Foto de Perfil</label>
                     <input type="file" id="inPhoto" accept="image/*" style="display: none;" onchange="procesarFotoCarnet()">
 
-                    <input type="password" id="inCodigo" placeholder="🔒 Código de acceso (VIP o Fundadora)">
+                    <input type="password" id="inCodigo" placeholder="Código">
 
                     <button class="btn-principal" onclick="crearCarnet()">✨ Validar y Guardar</button>
                 </div>
@@ -1513,8 +1513,12 @@
             }
         }
 
-        // --- NOTIFICACIONES Y DROPS ---
+        // --- NOTIFICACIONES Y DROPS DESACTIVADOS TEMPORALMENTE[cite: 6] ---
         function triggerDropNotification(dropData) {
+            return; 
+        }
+
+        function simularDisparoDropSorpresa() {
             return; 
         }
 
@@ -1633,8 +1637,6 @@
             inicializarCalendarioYMapa();
             comprobarCumpleanosHoy();
             
-            setTimeout(simularDisparoDropSorpresa, 4000);
-            setInterval(simularDisparoDropSorpresa, 60000);
             setInterval(comprobarNotificacionesBuzon, 3000);
         }
 
@@ -1744,16 +1746,6 @@
         function toggleAccordion(id) {
             const el = document.getElementById(id);
             if(el) el.classList.toggle('open');
-        }
-
-        function simularDisparoDropSorpresa() {
-            const itemAleatorio = CATALOGO_DROPS[Math.floor(Math.random() * CATALOGO_DROPS.length)];
-            dropActualActivo = itemAleatorio;
-
-            const banner = document.getElementById('dropBannerFlotante');
-            document.getElementById('dropIconoFlotante').innerText = itemAleatorio.emoji;
-            document.getElementById('dropTituloFlotante').innerText = `¡Nuevo Drop: ${itemAleatorio.nombre}!`;
-            banner.style.display = 'block';
         }
 
         function reclamarDropSorpresa() {
