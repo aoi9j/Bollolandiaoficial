@@ -146,14 +146,11 @@
         }
 
         /* --- ESTILOS MOCHILA FOOTER & AJUSTES DESPLEGABLES --- */
-        .card-mochila-wrapper {
-            position: relative;
-            padding-bottom: 60px; /* Espacio para que el botón absoluto no tape el contenido */
-        }
         .mochila-footer {
-            position: absolute;
-            bottom: 16px;
-            left: 16px;
+            margin-top: 16px;
+            display: flex;
+            justify-content: flex-start;
+            position: relative;
         }
         .settings-btn {
             background: #1e1e1e;
@@ -172,8 +169,8 @@
         }
         .settings-dropdown {
             position: absolute;
-            bottom: 58px;
-            left: 16px;
+            bottom: 44px;
+            left: 0;
             background: #1e1e1e;
             border-radius: 8px;
             padding: 8px;
@@ -1272,8 +1269,7 @@
                     <button class="btn-principal" onclick="crearCarnet()">✨ Validar y Guardar</button>
                 </div>
 
-                <!-- APLICADO: ENGHANAJE MOVIDO ABAJO DEL TODO A LA IZQUIERDA DE LA MOCHILA -->
-                <div class="card card-mochila-wrapper" id="seccionMiCarnet" style="display: none;">
+                <div class="card" id="seccionMiCarnet" style="display: none;">
                     <h3 style="margin-bottom: 8px;">🖼️ Tus Marcos Desbloqueados</h3>
                     <p style="font-size: 0.75rem; color: #8c827b; margin-top: -4px;">Selecciona el marco que deseas equipar:</p>
 
@@ -1284,17 +1280,16 @@
                         <select id="selectPerfilActivo" style="margin-bottom: 8px;" onchange="cambiarPerfilActivo(this.value)"></select>
                     </div>
 
-                    <!-- Botón de ajustes ubicado abajo del todo a la izquierda dentro de la tarjeta -->
+                    <!-- FOOTER Y MENÚ EN LA ESQUINA INFERIOR IZQUIERDA DE LA MOCHILA -->
                     <div class="mochila-footer">
                         <button class="settings-btn" onclick="toggleSettingsMenu()">
                             ⚙️
                         </button>
-                    </div>
-
-                    <!-- Menú Desplegable de Ajustes -->
-                    <div id="settings-menu" class="settings-dropdown" style="display: none;">
-                        <button onclick="changeSession()">Cerrar sesión</button>
-                        <button class="danger-btn" onclick="deleteProfile()">Borrar perfil</button>
+                        <!-- Modal/Desplegable de Ajustes -->
+                        <div id="settings-menu" class="settings-dropdown" style="display: none;">
+                            <button onclick="changeSession()">Cerrar sesión</button>
+                            <button class="danger-btn" onclick="deleteProfile()">Borrar perfil</button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -1518,7 +1513,7 @@
             }
         }
 
-        // --- NOTIFICACIONES Y DROPS DESACTIVADOS TEMPORALMENTE[cite: 6] ---
+        // --- NOTIFICACIONES Y DROPS DESACTIVADOS TEMPORALMENTE ---
         function triggerDropNotification(dropData) {
             return; 
         }
@@ -2415,7 +2410,7 @@
             mensajesChat.push({ de: miNombre, texto: texto, fecha: new Date().toLocaleTimeString() });
             localStorage.setItem(chatKey, JSON.stringify(mensajesChat));
             input.value = '';
-            comprobarMatches();
+            comporbarMatches();
         }
     </script>
 </body>
