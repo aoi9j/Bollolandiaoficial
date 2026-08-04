@@ -9,6 +9,8 @@
     <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Cinzel:wght@700&display=swap" rel="stylesheet">
+    <!-- Librería de Confeti -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
 
     <!-- Leaflet CSS -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
@@ -46,6 +48,33 @@
             margin: 0;
             padding: 0 0 90px 0;
             overflow-x: hidden;
+        }
+
+        /* --- ANIMACIONES DE MICROINTERACCIÓN --- */
+        .tab-content {
+            animation: fadeInTab 0.3s ease-in-out;
+        }
+        @keyframes fadeInTab {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .card, .shop-item, .premio-card-visual {
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s ease;
+        }
+        .card:hover, .shop-item:hover {
+            transform: translateY(-2px) scale(1.01);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+        }
+
+        button, .btn-principal, .btn-flechazo, .btn-buy, .nav-icon-btn {
+            transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.2s ease, background-color 0.2s ease;
+        }
+        button:hover, .btn-principal:hover, .btn-flechazo:hover, .btn-buy:hover {
+            transform: translateY(-2px) scale(1.02);
+        }
+        button:active, .btn-principal:active, .btn-flechazo:active {
+            transform: translateY(0) scale(0.98);
         }
 
         .sidebar-left {
@@ -131,7 +160,6 @@
             cursor: pointer;
             color: #8c827b;
             margin-bottom: 8px;
-            transition: all 0.2s ease;
             position: relative;
         }
 
@@ -307,7 +335,6 @@
             gap: 8px;
             margin-top: 8px;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
-            transition: all 0.2s ease;
         }
         .btn-sesion-safe:hover { background: #eae3d8; }
 
@@ -327,7 +354,6 @@
             gap: 8px;
             margin-top: 8px;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
-            transition: all 0.2s ease;
         }
         .btn-danger-safe:hover { background: #fde8e8; }
 
@@ -596,9 +622,11 @@
         .btn-close { background: #4a403b; color: white; }
         .btn-download { background: var(--accent-green); color: white; box-shadow: 0 4px 12px rgba(135, 163, 138, 0.3); }
 
+        /* --- RULETA Y AGUJA / PINCHAZO ANIMADO --- */
         .ruleta-container {
             background: linear-gradient(135deg, #fff3ee, #faebd7);
             border: 2px dashed var(--accent-coral); border-radius: 18px; padding: 16px; text-align: center; margin-bottom: 14px;
+            position: relative;
         }
         .ruleta-premios-grid {
             display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin: 12px 0;
@@ -606,10 +634,38 @@
         .premio-card-visual {
             background: #fff; border: 1px solid var(--border-soft); border-radius: 12px; padding: 8px; font-size: 0.75rem; font-weight: bold; color: var(--text-main); display: flex; align-items: center; gap: 6px; box-shadow: 0 2px 6px rgba(0,0,0,0.02);
         }
+        
+        .roulette-wrapper {
+            position: relative;
+            width: 80px;
+            margin: 12px auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        /* Aguja Física Arriba con rebote (tick) */
+        .roulette-ticker {
+            width: 0; 
+            height: 0; 
+            border-left: 10px solid transparent;
+            border-right: 10px solid transparent;
+            border-top: 18px solid #FF3B30;
+            transform-origin: top center;
+            transition: transform 0.05s ease-out;
+            z-index: 10;
+            filter: drop-shadow(0px 2px 3px rgba(0,0,0,0.2));
+            margin-bottom: -6px;
+        }
+        .roulette-ticker.tick {
+            transform: rotate(-18deg);
+        }
+
         .ruleta-wheel {
-            width: 70px; height: 70px; margin: 8px auto; border-radius: 50%;
+            width: 70px; height: 70px; border-radius: 50%;
             background: conic-gradient(#f28b72 0deg 90deg, #ff4500 90deg 180deg, #ffb396 180deg 270deg, #87a38a 270deg 360deg);
-            display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 12px rgba(0,0,0,0.15); font-size: 1.4rem; transition: transform 3s cubic-bezier(0.15, 0.9, 0.2, 1);
+            display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 12px rgba(0,0,0,0.15); font-size: 1.4rem; 
+            transition: transform 3s cubic-bezier(0.15, 0.9, 0.2, 1);
         }
 
         .shop-item { border: 1.5px solid var(--border-soft); border-radius: 16px; padding: 12px; background: #fff; display: flex; flex-direction: column; justify-content: space-between; box-shadow: 0 4px 12px rgba(0,0,0,0.02); text-align: center; }
@@ -923,7 +979,11 @@
                         <div class="premio-card-visual">💖 <span>+50 Premios Gordos</span></div>
                     </div>
 
-                    <div class="ruleta-wheel" id="ruletaWheel">🎯</div>
+                    <div class="roulette-wrapper">
+                        <div class="roulette-ticker" id="rouletteTicker"></div>
+                        <div class="ruleta-wheel" id="ruletaWheel">🎯</div>
+                    </div>
+
                     <button class="btn-principal" style="background: linear-gradient(135deg, var(--accent-coral), var(--accent-peach)); font-size:0.8rem; margin-top:8px;" onclick="girarRuleta()">🎯 Girar Ruleta (20 💖)</button>
                 </div>
 
@@ -1213,6 +1273,17 @@
         let marcadoresMapa = [];
         let dropActualActivo = null;
 
+        // FUNCIÓN EFECTO CONFETI
+        function lanzarEfectoConfeti() {
+            if (typeof confetti === 'function') {
+                confetti({
+                    particleCount: 120,
+                    spread: 80,
+                    origin: { y: 0.6 }
+                });
+            }
+        }
+
         function obtenerBaseDatosGlobal() {
             return JSON.parse(localStorage.getItem("bollolandia_usuarios") || "{}");
         }
@@ -1411,6 +1482,7 @@
             actualizarDatosActuales({ misDrops: data.misDrops });
 
             document.getElementById('dropBannerFlotante').style.display = 'none';
+            lanzarEfectoConfeti();
             alert(`🎉 ¡Has cazado con éxito: ${dropActualActivo.nombre} (${dropActualActivo.rareza})! Ya está disponible en tu vitrina de Drops.`);
             dropActualActivo = null;
             renderizarVitrinaDrops();
@@ -1514,6 +1586,7 @@
             renderizarBoutiqueMarcos();
             renderizarMisMarcosEquipar();
             cargarDatosCarnet(obtenerDatosActuales());
+            lanzarEfectoConfeti();
             alert("🎉 ¡Marco comprado y equipado con éxito!");
         }
 
@@ -1622,6 +1695,7 @@
             carnetFotoBase64 = "";
 
             sincronizarInterfazUsuario();
+            lanzarEfectoConfeti();
             abrirModalCarnet();
         }
 
@@ -1744,12 +1818,25 @@
             if (!data.isGold) actualizarCorazones(-costo);
 
             const wheel = document.getElementById("ruletaWheel");
+            const ticker = document.getElementById("rouletteTicker");
             const randomDeg = Math.floor(1440 + Math.random() * 1080);
+            
             wheel.style.transform = `rotate(${randomDeg}deg)`;
 
+            // Animación de pinchazo (tick) simulada en la aguja durante el giro
+            let ticks = 0;
+            const interval = setInterval(() => {
+                ticker.classList.add("tick");
+                setTimeout(() => ticker.classList.remove("tick"), 40);
+                ticks++;
+                if (ticks > 25) clearInterval(interval);
+            }, 100);
+
             setTimeout(() => {
+                clearInterval(interval);
                 const premio = Math.random() > 0.5 ? { valor: 30, texto: '¡+30 💖 extra!' } : { valor: 50, texto: '🎉 ¡Premio gordo! +50 💖' };
                 actualizarCorazones(premio.valor);
+                lanzarEfectoConfeti();
                 alert(premio.texto);
             }, 3000);
         }
@@ -1907,7 +1994,10 @@
             const cumples = JSON.parse(localStorage.getItem('cumples') || '[]');
             const cumpleHoy = cumples.find(c => c.fecha && c.fecha.substring(5) === mesDiaHoy);
             if (cumpleHoy) {
-                setTimeout(() => alert(`🎂 ¡Hoy es el cumpleaños de ${cumpleHoy.nombre} 🥳!`), 1000);
+                setTimeout(() => {
+                    lanzarEfectoConfeti();
+                    alert(`🎂 ¡Hoy es el cumpleaños de ${cumpleHoy.nombre} 🥳!`);
+                }, 1000);
             }
         }
 
@@ -1991,6 +2081,12 @@
             const matches = flechazos.filter(f => f.para === miNombre && misEnviados.includes(f.de));
 
             if(matches.length > 0) {
+                // Si acaba de detectarse un match nuevo, disparar confeti
+                if(!window.lastMatchCount || window.lastMatchCount < matches.length) {
+                    lanzarEfectoConfeti();
+                    window.lastMatchCount = matches.length;
+                }
+
                 cont.innerHTML = matches.map(m => {
                     const matchNombre = m.de;
                     const chatKey = `chat_${[miNombre, matchNombre].sort().join('_')}`;
