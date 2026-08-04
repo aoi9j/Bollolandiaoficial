@@ -1,15 +1,23 @@
 {
-  "short_name": "Bollolandia",
-  "name": "Rincón de Bollolandia",
+  "short_name": "TuApp",
+  "name": "Nombre De Tu Aplicación",
   "icons": [
     {
-      "src": "https://imgur.com/a/Cmgp3CN" ,
+      "src": "/icons/icon-192x192.png",
       "type": "image/png",
-      "sizes": "512x512"
+      "sizes": "192x192"
+    },
+    {
+      "src": "/icons/icon-512x512.png",
+      "type": "image/png",
+      "sizes": "512x512",
+      "purpose": "any maskable"
     }
   ],
-  "start_url": "./index.html",
-  "background_color": "#fff0f5",
-  "theme_color": "#bdb2ff",
-  "display": "standalone"
+  "start_url": "/login",
+  "background_color": "#ffffff",
+  "theme_color": "#000000",
+  "display": "standalone",
+  "orientation": "portrait",
+  "scope": "/"
 }
