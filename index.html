@@ -146,6 +146,10 @@
         }
 
         /* --- ESTILOS MOCHILA FOOTER & AJUSTES DESPLEGABLES --- */
+        .card-mochila-wrapper {
+            position: relative;
+            padding-bottom: 60px; /* Espacio para que el botón absoluto no tape el contenido */
+        }
         .mochila-footer {
             position: absolute;
             bottom: 16px;
@@ -168,7 +172,7 @@
         }
         .settings-dropdown {
             position: absolute;
-            bottom: 50px;
+            bottom: 58px;
             left: 16px;
             background: #1e1e1e;
             border-radius: 8px;
@@ -1268,7 +1272,8 @@
                     <button class="btn-principal" onclick="crearCarnet()">✨ Validar y Guardar</button>
                 </div>
 
-                <div class="card" id="seccionMiCarnet" style="display: none;">
+                <!-- APLICADO: ENGHANAJE MOVIDO ABAJO DEL TODO A LA IZQUIERDA DE LA MOCHILA -->
+                <div class="card card-mochila-wrapper" id="seccionMiCarnet" style="display: none;">
                     <h3 style="margin-bottom: 8px;">🖼️ Tus Marcos Desbloqueados</h3>
                     <p style="font-size: 0.75rem; color: #8c827b; margin-top: -4px;">Selecciona el marco que deseas equipar:</p>
 
@@ -1279,14 +1284,14 @@
                         <select id="selectPerfilActivo" style="margin-bottom: 8px;" onchange="cambiarPerfilActivo(this.value)"></select>
                     </div>
 
-                    <!-- FOOTER Y MENÚ EN LA ESQUINA INFERIOR IZQUIERDA DE LA MOCHILA -->
+                    <!-- Botón de ajustes ubicado abajo del todo a la izquierda dentro de la tarjeta -->
                     <div class="mochila-footer">
                         <button class="settings-btn" onclick="toggleSettingsMenu()">
                             ⚙️
                         </button>
                     </div>
 
-                    <!-- Modal/Desplegable de Ajustes -->
+                    <!-- Menú Desplegable de Ajustes -->
                     <div id="settings-menu" class="settings-dropdown" style="display: none;">
                         <button onclick="changeSession()">Cerrar sesión</button>
                         <button class="danger-btn" onclick="deleteProfile()">Borrar perfil</button>
