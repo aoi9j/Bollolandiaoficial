@@ -24,40 +24,6 @@
     </script>
 
     <style>
-        /* Contenedor general para ordenador */
-        body {
-          margin: 0;
-          padding: 0;
-          background-color: #121212; /* O el color de fondo que prefieras para los laterales */
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          min-height: 100vh;
-          font-family: sans-serif;
-        }
-
-        .app-container {
-          width: 100%;
-          max-width: 450px; /* Limita el ancho máximo en PC para que mantenga proporciones cómodas */
-          height: 100vh;
-          max-height: 900px; /* Evita que se estire demasiado hacia arriba */
-          background: #ffffff; /* Color de fondo de tu app */
-          box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-          border-radius: 12px;
-          overflow: hidden;
-          display: flex;
-          flex-direction: column;
-        }
-
-        /* Ajustes específicos para pantallas grandes */
-        @media (min-width: 768px) {
-          /* Reduce ligeramente los tamaños si en PC se ven exagerados */
-          .button, .card {
-            font-size: 14px;
-            padding: 10px;
-          }
-        }
-
         :root {
             --bg-main: #fcf8f2;
             --sidebar-bg: #f4efe6;
@@ -71,20 +37,14 @@
             --fundadora-x: 0px;
             --fundadora-y: 0px;
             --fundadora-scale: 1;
-
-            /* Variables añadidas para la Vitrina Premium individual */
-            --vitrine-bg-color: #121214;
-            --gold-glow: rgba(255, 183, 77, 0.4);
-            --gold-border: rgba(255, 204, 128, 0.6);
-            --glass-bg: rgba(255, 255, 255, 0.03);
         }
 
-        /* Envoltorio interno adaptado al app-container */
-        .app-container {
-            position: relative;
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             background-color: var(--bg-main);
             color: var(--text-main);
-            overflow-y: auto;
+            margin: 0;
+            padding: 0 0 90px 0;
             overflow-x: hidden;
         }
 
@@ -776,93 +736,6 @@
         .chat-burbuja.mio { background: var(--accent-coral); color: #fff; align-self: flex-end; border-bottom-right-radius: 2px; }
         .chat-burbuja.suyo { background: #fff; color: var(--text-main); align-self: flex-start; border: 1px solid var(--border-soft); border-bottom-left-radius: 2px; }
 
-        .vitrine-card {
-            position: relative;
-            width: 220px;
-            height: 280px;
-            background: var(--glass-bg);
-            border-radius: 16px;
-            border: 1px solid var(--gold-border);
-            box-shadow: 
-                inset 0 0 25px var(--gold-glow),
-                0 10px 30px rgba(0, 0, 0, 0.5),
-                0 0 15px rgba(255, 183, 77, 0.2);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 15px;
-            overflow: hidden;
-            backdrop-filter: blur(5px);
-            margin: 10px auto;
-        }
-
-        .vitrine-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 70%;
-            height: 4px;
-            background: #ffe0b2;
-            box-shadow: 0 0 15px 4px #ffb74d;
-            border-radius: 0 0 4px 4px;
-        }
-
-        .vitrine-card::after {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: linear-gradient(
-                135deg,
-                rgba(255, 255, 255, 0.08) 0%,
-                rgba(255, 255, 255, 0) 50%
-            );
-            pointer-events: none;
-        }
-
-        .figure-container {
-            width: 130px;
-            height: 160px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 2;
-            margin-bottom: 15px;
-        }
-
-        .figure-container img, .figure-container span {
-            max-width: 100%;
-            max-height: 100%;
-            object-fit: contain;
-            filter: drop-shadow(0 10px 10px rgba(0, 0, 0, 0.6));
-        }
-
-        .drop-info {
-            z-index: 2;
-            text-align: center;
-            width: 100%;
-        }
-
-        .drop-title {
-            color: #ffe0b2;
-            font-size: 0.9rem;
-            font-weight: 600;
-            margin: 0 0 4px 0;
-            letter-spacing: 0.5px;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
-        }
-
-        .drop-subtitle {
-            color: rgba(255, 255, 255, 0.6);
-            font-size: 0.75rem;
-            margin: 0;
-        }
-
         .footer-copyright {
             text-align: center;
             margin-top: 30px;
@@ -881,311 +754,313 @@
 </head>
 <body onload="inicializarAppSegura()">
 
-    <div class="app-container">
-        <div id="cartaFlotanteBox" onclick="abrirBuzonDesdeFlotante()">
-            <div style="display:flex; align-items:center; gap:10px;">
-                <span style="font-size:1.5rem;">💌</span>
-                <div>
-                    <strong style="color:var(--text-main); font-size:0.8rem;" id="flotanteRemitente">¡Nueva carta!</strong>
-                    <p style="margin:2px 0 0 0; font-size:0.7rem; color:#8c827b;" id="flotanteTexto">Mensaje secreto recibido.</p>
+    <div id="cartaFlotanteBox" onclick="abrirBuzonDesdeFlotante()">
+        <div style="display:flex; align-items:center; gap:10px;">
+            <span style="font-size:1.5rem;">💌</span>
+            <div>
+                <strong style="color:var(--text-main); font-size:0.8rem;" id="flotanteRemitente">¡Nueva carta!</strong>
+                <p style="margin:2px 0 0 0; font-size:0.7rem; color:#8c827b;" id="flotanteTexto">Mensaje secreto recibido.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- BANNER FLOTANTE DEL DROP SORPRESA -->
+    <div id="dropBannerFlotante" onclick="reclamarDropSorpresa()">
+        <div style="display:flex; align-items:center; gap:10px;">
+            <span style="font-size:1.8rem;" id="dropIconoFlotante">📦✨</span>
+            <div>
+                <strong style="font-size:0.85rem; display:block;" id="dropTituloFlotante">¡Nuevo Drop Disponible!</strong>
+                <span style="font-size:0.72rem; text-decoration:underline;">¡Haz clic para cazarlo ya!</span>
+            </div>
+        </div>
+    </div>
+
+    <div id="matchOverlay" style="display:none; position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.6); backdrop-filter:blur(4px); z-index:10001; flex-direction:column; justify-content:center; align-items:center; padding:16px;" onclick="cerrarMatchAnimacion()">
+        <div style="background:#fff; padding:24px; border-radius:20px; text-align:center; max-width:320px; border:2px solid var(--accent-coral); box-shadow:0 10px 25px rgba(0,0,0,0.2);" onclick="event.stopPropagation()">
+            <div style="font-size: 50px;">💖🏹</div>
+            <div style="font-size: 1.1rem; color: var(--accent-coral); font-weight: bold; margin-top: 10px;">¡FLECHAZO MUTUO! 🌸</div>
+            <p id="matchTextoAnimado" style="font-size:0.85rem; color:var(--text-main); font-weight:600; margin-top: 8px;"></p>
+            <button class="btn-flechazo" style="margin-top:16px;" onclick="cerrarMatchAnimacion()">Cerrar</button>
+        </div>
+    </div>
+
+    <div id="cardModal" class="card-modal" onclick="cerrarModalCarnet()">
+        <div id="mclovin-card" class="mclovin-card" onclick="event.stopPropagation()">
+            <div class="card-header">
+                <div class="header-main" id="cardHeaderTitle">ESPAÑA • BOLLOLANDIA 🌈</div>
+                <div class="header-sub">DRIVER LICENSE / CARNET SÁFICO</div>
+            </div>
+            <div class="card-body">
+                <div class="card-left-column">
+                    <div class="card-note-box" id="cardNoteOut" onclick="modificarNotaInteractiva()" title="Haz clic para modificar la nota">Nota...</div>
+                    <div class="card-photo-box" id="cardPhotoBox" onclick="dispararCambioFotoDirecto()" title="Pincha aquí para cambiar tu foto">
+                        <span style="font-size: 2rem;">👤</span>
+                        <div id="marcoLayer" class="marco-neon-humo marco-multicolor"></div>
+                    </div>
                 </div>
+                <div class="card-info">
+                    <div class="info-row">
+                        <span class="label-red">LICENCE NO.</span><br>
+                        <span class="val-bold" id="cardIdOut" style="color: #b94a48;">BL-0000001</span>
+                    </div>
+                    <div class="info-row" style="display: flex; gap: 8px;">
+                        <div>
+                            <span class="label-red">EXP:</span> <span id="cardExpOut">PERM</span>
+                        </div>
+                        <div>
+                            <span class="label-red">DOB:</span> <span id="cardDateOut">00/00/00</span>
+                        </div>
+                    </div>
+                    <div class="info-row" style="margin-top: 2px;">
+                        <span class="label-red">NOMBRE / APODO:</span><br>
+                        <span class="val-bold" id="cardNameOut">---</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="label-red">MISIÓN PRINCIPAL:</span><br>
+                        <span class="val-mision" id="cardMisionOut">---</span>
+                    </div>
+                    <div class="info-row" style="margin-top: 4px;">
+                        <span class="label-red">FIRMA:</span><br>
+                        <span class="signature" id="cardSignatureOut">---</span>
+                    </div>
+                </div>
+            </div>
+            <div class="founder-seal">✨ FUNDADORA VIP ✨</div>
+            <div class="silver-seal">🌟 MIEMBRO VIP 🌟</div>
+            <div class="member-seal" id="memberSealNormal" style="display:none; position:absolute; bottom:8px; right:8px; background:#4a403b; color:#fff; padding:3px 6px; border-radius:6px; font-size:0.55rem; font-weight:900;">🌈 MIEMBRO SÁFICO</div>
+        </div>
+
+        <div class="modal-buttons" onclick="event.stopPropagation()">
+            <button class="btn-action btn-download" onclick="descargarCarnet()">📸 Descargar Carnet</button>
+            <button class="btn-action btn-close" onclick="cerrarModalCarnet()">Cerrar</button>
+        </div>
+    </div>
+
+    <input type="file" id="inputFotoDirectoCarnet" accept="image/*" style="display: none;" onchange="procesarFotoDirectoCarnet(this)">
+
+    <div class="sidebar-left">
+        <div class="sidebar-avatar-container">
+            <div class="sidebar-avatar" id="btnMochilaHeader" onclick="abrirModalCarnet()" title="Ver mi Carnet">
+                👤<div id="miniMarcoLayer" class="marco-neon-humo marco-multicolor"></div>
+            </div>
+            <div class="sidebar-note-bubble" id="sidebarNoteBubble" onclick="modificarNotaInteractiva()" style="display: none;" title="Haz clic para modificar la nota"></div>
+        </div>
+
+        <button class="nav-icon-btn active" onclick="cambiarPestana('tienda', this)" title="Tienda">🛍️</button>
+        <button class="nav-icon-btn" onclick="cambiarPestana('drops', this)" title="Drops y Vitrina">📦</button>
+        <button class="nav-icon-btn" onclick="cambiarPestana('agenda', this)" title="Agenda">📅</button>
+        <button class="nav-icon-btn" onclick="cambiarPestana('buzon', this)" title="Buzón">
+            💌
+            <div class="notif-dot" id="dotBuzon"></div>
+        </button>
+        <button class="nav-icon-btn" onclick="cambiarPestana('extras', this)" title="Perfil y Marcos">🎒</button>
+    </div>
+
+    <div class="main-wrapper">
+        <div class="top-header">
+            <div class="top-search">
+                <span>🔍</span>
+                <input type="text" id="inputBusquedaGlobal" placeholder="Buscar usuarias, chismes..." oninput="ejecutarBusquedaGlobal(this.value)">
+            </div>
+            <div class="header-pill-badge">
+                💖 <span id="heartCount">0</span>
             </div>
         </div>
 
-        <!-- BANNER FLOTANTE DEL DROP SORPRESA -->
-        <div id="dropBannerFlotante" onclick="reclamarDropSorpresa()">
-            <div style="display:flex; align-items:center; gap:10px;">
-                <span style="font-size:1.8rem;" id="dropIconoFlotante">📦✨</span>
-                <div>
-                    <strong style="font-size:0.85rem; display:block;" id="dropTituloFlotante">¡Nuevo Drop Disponible!</strong>
-                    <span style="font-size:0.72rem; text-decoration:underline;">¡Haz clic para cazarlo ya!</span>
+        <div class="hero-card">
+            <div>
+                <h2>Hola de nuevo, <span id="dashboardUserName">Mia</span>! ✨</h2>
+                <div class="hero-bio-container" id="heroBioContainer" style="display: none;">
+                    <span class="hero-bio-label">Bio:</span>
+                    <div class="hero-bio-display" id="heroBioDisplay"></div>
                 </div>
+            </div>
+            <div class="hero-profile-avatar" id="heroProfileAvatarBox">
+                <span style="font-size: 2rem;">👤</span>
+                <div id="heroMarcoLayer" class="marco-neon-humo marco-multicolor"></div>
             </div>
         </div>
 
-        <div id="matchOverlay" style="display:none; position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.6); backdrop-filter:blur(4px); z-index:10001; flex-direction:column; justify-content:center; align-items:center; padding:16px;" onclick="cerrarMatchAnimacion()">
-            <div style="background:#fff; padding:24px; border-radius:20px; text-align:center; max-width:320px; border:2px solid var(--accent-coral); box-shadow:0 10px 25px rgba(0,0,0,0.2);" onclick="event.stopPropagation()">
-                <div style="font-size: 50px;">💖🏹</div>
-                <div style="font-size: 1.1rem; color: var(--accent-coral); font-weight: bold; margin-top: 10px;">¡FLECHAZO MUTUO! 🌸</div>
-                <p id="matchTextoAnimado" style="font-size:0.85rem; color:var(--text-main); font-weight:600; margin-top: 8px;"></p>
-                <button class="btn-flechazo" style="margin-top:16px;" onclick="cerrarMatchAnimacion()">Cerrar</button>
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="icon-box">💖</div>
+                <div class="val" id="statHearts">0</div>
+                <div class="label">Puntos 💖</div>
+            </div>
+            <div class="stat-card">
+                <div class="icon-box">📦</div>
+                <div class="val" id="statDropsCount">0</div>
+                <div class="label">Drops</div>
+            </div>
+            <div class="stat-card">
+                <div class="icon-box">🎉</div>
+                <div class="val" id="statQuedadas">0</div>
+                <div class="label">Planes</div>
+            </div>
+            <div class="stat-card">
+                <div class="icon-box">🔥</div>
+                <div class="val" id="statEstadoBadge">FUNDADORA</div>
+                <div class="label">Estado</div>
             </div>
         </div>
 
-        <div id="cardModal" class="card-modal" onclick="cerrarModalCarnet()">
-            <div id="mclovin-card" class="mclovin-card" onclick="event.stopPropagation()">
-                <div class="card-header">
-                    <div class="header-main" id="cardHeaderTitle">ESPAÑA • BOLLOLANDIA 🌈</div>
-                    <div class="header-sub">DRIVER LICENSE / CARNET SÁFICO</div>
+        <div class="container-contenido">
+
+            <div id="tienda" class="tab-content">
+                <div class="card" style="background: linear-gradient(135deg, #fef9e7, #fcf4db); border: 1.5px solid #f3e5ab;">
+                    <h3 style="color: #8c6d1f; display:flex; align-items:center; gap:6px;">📢 Boutique de Marcos</h3>
+                    <p style="font-size:0.78rem; color:#6b5314; line-height:1.4; margin:0;">
+                        <strong>¡Colores individuales y fijos!</strong> Cada marco mantiene su color correspondiente. Compra tus favoritos con tus puntos 💖 y equípatelos cuando quieras. ✨
+                    </p>
                 </div>
-                <div class="card-body">
-                    <div class="card-left-column">
-                        <div class="card-note-box" id="cardNoteOut" onclick="modificarNotaInteractiva()" title="Haz clic para modificar la nota">Nota...</div>
-                        <div class="card-photo-box" id="cardPhotoBox" onclick="dispararCambioFotoDirecto()" title="Pincha aquí para cambiar tu foto">
-                            <span style="font-size: 2rem;">👤</span>
-                            <div id="marcoLayer" class="marco-neon-humo marco-multicolor"></div>
-                        </div>
+
+                <div class="ruleta-container">
+                    <h3 style="margin-top:0; color:var(--accent-coral); font-size:0.95rem;">🎡 La Ruleta de Premios Sáfica</h3>
+                    <p style="font-size:0.75rem; color:#8c827b; margin-bottom: 8px;">Gira para conseguir cualquiera de estos tesoros:</p>
+                    
+                    <div class="ruleta-premios-grid">
+                        <div class="premio-card-visual">✨ <span>+30 Puntos Extra</span></div>
+                        <div class="premio-card-visual">💖 <span>+50 Premios Gordos</span></div>
                     </div>
-                    <div class="card-info">
-                        <div class="info-row">
-                            <span class="label-red">LICENCE NO.</span><br>
-                            <span class="val-bold" id="cardIdOut" style="color: #b94a48;">BL-0000001</span>
-                        </div>
-                        <div class="info-row" style="display: flex; gap: 8px;">
-                            <div>
-                                <span class="label-red">EXP:</span> <span id="cardExpOut">PERM</span>
-                            </div>
-                            <div>
-                                <span class="label-red">DOB:</span> <span id="cardDateOut">00/00/00</span>
-                            </div>
-                        </div>
-                        <div class="info-row" style="margin-top: 2px;">
-                            <span class="label-red">NOMBRE / APODO:</span><br>
-                            <span class="val-bold" id="cardNameOut">---</span>
-                        </div>
-                        <div class="info-row">
-                            <span class="label-red">MISIÓN PRINCIPAL:</span><br>
-                            <span class="val-mision" id="cardMisionOut">---</span>
-                        </div>
-                        <div class="info-row" style="margin-top: 4px;">
-                            <span class="label-red">FIRMA:</span><br>
-                            <span class="signature" id="cardSignatureOut">---</span>
-                        </div>
-                    </div>
+
+                    <div class="ruleta-wheel" id="ruletaWheel">🎯</div>
+                    <button class="btn-principal" style="background: linear-gradient(135deg, var(--accent-coral), var(--accent-peach)); font-size:0.8rem; margin-top:8px;" onclick="girarRuleta()">🎯 Girar Ruleta (20 💖)</button>
                 </div>
-                <div class="founder-seal">✨ FUNDADORA VIP ✨</div>
-                <div class="silver-seal">🌟 MIEMBRO VIP 🌟</div>
-                <div class="member-seal" id="memberSealNormal" style="display:none; position:absolute; bottom:8px; right:8px; background:#4a403b; color:#fff; padding:3px 6px; border-radius:6px; font-size:0.55rem; font-weight:900;">🌈 MIEMBRO SÁFICO</div>
-            </div>
 
-            <div class="modal-buttons" onclick="event.stopPropagation()">
-                <button class="btn-action btn-download" onclick="descargarCarnet()">📸 Descargar Carnet</button>
-                <button class="btn-action btn-close" onclick="cerrarModalCarnet()">Cerrar</button>
-            </div>
-        </div>
-
-        <input type="file" id="inputFotoDirectoCarnet" accept="image/*" style="display: none;" onchange="procesarFotoDirectoCarnet(this)">
-
-        <div class="sidebar-left">
-            <div class="sidebar-avatar-container">
-                <div class="sidebar-avatar" id="btnMochilaHeader" onclick="abrirModalCarnet()" title="Ver mi Carnet">
-                    👤<div id="miniMarcoLayer" class="marco-neon-humo marco-multicolor"></div>
-                </div>
-                <div class="sidebar-note-bubble" id="sidebarNoteBubble" onclick="modificarNotaInteractiva()" style="display: none;" title="Haz clic para modificar la nota"></div>
-            </div>
-
-            <button class="nav-icon-btn active" onclick="cambiarPestana('tienda', this)" title="Tienda">🛍️</button>
-            <button class="nav-icon-btn" onclick="cambiarPestana('drops', this)" title="Drops y Vitrina">📦</button>
-            <button class="nav-icon-btn" onclick="cambiarPestana('agenda', this)" title="Agenda">📅</button>
-            <button class="nav-icon-btn" onclick="cambiarPestana('buzon', this)" title="Buzón">
-                💌
-                <div class="notif-dot" id="dotBuzon"></div>
-            </button>
-            <button class="nav-icon-btn" onclick="cambiarPestana('extras', this)" title="Perfil y Marcos">🎒</button>
-        </div>
-
-        <div class="main-wrapper">
-            <div class="top-header">
-                <div class="top-search">
-                    <span>🔍</span>
-                    <input type="text" id="inputBusquedaGlobal" placeholder="Buscar usuarias, chismes..." oninput="ejecutarBusquedaGlobal(this.value)">
-                </div>
-                <div class="header-pill-badge">
-                    💖 <span id="heartCount">0</span>
+                <div class="card">
+                    <h3>🛍️ Colección de Marcos Neón</h3>
+                    <p style="font-size:0.75rem; color:#8c827b; margin-top:-4px;">Precios en 💖 indicados abajo de cada marco:</p>
+                    <div class="grid-shop" id="tiendaMarcosGrid"></div>
                 </div>
             </div>
 
-            <div class="hero-card">
-                <div>
-                    <h2>Hola de nuevo, <span id="dashboardUserName">Mia</span>! ✨</h2>
-                    <div class="hero-bio-container" id="heroBioContainer" style="display: none;">
-                        <span class="hero-bio-label">Bio:</span>
-                        <div class="hero-bio-display" id="heroBioDisplay"></div>
-                    </div>
+            <!-- SECCIÓN NUEVA: DROPS Y VITRINA CON VISOR 3D THREE.JS -->
+            <div id="drops" class="tab-content" style="display:none;">
+                <div class="card" style="background: linear-gradient(135deg, #fff3ee, #faebd7); border: 1.5px solid rgba(255, 179, 150, 0.4);">
+                    <h3 style="color: var(--accent-coral); display:flex; align-items:center; gap:6px;">📦 Vitrina 3D Interactiva</h3>
+                    <p style="font-size:0.78rem; color: var(--text-main); line-height:1.4; margin:0;">
+                        Gira 360º la vitrina interactiva de cristal para examinar los objetos exclusivos y coleccionables cazados en Bollolandia. ✨
+                    </p>
+                    <button class="btn-flechazo" style="margin-top: 12px; font-size:0.8rem;" onclick="simularDisparoDropSorpresa()">✨ Forzar / Simular Drop Sorpresa</button>
                 </div>
-                <div class="hero-profile-avatar" id="heroProfileAvatarBox">
-                    <span style="font-size: 2rem;">👤</span>
-                    <div id="heroMarcoLayer" class="marco-neon-humo marco-multicolor"></div>
-                </div>
-            </div>
 
-            <div class="stats-grid">
-                <div class="stat-card">
-                    <div class="icon-box">💖</div>
-                    <div class="val" id="statHearts">0</div>
-                    <div class="label">Puntos 💖</div>
+                <!-- Contenedor HTML donde flotará la vitrina 3D -->
+                <div class="card" style="padding: 10px; overflow: hidden;">
+                    <div id="vitrina-container" style="width: 100%; height: 350px; position: relative; touch-action: none; border-radius: 12px; background: radial-gradient(circle, #fcf8f2 0%, #f4efe6 100%);"></div>
                 </div>
-                <div class="stat-card">
-                    <div class="icon-box">📦</div>
-                    <div class="val" id="statDropsCount">0</div>
-                    <div class="label">Drops</div>
-                </div>
-                <div class="stat-card">
-                    <div class="icon-box">🎉</div>
-                    <div class="val" id="statQuedadas">0</div>
-                    <div class="label">Planes</div>
-                </div>
-                <div class="stat-card">
-                    <div class="icon-box">🔥</div>
-                    <div class="val" id="statEstadoBadge">FUNDADORA</div>
-                    <div class="label">Estado</div>
+
+                <div class="card">
+                    <h3>🏆 Tus Objetos Cazados</h3>
+                    <div id="vitrinaDropsGrid" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-top: 10px;">
+                        <!-- Se llena dinámicamente -->
+                    </div>
                 </div>
             </div>
 
-            <div class="container-contenido">
-
-                <div id="tienda" class="tab-content">
-                    <div class="card" style="background: linear-gradient(135deg, #fef9e7, #fcf4db); border: 1.5px solid #f3e5ab;">
-                        <h3 style="color: #8c6d1f; display:flex; align-items:center; gap:6px;">📢 Boutique de Marcos</h3>
-                        <p style="font-size:0.78rem; color:#6b5314; line-height:1.4; margin:0;">
-                            <strong>¡Colores individuales y fijos!</strong> Cada marco mantiene su color correspondiente. Compra tus favoritos con tus puntos 💖 y equípatelos cuando quieras. ✨
-                        </p>
-                    </div>
-
-                    <div class="ruleta-container">
-                        <h3 style="margin-top:0; color:var(--accent-coral); font-size:0.95rem;">🎡 La Ruleta de Premios Sáfica</h3>
-                        <p style="font-size:0.75rem; color:#8c827b; margin-bottom: 8px;">Gira para conseguir cualquiera de estos tesoros:</p>
-                        
-                        <div class="ruleta-premios-grid">
-                            <div class="premio-card-visual">✨ <span>+30 Puntos Extra</span></div>
-                            <div class="premio-card-visual">💖 <span>+50 Premios Gordos</span></div>
-                        </div>
-
-                        <div class="ruleta-wheel" id="ruletaWheel">🎯</div>
-                        <button class="btn-principal" style="background: linear-gradient(135deg, var(--accent-coral), var(--accent-peach)); font-size:0.8rem; margin-top:8px;" onclick="girarRuleta()">🎯 Girar Ruleta (20 💖)</button>
-                    </div>
-
-                    <div class="card">
-                        <h3>🛍️ Colección de Marcos Neón</h3>
-                        <p style="font-size:0.75rem; color:#8c827b; margin-top:-4px;">Precios en 💖 indicados abajo de cada marco:</p>
-                        <div class="grid-shop" id="tiendaMarcosGrid"></div>
+            <div id="agenda" class="tab-content" style="display:none;">
+                <div class="card">
+                    <h3>📅 Calendario</h3>
+                    <p style="font-size:0.75rem; color:#8c827b; margin-top:-4px;">💡 <em>Pincha arriba en el mes y año para saltar a cualquier fecha. Pincha en cualquier día para anotar tu cumpleaños y ganar +15 💖 automático.</em></p>
+                    
+                    <div id="calendarContainer">
+                        <div id="calendar"></div>
                     </div>
                 </div>
 
-                <div id="drops" class="tab-content" style="display:none;">
-                    <div class="card" style="background: linear-gradient(135deg, #fff3ee, #faebd7); border: 1.5px solid rgba(255, 179, 150, 0.4);">
-                        <h3 style="color: var(--accent-coral); display:flex; align-items:center; gap:6px;">📦 Vitrina 3D Interactiva</h3>
-                        <p style="font-size:0.78rem; color: var(--text-main); line-height:1.4; margin:0;">
-                            Gira 360º la vitrina interactiva de cristal para examinar los objetos exclusivos y coleccionables cazados en Bollolandia. ✨
-                        </p>
-                        <button class="btn-flechazo" style="margin-top: 12px; font-size:0.8rem;" onclick="simularDisparoDropSorpresa()">✨ Forzar / Simular Drop Sorpresa</button>
+                <div class="card">
+                    <h3>📍 Quedadas</h3>
+                    
+                    <div class="accordion-header" onclick="toggleAccordion('accQuedada')"><span>📍 Proponer Plan / Quedada (+25💖)</span> <span>▼</span></div>
+                    <div id="accQuedada" class="accordion-body">
+                        <input type="text" id="tituloQuedada" placeholder="Plan (ej: Café y chismes...)">
+                        <input type="text" id="lugarQuedada" placeholder="Lugar o Ciudad (ej: Madrid, Barcelona...)">
+                        <input type="datetime-local" id="fechaQuedada">
+                        <button class="btn-principal" onclick="agregarQuedada()">Publicar Plan</button>
                     </div>
 
-                    <div class="card" style="padding: 10px; overflow: hidden;">
-                        <div id="vitrina-container" style="width: 100%; height: 350px; position: relative; touch-action: none; border-radius: 12px; background: radial-gradient(circle, #fcf8f2 0%, #f4efe6 100%);"></div>
-                    </div>
+                    <h4 style="font-size:0.8rem; color:var(--accent-green); margin:12px 0 4px 0;">🎉 Lista de Planes:</h4>
+                    <div id="listaQuedadas" style="font-size:0.8rem;">Aún no hay planes.</div>
 
-                    <div class="card">
-                        <h3>🏆 Tus Objetos Cazados</h3>
-                        <div id="vitrinaDropsGrid" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-top: 10px;"></div>
-                    </div>
+                    <h4 style="font-size:0.8rem; color:var(--accent-green); margin:14px 0 4px 0;">🗺️ Mapa Interactivo:</h4>
+                    <div id="mapContainer"></div>
                 </div>
+            </div>
 
-                <div id="agenda" class="tab-content" style="display:none;">
-                    <div class="card">
-                        <h3>📅 Calendario</h3>
-                        <p style="font-size:0.75rem; color:#8c827b; margin-top:-4px;">💡 <em>Pincha arriba en el mes y año para saltar a cualquier fecha. Pincha en cualquier día para anotar tu cumpleaños y ganar +15 💖 automático.</em></p>
-                        
-                        <div id="calendarContainer">
-                            <div id="calendar"></div>
-                        </div>
-                    </div>
-
-                    <div class="card">
-                        <h3>📍 Quedadas</h3>
-                        
-                        <div class="accordion-header" onclick="toggleAccordion('accQuedada')"><span>📍 Proponer Plan / Quedada (+25💖)</span> <span>▼</span></div>
-                        <div id="accQuedada" class="accordion-body">
-                            <input type="text" id="tituloQuedada" placeholder="Plan (ej: Café y chismes...)">
-                            <input type="text" id="lugarQuedada" placeholder="Lugar o Ciudad (ej: Madrid, Barcelona...)">
-                            <input type="datetime-local" id="fechaQuedada">
-                            <button class="btn-principal" onclick="agregarQuedada()">Publicar Plan</button>
-                        </div>
-
-                        <h4 style="font-size:0.8rem; color:var(--accent-green); margin:12px 0 4px 0;">🎉 Lista de Planes:</h4>
-                        <div id="listaQuedadas" style="font-size:0.8rem;">Aún no hay planes.</div>
-
-                        <h4 style="font-size:0.8rem; color:var(--accent-green); margin:14px 0 4px 0;">🗺️ Mapa Interactivo:</h4>
-                        <div id="mapContainer"></div>
-                    </div>
-                </div>
-
-                <div id="buzon" class="tab-content" style="display:none;">
-                    <div class="card">
-                        <h3>💌 Buzón y Conexiones</h3>
-                        
-                        <div class="accordion-header" onclick="toggleAccordion('accEnviarCarta')"><span>📨 Enviar Carta Secreta</span> <span>▼</span></div>
-                        <div id="accEnviarCarta" class="accordion-body">
-                            <select id="selectDestinataria">
-                                <option value="" disabled selected>Selecciona destinataria...</option>
-                            </select>
-                            <textarea id="textoCarta" placeholder="Escribe tu mensaje..." rows="3"></textarea>
-                            <button class="btn-flechazo" onclick="enviarCartaBuzon()">Enviar Carta</button>
-                        </div>
-
-                        <div class="accordion-header" onclick="toggleAccordion('accFlechazo')" style="margin-top:8px;"><span>💘 Mandar Flechazo (Exclusivo Chicas)</span> <span>▼</span></div>
-                        <div id="accFlechazo" class="accordion-body">
-                            <p style="font-size:0.7rem; color:#8c827b; margin-top:0;">El flechazo mutuo se activa únicamente si ambas chicas se gustan.</p>
-                            <input type="text" id="destinoFlechazo" placeholder="¿A qué chica le mandas el flechazo?">
-                            <button class="btn-flechazo" onclick="enviarFlechazo()">Mandar Flechazo 💘</button>
-                        </div>
-                    </div>
-
-                    <div class="card">
-                        <h3>📥 Tu Buzón & Matches (Chat Activo)</h3>
-                        <div id="miBuzonContenedor" style="font-size:0.8rem; margin-bottom: 10px;">No tienes cartas.</div>
-                        <div id="misMatches"></div>
-                    </div>
-                </div>
-
-                <div id="extras" class="tab-content" style="display:none;">
-                    <div class="card" id="formRegistroCarnet">
-                        <h3>🎒 Crear Carnet</h3>
-                        <p style="font-size:0.75rem; color:#8c827b; margin-top:-4px;">Regístrate con tu apodo y código exclusivo.</p>
-                        
-                        <input type="text" id="inName" placeholder="Tu Apodo / Nombre" maxlength="15">
-                        <input type="text" id="inNote" placeholder="💬 Escribe tu nota..." maxlength="30">
-                        <textarea id="inBio" placeholder="Escribe tu biografía corta..." rows="2" maxlength="80"></textarea>
-                        
-                        <select id="inMision">
-                            <option value="" disabled selected>Selecciona tu misión...</option>
-                            <option value="Traer el chisme fresco">✨ Traer el chisme fresco</option>
-                            <option value="Organizar las previas">🍻 Organizar las previas</option>
-                            <option value="Dar los mejores abrazos">🫂 Dar los mejores abrazos</option>
-                            <option value="Servir drama libre">Aesthetic & Drama Libre</option>
-                            <option value="Analizar las red flags">🚩 Analizadora de Red Flags</option>
-                            <option value="Ser la DJ oficial">🎧 DJ oficial del grupo</option>
+            <div id="buzon" class="tab-content" style="display:none;">
+                <div class="card">
+                    <h3>💌 Buzón y Conexiones</h3>
+                    
+                    <div class="accordion-header" onclick="toggleAccordion('accEnviarCarta')"><span>📨 Enviar Carta Secreta</span> <span>▼</span></div>
+                    <div id="accEnviarCarta" class="accordion-body">
+                        <select id="selectDestinataria">
+                            <option value="" disabled selected>Selecciona destinataria...</option>
                         </select>
-
-                        <label for="inPhoto" class="file-input-label" id="photoLabel">📷 Subir Foto de Perfil</label>
-                        <input type="file" id="inPhoto" accept="image/*" style="display: none;" onchange="procesarFotoCarnet()">
-
-                        <input type="password" id="inCodigo" placeholder="🔒 Código de acceso (VIP o Fundadora)">
-
-                        <button class="btn-principal" onclick="crearCarnet()">✨ Validar y Guardar</button>
+                        <textarea id="textoCarta" placeholder="Escribe tu mensaje..." rows="3"></textarea>
+                        <button class="btn-flechazo" onclick="enviarCartaBuzon()">Enviar Carta</button>
                     </div>
 
-                    <div class="card" id="seccionMiCarnet" style="display: none;">
-                        <h3 style="margin-bottom: 8px;">🖼️ Tus Marcos Desbloqueados</h3>
-                        <p style="font-size: 0.75rem; color: #8c827b; margin-top: -4px;">Selecciona el marco que deseas equipar:</p>
-
-                        <div id="listaMisMarcosEquipar" style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 14px;"></div>
-
-                        <div style="margin-top: 16px; border-top: 1px solid var(--border-soft); padding-top: 12px;">
-                            <h4 style="font-size: 0.8rem; color: var(--text-main); margin-bottom: 6px;">⚙️ Gestión de Perfiles</h4>
-                            <select id="selectPerfilActivo" style="margin-bottom: 8px;" onchange="cambiarPerfilActivo(this.value)"></select>
-                            <button class="btn-sesion-safe" onclick="cerrarSesionSegura()">🔄 Cerrar Sesión (Cambiar de Perfil)</button>
-                            <button class="btn-danger-safe" onclick="borrarPerfilActual()">⚠️ Borrar Perfil Permanentemente</button>
-                        </div>
+                    <div class="accordion-header" onclick="toggleAccordion('accFlechazo')" style="margin-top:8px;"><span>💘 Mandar Flechazo (Exclusivo Chicas)</span> <span>▼</span></div>
+                    <div id="accFlechazo" class="accordion-body">
+                        <p style="font-size:0.7rem; color:#8c827b; margin-top:0;">El flechazo mutuo se activa únicamente si ambas chicas se gustan.</p>
+                        <input type="text" id="destinoFlechazo" placeholder="¿A qué chica le mandas el flechazo?">
+                        <button class="btn-flechazo" onclick="enviarFlechazo()">Mandar Flechazo 💘</button>
                     </div>
                 </div>
 
+                <div class="card">
+                    <h3>📥 Tu Buzón & Matches (Chat Activo)</h3>
+                    <div id="miBuzonContenedor" style="font-size:0.8rem; margin-bottom: 10px;">No tienes cartas.</div>
+                    <div id="misMatches"></div>
+                </div>
             </div>
 
-            <div class="footer-copyright">
-                <span class="footer-quote">Disfruta de tu espacio seguro y conecta con tus amigas hoy.</span>
-                <span>&copy; 2026 Bollolandia. Todos los derechos reservados. 🌸</span>
+            <div id="extras" class="tab-content" style="display:none;">
+                <div class="card" id="formRegistroCarnet">
+                    <h3>🎒 Crear Carnet</h3>
+                    <p style="font-size:0.75rem; color:#8c827b; margin-top:-4px;">Regístrate con tu apodo y código exclusivo.</p>
+                    
+                    <input type="text" id="inName" placeholder="Tu Apodo / Nombre" maxlength="15">
+                    <input type="text" id="inNote" placeholder="💬 Escribe tu nota..." maxlength="30">
+                    <textarea id="inBio" placeholder="Escribe tu biografía corta..." rows="2" maxlength="80"></textarea>
+                    
+                    <select id="inMision">
+                        <option value="" disabled selected>Selecciona tu misión...</option>
+                        <option value="Traer el chisme fresco">✨ Traer el chisme fresco</option>
+                        <option value="Organizar las previas">🍻 Organizar las previas</option>
+                        <option value="Dar los mejores abrazos">🫂 Dar los mejores abrazos</option>
+                        <option value="Servir drama libre">Aesthetic & Drama Libre</option>
+                        <option value="Analizar las red flags">🚩 Analizadora de Red Flags</option>
+                        <option value="Ser la DJ oficial">🎧 DJ oficial del grupo</option>
+                    </select>
+
+                    <label for="inPhoto" class="file-input-label" id="photoLabel">📷 Subir Foto de Perfil</label>
+                    <input type="file" id="inPhoto" accept="image/*" style="display: none;" onchange="procesarFotoCarnet()">
+
+                    <input type="password" id="inCodigo" placeholder="🔒 Código de acceso (VIP o Fundadora)">
+
+                    <button class="btn-principal" onclick="crearCarnet()">✨ Validar y Guardar</button>
+                </div>
+
+                <div class="card" id="seccionMiCarnet" style="display: none;">
+                    <h3 style="margin-bottom: 8px;">🖼️ Tus Marcos Desbloqueados</h3>
+                    <p style="font-size: 0.75rem; color: #8c827b; margin-top: -4px;">Selecciona el marco que deseas equipar:</p>
+
+                    <div id="listaMisMarcosEquipar" style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 14px;"></div>
+
+                    <div style="margin-top: 16px; border-top: 1px solid var(--border-soft); padding-top: 12px;">
+                        <h4 style="font-size: 0.8rem; color: var(--text-main); margin-bottom: 6px;">⚙️ Gestión de Perfiles</h4>
+                        <select id="selectPerfilActivo" style="margin-bottom: 8px;" onchange="cambiarPerfilActivo(this.value)"></select>
+                        <button class="btn-sesion-safe" onclick="cerrarSesionSegura()">🔄 Cerrar Sesión (Cambiar de Perfil)</button>
+                        <button class="btn-danger-safe" onclick="borrarPerfilActual()">⚠️ Borrar Perfil Permanentemente</button>
+                    </div>
+                </div>
             </div>
+
+        </div>
+
+        <div class="footer-copyright">
+            <span class="footer-quote">Disfruta de tu espacio seguro y conecta con tus amigas hoy.</span>
+            <span>&copy; 2026 Bollolandia. Todos los derechos reservados. 🌸</span>
         </div>
     </div>
 
@@ -1558,14 +1433,11 @@
             grid.innerHTML = misIds.map((idItem) => {
                 const info = CATALOGO_DROPS.find(d => d.id === idItem) || { nombre: 'Objeto Misterioso', emoji: '📦', rareza: 'Especial', desc: 'Tesoro único de Bollolandia.' };
                 return `
-                    <div class="vitrine-card">
-                        <div class="figure-container">
-                            <span style="font-size: 3.5rem;">${info.emoji}</span>
-                        </div>
-                        <div class="drop-info">
-                            <h3 class="drop-title">${info.nombre}</h3>
-                            <p class="drop-subtitle">${info.rareza}</p>
-                        </div>
+                    <div style="background:#fff; border:1.5px solid var(--border-soft); border-radius:16px; padding:12px; text-align:center; box-shadow:0 4px 12px rgba(0,0,0,0.03);">
+                        <div style="font-size: 2.2rem; margin-bottom:4px;">${info.emoji}</div>
+                        <h4 style="margin:0 0 2px 0; font-size:0.82rem; color:var(--text-main); font-weight:700;">${info.nombre}</h4>
+                        <span style="display:inline-block; font-size:0.65rem; background:#fff3ee; color:var(--accent-coral); padding:2px 6px; border-radius:8px; font-weight:bold; margin-bottom:4px;">${info.rareza}</span>
+                        <p style="margin:0; font-size:0.7rem; color:#8c827b; line-height:1.2;">${info.desc}</p>
                     </div>
                 `;
             }).join('');
@@ -2161,6 +2033,17 @@
             localStorage.setItem(chatKey, JSON.stringify(mensajesChat));
             input.value = '';
             comprobarMatches();
+        }
+
+        function cerrarMatchAnimacion() { document.getElementById('matchOverlay').style.display = 'none'; }
+
+        function ejecutarBusquedaGlobal(query) {
+            query = query.toLowerCase().trim();
+            if(!query) return;
+            if(query.includes('tienda') || query.includes('marco')) cambiarPestana('tienda', document.querySelectorAll('.nav-icon-btn')[0]);
+            else if(query.includes('drop') || query.includes('vitrina')) cambiarPestana('drops', document.querySelectorAll('.nav-icon-btn')[1]);
+            else if(query.includes('agenda') || query.includes('plan')) cambiarPestana('agenda', document.querySelectorAll('.nav-icon-btn')[2]);
+            else if(query.includes('buzon') || query.includes('carta')) cambiarPestana('buzon', document.querySelectorAll('.nav-icon-btn')[3]);
         }
     </script>
 </body>
