@@ -1,2585 +1,752 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bollolandia - Dashboard</title>
-
-    <!-- Manifest PWA Integrado -->
-   <link rel="manifest" href="/manifest.json">
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-    <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Cinzel:wght@700&display=swap" rel="stylesheet">
-    <!-- Librería de Confeti -->
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
-
-    <!-- Leaflet CSS -->
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-
-    <!-- Three.js Import Map -->
-    <script type="importmap">
-      {
-        "imports": {
-          "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
-          "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
-        }
-      }
-    </script>
-
-    <style>
-        :root {
-            --bg-main: #fcf8f2;
-            --sidebar-bg: #f4efe6;
-            --card-bg: #ffffff;
-            --text-main: #4a403b;
-            --accent-coral: #f28b72;
-            --accent-peach: #ffb396;
-            --accent-green: #87a38a;
-            --accent-yellow: #fce38a;
-            --border-soft: #ede6dc;
-            --fundadora-x: 0px;
-            --fundadora-y: 0px;
-            --fundadora-scale: 1;
-        }
-
-        /* --- MODO OSCURO (BOLLOLANDIA NOCTURNO) --- */
-        body.dark-mode {
-            --bg-main: #181412;
-            --sidebar-bg: #221c19;
-            --card-bg: #26201c;
-            --text-main: #f4efe6;
-            --border-soft: #3b322c;
-            --accent-coral: #ff7b61;
-            --accent-peach: #ffa285;
-            --accent-green: #709173;
-        }
-        body.dark-mode input, 
-        body.dark-mode select, 
-        body.dark-mode textarea {
-            background: #1f1916;
-            color: #f4efe6;
-            border-color: #3b322c;
-        }
-        body.dark-mode .shop-item, 
-        body.dark-mode .stat-card, 
-        body.dark-mode .card, 
-        body.dark-mode .login-card {
-            background-color: var(--card-bg);
-            color: var(--text-main);
-            border-color: var(--border-soft);
-        }
-        body.dark-mode .accordion-header, 
-        body.dark-mode .file-input-label {
-            background: #1f1916;
-            color: #f4efe6;
-            border-color: var(--border-soft);
-        }
-        body.dark-mode .sidebar-left {
-            background: var(--sidebar-bg);
-            border-color: var(--border-soft);
-        }
-        body.dark-mode .nav-icon-btn.active {
-            background: #3b322c;
-            color: var(--accent-coral);
-        }
-        body.dark-mode .top-search, 
-        body.dark-mode .header-pill-badge, 
-        body.dark-mode .sidebar-note-bubble, 
-        body.dark-mode .card-note-box {
-            background: #221c19;
-            color: #f4efe6;
-            border-color: var(--border-soft);
-        }
-
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            background-color: var(--bg-main);
-            color: var(--text-main);
-            margin: 0;
-            padding: 0;
-            overflow-x: hidden;
-            transition: background-color 0.3s ease, color 0.3s ease;
-        }
-
-        /* --- TOAST NOTIFICATIONS FLOTANTES --- */
-        #toastContainer {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            z-index: 30000;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            max-width: 320px;
-            pointer-events: none;
-        }
-        .toast-notification {
-            background: var(--card-bg);
-            color: var(--text-main);
-            border: 2px solid var(--accent-coral);
-            padding: 12px 16px;
-            border-radius: 16px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
-            font-size: 0.8rem;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            pointer-events: auto;
-            animation: slideInToast 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
-        }
-        @keyframes slideInToast {
-            from { transform: translateX(100%); opacity: 0; }
-            to { transform: translateX(0); opacity: 1; }
-        }
-        .toast-notification.fade-out {
-            animation: fadeOutToast 0.3s ease forwards;
-        }
-        @keyframes fadeOutToast {
-            from { transform: translateX(0); opacity: 1; }
-            to { transform: translateX(100%); opacity: 0; }
-        }
-
-        /* --- CONTENEDOR PRINCIPAL FLEX PARA EVITAR SOLAPAMIENTOS --- */
-        .main-container {
-            display: flex;
-            flex-direction: row;
-            min-height: 100vh;
-            position: relative;
-        }
-
-        /* --- ESTILOS LOGIN OVERLAY --- */
-        #loginOverlay {
-            position: fixed;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(0,0,0,0.7);
-            backdrop-filter: blur(8px);
-            z-index: 20000;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 16px;
-        }
-        .login-card {
-            background: #ffffff;
-            border-radius: 24px;
-            padding: 28px 24px;
-            width: 100%;
-            max-width: 340px;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.25);
-            border: 2px solid var(--accent-coral);
-            text-align: center;
-        }
-        .login-card h2 {
-            margin-top: 0;
-            color: var(--text-main);
-            font-size: 1.3rem;
-        }
-
-        /* --- ESTILOS COMPONENTE BIO & HEADER --- */
-        .user-header {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-            width: 100%;
-        }
-        .user-header h2 {
-            margin: 0;
-            font-size: 1.15rem;
-            color: var(--text-main);
-            font-weight: 800;
-        }
-        .bio-container {
-            margin-top: 4px;
-        }
-        #bio-text {
-            font-size: 0.8rem;
-            color: var(--accent-coral);
-            font-weight: 600;
-            cursor: pointer;
-            margin: 0;
-            padding: 4px 0;
-            line-height: 1.3;
-        }
-        #bio-text:hover {
-            text-decoration: underline;
-        }
-        #bio-edit-form {
-            margin-top: 6px;
-        }
-        #bio-input {
-            width: 100%;
-            border: 1.5px solid var(--accent-coral);
-            border-radius: 10px;
-            padding: 8px;
-            font-size: 0.8rem;
-            resize: none;
-            box-sizing: border-box;
-            color: var(--text-main);
-        }
-        .bio-footer {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-top: 4px;
-        }
-        #char-count {
-            font-size: 0.7rem;
-            color: #8c827b;
-        }
-        .bio-footer button {
-            width: auto;
-            padding: 4px 12px;
-            font-size: 0.75rem;
-            background: var(--accent-coral);
-            color: #fff;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            margin: 0;
-        }
-
-        /* --- ESTILOS AJUSTES FIJOS EN LA ESQUINA INFERIOR IZQUIERDA --- */
-        .global-settings-container {
-            position: fixed;
-            bottom: 20px;
-            left: 20px;
-            z-index: 15000;
-        }
-        .settings-btn {
-            background: #1e1e1e;
-            color: #fff;
-            border: none;
-            border-radius: 50%;
-            width: 44px;
-            height: 44px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-            padding: 0;
-            margin: 0;
-            font-size: 1.2rem;
-            transition: transform 0.2s ease;
-        }
-        .settings-btn:hover {
-            transform: scale(1.05);
-        }
-        .settings-dropdown {
-            position: absolute;
-            bottom: 54px;
-            left: 0;
-            background: #1e1e1e;
-            border-radius: 12px;
-            padding: 8px;
-            box-shadow: 0 8px 24px rgba(0,0,0,0.4);
-            z-index: 15001;
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-            width: 170px;
-            border: 1px solid rgba(255,255,255,0.1);
-        }
-        .settings-dropdown button {
-            background: transparent;
-            color: #fff;
-            border: none;
-            padding: 10px 12px;
-            text-align: left;
-            font-size: 0.8rem;
-            cursor: pointer;
-            border-radius: 6px;
-            margin: 0;
-            width: 100%;
-            transition: background 0.2s ease;
-        }
-        .settings-dropdown button:hover {
-            background: rgba(255, 255, 255, 0.12);
-        }
-        .settings-dropdown button.danger-btn {
-            color: #ff5555;
-        }
-        .settings-dropdown button.danger-btn:hover {
-            background: rgba(255, 85, 85, 0.2);
-        }
-
-        /* --- EMPTY STATES MINIMALISTAS --- */
-        .empty-state {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 30px 16px;
-            text-align: center;
-            color: #8c827b;
-            gap: 8px;
-            width: 100%;
-            box-sizing: border-box;
-        }
-        .empty-state-icon {
-            font-size: 2.5rem;
-            margin-bottom: 2px;
-            opacity: 0.8;
-        }
-        .empty-state-title {
-            font-size: 0.9rem;
-            font-weight: 700;
-            color: var(--text-main);
-            margin: 0;
-        }
-        .empty-state-desc {
-            font-size: 0.75rem;
-            max-width: 240px;
-            margin: 0;
-            line-height: 1.3;
-        }
-
-        /* --- ESTILOS GRID DE DROPS Y VITRINA --- */
-        .drops-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-            gap: 16px;
-            padding: 16px;
-        }
-        .vitrina-item {
-            width: 120px;
-            height: 160px;
-            background: #0a0a0a;
-            border: 1px solid #333;
-            border-radius: 12px;
-            position: relative;
-            box-shadow: 
-                inset 0 0 15px rgba(255, 255, 255, 0.2),
-                0 0 10px rgba(0, 234, 255, 0.3);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto;
-        }
-        .vitrina-item::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            width: 60%;
-            height: 4px;
-            background: #00eaff;
-            box-shadow: 0 0 12px #00eaff, 0 0 20px #00eaff;
-            border-radius: 0 0 4px 4px;
-        }
-
-        /* --- ANIMACIONES DE MICROINTERACCIÓN Y ESTRUCTURA GENERAL --- */
-        .tab-content {
-            animation: fadeInTab 0.3s ease-in-out;
-        }
-        @keyframes fadeInTab {
-            from { opacity: 0; transform: translateY(6px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .card, .shop-item, .premio-card-visual {
-            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s ease;
-        }
-        .card:hover, .shop-item:hover {
-            transform: translateY(-2px) scale(1.01);
-            box-shadow: 0 8px 24px rgba(0,0,0,0.06);
-        }
-
-        button, .btn-principal, .btn-flechazo, .btn-buy, .nav-icon-btn {
-            transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.2s ease, background-color 0.2s ease;
-        }
-        button:hover, .btn-principal:hover, .btn-flechazo:hover, .btn-buy:hover {
-            transform: translateY(-2px) scale(1.02);
-        }
-        button:active, .btn-principal:active, .btn-flechazo:active {
-            transform: translateY(0) scale(0.98);
-        }
-
-        /* --- BARRA LATERAL / NAVEGACIÓN ADAPTATIVA INFERIOR MÓVIL --- */
-        .sidebar-left {
-            position: sticky;
-            top: 16px;
-            height: calc(100vh - 32px);
-            width: 72px;
-            flex-shrink: 0;
-            background: var(--sidebar-bg);
-            border-radius: 24px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 16px 0;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
-            z-index: 100;
-            border: 1px solid var(--border-soft);
-            margin: 16px 0 16px 12px;
-            box-sizing: border-box;
-            transition: all 0.3s ease;
-        }
-
-        .sidebar-avatar-container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            margin-bottom: 20px;
-            position: relative;
-        }
-
-        .sidebar-avatar {
-            width: 44px;
-            height: 44px;
-            border-radius: 50%;
-            background: #e2dcd3;
-            overflow: visible;
-            border: 2px solid #fff;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.08);
-            display: flex; align-items: center; justify-content: center;
-            position: relative;
-            cursor: pointer;
-        }
-
-        .sidebar-note-bubble {
-            position: absolute;
-            bottom: 54px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: #ffffff;
-            border: 1px solid var(--border-soft);
-            border-radius: 12px;
-            padding: 6px 10px;
-            font-size: 0.7rem;
-            color: var(--text-main);
-            white-space: nowrap;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-            max-width: 140px;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            z-index: 101;
-            cursor: pointer;
-        }
-        .sidebar-note-bubble::before {
-            content: '';
-            position: absolute;
-            bottom: -4px;
-            left: 50%;
-            transform: translateX(-50%) rotate(45deg);
-            width: 6px;
-            height: 6px;
-            background: #ffffff;
-            border-right: 1px solid var(--border-soft);
-            border-bottom: 1px solid var(--border-soft);
-        }
-
-        .nav-icon-btn {
-            background: none;
-            border: none;
-            width: 44px;
-            height: 44px;
-            border-radius: 14px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.2rem;
-            cursor: pointer;
-            color: #8c827b;
-            margin-bottom: 8px;
-            position: relative;
-        }
-
-        .nav-icon-btn.active {
-            background: var(--card-bg);
-            color: var(--accent-coral);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.06);
-        }
-
-        /* --- MEDIA QUERY RESPONSIVE PARA BOTTOM BAR MÓVIL --- */
-        @media (max-width: 768px) {
-            .main-container {
-                flex-direction: column;
-                padding-bottom: 80px; /* espacio para la barra inferior */
-            }
-            .sidebar-left {
-                position: fixed;
-                bottom: 0;
-                left: 0;
-                right: 0;
-                top: auto;
-                height: 64px;
-                width: 100%;
-                flex-direction: row;
-                justify-content: space-around;
-                align-items: center;
-                margin: 0;
-                border-radius: 20px 20px 0 0;
-                padding: 0 10px;
-                z-index: 14000;
-                background: var(--sidebar-bg);
-                backdrop-filter: blur(10px);
-                border-top: 1px solid var(--border-soft);
-            }
-            .sidebar-avatar-container, .sidebar-note-bubble {
-                display: none !important; /* Ocultamos avatar en barra inferior móvil para dejar espacio a los iconos de navegación */
-            }
-            .nav-icon-btn {
-                margin-bottom: 0;
-                width: 40px;
-                height: 40px;
-            }
-            .main-wrapper {
-                max-width: 100% !important;
-                padding: 12px !important;
-            }
-        }
-
-        /* --- CONTENEDOR DE CONTENIDO PRINCIPAL --- */
-        .main-wrapper {
-            flex-grow: 1;
-            padding: 16px;
-            max-width: 580px;
-            box-sizing: border-box;
-        }
-
-        .top-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 16px;
-        }
-
-        .top-search {
-            background: var(--card-bg);
-            border: 1px solid var(--border-soft);
-            border-radius: 20px;
-            padding: 8px 14px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            width: 240px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.02);
-        }
-        .top-search input {
-            border: none; background: none; outline: none; font-size: 0.8rem; width: 100%; color: var(--text-main);
-        }
-
-        .header-pill-badge {
-            background: var(--card-bg);
-            border: 1px solid var(--border-soft);
-            padding: 6px 12px;
-            border-radius: 16px;
-            font-weight: bold;
-            font-size: 0.75rem;
-            color: var(--accent-coral);
-            box-shadow: 0 2px 8px rgba(0,0,0,0.02);
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .hero-card {
-            background: linear-gradient(135deg, #fff3ee, #faebd7);
-            border-radius: 22px;
-            padding: 22px;
-            margin-bottom: 16px;
-            box-shadow: 0 10px 25px rgba(242, 139, 114, 0.12);
-            border: 1px solid rgba(255, 179, 150, 0.3);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            position: relative;
-            overflow: hidden;
-        }
-        body.dark-mode .hero-card {
-            background: linear-gradient(135deg, #2b211d, #241c19);
-            border-color: #3b322c;
-        }
-
-        .hero-profile-avatar {
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            background: #e2dcd3;
-            overflow: visible;
-            border: 2px solid #fff;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-            flex-shrink: 0;
-        }
-
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 10px;
-            margin-bottom: 16px;
-        }
-
-        .stat-card {
-            background: var(--card-bg);
-            border-radius: 18px;
-            padding: 12px 8px;
-            text-align: center;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.03);
-            border: 1px solid var(--border-soft);
-        }
-        .stat-card .icon-box {
-            width: 28px; height: 28px; border-radius: 10px; background: #faf5f0; display: flex; align-items: center; justify-content: center; margin: 0 auto 6px auto; font-size: 0.85rem;
-        }
-        body.dark-mode .stat-card .icon-box { background: #1f1916; }
-        .stat-card .val { font-size: 0.95rem; font-weight: 800; color: var(--text-main); }
-        .stat-card .label { font-size: 0.65rem; color: #8c827b; margin-top: 2px; }
-
-        .card {
-            background: var(--card-bg);
-            border-radius: 20px;
-            padding: 18px;
-            margin-bottom: 16px;
-            box-shadow: 0 6px 20px rgba(0,0,0,0.03);
-            border: 1px solid var(--border-soft);
-            position: relative;
-        }
-
-        /* --- JERARQUÍA TIPOGRÁFICA ESTANDARIZADA --- */
-        h3 { color: var(--text-main); margin-top: 0; font-size: 1rem; margin-bottom: 12px; font-weight: 700; letter-spacing: -0.2px; }
-        h4 { color: var(--text-main); margin: 0 0 4px 0; font-size: 0.85rem; font-weight: 700; }
-
-        input, select, textarea, button {
-            width: 100%;
-            padding: 11px 14px;
-            margin: 6px 0;
-            border-radius: 14px;
-            border: 1.5px solid var(--border-soft);
-            box-sizing: border-box;
-            font-size: 0.85rem;
-            font-family: inherit;
-            background: #fbf9f6;
-            transition: all 0.2s ease;
-        }
-
-        input:focus, select:focus, textarea:focus {
-            outline: none;
-            border-color: var(--accent-coral);
-            background: var(--card-bg);
-            box-shadow: 0 0 0 3px rgba(242, 139, 114, 0.12);
-        }
-
-        .btn-principal {
-            background: linear-gradient(135deg, var(--accent-green), #6b8a6e);
-            color: white;
-            font-weight: bold;
-            border: none;
-            cursor: pointer;
-            box-shadow: 0 4px 12px rgba(135, 163, 138, 0.3);
-            border-radius: 14px;
-            padding: 10px;
-        }
-
-        .btn-flechazo {
-            background: linear-gradient(135deg, var(--accent-coral), var(--accent-peach));
-            color: white;
-            font-weight: bold;
-            border: none;
-            cursor: pointer;
-            box-shadow: 0 4px 12px rgba(242, 139, 114, 0.3);
-            border-radius: 14px;
-            padding: 10px;
-        }
-
-        .btn-mapa {
-            background: #f0f4f1;
-            color: var(--accent-green);
-            border: none;
-            padding: 6px 12px;
-            border-radius: 10px;
-            font-weight: bold;
-            text-decoration: none;
-            display: inline-block;
-            margin-top: 6px;
-            font-size: 0.75rem;
-        }
-        body.dark-mode .btn-mapa { background: #1f1916; }
-
-        .accordion-header {
-            background: #fbf9f6;
-            border: 1.5px solid var(--border-soft);
-            padding: 12px 14px;
-            border-radius: 14px;
-            font-weight: bold;
-            color: var(--text-main);
-            cursor: pointer;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 0.85rem;
-            margin-bottom: 8px;
-        }
-        .accordion-body { display: none; padding: 6px 2px 10px 2px; }
-        .accordion-body.open { display: block; }
-
-        .grid-shop { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 10px; }
-
-        #cartaFlotanteBox {
-            display: none;
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background: var(--card-bg);
-            border: 2px solid var(--accent-coral);
-            border-radius: 18px;
-            padding: 14px;
-            box-shadow: 0 12px 30px rgba(242, 139, 114, 0.25);
-            z-index: 9998;
-            cursor: pointer;
-        }
-
-        #dropBannerFlotante {
-            display: none;
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            background: linear-gradient(135deg, #ff4500, #ff8c00);
-            color: white;
-            border-radius: 16px;
-            padding: 12px 18px;
-            box-shadow: 0 10px 25px rgba(255, 69, 0, 0.35);
-            z-index: 10005;
-            animation: bounceDrop 1s infinite alternate;
-            cursor: pointer;
-            border: 2px solid #fff;
-        }
-        @keyframes bounceDrop {
-            0% { transform: translateY(0); }
-            100% { transform: translateY(-6px); }
-        }
-
-        .file-input-label {
-            background: #fbf9f6;
-            border: 2px dashed var(--accent-green);
-            padding: 12px;
-            border-radius: 14px;
-            cursor: pointer;
-            font-size: 0.8rem;
-            color: var(--accent-green);
-            font-weight: bold;
-            text-align: center;
-            display: block;
-            margin: 6px 0;
-        }
-
-        .card-modal {
-            display: none;
-            position: fixed;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(0, 0, 0, 0.6);
-            backdrop-filter: blur(4px);
-            z-index: 10000;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            padding: 16px;
-        }
-
-        @keyframes dropIn {
-            0% { transform: translateY(-100vh) scale(0.8) rotate(-10deg); opacity: 0; }
-            60% { transform: translateY(20px) scale(1.02) rotate(3deg); opacity: 1; }
-            80% { transform: translateY(-10px) scale(0.98) rotate(-1deg); }
-            100% { transform: translateY(0) scale(1) rotate(0deg); opacity: 1; }
-        }
-        .drop-animation { animation: dropIn 0.6s cubic-bezier(0.25, 1, 0.5, 1) forwards; }
-
-        .mclovin-card {
-            width: 320px;
-            background: white;
-            border-radius: 18px;
-            border: 2px solid #d4c8b8;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
-            overflow: hidden;
-            background-image: linear-gradient(120deg, #fff3ee 0%, #faebd7 40%, #fef9e7 80%, #edf7ed 100%);
-            box-sizing: border-box;
-            color: #333;
-            position: relative;
-        }
-
-        .mclovin-card.gold-edition {
-            background-image: linear-gradient(135deg, #bf953f 0%, #fcf6ba 25%, #b38728 50%, #fbf5b7 75%, #aa771c 100%);
-            border: 2px solid #ffd700;
-            box-shadow: 0 0 25px rgba(255, 215, 0, 0.7);
-        }
-
-        .mclovin-card.silver-edition {
-            background-image: linear-gradient(135deg, #e0e0e0 0%, #f5f5f5 50%, #cccccc 100%);
-            border: 2px solid #a6a6a6;
-            box-shadow: 0 0 20px rgba(166, 166, 166, 0.5);
-        }
-
-        .card-header {
-            padding: 8px 10px;
-            text-align: center;
-            background: var(--accent-green);
-            color: white;
-            border-bottom: 2px solid #d4c8b8;
-        }
-
-        .mclovin-card.gold-edition .card-header {
-            background: linear-gradient(90deg, #785212, #b8860b, #785212);
-            border-bottom: 2px solid #fff;
-        }
-
-        .mclovin-card.silver-edition .card-header {
-            background: linear-gradient(90deg, #595959, #8c8c8c, #595959);
-            border-bottom: 2px solid #fff;
-        }
-
-        .header-main { font-size: 0.85rem; font-weight: 900; color: #fff; text-transform: uppercase; }
-        .header-sub { font-size: 0.65rem; font-weight: bold; color: #f0f4f1; letter-spacing: 1px; }
-
-        .card-body { display: flex; padding: 12px; gap: 12px; align-items: flex-start; }
-
-        .card-left-column {
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-            flex-shrink: 0;
-            width: 85px;
-        }
-
-        .card-note-box {
-            font-size: 0.62rem;
-            color: var(--text-main);
-            background: var(--card-bg);
-            border: 1px solid var(--border-soft);
-            border-radius: 10px;
-            padding: 5px 6px;
-            text-align: center;
-            word-break: break-word;
-            line-height: 1.1;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.05);
-            position: relative;
-            cursor: pointer;
-        }
-        .card-note-box:hover { border-color: var(--accent-coral); background: #fff5f2; }
-        .card-note-box::after {
-            content: '';
-            position: absolute;
-            bottom: -4px;
-            left: 50%;
-            transform: translateX(-50%) rotate(45deg);
-            width: 6px;
-            height: 6px;
-            background: var(--card-bg);
-            border-right: 1px solid var(--border-soft);
-            border-bottom: 1px solid var(--border-soft);
-        }
-
-        .card-photo-box {
-            width: 85px; height: 95px;
-            background: #e2dcd3;
-            border: 2px solid var(--accent-green);
-            border-radius: 10px;
-            overflow: visible;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            box-shadow: 3px 3px 8px rgba(0,0,0,0.15);
-            flex-shrink: 0;
-            position: relative;
-            cursor: pointer;
-        }
-        .card-photo-box:hover::after {
-            content: '📷';
-            position: absolute;
-            inset: 0;
-            background: rgba(0,0,0,0.3);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-            color: #fff;
-            border-radius: 10px;
-            z-index: 10;
-        }
-
-        .card-photo-img { width: 100%; height: 100%; object-fit: cover; border-radius: 10px; }
-        .card-info { flex: 1; font-size: 0.7rem; color: #4a403b; font-weight: bold; text-align: left; }
-        .info-row { margin-bottom: 4px; }
-        .label-red { color: #b94a48; font-size: 0.6rem; text-transform: uppercase; }
-        .val-bold { font-size: 0.85rem; font-weight: 900; color: #000; text-transform: uppercase; }
-        .val-mision { font-size: 0.7rem; color: #2d5a27; line-height: 1.2; display: block; margin-top: 2px; }
-
-        .signature { 
-            font-family: 'Great Vibes', cursive; 
-            font-size: 1.3rem; 
-            color: #0f172a;
-            line-height: 1;
-            transform: rotate(-2deg);
-            display: inline-block;
-            margin-top: 2px;
-        }
-
-        .founder-seal {
-            display: none;
-            position: absolute;
-            bottom: 8px;
-            right: 8px;
-            background: #785212;
-            color: #fff3a0;
-            padding: 3px 6px;
-            border-radius: 6px;
-            font-size: 0.55rem;
-            font-weight: 900;
-            border: 1px solid #ffd700;
-        }
-        .gold-edition .founder-seal { display: block; }
-
-        .silver-seal {
-            display: none;
-            position: absolute;
-            bottom: 8px;
-            right: 8px;
-            background: #595959;
-            color: #f2f2f2;
-            padding: 3px 6px;
-            border-radius: 6px;
-            font-size: 0.55rem;
-            font-weight: 900;
-            border: 1px solid #cccccc;
-        }
-        .silver-edition .silver-seal { display: block; }
-
-        .modal-buttons { display: flex; flex-direction: column; gap: 8px; width: 320px; margin-top: 14px; }
-        .btn-action { width: 100%; padding: 10px; border: none; border-radius: 14px; font-size: 0.85rem; cursor: pointer; font-weight: bold; text-align: center; }
-        .btn-close { background: #4a403b; color: white; }
-        .btn-download { background: var(--accent-green); color: white; box-shadow: 0 4px 12px rgba(135, 163, 138, 0.3); }
-
-        .ruleta-container {
-            background: linear-gradient(135deg, #fff3ee, #faebd7);
-            border: 2px dashed var(--accent-coral); border-radius: 18px; padding: 16px; text-align: center; margin-bottom: 14px;
-            position: relative;
-        }
-        body.dark-mode .ruleta-container { background: linear-gradient(135deg, #2b211d, #241c19); }
-        .ruleta-premios-grid {
-            display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin: 12px 0;
-        }
-        .premio-card-visual {
-            background: var(--card-bg); border: 1px solid var(--border-soft); border-radius: 12px; padding: 8px; font-size: 0.75rem; font-weight: bold; color: var(--text-main); display: flex; align-items: center; gap: 6px; box-shadow: 0 2px 6px rgba(0,0,0,0.02);
-        }
-        
-        .roulette-wrapper {
-            position: relative;
-            width: 80px;
-            margin: 12px auto;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        
-        .roulette-ticker {
-            width: 0; 
-            height: 0; 
-            border-left: 10px solid transparent;
-            border-right: 10px solid transparent;
-            border-top: 18px solid #FF3B30;
-            transform-origin: top center;
-            transition: transform 0.05s ease-out;
-            z-index: 10;
-            filter: drop-shadow(0px 2px 3px rgba(0,0,0,0.2));
-            margin-bottom: -6px;
-        }
-        .roulette-ticker.tick {
-            transform: rotate(-18deg);
-        }
-
-        .ruleta-wheel {
-            width: 70px; height: 70px; border-radius: 50%;
-            background: conic-gradient(#f28b72 0deg 90deg, #ff4500 90deg 180deg, #ffb396 180deg 270deg, #87a38a 270deg 360deg);
-            display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 12px rgba(0,0,0,0.15); font-size: 1.4rem; 
-            transition: transform 3s cubic-bezier(0.15, 0.9, 0.2, 1);
-        }
-
-        .shop-item { border: 1.5px solid var(--border-soft); border-radius: 16px; padding: 12px; background: var(--card-bg); display: flex; flex-direction: column; justify-content: space-between; box-shadow: 0 4px 12px rgba(0,0,0,0.02); text-align: center; }
-        .shop-flex { display: flex; flex-direction: column; align-items: center; gap: 8px; }
-        .preview-box { width: 54px; height: 54px; background: #faf5f0; border-radius: 50%; position: relative; overflow: visible; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 1.2rem; border: 1px solid #e2dcd3; margin-bottom: 4px; }
-        body.dark-mode .preview-box { background: #1f1916; border-color: #3b322c; }
-        .shop-item-info h4 { margin: 0 0 4px 0; font-size: 0.82rem; color: var(--text-main); font-weight: 700; }
-        .price-badge-tag {
-            display: inline-block;
-            background: #fff3ee;
-            border: 1px solid var(--accent-coral);
-            color: var(--accent-coral);
-            font-weight: 800;
-            font-size: 0.75rem;
-            padding: 3px 8px;
-            border-radius: 12px;
-            margin-top: 2px;
-        }
-        body.dark-mode .price-badge-tag { background: #2b211d; }
-        .btn-buy { background: linear-gradient(135deg, var(--accent-coral), var(--accent-peach)); color: white; border: none; padding: 8px; border-radius: 10px; font-weight: bold; font-size: 0.75rem; cursor: pointer; width: 100%; margin-top: 10px; box-shadow: 0 3px 8px rgba(242, 139, 114, 0.25); }
-
-        .carta-item {
-            background: var(--card-bg);
-            border: 1.5px solid var(--border-soft);
-            border-radius: 14px;
-            padding: 10px;
-            margin-bottom: 10px;
-            font-size: 0.85rem;
-        }
-        .carta-item.no-leida {
-            border-left: 5px solid var(--accent-coral);
-            background: var(--card-bg);
-        }
-
-        .notif-dot {
-            position: absolute; top: 4px; right: 4px; width: 8px; height: 8px; background: #d9534f; border-radius: 50%; display: none;
-        }
-
-        #calendarContainer {
-            background: var(--card-bg);
-            border-radius: 14px;
-            padding: 10px;
-            border: 1.5px solid var(--border-soft);
-            margin-bottom: 14px;
-            font-size: 0.75rem;
-        }
-        .fc { font-family: inherit; }
-        .fc .fc-toolbar-title { font-size: 0.9rem !important; color: var(--text-main); cursor: pointer; }
-        .fc .fc-toolbar-title:hover { color: var(--accent-coral); text-decoration: underline; }
-        .fc .fc-button { background: var(--accent-green) !important; border: none !important; font-size: 0.75rem !important; padding: 4px 8px !important; }
-        .fc-daygrid-day { cursor: pointer; }
-        .fc-daygrid-day:hover { background-color: rgba(135, 163, 138, 0.1); }
-
-        #mapContainer {
-            width: 100%;
-            height: 250px;
-            border-radius: 14px;
-            border: 1.5px solid var(--border-soft);
-            margin-top: 10px;
-            background: #e2dcd3;
-            z-index: 1;
-        }
-
-        @keyframes smokeRotate {
-            0% { transform: rotate(0deg) scale(1); opacity: 0.85; }
-            50% { transform: rotate(180deg) scale(1.06); opacity: 1; }
-            100% { transform: rotate(360deg) scale(1); opacity: 0.85; }
-        }
-        @keyframes redSmokePulse {
-            0% { box-shadow: 0 0 12px #ff0033, 0 0 25px #ff3300, inset 0 0 8px #ff0000; }
-            100% { box-shadow: 0 0 22px #ff0033, 0 0 40px #ff0055, inset 0 0 14px #ff3333; }
-        }
-
-        .marco-neon-humo {
-            position: absolute;
-            inset: -6px;
-            border-radius: 50%;
-            border: 3px solid transparent;
-            animation: smokeRotate 6s linear infinite;
-            pointer-events: none;
-            z-index: 5;
-        }
-
-        .marco-multicolor { background: radial-gradient(circle, rgba(255,0,127,0.12) 0%, rgba(0,242,254,0.12) 70%, transparent 100%); box-shadow: 0 0 12px #ff007f, 0 0 22px #00f2fe; border-color: #ff007f; }
-        .marco-rosa { background: radial-gradient(circle, rgba(255,20,147,0.15) 0%, transparent 70%); box-shadow: 0 0 15px #ff1493, 0 0 25px #ff69b4; border-color: #ff1493; }
-        .marco-azul { background: radial-gradient(circle, rgba(0,210,255,0.15) 0%, transparent 70%); box-shadow: 0 0 15px #00d2ff, 0 0 25px #0072ff; border-color: #00d2ff; }
-        .marco-morado { background: radial-gradient(circle, rgba(157,80,187,0.15) 0%, transparent 70%); box-shadow: 0 0 15px #9d50bb, 0 0 25px #6e48aa; border-color: #9d50bb; }
-        .marco-dorado { background: radial-gradient(circle, rgba(255,215,0,0.15) 0%, transparent 70%); box-shadow: 0 0 15px #ffd700, 0 0 25px #ff8c00; border-color: #ffd700; }
-        .marco-verde { background: radial-gradient(circle, rgba(0,255,135,0.15) 0%, transparent 70%); box-shadow: 0 0 15px #00ff87, 0 0 25px #60efff; border-color: #00ff87; }
-
-        .marco-fundadora {
-            inset: -8px;
-            background: radial-gradient(circle, transparent 55%, rgba(255,0,51,0.2) 75%, transparent 100%);
-            box-shadow: 0 0 18px #ff0033, 0 0 32px #ff3300, inset 0 0 10px #ff0000;
-            border: 3.5px solid #ff0033;
-            animation: redSmokePulse 3s ease-in-out infinite alternate, smokeRotate 7s linear infinite;
-            transform: translate(var(--fundadora-x), var(--fundadora-y)) scale(var(--fundadora-scale));
-        }
-
-        .footer-copyright {
-            text-align: center;
-            margin-top: 30px;
-            padding: 20px 10px;
-            font-size: 0.75rem;
-            color: #8c827b;
-            border-top: 1px solid var(--border-soft);
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-            align-items: center;
-        }
-        .footer-copyright .footer-quote { font-style: italic; color: var(--accent-coral); font-weight: 600; }
-    </style>
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta name="theme-color" content="#0d0f18" />
+  <title>ARX · Bollolandia</title>
+  <style>
+    :root {
+      --bg: #090b12;
+      --bg-2: #10121d;
+      --panel: rgba(22, 25, 38, .72);
+      --panel-strong: #171a28;
+      --panel-soft: rgba(255, 255, 255, .055);
+      --line: rgba(255, 255, 255, .1);
+      --line-strong: rgba(255, 255, 255, .18);
+      --ink: #f7f6fb;
+      --muted: #9498ac;
+      --muted-2: #6e7287;
+      --rose: #ff6f9f;
+      --pink: #ee4e92;
+      --lilac: #a78bfa;
+      --cyan: #65d8e8;
+      --mint: #7ce8bd;
+      --gold: #f5cf72;
+      --danger: #ff7080;
+      --radius: 22px;
+      --shadow: 0 22px 80px rgba(0, 0, 0, .34);
+      --sans: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      --display: Inter, ui-sans-serif, system-ui, sans-serif;
+      --accent: var(--rose);
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 12% 0%, rgba(255, 111, 159, .15), transparent 32rem),
+        radial-gradient(circle at 88% 10%, rgba(101, 216, 232, .1), transparent 30rem),
+        linear-gradient(135deg, var(--bg), var(--bg-2) 55%, #0d101a);
+      font: 14px/1.45 var(--sans);
+      overflow-x: hidden;
+    }
+    body.light {
+      --bg: #f7f3f6;
+      --bg-2: #efeaf2;
+      --panel: rgba(255, 255, 255, .76);
+      --panel-strong: #fff;
+      --panel-soft: rgba(25, 18, 40, .045);
+      --line: rgba(34, 23, 54, .1);
+      --line-strong: rgba(34, 23, 54, .18);
+      --ink: #241c32;
+      --muted: #756c81;
+      --muted-2: #9891a2;
+      --shadow: 0 22px 70px rgba(77, 37, 90, .14);
+      background:
+        radial-gradient(circle at 12% 0%, rgba(255, 111, 159, .16), transparent 32rem),
+        radial-gradient(circle at 88% 10%, rgba(101, 216, 232, .18), transparent 30rem),
+        linear-gradient(135deg, var(--bg), var(--bg-2) 55%, #fff);
+    }
+    button, input, textarea, select { font: inherit; }
+    button { border: 0; cursor: pointer; color: inherit; }
+    button:focus-visible, input:focus-visible, textarea:focus-visible, select:focus-visible {
+      outline: 2px solid var(--cyan); outline-offset: 2px;
+    }
+    .icon { width: 18px; height: 18px; display: inline-block; vertical-align: -4px; stroke: currentColor; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+    .icon.fill { fill: currentColor; stroke: none; }
+    .app-shell { display: grid; grid-template-columns: 250px minmax(0, 1fr); min-height: 100vh; }
+    .sidebar {
+      position: sticky; top: 0; height: 100vh; padding: 28px 18px 18px;
+      border-right: 1px solid var(--line); background: rgba(8, 10, 18, .52);
+      backdrop-filter: blur(28px); z-index: 5;
+    }
+    .light .sidebar { background: rgba(255, 255, 255, .55); }
+    .brand { display: flex; align-items: center; gap: 11px; padding: 0 10px 30px; }
+    .brand-mark {
+      width: 35px; height: 35px; display: grid; place-items: center; border-radius: 12px;
+      background: linear-gradient(135deg, var(--rose), var(--lilac)); box-shadow: 0 0 28px rgba(255, 111, 159, .3);
+      transform: rotate(-7deg);
+    }
+    .brand-mark svg { width: 21px; stroke: white; }
+    .brand strong { letter-spacing: .18em; font-size: 12px; }
+    .brand small { display: block; color: var(--muted); letter-spacing: .08em; font-size: 9px; margin-top: 2px; }
+    .nav-label { padding: 8px 12px; color: var(--muted-2); font-size: 10px; text-transform: uppercase; letter-spacing: .16em; }
+    .nav { display: grid; gap: 5px; }
+    .nav button {
+      display: flex; align-items: center; gap: 12px; width: 100%; padding: 12px 13px; text-align: left;
+      background: transparent; border-radius: 14px; color: var(--muted); transition: .25s ease;
+    }
+    .nav button:hover { background: var(--panel-soft); color: var(--ink); transform: translateX(2px); }
+    .nav button.active { background: linear-gradient(90deg, rgba(255,111,159,.18), rgba(167,139,250,.08)); color: var(--ink); box-shadow: inset 3px 0 var(--rose); }
+    .nav button.active .icon { color: var(--rose); }
+    .nav-badge { margin-left: auto; color: var(--rose); font-size: 11px; }
+    .side-user {
+      position: absolute; left: 18px; right: 18px; bottom: 18px; padding: 12px; border: 1px solid var(--line);
+      border-radius: 18px; background: var(--panel-soft); display: flex; align-items: center; gap: 9px;
+    }
+    .avatar { position: relative; width: 38px; height: 38px; border-radius: 50%; display: grid; place-items: center; flex: 0 0 auto; overflow: visible; background: linear-gradient(145deg, #efb4c9, #7e85c8); color: #fff; font-weight: 800; }
+    .avatar::after { content: ""; position: absolute; inset: -4px; border: 1.5px solid var(--accent); border-radius: inherit; opacity: .75; }
+    .avatar.large { width: 72px; height: 72px; font-size: 23px; }
+    .avatar.large::after { inset: -6px; border-width: 2px; box-shadow: 0 0 22px color-mix(in srgb, var(--accent) 60%, transparent); }
+    .online { width: 8px; height: 8px; background: var(--mint); border: 2px solid var(--panel-strong); border-radius: 50%; position: absolute; right: 0; bottom: 1px; z-index: 2; }
+    .side-user .name { font-size: 12px; font-weight: 700; }
+    .side-user .role { color: var(--muted); font-size: 10px; }
+    .side-gear { margin-left: auto; background: transparent; color: var(--muted); padding: 5px; }
+
+    .main { width: 100%; max-width: 1400px; margin: 0 auto; padding: 26px 34px 54px; }
+    .topbar { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 28px; }
+    .topbar h1 { font: 700 clamp(23px, 3vw, 34px)/1.1 var(--display); letter-spacing: -.05em; margin: 0; }
+    .topbar p { color: var(--muted); margin: 7px 0 0; }
+    .top-actions { display: flex; align-items: center; gap: 9px; }
+    .search { display: flex; gap: 8px; align-items: center; width: min(240px, 30vw); padding: 10px 12px; color: var(--muted); border: 1px solid var(--line); border-radius: 13px; background: var(--panel-soft); }
+    .search input { min-width: 0; width: 100%; border: 0; outline: 0; background: none; color: var(--ink); }
+    .pill-btn, .round-btn { display: inline-flex; align-items: center; justify-content: center; gap: 7px; padding: 10px 13px; background: var(--panel-soft); border: 1px solid var(--line); border-radius: 13px; color: var(--muted); transition: .2s; }
+    .round-btn { width: 39px; height: 39px; padding: 0; border-radius: 13px; }
+    .pill-btn:hover, .round-btn:hover { color: var(--ink); border-color: var(--line-strong); transform: translateY(-1px); }
+    .wallet { border-color: rgba(245, 207, 114, .3); color: var(--gold); background: rgba(245, 207, 114, .08); }
+    .page { display: none; animation: pageIn .35s ease both; }
+    .page.active { display: block; }
+    @keyframes pageIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+    .grid { display: grid; gap: 16px; }
+    .grid.two { grid-template-columns: 1.3fr .7fr; }
+    .grid.three { grid-template-columns: repeat(3, 1fr); }
+    .panel {
+      position: relative; border: 1px solid var(--line); background: var(--panel); border-radius: var(--radius);
+      box-shadow: var(--shadow); backdrop-filter: blur(24px); overflow: hidden;
+    }
+    .panel.pad { padding: 22px; }
+    .eyebrow { display: flex; align-items: center; gap: 8px; color: var(--rose); font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: .15em; }
+    .eyebrow .pulse { width: 6px; height: 6px; background: var(--rose); border-radius: 50%; box-shadow: 0 0 0 5px rgba(255,111,159,.12); }
+    .panel h2 { margin: 7px 0 5px; font-size: 21px; letter-spacing: -.04em; }
+    .panel h3 { margin: 0; font-size: 15px; letter-spacing: -.025em; }
+    .muted { color: var(--muted); }
+    .micro { color: var(--muted); font-size: 11px; }
+    .hero {
+      min-height: 305px; padding: 29px; display: flex; align-items: flex-end; justify-content: space-between;
+      background:
+        linear-gradient(110deg, rgba(11, 14, 25, .6), rgba(21, 17, 34, .38)),
+        radial-gradient(circle at 82% 18%, rgba(101,216,232,.34), transparent 15rem),
+        radial-gradient(circle at 58% 80%, rgba(255,111,159,.38), transparent 22rem);
+    }
+    .light .hero { background: linear-gradient(110deg, rgba(255,255,255,.4), rgba(255,255,255,.07)), radial-gradient(circle at 82% 18%, rgba(101,216,232,.4), transparent 15rem), radial-gradient(circle at 58% 80%, rgba(255,111,159,.3), transparent 22rem); }
+    .hero::before { content: ""; position: absolute; width: 500px; height: 500px; right: -180px; top: -260px; border: 1px solid rgba(255,255,255,.16); border-radius: 50%; box-shadow: 0 0 0 40px rgba(255,255,255,.03), 0 0 0 80px rgba(255,255,255,.02); }
+    .hero-copy { max-width: 610px; position: relative; z-index: 1; }
+    .hero h2 { font-size: clamp(29px, 4.5vw, 51px); max-width: 600px; margin: 14px 0 12px; }
+    .hero h2 span { color: var(--rose); }
+    .hero-copy > p { max-width: 520px; color: #d7d3df; margin: 0 0 22px; }
+    .light .hero-copy > p { color: var(--muted); }
+    .hero-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+    .btn-primary, .btn-secondary, .btn-danger {
+      display: inline-flex; align-items: center; justify-content: center; gap: 8px; border-radius: 13px; padding: 11px 15px; font-weight: 750; transition: .25s;
+    }
+    .btn-primary { background: linear-gradient(135deg, var(--rose), var(--pink)); box-shadow: 0 12px 28px rgba(238,78,146,.22); color: white; }
+    .btn-secondary { background: var(--panel-soft); border: 1px solid var(--line); color: var(--ink); }
+    .btn-danger { background: rgba(255,112,128,.12); color: var(--danger); border: 1px solid rgba(255,112,128,.2); }
+    .btn-primary:hover, .btn-secondary:hover, .btn-danger:hover { transform: translateY(-2px); filter: brightness(1.08); }
+    .hero-orbit { width: 210px; height: 210px; position: relative; margin: 0 40px 20px 20px; display: grid; place-items: center; }
+    .hero-orbit::before, .hero-orbit::after { content: ""; position: absolute; border: 1px solid rgba(255,255,255,.16); border-radius: 50%; transform: rotate(28deg); }
+    .hero-orbit::before { inset: 8px -20px; }
+    .hero-orbit::after { inset: -20px 8px; transform: rotate(-28deg); }
+    .hero-orbit .avatar { width: 118px; height: 118px; font-size: 40px; animation: float 4s ease-in-out infinite; }
+    @keyframes float { 50% { transform: translateY(-8px) rotate(2deg); } }
+    .orbit-chip { position: absolute; z-index: 2; padding: 7px 9px; font-size: 10px; color: var(--ink); background: rgba(10,12,20,.7); border: 1px solid var(--line-strong); border-radius: 10px; backdrop-filter: blur(8px); }
+    .orbit-chip.one { top: 12px; right: -10px; color: var(--mint); }
+    .orbit-chip.two { bottom: 15px; left: -25px; color: var(--gold); }
+    .orbit-chip.three { top: 50%; right: -45px; color: var(--cyan); }
+
+    .section-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin: 24px 0 12px; }
+    .section-head h2 { margin: 0; font-size: 18px; letter-spacing: -.04em; }
+    .section-head a { color: var(--rose); font-size: 11px; cursor: pointer; }
+    .stat-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 11px; }
+    .stat { padding: 16px; border: 1px solid var(--line); border-radius: 18px; background: var(--panel); }
+    .stat .stat-icon { color: var(--rose); width: 27px; height: 27px; display: grid; place-items: center; border-radius: 9px; background: rgba(255,111,159,.1); margin-bottom: 12px; }
+    .stat strong { display: block; font-size: 22px; letter-spacing: -.06em; }
+    .stat span { color: var(--muted); font-size: 11px; }
+    .stat .trend { float: right; margin-top: -22px; font-size: 10px; color: var(--mint); }
+
+    .compat { display: flex; align-items: center; gap: 20px; }
+    .score {
+      flex: 0 0 auto; width: 113px; height: 113px; border-radius: 50%; display: grid; place-items: center;
+      background: conic-gradient(var(--rose) 0 92%, rgba(255,255,255,.1) 92% 100%); position: relative;
+    }
+    .score::after { content: ""; position: absolute; inset: 9px; border-radius: 50%; background: var(--panel-strong); }
+    .score b { position: relative; z-index: 1; font-size: 27px; }
+    .compat-copy { min-width: 0; }
+    .compat-copy p { color: var(--muted); font-size: 12px; margin: 8px 0 0; }
+    .tag-row { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 12px; }
+    .tag { display: inline-flex; align-items: center; gap: 5px; padding: 5px 8px; border-radius: 8px; background: var(--panel-soft); color: var(--muted); font-size: 10px; border: 1px solid var(--line); }
+    .tag.hot { color: var(--rose); border-color: rgba(255,111,159,.22); background: rgba(255,111,159,.08); }
+    .mission { padding: 13px 0; border-bottom: 1px solid var(--line); display: flex; gap: 12px; align-items: center; }
+    .mission:last-child { border-bottom: 0; padding-bottom: 0; }
+    .mission:first-child { padding-top: 2px; }
+    .mission .mission-mark { width: 31px; height: 31px; border-radius: 10px; color: var(--cyan); display: grid; place-items: center; background: rgba(101,216,232,.1); }
+    .mission.done .mission-mark { color: var(--mint); background: rgba(124,232,189,.12); }
+    .mission-text { flex: 1; min-width: 0; }
+    .mission-text strong { font-size: 12px; }
+    .mission-text span { display: block; color: var(--muted); font-size: 10px; margin-top: 3px; }
+    .reward { color: var(--gold); font-size: 10px; white-space: nowrap; }
+    .progress { height: 5px; margin-top: 7px; border-radius: 10px; overflow: hidden; background: rgba(255,255,255,.08); }
+    .progress i { display: block; height: 100%; border-radius: inherit; background: linear-gradient(90deg,var(--rose),var(--lilac)); }
+
+    .map-panel { min-height: 530px; padding: 0; }
+    .map-header { padding: 22px 22px 14px; display: flex; justify-content: space-between; gap: 10px; align-items: start; }
+    .map-canvas {
+      height: 400px; position: relative; overflow: hidden; margin: 0 12px 12px; border-radius: 18px;
+      background:
+        linear-gradient(35deg, transparent 49%, rgba(101,216,232,.12) 50%, transparent 51%),
+        linear-gradient(115deg, transparent 49%, rgba(255,111,159,.1) 50%, transparent 51%),
+        radial-gradient(circle at 20% 15%, rgba(255,111,159,.12), transparent 10rem),
+        #111624;
+      background-size: 170px 170px, 220px 220px, auto, auto;
+      border: 1px solid var(--line);
+    }
+    .light .map-canvas { background-color: #e9e6ef; }
+    .map-canvas::before { content: ""; position: absolute; inset: 14% 25%; border: 1px solid rgba(255,255,255,.1); border-radius: 44% 58% 49% 38%; transform: rotate(17deg); box-shadow: 0 0 0 28px rgba(101,216,232,.025), 0 0 0 60px rgba(255,111,159,.025); }
+    .map-legend { position: absolute; left: 14px; bottom: 14px; padding: 9px 11px; border: 1px solid var(--line); border-radius: 11px; background: rgba(10,12,20,.72); backdrop-filter: blur(12px); font-size: 10px; color: var(--muted); }
+    .legend-dot { display: inline-block; width: 6px; height: 6px; border-radius: 50%; margin-right: 4px; background: var(--rose); }
+    .legend-dot.cyan { background: var(--cyan); margin-left: 8px; }
+    .map-point { position: absolute; transform: translate(-50%,-50%); display: grid; place-items: center; z-index: 2; }
+    .map-point button { width: 34px; height: 34px; border-radius: 50%; background: var(--panel-strong); border: 2px solid var(--rose); color: var(--rose); box-shadow: 0 0 0 6px rgba(255,111,159,.12), 0 6px 16px rgba(0,0,0,.28); transition: .2s; }
+    .map-point button:hover { transform: scale(1.14); }
+    .map-point .point-label { white-space: nowrap; margin-top: 7px; padding: 5px 7px; border-radius: 7px; background: rgba(10,12,20,.82); color: var(--ink); font-size: 9px; }
+    .map-point.people button { border-color: var(--cyan); color: var(--cyan); box-shadow: 0 0 0 6px rgba(101,216,232,.1), 0 6px 16px rgba(0,0,0,.28); }
+    .map-point.current button { width: 18px; height: 18px; border: 0; background: var(--mint); box-shadow: 0 0 0 9px rgba(124,232,189,.15); }
+    .map-filters { display: flex; gap: 7px; overflow-x: auto; padding: 0 22px 17px; }
+    .filter { white-space: nowrap; padding: 7px 10px; border-radius: 9px; background: var(--panel-soft); border: 1px solid var(--line); color: var(--muted); font-size: 10px; }
+    .filter.selected { color: var(--ink); border-color: var(--rose); background: rgba(255,111,159,.1); }
+    .place-list { padding: 0 22px 18px; display: grid; gap: 10px; }
+    .place { display: flex; align-items: center; gap: 10px; }
+    .place .place-symbol { width: 32px; height: 32px; border-radius: 10px; display: grid; place-items: center; color: var(--rose); background: rgba(255,111,159,.1); }
+    .place strong { font-size: 11px; }
+    .place span { display: block; color: var(--muted); font-size: 10px; }
+    .distance { margin-left: auto; color: var(--cyan); font-size: 10px; }
+
+    .chat-layout { display: grid; grid-template-columns: 270px 1fr; min-height: 680px; }
+    .chat-list { border-right: 1px solid var(--line); padding: 18px 12px; }
+    .chat-list h3 { padding: 0 9px 13px; }
+    .chat-item { width: 100%; display: flex; align-items: center; gap: 9px; padding: 10px 9px; border-radius: 13px; background: transparent; text-align: left; }
+    .chat-item:hover, .chat-item.selected { background: var(--panel-soft); }
+    .chat-item .chat-meta { flex: 1; min-width: 0; }
+    .chat-item strong { display: block; font-size: 12px; }
+    .chat-item span { display: block; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-size: 10px; }
+    .chat-item time { align-self: start; color: var(--muted-2); font-size: 9px; }
+    .chat-window { display: flex; flex-direction: column; min-width: 0; }
+    .chat-top { display: flex; align-items: center; gap: 10px; padding: 18px 22px; border-bottom: 1px solid var(--line); }
+    .chat-top .chat-meta { flex: 1; }
+    .chat-top strong { font-size: 13px; }
+    .chat-top span { display: block; color: var(--mint); font-size: 10px; }
+    .chat-messages { flex: 1; padding: 20px 22px; display: flex; flex-direction: column; gap: 13px; overflow-y: auto; max-height: 490px; }
+    .chat-date { text-align: center; color: var(--muted-2); font-size: 10px; margin: 2px 0 8px; }
+    .bubble-wrap { max-width: 75%; display: flex; gap: 7px; align-items: end; }
+    .bubble-wrap.mine { margin-left: auto; flex-direction: row-reverse; }
+    .bubble { position: relative; padding: 10px 12px; border-radius: 15px 15px 15px 4px; background: var(--panel-soft); border: 1px solid var(--line); color: var(--ink); font-size: 12px; }
+    .mine .bubble { background: linear-gradient(135deg, rgba(255,111,159,.24), rgba(167,139,250,.18)); border-color: rgba(255,111,159,.26); border-radius: 15px 15px 4px 15px; }
+    .bubble small { display: block; color: var(--muted); font-size: 9px; margin-top: 5px; text-align: right; }
+    .bubble .reply-preview { padding: 5px 7px; margin: -3px 0 7px; border-left: 2px solid var(--cyan); color: var(--muted); background: rgba(101,216,232,.06); font-size: 10px; }
+    .message-tools { display: none; position: absolute; right: 7px; top: -27px; gap: 3px; padding: 3px; background: var(--panel-strong); border: 1px solid var(--line); border-radius: 8px; }
+    .bubble:hover .message-tools { display: flex; }
+    .message-tools button { padding: 3px 5px; background: transparent; color: var(--muted); font-size: 11px; }
+    .reaction { display: inline-block; position: absolute; bottom: -10px; right: 7px; padding: 2px 5px; border-radius: 8px; background: var(--panel-strong); border: 1px solid var(--line); font-size: 10px; }
+    .typing { display: none; color: var(--muted); font-size: 10px; padding: 0 22px 9px; }
+    .chat-compose { padding: 12px 18px 17px; border-top: 1px solid var(--line); }
+    .reply-bar { display: none; align-items: center; gap: 8px; color: var(--muted); padding: 7px 9px; margin-bottom: 7px; border-left: 2px solid var(--cyan); background: var(--panel-soft); border-radius: 7px; font-size: 10px; }
+    .reply-bar.show { display: flex; }
+    .reply-bar button { margin-left: auto; background: transparent; color: var(--muted); }
+    .compose-row { display: flex; align-items: end; gap: 7px; }
+    .compose-input { min-height: 42px; max-height: 100px; flex: 1; resize: none; padding: 11px; color: var(--ink); background: var(--panel-soft); border: 1px solid var(--line); border-radius: 13px; outline: none; }
+    .compose-tools { display: flex; gap: 4px; }
+    .compose-tools button { width: 35px; height: 35px; padding: 0; border-radius: 10px; background: var(--panel-soft); border: 1px solid var(--line); color: var(--muted); }
+    .compose-tools button:hover { color: var(--rose); }
+    .extras-menu { display: none; gap: 7px; flex-wrap: wrap; padding: 8px 0 0; }
+    .extras-menu.show { display: flex; }
+    .extra-chip { padding: 6px 8px; color: var(--muted); border: 1px solid var(--line); border-radius: 8px; background: var(--panel-soft); font-size: 10px; }
+
+    .collection-hero { padding: 22px; display: flex; align-items: center; justify-content: space-between; gap: 18px; background: linear-gradient(120deg, rgba(245,207,114,.13), rgba(167,139,250,.08)); }
+    .collection-hero h2 { font-size: 28px; }
+    .season-ring { width: 95px; height: 95px; flex: 0 0 auto; display: grid; place-items: center; border-radius: 50%; background: conic-gradient(var(--gold), var(--rose), var(--lilac), var(--gold)); padding: 4px; box-shadow: 0 0 30px rgba(245,207,114,.18); }
+    .season-ring::after { content: "S1"; width: 100%; height: 100%; display: grid; place-items: center; border-radius: inherit; background: var(--panel-strong); color: var(--gold); font-size: 22px; font-weight: 800; }
+    .collection-tabs { display: flex; gap: 6px; flex-wrap: wrap; margin: 18px 0 13px; }
+    .collection-tabs button { padding: 8px 10px; background: var(--panel-soft); border: 1px solid var(--line); color: var(--muted); border-radius: 9px; font-size: 10px; }
+    .collection-tabs button.active { color: var(--ink); border-color: var(--gold); background: rgba(245,207,114,.1); }
+    .relic-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 13px; }
+    .relic {
+      min-height: 205px; position: relative; display: flex; flex-direction: column; justify-content: space-between; padding: 14px;
+      overflow: hidden; border-radius: 18px; border: 1px solid var(--line); background:
+      radial-gradient(circle at 80% 10%, rgba(255,255,255,.27), transparent 5rem), linear-gradient(145deg, #272438, #131522);
+      transition: .25s; cursor: pointer;
+    }
+    .relic:hover { transform: translateY(-5px) rotate(.7deg); box-shadow: 0 16px 30px rgba(0,0,0,.23); }
+    .relic::before { content: ""; position: absolute; width: 140px; height: 140px; border-radius: 50%; right: -35px; top: 25px; background: var(--relic-color, rgba(255,111,159,.2)); filter: blur(23px); opacity: .8; }
+    .relic.common { --relic-color: rgba(101,216,232,.28); }
+    .relic.rare { --relic-color: rgba(167,139,250,.3); }
+    .relic.legendary { --relic-color: rgba(245,207,114,.38); border-color: rgba(245,207,114,.4); }
+    .relic.exclusive { --relic-color: rgba(255,111,159,.38); border-color: rgba(255,111,159,.42); }
+    .relic-top { display: flex; justify-content: space-between; align-items: start; position: relative; z-index: 1; }
+    .rarity { padding: 4px 6px; font-size: 8px; text-transform: uppercase; letter-spacing: .1em; border-radius: 6px; background: rgba(0,0,0,.24); color: var(--gold); }
+    .relic-art { position: relative; z-index: 1; align-self: center; width: 95px; height: 95px; display: grid; place-items: center; margin: 7px 0; border-radius: 32px; font-size: 48px; background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.16); box-shadow: inset 0 0 28px rgba(255,255,255,.06); }
+    .relic-info { position: relative; z-index: 1; }
+    .relic-info strong { display: block; font-size: 11px; }
+    .relic-info span { display: block; color: var(--muted); font-size: 9px; margin-top: 3px; }
+    .relic-date { color: var(--cyan) !important; }
+
+    .profile-grid { display: grid; grid-template-columns: .82fr 1.18fr; gap: 16px; }
+    .profile-card { padding: 0; overflow: hidden; }
+    .profile-banner { height: 125px; position: relative; background: linear-gradient(135deg, #f3a7c3, #8c83c5 60%, #67d7dc); }
+    .profile-banner::after { content: ""; position: absolute; inset: 0; background: radial-gradient(circle at 20% 25%, rgba(255,255,255,.42), transparent 5rem), linear-gradient(90deg, transparent, rgba(255,255,255,.1)); }
+    .profile-main { padding: 0 22px 22px; }
+    .profile-main .avatar { margin-top: -38px; border: 5px solid var(--panel-strong); }
+    .profile-title { display: flex; align-items: start; gap: 10px; margin-top: 9px; }
+    .profile-title > div { flex: 1; }
+    .profile-title h2 { margin: 0; font-size: 22px; }
+    .verified { color: var(--cyan); vertical-align: 2px; }
+    .status { display: inline-flex; align-items: center; gap: 5px; padding: 5px 8px; color: var(--mint); background: rgba(124,232,189,.1); border-radius: 8px; font-size: 10px; }
+    .status i { width: 5px; height: 5px; border-radius: 50%; background: var(--mint); }
+    .music { display: flex; align-items: center; gap: 10px; margin-top: 18px; padding: 10px; background: var(--panel-soft); border: 1px solid var(--line); border-radius: 12px; }
+    .music-cover { width: 34px; height: 34px; border-radius: 9px; display: grid; place-items: center; color: var(--rose); background: linear-gradient(135deg, rgba(255,111,159,.2), rgba(167,139,250,.23)); }
+    .music strong { display: block; font-size: 11px; }
+    .music span { color: var(--muted); font-size: 10px; }
+    .profile-section { padding: 22px; }
+    .profile-section + .profile-section { border-top: 1px solid var(--line); }
+    .profile-section h3 { display: flex; justify-content: space-between; margin-bottom: 13px; }
+    .edit-link { color: var(--rose); font-size: 10px; font-weight: 500; background: transparent; }
+    .badge-row { display: flex; gap: 9px; flex-wrap: wrap; }
+    .badge {
+      width: 62px; height: 62px; display: grid; place-items: center; border-radius: 18px; border: 1px solid var(--line);
+      background: linear-gradient(145deg, rgba(245,207,114,.16), rgba(255,255,255,.04)); color: var(--gold); text-align: center;
+    }
+    .badge b { font-size: 19px; display: block; }
+    .badge span { display: block; font-size: 8px; color: var(--muted); }
+    .history { display: grid; gap: 10px; }
+    .history-item { display: flex; align-items: center; gap: 10px; color: var(--muted); font-size: 11px; }
+    .history-item .history-icon { width: 27px; height: 27px; border-radius: 8px; display: grid; place-items: center; background: var(--panel-soft); color: var(--rose); }
+    .history-item strong { color: var(--ink); font-weight: 600; }
+    .reputation { display: grid; grid-template-columns: auto 1fr; align-items: center; gap: 13px; }
+    .rep-level { width: 59px; height: 59px; display: grid; place-items: center; border-radius: 18px; color: var(--gold); background: rgba(245,207,114,.11); border: 1px solid rgba(245,207,114,.25); font-weight: 800; }
+    .reputation strong { font-size: 12px; }
+    .reputation p { margin: 4px 0 0; color: var(--muted); font-size: 10px; }
+    .reputation .progress { margin-top: 9px; }
+
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 11px; }
+    .field { display: grid; gap: 6px; }
+    .field.full { grid-column: 1/-1; }
+    .field label { color: var(--muted); font-size: 10px; text-transform: uppercase; letter-spacing: .1em; }
+    .field input, .field textarea, .field select { width: 100%; padding: 10px 11px; color: var(--ink); border: 1px solid var(--line); border-radius: 10px; background: var(--panel-soft); outline: none; }
+    .field textarea { min-height: 80px; resize: vertical; }
+    .color-swatches { display: flex; gap: 8px; align-items: center; }
+    .swatch { width: 25px; height: 25px; padding: 0; border-radius: 50%; border: 2px solid transparent; }
+    .swatch.selected { border-color: var(--ink); box-shadow: 0 0 0 2px var(--panel-strong); }
+    .toast {
+      position: fixed; right: 20px; bottom: 20px; z-index: 30; max-width: 310px; padding: 12px 14px;
+      display: flex; align-items: center; gap: 9px; border-radius: 13px; background: var(--panel-strong); border: 1px solid var(--line-strong);
+      box-shadow: var(--shadow); animation: toastIn .3s ease both; color: var(--ink); font-size: 12px;
+    }
+    @keyframes toastIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+    .modal-backdrop { display: none; position: fixed; inset: 0; z-index: 20; padding: 18px; place-items: center; background: rgba(3,4,9,.72); backdrop-filter: blur(14px); }
+    .modal-backdrop.show { display: grid; }
+    .modal { width: min(100%, 580px); max-height: min(760px, 92vh); overflow-y: auto; padding: 22px; border: 1px solid var(--line-strong); border-radius: 24px; background: var(--panel-strong); box-shadow: var(--shadow); animation: modalIn .25s ease both; }
+    @keyframes modalIn { from { opacity: 0; transform: scale(.96) translateY(8px); } to { opacity: 1; transform: none; } }
+    .modal-head { display: flex; align-items: start; justify-content: space-between; gap: 10px; margin-bottom: 18px; }
+    .modal-head h2 { margin: 0; font-size: 20px; }
+    .close { width: 31px; height: 31px; border-radius: 9px; background: var(--panel-soft); color: var(--muted); }
+    .close:hover { color: var(--ink); }
+    .drop-stage {
+      height: 290px; display: grid; place-items: center; position: relative; margin-bottom: 18px; perspective: 900px;
+      border-radius: 18px; background: radial-gradient(circle, rgba(101,216,232,.14), transparent 42%), linear-gradient(135deg, rgba(255,111,159,.08), rgba(167,139,250,.08)); border: 1px solid var(--line);
+    }
+    .drop-stage::before { content: ""; position: absolute; width: 230px; height: 230px; border: 1px solid rgba(101,216,232,.22); border-radius: 50%; box-shadow: 0 0 0 26px rgba(101,216,232,.04), 0 0 0 52px rgba(101,216,232,.02); }
+    .artifact-3d { width: 150px; height: 150px; position: relative; transform-style: preserve-3d; transform: rotateX(-14deg) rotateY(-26deg); transition: transform .3s ease; animation: artifactFloat 3.8s ease-in-out infinite; }
+    @keyframes artifactFloat { 50% { margin-top: -12px; } }
+    .artifact-face { position: absolute; inset: 0; display: grid; place-items: center; border: 1px solid rgba(255,255,255,.38); border-radius: 37px; font-size: 70px; background: linear-gradient(145deg, rgba(255,255,255,.2), rgba(255,111,159,.19)); box-shadow: inset 0 0 35px rgba(255,255,255,.16), 0 20px 50px rgba(0,0,0,.25); }
+    .artifact-face.side { transform: rotateY(90deg) translateZ(75px); background: linear-gradient(145deg, rgba(101,216,232,.2), rgba(167,139,250,.2)); }
+    .artifact-face.front { transform: translateZ(75px); }
+    .artifact-face.back { transform: rotateY(180deg) translateZ(75px); }
+    .artifact-face.top { transform: rotateX(90deg) translateZ(75px); }
+    .rotate-hint { position: absolute; right: 12px; bottom: 10px; color: var(--muted); font-size: 9px; }
+    .drop-data { display: grid; grid-template-columns: 1fr 1fr; gap: 9px; }
+    .drop-data div { padding: 10px; border-radius: 11px; background: var(--panel-soft); border: 1px solid var(--line); }
+    .drop-data label { display: block; color: var(--muted); font-size: 9px; }
+    .drop-data strong { display: block; margin-top: 3px; font-size: 11px; }
+    .range-row { display: flex; gap: 8px; align-items: center; }
+    .range-row input { flex: 1; accent-color: var(--rose); }
+    .empty { padding: 34px 12px; color: var(--muted); text-align: center; font-size: 12px; }
+    .mobile-nav { display: none; }
+    .hidden { display: none !important; }
+    @media (max-width: 1050px) {
+      .app-shell { grid-template-columns: 76px minmax(0,1fr); }
+      .sidebar { padding: 20px 10px; }
+      .brand { padding: 0 10px 26px; }
+      .brand > div, .nav-label, .nav button span, .nav-badge, .side-user .name, .side-user .role, .side-gear { display: none; }
+      .brand { justify-content: center; padding-left: 0; padding-right: 0; }
+      .nav button { justify-content: center; padding: 12px; }
+      .side-user { left: 10px; right: 10px; justify-content: center; padding: 9px 0; }
+      .main { padding: 24px; }
+      .hero-orbit { margin-right: 20px; }
+    }
+    @media (max-width: 780px) {
+      .app-shell { display: block; }
+      .sidebar { display: none; }
+      .main { padding: 18px 14px 88px; }
+      .topbar { align-items: start; margin-bottom: 19px; }
+      .topbar p { font-size: 11px; }
+      .search { width: 38px; padding: 10px; overflow: hidden; }
+      .search input { display: none; }
+      .wallet span { display: none; }
+      .grid.two, .grid.three, .profile-grid { grid-template-columns: 1fr; }
+      .hero { min-height: 420px; align-items: start; flex-direction: column; padding: 22px; }
+      .hero-orbit { align-self: center; margin: 18px 0 0; }
+      .hero h2 { font-size: 33px; }
+      .stat-row { grid-template-columns: repeat(2, 1fr); }
+      .chat-layout { grid-template-columns: 1fr; min-height: 690px; }
+      .chat-list { display: flex; gap: 6px; overflow-x: auto; border-right: 0; border-bottom: 1px solid var(--line); padding: 10px; }
+      .chat-list h3 { display: none; }
+      .chat-item { min-width: 150px; }
+      .chat-messages { max-height: 430px; }
+      .relic-grid { grid-template-columns: repeat(2, 1fr); }
+      .relic { min-height: 185px; }
+      .mobile-nav { position: fixed; display: flex; align-items: center; justify-content: space-around; bottom: 0; left: 0; right: 0; z-index: 10; padding: 9px 4px calc(9px + env(safe-area-inset-bottom)); border-top: 1px solid var(--line); background: rgba(13,15,24,.86); backdrop-filter: blur(25px); }
+      .light .mobile-nav { background: rgba(255,255,255,.86); }
+      .mobile-nav button { display: grid; justify-items: center; gap: 3px; color: var(--muted); padding: 3px 9px; background: transparent; font-size: 9px; }
+      .mobile-nav button.active { color: var(--rose); }
+      .mobile-nav .icon { width: 17px; height: 17px; }
+    }
+    @media (max-width: 430px) {
+      .top-actions .round-btn { display: none; }
+      .topbar h1 { font-size: 25px; }
+      .compat { align-items: start; flex-direction: column; }
+      .score { width: 93px; height: 93px; }
+      .score::after { inset: 8px; }
+      .form-grid { grid-template-columns: 1fr; }
+      .field.full { grid-column: auto; }
+      .relic-art { width: 78px; height: 78px; font-size: 38px; }
+    }
+  </style>
 </head>
-<body onload="inicializarAppSegura()">
+<body>
+  <svg width="0" height="0" style="position:absolute">
+    <symbol id="i-home" viewBox="0 0 24 24"><path d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></symbol>
+    <symbol id="i-map" viewBox="0 0 24 24"><path d="M9 18 3 21V6l6-3 6 3 6-3v15l-6 3z"/><path d="M9 3v15M15 6v15"/></symbol>
+    <symbol id="i-chat" viewBox="0 0 24 24"><path d="M20 15a4 4 0 0 1-4 4H8l-4 3v-7a4 4 0 0 1-1-3V7a4 4 0 0 1 4-4h9a4 4 0 0 1 4 4z"/><path d="M8 9h8M8 13h5"/></symbol>
+    <symbol id="i-box" viewBox="0 0 24 24"><path d="m12 3 8 4.5v9L12 21l-8-4.5v-9z"/><path d="m4 7.5 8 4.5 8-4.5M12 12v9"/></symbol>
+    <symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></symbol>
+    <symbol id="i-spark" viewBox="0 0 24 24"><path d="m12 2 1.7 6.3L20 10l-6.3 1.7L12 18l-1.7-6.3L4 10l6.3-1.7z"/><path d="m19 17 .7 2.3L22 20l-2.3.7L19 23l-.7-2.3L16 20l2.3-.7z"/></symbol>
+    <symbol id="i-heart" viewBox="0 0 24 24"><path d="M20.8 8.5c0 5.4-8.8 10.2-8.8 10.2S3.2 13.9 3.2 8.5A4.6 4.6 0 0 1 12 6.2a4.6 4.6 0 0 1 8.8 2.3Z"/></symbol>
+    <symbol id="i-settings" viewBox="0 0 24 24"><path d="M12 15.2a3.2 3.2 0 1 0 0-6.4 3.2 3.2 0 0 0 0 6.4Z"/><path d="m19.4 15 .1.1a2 2 0 0 1-2.8 2.8l-.1-.1a2 2 0 0 0-3.4 1.4v.2a2 2 0 0 1-4 0v-.2a2 2 0 0 0-3.4-1.4l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1A2 2 0 0 0 1.7 12a2 2 0 0 0 1.3-3.4l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1A2 2 0 0 0 9.2 4.4V4a2 2 0 0 1 4 0v.2a2 2 0 0 0 3.4 1.4l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1A2 2 0 0 0 20.7 12a2 2 0 0 0-1.3 3Z"/></symbol>
+    <symbol id="i-search" viewBox="0 0 24 24"><circle cx="10.8" cy="10.8" r="6.8"/><path d="m16 16 5 5"/></symbol>
+    <symbol id="i-send" viewBox="0 0 24 24"><path d="m3 4 18 8-18 8 4-8z"/><path d="M7 12h14"/></symbol>
+    <symbol id="i-mic" viewBox="0 0 24 24"><rect x="8" y="2" width="8" height="13" rx="4"/><path d="M5 11a7 7 0 0 0 14 0M12 18v4M8 22h8"/></symbol>
+    <symbol id="i-gift" viewBox="0 0 24 24"><path d="M20 12v8H4v-8M2 8h20v4H2zM12 8v12"/><path d="M12 8H8.5A2.5 2.5 0 1 1 11 5.5V8M12 8h3.5A2.5 2.5 0 1 0 13 5.5V8"/></symbol>
+    <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></symbol>
+    <symbol id="i-reply" viewBox="0 0 24 24"><path d="M9 17 4 12l5-5"/><path d="M4 12h10a6 6 0 0 1 6 6v1"/></symbol>
+    <symbol id="i-translate" viewBox="0 0 24 24"><path d="M4 5h9M8.5 3v2M7 5c0 4-2 7-5 9M5 9c1 2 3 4 6 5M14 14h6M17 10l-4 11M15 18h5"/></symbol>
+  </svg>
 
-    <!-- CONTENEDOR DE NOTIFICACIONES TOAST -->
-    <div id="toastContainer"></div>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand-mark"><svg class="icon"><use href="#i-spark"/></svg></div>
+        <div><strong>ARX</strong><small>BOLLOLANDIA SOCIAL</small></div>
+      </div>
+      <div class="nav-label">Tu refugio</div>
+      <nav class="nav" id="desktopNav">
+        <button class="active" data-page="home"><svg class="icon"><use href="#i-home"/></svg><span>Inicio</span></button>
+        <button data-page="map"><svg class="icon"><use href="#i-map"/></svg><span>Mapa social</span><b class="nav-badge">3</b></button>
+        <button data-page="chat"><svg class="icon"><use href="#i-chat"/></svg><span>Mensajes</span><b class="nav-badge">2</b></button>
+        <button data-page="collection"><svg class="icon"><use href="#i-box"/></svg><span>Vitrina</span></button>
+        <button data-page="profile"><svg class="icon"><use href="#i-user"/></svg><span>Mi perfil</span></button>
+      </nav>
+      <div class="side-user">
+        <div class="avatar" id="sideAvatar">AO<span class="online"></span></div>
+        <div><div class="name">Aoi · Nivel 18</div><div class="role">Guardiana ARX</div></div>
+        <button class="side-gear" id="themeBtn" title="Cambiar tema"><svg class="icon"><use href="#i-settings"/></svg></button>
+      </div>
+    </aside>
 
-    <!-- MODAL DE INICIO DE SESIÓN -->
-    <div id="loginOverlay" style="display: none;">
-        <div class="login-card">
-            <h2>🔑 Iniciar Sesión</h2>
-            <p style="font-size:0.8rem; color:#8c827b; margin-bottom: 14px;">Ingresa tus credenciales del carnet para continuar.</p>
-            <input type="text" id="loginName" placeholder="Nombre / Apodo del carnet">
-            <input type="password" id="loginCode" placeholder="Código">
-            <button class="btn-flechazo" style="margin-top: 10px;" onclick="procesarInicioSesion()">Entrar a Bollolandia ✨</button>
+    <main class="main">
+      <header class="topbar">
+        <div><h1 id="pageTitle">Tu refugio</h1><p id="pageSub">Un lugar seguro para coincidir, explorar y dejar huella.</p></div>
+        <div class="top-actions">
+          <label class="search"><svg class="icon"><use href="#i-search"/></svg><input id="globalSearch" placeholder="Buscar en ARX" /></label>
+          <button class="pill-btn wallet"><svg class="icon"><use href="#i-heart"/></svg><span id="walletCount">248</span></button>
+          <button class="round-btn" id="notifyBtn" title="Notificaciones"><svg class="icon"><use href="#i-spark"/></svg></button>
         </div>
-    </div>
+      </header>
 
-    <!-- ENGRANAJE DE AJUSTES FIJO EN LA ESQUINA INFERIOR IZQUIERDA -->
-    <div class="global-settings-container">
-        <button class="settings-btn" onclick="toggleSettingsMenu()" title="Ajustes">
-            ⚙️
-        </button>
-        <!-- Modal/Desplegable de Ajustes -->
-        <div id="settings-menu" class="settings-dropdown" style="display: none;">
-            <button onclick="toggleDarkMode()">🌙 Alternar Modo Oscuro</button>
-            <button onclick="changeSession()">Cerrar sesión</button>
-            <button class="danger-btn" onclick="deleteProfile()">Borrar perfil</button>
-        </div>
-    </div>
-
-    <div id="cartaFlotanteBox" onclick="abrirBuzonDesdeFlotante()">
-        <div style="display:flex; align-items:center; gap:10px;">
-            <span style="font-size:1.5rem;">💌</span>
-            <div>
-                <strong style="color:var(--text-main); font-size:0.8rem;" id="flotanteRemitente">¡Nueva carta!</strong>
-                <p style="margin:2px 0 0 0; font-size:0.7rem; color:#8c827b;" id="flotanteTexto">Mensaje secreto recibido.</p>
+      <section class="page active" id="page-home">
+        <div class="panel hero">
+          <div class="hero-copy">
+            <div class="eyebrow"><i class="pulse"></i> Señal estable · Madrid</div>
+            <h2>Tu historia no cabe en una ficha, <span>se vive.</span></h2>
+            <p>Descubre personas, lugares y pequeños secretos que aparecen cerca de ti. En ARX, cada conexión deja una pequeña huella.</p>
+            <div class="hero-actions">
+              <button class="btn-primary" data-go="map"><svg class="icon"><use href="#i-map"/></svg> Explorar el mapa</button>
+              <button class="btn-secondary" data-go="profile"><svg class="icon"><use href="#i-user"/></svg> Ver mi perfil</button>
             </div>
-        </div>
-    </div>
-
-    <!-- BANNER FLOTANTE DEL DROP SORPRESA -->
-    <div id="dropBannerFlotante" onclick="reclamarDropSorpresa()">
-        <div style="display:flex; align-items:center; gap:10px;">
-            <span style="font-size:1.8rem;" id="dropIconoFlotante">📦✨</span>
-            <div>
-                <strong style="font-size:0.85rem; display:block;" id="dropTituloFlotante">¡Nuevo Drop Disponible!</strong>
-                <span style="font-size:0.72rem; text-decoration:underline;">¡Haz clic para cazarlo ya!</span>
-            </div>
-        </div>
-    </div>
-
-    <div id="matchOverlay" style="display:none; position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.6); backdrop-filter:blur(4px); z-index:10001; flex-direction:column; justify-content:center; align-items:center; padding:16px;" onclick="cerrarMatchAnimacion()">
-        <div style="background:var(--card-bg); padding:24px; border-radius:20px; text-align:center; max-width:320px; border:2px solid var(--accent-coral); box-shadow:0 10px 25px rgba(0,0,0,0.2);" onclick="event.stopPropagation()">
-            <div style="font-size: 50px;">💖🏹</div>
-            <div style="font-size: 1.1rem; color: var(--accent-coral); font-weight: bold; margin-top: 10px;">¡FLECHAZO MUTUO! 🌸</div>
-            <p id="matchTextoAnimado" style="font-size:0.85rem; color:var(--text-main); font-weight:600; margin-top: 8px;"></p>
-            <button class="btn-flechazo" style="margin-top:16px;" onclick="cerrarMatchAnimacion()">Cerrar</button>
-        </div>
-    </div>
-
-    <div id="cardModal" class="card-modal" onclick="cerrarModalCarnet()">
-        <div id="mclovin-card" class="mclovin-card" onclick="event.stopPropagation()">
-            <div class="card-header">
-                <div class="header-main" id="cardHeaderTitle">ESPAÑA • BOLLOLANDIA 🌈</div>
-                <div class="header-sub">DRIVER LICENSE / CARNET SÁFICO</div>
-            </div>
-            <div class="card-body">
-                <div class="card-left-column">
-                    <div class="card-note-box" id="cardNoteOut" onclick="modificarNotaInteractiva()" title="Haz clic para modificar la nota">Nota...</div>
-                    <div class="card-photo-box" id="cardPhotoBox" onclick="dispararCambioFotoDirecto()" title="Pincha aquí para cambiar tu foto">
-                        <span style="font-size: 2rem;">👤</span>
-                        <div id="marcoLayer" class="marco-neon-humo marco-multicolor"></div>
-                    </div>
-                </div>
-                <div class="card-info">
-                    <div class="info-row">
-                        <span class="label-red">LICENCE NO.</span><br>
-                        <span class="val-bold" id="cardIdOut" style="color: #b94a48;">BL-0000001</span>
-                    </div>
-                    <div class="info-row" style="display: flex; gap: 8px;">
-                        <div>
-                            <span class="label-red">EXP:</span> <span id="cardExpOut">PERM</span>
-                        </div>
-                        <div>
-                            <span class="label-red">DOB:</span> <span id="cardDateOut">00/00/00</span>
-                        </div>
-                    </div>
-                    <div class="info-row" style="margin-top: 2px;">
-                        <span class="label-red">NOMBRE / APODO:</span><br>
-                        <span class="val-bold" id="cardNameOut">---</span>
-                    </div>
-                    <div class="info-row">
-                        <span class="label-red">MISIÓN PRINCIPAL:</span><br>
-                        <span class="val-mision" id="cardMisionOut">---</span>
-                    </div>
-                    <div class="info-row" style="margin-top: 4px;">
-                        <span class="label-red">FIRMA:</span><br>
-                        <span class="signature" id="cardSignatureOut">---</span>
-                    </div>
-                </div>
-            </div>
-            <div class="founder-seal">✨ FUNDADORA VIP ✨</div>
-            <div class="silver-seal">🌟 MIEMBRO VIP 🌟</div>
-            <div class="member-seal" id="memberSealNormal" style="display:none; position:absolute; bottom:8px; right:8px; background:#4a403b; color:#fff; padding:3px 6px; border-radius:6px; font-size:0.55rem; font-weight:900;">🌈 MIEMBRO SÁFICO</div>
+          </div>
+          <div class="hero-orbit">
+            <div class="avatar large">AO<span class="online"></span></div>
+            <div class="orbit-chip one">DISPONIBLE</div><div class="orbit-chip two">NIVEL 18</div><div class="orbit-chip three">92% MATCH</div>
+          </div>
         </div>
 
-        <div class="modal-buttons" onclick="event.stopPropagation()">
-            <button class="btn-action btn-download" onclick="descargarCarnet()">📸 Descargar Carnet</button>
-            <button class="btn-action btn-close" onclick="cerrarModalCarnet()">Cerrar</button>
-        </div>
-    </div>
-
-    <input type="file" id="inputFotoDirectoCarnet" accept="image/*" style="display: none;" onchange="procesarFotoDirectoCarnet(this)">
-
-    <!-- CONTENEDOR GENERAL WRAPPER PARA LAYOUT LIMPIO -->
-    <div class="main-container">
-        
-        <div class="sidebar-left">
-            <div class="sidebar-avatar-container">
-                <div class="sidebar-avatar" id="btnMochilaHeader" onclick="abrirModalCarnet()" title="Ver mi Carnet">
-                    👤<div id="miniMarcoLayer" class="marco-neon-humo marco-multicolor"></div>
-                </div>
-                <div class="sidebar-note-bubble" id="sidebarNoteBubble" onclick="modificarNotaInteractiva()" style="display: none;" title="Haz clic para modificar la nota"></div>
-            </div>
-
-            <button class="nav-icon-btn active" onclick="cambiarPestana('tienda', this)" title="Tienda">🛍️</button>
-            <button class="nav-icon-btn" onclick="cambiarPestana('drops', this)" title="Drops y Vitrina">📦</button>
-            <button class="nav-icon-btn" onclick="cambiarPestana('agenda', this)" title="Agenda">📅</button>
-            <button class="nav-icon-btn" onclick="cambiarPestana('buzon', this)" title="Buzón">
-                💌
-                <div class="notif-dot" id="dotBuzon"></div>
-            </button>
-            <button class="nav-icon-btn" onclick="cambiarPestana('extras', this)" title="Perfil y Marcos">🎒</button>
+        <div class="section-head"><h2>Tu señal hoy</h2><a data-go="profile">Ver reputación →</a></div>
+        <div class="stat-row">
+          <div class="stat"><div class="stat-icon"><svg class="icon"><use href="#i-heart"/></svg></div><strong id="statHearts">248</strong><span>Corazones</span><b class="trend">+24 hoy</b></div>
+          <div class="stat"><div class="stat-icon"><svg class="icon"><use href="#i-box"/></svg></div><strong id="statDrops">12</strong><span>Drops encontrados</span><b class="trend">+2 esta semana</b></div>
+          <div class="stat"><div class="stat-icon"><svg class="icon"><use href="#i-chat"/></svg></div><strong>86%</strong><span>Respuestas</span><b class="trend">+8%</b></div>
+          <div class="stat"><div class="stat-icon"><svg class="icon"><use href="#i-spark"/></svg></div><strong>18</strong><span>Nivel de reputación</span><b class="trend">+320 XP</b></div>
         </div>
 
-        <div class="main-wrapper">
-            <div class="top-header">
-                <div class="top-search">
-                    <span>🔍</span>
-                    <input type="text" id="inputBusquedaGlobal" placeholder="Buscar usuarias, chismes..." oninput="ejecutarBusquedaGlobal(this.value)">
-                </div>
-                <div class="header-pill-badge">
-                    💖 <span id="heartCount">0</span>
-                </div>
+        <div class="grid two" style="margin-top:16px">
+          <div class="panel pad">
+            <div class="eyebrow"><i class="pulse"></i> Lectura de compatibilidad</div>
+            <h2>Tu conexión destacada</h2>
+            <div class="compat" style="margin-top:18px">
+              <div class="score"><b>92%</b></div>
+              <div class="compat-copy"><strong>Con Nora · “Luz de neón”</strong><p>Coincidís porque ambas buscáis algo estable, os gusta viajar sin planear demasiado y compartís la misma obsesión musical.</p><div class="tag-row"><span class="tag hot">Objetivos</span><span class="tag">Música</span><span class="tag">Humor</span></div></div>
             </div>
-
-            <!-- CONTENEDOR MODULAR PRINCIPAL (PERMITE REORDENAR WIDGETS) -->
-            <div id="dashboardWidgetsContainer">
-
-                <!-- WIDGET 1: HERO CARD -->
-                <div class="draggable-widget" data-id="hero">
-                    <div class="hero-card">
-                        <div class="user-header">
-                            <h2>¡Hola de nuevo, <span id="dashboardUserName">AOI</span>! ✨</h2>
-                            
-                            <div class="bio-container">
-                                <p id="bio-text" onclick="enableBioEdit()">Toca aquí para añadir tu bio...</p>
-                                
-                                <div id="bio-edit-form" style="display: none;">
-                                    <textarea 
-                                        id="bio-input" 
-                                        maxlength="300" 
-                                        rows="3" 
-                                        placeholder="Escribe tu bio (máx. 300 caracteres)..."
-                                    ></textarea>
-                                    <div class="bio-footer">
-                                        <span id="char-count">0/300</span>
-                                        <button onclick="saveBio()">Guardar</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="hero-profile-avatar" id="heroProfileAvatarBox">
-                            <span style="font-size: 2rem;">👤</span>
-                            <div id="heroMarcoLayer" class="marco-neon-humo marco-multicolor"></div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- WIDGET 2: STATS GRID -->
-                <div class="draggable-widget" data-id="stats">
-                    <div class="stats-grid">
-                        <div class="stat-card">
-                            <div class="icon-box">💖</div>
-                            <div class="val" id="statHearts">0</div>
-                            <div class="label">Puntos 💖</div>
-                        </div>
-                        <div class="stat-card">
-                            <div class="icon-box">📦</div>
-                            <div class="val" id="statDropsCount">0</div>
-                            <div class="label">Drops</div>
-                        </div>
-                        <div class="stat-card">
-                            <div class="icon-box">🎉</div>
-                            <div class="val" id="statQuedadas">0</div>
-                            <div class="label">Planes</div>
-                        </div>
-                        <div class="stat-card">
-                            <div class="icon-box">🔥</div>
-                            <div class="val" id="statEstadoBadge">FUNDADORA</div>
-                            <div class="label">Estado</div>
-                        </div>
-                    </div>
-                </div>
-
-            </div> <!-- FIN DASHBOARD WIDGETS CONTAINER -->
-
-            <div class="container-contenido">
-
-                <div id="tienda" class="tab-content">
-                    <div class="card" style="background: linear-gradient(135deg, #fef9e7, #fcf4db); border: 1.5px solid #f3e5ab;">
-                        <h3 style="color: #8c6d1f; display:flex; align-items:center; gap:6px;">📢 Boutique de Marcos</h3>
-                        <p style="font-size:0.78rem; color:#6b5314; line-height:1.4; margin:0;">
-                            <strong>¡Colores individuales y fijos!</strong> Cada marco mantiene su color correspondiente. Compra tus favoritos con tus puntos 💖 y equípatelos cuando quieras. ✨
-                        </p>
-                    </div>
-
-                    <div class="ruleta-container">
-                        <h3 style="margin-top:0; color:var(--accent-coral); font-size:0.95rem;">🎡 La Ruleta de Premios Sáfica</h3>
-                        <p style="font-size:0.75rem; color:#8c827b; margin-bottom: 8px;">Gira para conseguir cualquiera de estos tesoros:</p>
-                        
-                        <div class="ruleta-premios-grid">
-                            <div class="premio-card-visual">✨ <span>+30 Puntos Extra</span></div>
-                            <div class="premio-card-visual">💖 <span>+50 Premios Gordos</span></div>
-                        </div>
-
-                        <div class="roulette-wrapper">
-                            <div class="roulette-ticker" id="rouletteTicker"></div>
-                            <div class="ruleta-wheel" id="ruletaWheel">🎯</div>
-                        </div>
-
-                        <button class="btn-principal" style="background: linear-gradient(135deg, var(--accent-coral), var(--accent-peach)); font-size:0.8rem; margin-top:8px;" onclick="girarRuleta()">🎯 Girar Ruleta (20 💖)</button>
-                    </div>
-
-                    <div class="card">
-                        <h3>🛍️ Colección de Marcos Neón</h3>
-                        <p style="font-size:0.75rem; color:#8c827b; margin-top:-4px;">Precios en 💖 indicados abajo de cada marco:</p>
-                        <div class="grid-shop" id="tiendaMarcosGrid"></div>
-                    </div>
-                </div>
-
-                <!-- SECCIÓN CON DROPS Y VITRINA Y EMPTY STATE -->
-                <div id="drops" class="tab-content" style="display:none;">
-                    <div class="card" style="background: linear-gradient(135deg, #fff3ee, #faebd7); border: 1.5px solid rgba(255, 179, 150, 0.4);">
-                        <h3 style="color: var(--accent-coral); display:flex; align-items:center; gap:6px;">📦 Vitrina 3D Interactiva</h3>
-                        <p style="font-size:0.78rem; color: var(--text-main); line-height:1.4; margin:0;">
-                            Gira 360º la vitrina interactiva de cristal para examinar los objetos exclusivos y coleccionables cazados en Bollolandia. ✨
-                        </p>
-                        <button class="btn-flechazo" style="margin-top: 12px; font-size:0.8rem;" onclick="simularDisparoDropSorpresa()">✨ Forzar / Simular Drop Sorpresa</button>
-                    </div>
-
-                    <!-- Contenedor HTML donde flotará la vitrina 3D -->
-                    <div class="card" style="padding: 10px; overflow: hidden;">
-                        <div id="vitrina-container" style="width: 100%; height: 350px; position: relative; touch-action: none; border-radius: 12px; background: radial-gradient(circle, var(--bg-main) 0%, var(--sidebar-bg) 100%);"></div>
-                    </div>
-
-                    <div class="card">
-                        <h3>🏆 Tus Objetos Cazados</h3>
-                        <div class="drops-grid" id="vitrinaDropsGrid">
-                            <!-- Se llena dinámicamente o muestra Empty State -->
-                        </div>
-                    </div>
-                </div>
-
-                <div id="agenda" class="tab-content" style="display:none;">
-                    <div class="card">
-                        <h3>📅 Calendario</h3>
-                        <p style="font-size:0.75rem; color:#8c827b; margin-top:-4px;">💡 <em>Pincha arriba en el mes y año para saltar a cualquier fecha. Pincha en cualquier día para anotar tu cumpleaños y ganar +15 💖 automático.</em></p>
-                        
-                        <div id="calendarContainer">
-                            <div id="calendar"></div>
-                        </div>
-                    </div>
-
-                    <div class="card">
-                        <h3>📍 Quedadas</h3>
-                        
-                        <div class="accordion-header" onclick="toggleAccordion('accQuedada')"><span>📍 Proponer Plan / Quedada (+25💖)</span> <span>▼</span></div>
-                        <div id="accQuedada" class="accordion-body">
-                            <input type="text" id="tituloQuedada" placeholder="Plan (ej: Café y chismes...)">
-                            <input type="text" id="lugarQuedada" placeholder="Lugar o Ciudad (ej: Madrid, Barcelona...)">
-                            <input type="datetime-local" id="fechaQuedada">
-                            <button class="btn-principal" onclick="agregarQuedada()">Publicar Plan</button>
-                        </div>
-
-                        <h4 style="font-size:0.8rem; color:var(--accent-green); margin:12px 0 4px 0;">🎉 Lista de Planes:</h4>
-                        <div id="listaQuedadas" style="font-size:0.8rem;">Aún no hay planes.</div>
-
-                        <h4 style="font-size:0.8rem; color:var(--accent-green); margin:14px 0 4px 0;">🗺️ Mapa Interactivo:</h4>
-                        <div id="mapContainer"></div>
-                    </div>
-                </div>
-
-                <!-- SECCIÓN BUZÓN CON EMPTY STATE -->
-                <div id="buzon" class="tab-content" style="display:none;">
-                    <div class="card">
-                        <h3>💌 Buzón y Conexiones</h3>
-                        
-                        <div class="accordion-header" onclick="toggleAccordion('accEnviarCarta')"><span>📨 Enviar Carta Secreta</span> <span>▼</span></div>
-                        <div id="accEnviarCarta" class="accordion-body">
-                            <select id="selectDestinataria">
-                                <option value="" disabled selected>Selecciona destinataria...</option>
-                            </select>
-                            <textarea id="textoCarta" placeholder="Escribe tu mensaje..." rows="3"></textarea>
-                            <button class="btn-flechazo" onclick="enviarCartaBuzon()">Enviar Carta</button>
-                        </div>
-
-                        <div class="accordion-header" onclick="toggleAccordion('accFlechazo')" style="margin-top:8px;"><span>💘 Mandar Flechazo (Exclusivo Chicas)</span> <span>▼</span></div>
-                        <div id="accFlechazo" class="accordion-body">
-                            <p style="font-size:0.7rem; color:#8c827b; margin-top:0;">El flechazo mutuo se activa únicamente si ambas chicas se gustan.</p>
-                            <input type="text" id="destinoFlechazo" placeholder="¿A qué chica le mandas el flechazo?">
-                            <button class="btn-flechazo" onclick="enviarFlechazo()">Mandar Flechazo 💘</button>
-                        </div>
-                    </div>
-
-                    <div class="card">
-                        <h3>📥 Tu Buzón & Matches (Chat Activo)</h3>
-                        <div id="miBuzonContenedor" style="font-size:0.8rem; margin-bottom: 10px;"></div>
-                        <div id="misMatches"></div>
-                    </div>
-                </div>
-
-                <div id="extras" class="tab-content" style="display:none;">
-                    <div class="card" id="formRegistroCarnet">
-                        <h3>🎒 Crear Carnet</h3>
-                        <p style="font-size:0.75rem; color:#8c827b; margin-top:-4px;">Regístrate con tu apodo y código exclusivo.</p>
-                        
-                        <input type="text" id="inName" placeholder="Tu Apodo / Nombre" maxlength="15">
-                        <input type="text" id="inNote" placeholder="💬 Escribe tu nota..." maxlength="30">
-                        <textarea id="inBio" placeholder="Escribe tu biografía corta..." rows="2" maxlength="80"></textarea>
-                        
-                        <select id="inMision">
-                            <option value="" disabled selected>Selecciona tu misión...</option>
-                            <option value="Traer el chisme fresco">✨ Traer el chisme fresco</option>
-                            <option value="Organizar las previas">🍻 Organizar las previas</option>
-                            <option value="Dar los mejores abrazos">🫂 Dar los mejores abrazos</option>
-                            <option value="Servir drama libre">Aesthetic & Drama Libre</option>
-                            <option value="Analizar las red flags">🚩 Analizadora de Red Flags</option>
-                            <option value="Ser la DJ oficial">🎧 DJ oficial del grupo</option>
-                        </select>
-
-                        <label for="inPhoto" class="file-input-label" id="photoLabel">📷 Subir Foto de Perfil</label>
-                        <input type="file" id="inPhoto" accept="image/*" style="display: none;" onchange="procesarFotoCarnet()">
-
-                        <input type="password" id="inCodigo" placeholder="Código">
-
-                        <button class="btn-principal" onclick="crearCarnet()">✨ Validar y Guardar</button>
-                    </div>
-
-                    <div class="card" id="seccionMiCarnet" style="display: none;">
-                        <h3 style="margin-bottom: 8px;">🖼️ Tus Marcos Desbloqueados</h3>
-                        <p style="font-size: 0.75rem; color: #8c827b; margin-top: -4px;">Selecciona el marco que deseas equipar:</p>
-
-                        <div id="listaMisMarcosEquipar" style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 14px;"></div>
-
-                        <div style="margin-top: 16px; border-top: 1px solid var(--border-soft); padding-top: 12px;">
-                            <h4 style="font-size: 0.8rem; color: var(--text-main); margin-bottom: 6px;">⚙️ Gestión de Perfiles</h4>
-                            <select id="selectPerfilActivo" style="margin-bottom: 8px;" onchange="cambiarPerfilActivo(this.value)"></select>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-
-            <div class="footer-copyright">
-                <span class="footer-quote">Disfruta de tu espacio seguro y conecta con tus amigas hoy.</span>
-                <span>&copy; 2026 Bollolandia. Todos los derechos reservados. 🌸</span>
-            </div>
+            <button class="btn-secondary" style="margin-top:18px;width:100%" data-go="chat">Abrir conversación</button>
+          </div>
+          <div class="panel pad">
+            <div class="section-head" style="margin:0 0 7px"><h3>Misiones de hoy</h3><span class="micro">2/3 completadas</span></div>
+            <div class="mission done"><div class="mission-mark">✓</div><div class="mission-text"><strong>Descubre una nueva señal</strong><span>Has visitado un perfil cercano</span></div><div class="reward">+20 XP</div></div>
+            <div class="mission done"><div class="mission-mark">✓</div><div class="mission-text"><strong>Envía una carta</strong><span>Una palabra puede abrir una puerta</span></div><div class="reward">+15 ♥</div></div>
+            <div class="mission"><div class="mission-mark"><svg class="icon"><use href="#i-map"/></svg></div><div class="mission-text"><strong>Descubre un lugar</strong><div class="progress"><i style="width:35%"></i></div></div><div class="reward">+30 XP</div></div>
+          </div>
         </div>
+      </section>
 
-    </div>
-
-    <div id="modalSelectorFecha" class="card-modal" onclick="cerrarModalFechaCustom()">
-        <div style="background:var(--card-bg); padding:20px; border-radius:18px; width:280px; text-align:center; border:2px solid var(--accent-green); box-shadow:0 10px 25px rgba(0,0,0,0.2);" onclick="event.stopPropagation()">
-            <h3 style="color:var(--text-main); font-size:0.95rem; margin-bottom:8px;">📅 Seleccionar Mes y Año</h3>
-            <p style="font-size:0.75rem; color:#8c827b; margin-bottom:12px;">Elige a qué fecha deseas saltar en el calendario:</p>
-            <div style="display:flex; gap:8px; margin-bottom:12px;">
-                <select id="selectMesModal" style="flex:1; margin:0;">
-                    <option value="0">Enero</option>
-                    <option value="1">Febrero</option>
-                    <option value="2">Marzo</option>
-                    <option value="3">Abril</option>
-                    <option value="4">Mayo</option>
-                    <option value="5">Junio</option>
-                    <option value="6">Julio</option>
-                    <option value="7">Agosto</option>
-                    <option value="8">Septiembre</option>
-                    <option value="9">Octubre</option>
-                    <option value="10">Noviembre</option>
-                    <option value="11">Diciembre</option>
-                </select>
-                <select id="selectAnioModal" style="width:90px; margin:0;"></select>
+      <section class="page" id="page-map">
+        <div class="grid two">
+          <div class="panel map-panel">
+            <div class="map-header"><div><div class="eyebrow"><i class="pulse"></i> Explorar cerca</div><h2>El mapa social</h2><p class="muted" style="margin:0;font-size:11px">Una capa viva de lugares, personas y drops. Tu ubicación exacta nunca se comparte.</p></div><button class="round-btn" id="locateBtn"><svg class="icon"><use href="#i-spark"/></svg></button></div>
+            <div class="map-filters"><button class="filter selected" data-filter="all">Todo · 12</button><button class="filter" data-filter="places">Lugares</button><button class="filter" data-filter="people">Personas</button><button class="filter" data-filter="drops">Drops secretos</button></div>
+            <div class="map-canvas" id="mapCanvas">
+              <div class="map-point current" style="left:52%;top:52%" data-type="current"><button title="Tu posición"></button></div>
+              <div class="map-point places" style="left:25%;top:29%" data-type="places"><button class="open-place" data-name="Nébula Café">N</button><div class="point-label">Nébula Café</div></div>
+              <div class="map-point people" style="left:71%;top:28%" data-type="people"><button class="open-person" data-name="Nora">NO</button><div class="point-label">Nora está cerca</div></div>
+              <div class="map-point drops" style="left:78%;top:70%" data-type="drops"><button class="open-drop" data-name="Drop · Jardines">✦</button><div class="point-label">Drop a 80 m</div></div>
+              <div class="map-point places" style="left:35%;top:76%" data-type="places"><button class="open-place" data-name="La Trinchera">LT</button><div class="point-label">La Trinchera</div></div>
+              <div class="map-point people" style="left:17%;top:61%" data-type="people"><button class="open-person" data-name="Iris">IR</button><div class="point-label">Iris · visible</div></div>
+              <div class="map-legend"><span class="legend-dot"></span> Lugares y drops <span class="legend-dot cyan"></span> Personas visibles</div>
             </div>
-            <button class="btn-principal" onclick="irAFechaSeleccionada()">✨ Ir a la Fecha</button>
-            <button class="btn-action btn-close" style="margin-top:8px; width:100%;" onclick="cerrarModalFechaCustom()">Cancelar</button>
+            <div class="place-list"><div class="place"><div class="place-symbol">N</div><div><strong>Nébula Café</strong><span>12 personas · 4 señales nuevas</span></div><div class="distance">240 m</div></div><div class="place"><div class="place-symbol" style="color:var(--gold)">✦</div><div><strong>Drop secreto · Jardines</strong><span>Una pieza rara te espera</span></div><div class="distance">80 m</div></div></div>
+          </div>
+          <div class="panel pad">
+            <div class="eyebrow"><i class="pulse"></i> Señales activas</div><h2>Algo se está moviendo</h2>
+            <div class="history" style="margin-top:17px"><div class="history-item"><div class="history-icon" style="color:var(--cyan)">N</div><div><strong>Nébula Café</strong> acaba de abrir una quedada <span class="micro">hace 4 min · 7 respuestas</span></div></div><div class="history-item"><div class="history-icon" style="color:var(--gold)">✦</div><div><strong>Drop secreto</strong> detectado en los Jardines <span class="micro">80 m · rareza desconocida</span></div></div><div class="history-item"><div class="history-icon" style="color:var(--rose)">NO</div><div><strong>Nora</strong> está buscando una compañera de paseo <span class="micro">visible durante 22 min</span></div></div></div>
+            <button class="btn-primary" id="claimNearbyDrop" style="width:100%;margin-top:22px"><svg class="icon"><use href="#i-gift"/></svg> Reclamar drop cercano</button>
+            <p class="micro" style="text-align:center;margin-bottom:0">La función de ubicación es opcional y se puede pausar cuando quieras.</p>
+          </div>
         </div>
-    </div>
-
-    <!-- SCRIPT DE THREE.JS PARA LA VITRINA 3D -->
-    <script type="module">
-        import * as THREE from 'three';
-        import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
-
-        const container = document.getElementById('vitrina-container');
-        if (container) {
-            const scene = new THREE.Scene();
-            
-            const camera = new THREE.PerspectiveCamera(50, container.clientWidth / container.clientHeight, 0.1, 1000);
-            camera.position.set(0, 0, 5.5);
-
-            const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-            renderer.setSize(container.clientWidth, container.clientHeight);
-            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-            container.appendChild(renderer.domElement);
-
-            const controls = new OrbitControls(camera, renderer.domElement);
-            controls.enableZoom = false;
-            controls.enablePan = false;
-            controls.rotateSpeed = 0.8;
-            controls.dampingFactor = 0.05;
-            controls.enableDamping = true;
-
-            const ambientLight = new THREE.AmbientLight(0xffffff, 1.2);
-            scene.add(ambientLight);
-
-            const topLight = new THREE.PointLight(0xffffff, 2, 10);
-            topLight.position.set(0, 3, 0);
-            scene.add(topLight);
-
-            const vitrinaGroup = new THREE.Group();
-            scene.add(vitrinaGroup);
-
-            const glassMaterial = new THREE.MeshPhysicalMaterial({
-                color: 0xffffff,
-                metalness: 0.1,
-                roughness: 0.1,
-                transmission: 0.9,
-                transparent: true,
-                opacity: 0.25,
-                side: THREE.DoubleSide
-            });
-
-            const cajaGeo = new THREE.BoxGeometry(2.5, 2.5, 2.5);
-            const cajaMesh = new THREE.Mesh(cajaGeo, glassMaterial);
-            vitrinaGroup.add(cajaMesh);
-
-            const edgesGeo = new THREE.EdgesGeometry(cajaGeo);
-            const edgesMat = new THREE.LineBasicMaterial({ color: 0xe0f7fa, linewidth: 2 });
-            const wireframeBox = new THREE.LineSegments(edgesGeo, edgesMat);
-            vitrinaGroup.add(wireframeBox);
-
-            const baseGeo = new THREE.BoxGeometry(2.5, 0.4, 2.5);
-            const baseMat = new THREE.MeshStandardMaterial({ color: 0xcccccc, roughness: 0.4 });
-            const baseMesh = new THREE.Mesh(baseGeo, baseMat);
-            baseMesh.position.y = -1.25;
-            vitrinaGroup.add(baseMesh);
-
-            const dropGroup = new THREE.Group();
-            scene.add(dropGroup);
-
-            const prendaGeo = new THREE.CylinderGeometry(0.4, 0.6, 1.2, 16);
-            const prendaMat = new THREE.MeshStandardMaterial({ color: 0x333333, roughness: 0.5 });
-            const prendaEjemplo = new THREE.Mesh(prendaGeo, prendaMat);
-            prendaEjemplo.position.y = -0.5;
-            dropGroup.add(prendaEjemplo);
-
-            let clock = new THREE.Clock();
-
-            function animate() {
-                requestAnimationFrame(animate);
-                const elapsedTime = clock.getElapsedTime();
-                const floatOffset = Math.sin(elapsedTime * 2) * 0.05;
-                
-                vitrinaGroup.position.y = floatOffset;
-                dropGroup.position.y = floatOffset;
-
-                controls.update();
-                renderer.render(scene, camera);
-            }
-
-            animate();
-
-            window.addEventListener('resize', () => {
-                if(container && renderer && camera) {
-                    camera.aspect = container.clientWidth / container.clientHeight;
-                    camera.updateProjectionMatrix();
-                    renderer.setSize(container.clientWidth, container.clientHeight);
-                }
-            });
-        }
-    </script>
-
-    <script>
-        const CODIGO_VIP = "BL-VIP-8317";
-        const CODIGO_FUNDADORA = "BL-FUNDADORA-GOLD";
-
-        const MARCOS_CATALOGO = [
-            { id: 'marco-multicolor', nombre: '🌈 Multicolour', precio: 0 },
-            { id: 'marco-rosa', nombre: '🌸 Rosa Neón', precio: 50 },
-            { id: 'marco-azul', nombre: '💧 Azul Eléctrico', precio: 50 },
-            { id: 'marco-morado', nombre: '🔮 Morado Místico', precio: 75 },
-            { id: 'marco-dorado', nombre: '✨ Oro Sáfico', precio: 100 },
-            { id: 'marco-verde', nombre: '🌿 Verde Esmeralda', precio: 60 },
-            { id: 'marco-fundadora', nombre: '🔥 Fuego Rojo (Fundadora)', precio: 0, exclusivoFundadora: true }
-        ];
-
-        const CATALOGO_DROPS = [
-            { id: 'drop_cafe', nombre: '☕ Café de Chismes', emoji: '☕', rareza: 'Común', desc: 'El combustible oficial para alargar las charlas.' },
-            { id: 'drop_bandera', nombre: '🏳️‍🌈 Bandera Sáfica Edición Limitada', emoji: '🏳️‍🌈', rareza: 'Épico', desc: 'Orgullo puro en formato digital.' },
-            { id: 'drop_gato', nombre: '🐈 Michi Bibliotecario', emoji: '🐈', rareza: 'Raro', desc: 'Vigilante silencioso de lecturas y salseos.' },
-            { id: 'drop_copa', nombre: '🍷 Copa de Vino Rosé', emoji: '🍷', rareza: 'Común', desc: 'Ideal para brindar por los buenos momentos.' },
-            { id: 'drop_corona', nombre: '👑 Tiara de Fundadora', emoji: '👑', rareza: 'Legendario', desc: 'Objeto exclusivo de las pioneras de Bollolandia.' }
-        ];
-
-        let carnetFotoBase64 = "";
-        let perfilActivo = localStorage.getItem("perfil_activo") || "";
-        let calendarInstance = null;
-        let mapInstance = null;
-        let marcadoresMapa = [];
-        let dropActualActivo = null;
-
-        // --- SISTEMA DE NOTIFICACIONES TOAST ---
-        function mostrarToast(mensaje, icono = "✨") {
-            const container = document.getElementById('toastContainer');
-            if(!container) return;
-            const toast = document.createElement('div');
-            toast.className = 'toast-notification';
-            toast.innerHTML = `<span style="font-size:1.2rem;">${icono}</span> <span>${mensaje}</span>`;
-            container.appendChild(toast);
-
-            setTimeout(() => {
-                toast.classList.add('fade-out');
-                setTimeout(() => toast.remove(), 300);
-            }, 3500);
-        }
-
-        // --- MODO OSCURO / CLARO ---
-        function toggleDarkMode() {
-            document.body.classList.toggle('dark-mode');
-            const esOscuro = document.body.classList.contains('dark-mode');
-            localStorage.setItem('bollolandia_dark', esOscuro ? 'true' : 'false');
-            mostrarToast(esOscuro ? "Modo nocturno activado 🌙" : "Modo claro activado ☀️", esOscuro ? "🌙" : "☀️");
-        }
-
-        if(localStorage.getItem('bollolandia_dark') === 'true') {
-            document.body.classList.add('dark-mode');
-        }
-
-        // --- MANEJO DE PWA & SERVICE WORKER ---
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('/sw.js').catch(() => {});
-            });
-        }
-
-        let deferredPrompt;
-        window.addEventListener('beforeinstallprompt', (e) => {
-            e.preventDefault();
-            deferredPrompt = e;
-        });
-
-        // --- INICIO DE SESIÓN INTEGRADO ---
-        function mostrarLoginOverlay() {
-            document.getElementById("loginOverlay").style.display = "flex";
-        }
-
-        function ocultarLoginOverlay() {
-            document.getElementById("loginOverlay").style.display = "none";
-        }
-
-        function procesarInicioSesion() {
-            const nombre = document.getElementById("loginName").value.trim();
-            const codigo = document.getElementById("loginCode").value.trim();
-
-            if (!nombre || !codigo) {
-                return mostrarToast("Por favor, ingresa tu apodo y el código.", "⚠️");
-            }
-
-            if (codigo !== CODIGO_VIP && codigo !== CODIGO_FUNDADORA) {
-                return mostrarToast("Código incorrecto. Verifica el carnet.", "⛔");
-            }
-
-            const db = obtenerBaseDatosGlobal();
-            if (db[nombre]) {
-                perfilActivo = nombre;
-                localStorage.setItem("perfil_activo", perfilActivo);
-                ocultarLoginOverlay();
-                sincronizarInterfazUsuario();
-                lanzarEfectoConfeti();
-                mostrarToast(`¡Bienvenida de nuevo, ${nombre}! ✨`, "🌸");
-            } else {
-                mostrarToast(`Usuario no encontrado. Creando carnet...`, "ℹ️");
-                document.getElementById("inName").value = nombre;
-                document.getElementById("inCodigo").value = codigo;
-                ocultarLoginOverlay();
-                cambiarPestana('extras', document.querySelectorAll('.nav-icon-btn')[4]);
-            }
-        }
-
-        function triggerDropNotification(dropData) {
-            return; 
-        }
-
-        function simularDisparoDropSorpresa() {
-            dropActualActivo = CATALOGO_DROPS[Math.floor(Math.random() * CATALOGO_DROPS.length)];
-            document.getElementById('dropTituloFlotante').innerText = `¡Nuevo Drop: ${dropActualActivo.nombre}!`;
-            document.getElementById('dropIconoFlotante').innerText = dropActualActivo.emoji;
-            document.getElementById('dropBannerFlotante').style.display = 'block';
-            mostrarToast("¡Un nuevo objeto misterioso ha aparecido!", "📦");
-        }
-
-        function ejecutarBusquedaGlobal(query) {
-            const q = query.toLowerCase().trim();
-            if (!q) return;
-
-            const db = obtenerBaseDatosGlobal();
-            const resultadosUsuarios = Object.keys(db).filter(nombre => nombre.toLowerCase().includes(q));
-
-            const quedadas = JSON.parse(localStorage.getItem('quedadas') || '[]');
-            const resultadosQuedadas = quedadas.filter(plan => 
-                plan.titulo.toLowerCase().includes(q) || plan.lugar.toLowerCase().includes(q)
-            );
-
-            console.log("Resultados búsqueda usuarias:", resultadosUsuarios);
-            console.log("Resultados búsqueda planes:", resultadosQuedadas);
-        }
-
-        function cerrarMatchAnimacion() {
-            const overlay = document.getElementById('matchOverlay');
-            if (overlay) overlay.style.display = 'none';
-        }
-
-        const bioInput = document.getElementById('bio-input');
-        const charCount = document.getElementById('char-count');
-
-        if (bioInput) {
-            bioInput.addEventListener('input', () => {
-                charCount.textContent = `${bioInput.value.length}/300`;
-            });
-        }
-
-        function enableBioEdit() {
-            const bioText = document.getElementById('bio-text');
-            const bioEditForm = document.getElementById('bio-edit-form');
-            bioInput.value = bioText.textContent === 'Toca aquí para añadir tu bio...' ? '' : bioText.textContent;
-            charCount.textContent = `${bioInput.value.length}/300`;
-            
-            bioText.style.display = 'none';
-            bioEditForm.style.display = 'block';
-        }
-
-        function saveBio() {
-            const newBio = bioInput.value.trim();
-            document.getElementById('bio-text').textContent = newBio || 'Toca aquí para añadir tu bio...';
-            document.getElementById('bio-edit-form').style.display = 'none';
-            document.getElementById('bio-text').style.display = 'block';
-            
-            actualizarDatosActuales({ bio: newBio });
-            mostrarToast("Biografía actualizada correctamente", "✨");
-        }
-
-        function toggleSettingsMenu() {
-            const menu = document.getElementById('settings-menu');
-            if (menu) {
-                menu.style.display = menu.style.display === 'none' ? 'flex' : 'none';
-            }
-        }
-
-        function changeSession() {
-            toggleSettingsMenu();
-            cerrarSesionSegura();
-        }
-
-        function deleteProfile() {
-            toggleSettingsMenu();
-            borrarPerfilActual();
-        }
-
-        function lanzarEfectoConfeti() {
-            if (typeof confetti === 'function') {
-                confetti({
-                    particleCount: 120,
-                    spread: 80,
-                    origin: { y: 0.6 }
-                });
-            }
-        }
-
-        function obtenerBaseDatosGlobal() {
-            return JSON.parse(localStorage.getItem("bollolandia_usuarios") || "{}");
-        }
-
-        function guardarBaseDatosGlobal(db) {
-            localStorage.setItem("bollolandia_usuarios", JSON.stringify(db));
-        }
-
-        function obtenerDatosActuales() {
-            const db = obtenerBaseDatosGlobal();
-            return db[perfilActivo] || null;
-        }
-
-        function actualizarDatosActuales(nuevosDatos) {
-            const db = obtenerBaseDatosGlobal();
-            if (perfilActivo && db[perfilActivo]) {
-                db[perfilActivo] = { ...db[perfilActivo], ...nuevosDatos };
-                guardarBaseDatosGlobal(db);
-            }
-        }
-
-        function inicializarAppSegura() {
-            const db = obtenerBaseDatosGlobal();
-            if (!perfilActivo || !db[perfilActivo]) {
-                mostrarLoginOverlay();
-            } else {
-                ocultarLoginOverlay();
-            }
-
-            sincronizarInterfazUsuario();
-            cargarQuedadas();
-            inicializarCalendarioYMapa();
-            comprobarCumpleanosHoy();
-            
-            setInterval(comprobarNotificacionesBuzon, 3000);
-        }
-
-        function cambiarPerfilActivo(nombre) {
-            perfilActivo = nombre;
-            localStorage.setItem("perfil_activo", nombre);
-            sincronizarInterfazUsuario();
-        }
-
-        function actualizarSelectorPerfiles() {
-            const db = obtenerBaseDatosGlobal();
-            const select = document.getElementById("selectPerfilActivo");
-            const selectDest = document.getElementById("selectDestinataria");
-            const nombres = Object.keys(db);
-
-            if (nombres.length === 0) {
-                if(select) select.innerHTML = `<option value="">---</option>`;
-                if(selectDest) select.innerHTML = `<option value="">Nadie</option>`;
-                return;
-            }
-
-            if (!perfilActivo || !db[perfilActivo]) {
-                perfilActivo = nombres[0];
-                localStorage.setItem("perfil_activo", perfilActivo);
-            }
-
-            if(select) {
-                select.innerHTML = nombres.map(n => `<option value="${n}" ${n === perfilActivo ? 'selected' : ''}>${n} (${db[n].isGold ? 'FUNDADORA' : (db[n].isSilver ? 'Miembro VIP' : 'Miembro Sáfico')})</option>`).join('');
-            }
-            
-            if(selectDest) {
-                selectDest.innerHTML = `<option value="" disabled selected>Destinataria...</option>` +
-                    nombres.filter(n => n.toLowerCase() !== perfilActivo.toLowerCase())
-                           .map(n => `<option value="${n}">${n}</option>`).join('');
-            }
-        }
-
-        function sincronizarInterfazUsuario() {
-            actualizarSelectorPerfiles();
-            const userData = obtenerDatosActuales();
-
-            if (userData) {
-                document.getElementById("formRegistroCarnet").style.display = "none";
-                document.getElementById("seccionMiCarnet").style.display = "block";
-                
-                if (!userData.marcosDesbloqueados) userData.marcosDesbloqueados = ['marco-multicolor'];
-                if (!userData.misDrops) userData.misDrops = [];
-                if (userData.isGold && !userData.marcosDesbloqueados.includes('marco-fundadora')) {
-                    userData.marcosDesbloqueados.push('marco-fundadora');
-                }
-                actualizarDatosActuales({ marcosDesbloqueados: userData.marcosDesbloqueados, misDrops: userData.misDrops });
-
-                cargarDatosCarnet(userData);
-                renderizarBoutiqueMarcos();
-                renderizarMisMarcosEquipar();
-                renderizarVitrinaDrops();
-                cargarBuzonPersonal();
-                comprobarNotificacionesBuzon();
-            } else {
-                document.getElementById("formRegistroCarnet").style.display = "block";
-                document.getElementById("seccionMiCarnet").style.display = "none";
-                document.getElementById("heartCount").innerText = "0";
-                document.getElementById("statHearts").innerText = "0";
-                document.getElementById("statDropsCount").innerText = "0";
-                document.getElementById("bio-text").textContent = "Toca aquí para añadir tu bio...";
-            }
-            comprobarMatches();
-        }
-
-        function actualizarCorazones(cantidad) {
-            const data = obtenerDatosActuales();
-            if (!data) return;
-
-            if (data.isGold) {
-                document.getElementById("heartCount").innerText = "∞";
-                document.getElementById("statHearts").innerText = "∞";
-                return;
-            }
-
-            data.hearts = (data.hearts || 0) + cantidad;
-            if (data.hearts < 0) data.hearts = 0;
-            actualizarDatosActuales({ hearts: data.hearts });
-            document.getElementById("heartCount").innerText = data.hearts;
-            document.getElementById("statHearts").innerText = data.hearts;
-        }
-
-        function cambiarPestana(idPestana, btn) {
-            document.querySelectorAll('.tab-content').forEach(el => el.style.display = 'none');
-            document.querySelectorAll('.nav-icon-btn').forEach(el => el.classList.remove('active'));
-            document.getElementById(idPestana).style.display = 'block';
-            if(btn) btn.classList.add('active');
-            
-            if(idPestana === 'tienda') renderizarBoutiqueMarcos();
-            if(idPestana === 'drops') renderizarVitrinaDrops();
-            if(idPestana === 'buzon') marcarBuzonComoLeido();
-            if(idPestana === 'agenda') {
-                setTimeout(() => {
-                    if (calendarInstance) calendarInstance.updateSize();
-                    if (mapInstance) {
-                        mapInstance.invalidateSize();
-                        actualizarPuntosMapa();
-                    }
-                }, 200);
-            }
-        }
-
-        function toggleAccordion(id) {
-            const el = document.getElementById(id);
-            if(el) el.classList.toggle('open');
-        }
-
-        function reclamarDropSorpresa() {
-            const data = obtenerDatosActuales();
-            if (!data) {
-                mostrarToast("Crea un perfil primero para poder cazar drops", "🎒");
-                return;
-            }
-            if (!dropActualActivo) return;
-
-            if (!data.misDrops) data.misDrops = [];
-            
-            data.misDrops.push(dropActualActivo.id);
-            actualizarDatosActuales({ misDrops: data.misDrops });
-
-            document.getElementById('dropBannerFlotante').style.display = 'none';
-            lanzarEfectoConfeti();
-            mostrarToast(`¡Has cazado: ${dropActualActivo.nombre} (${dropActualActivo.rareza})!`, "🎉");
-            dropActualActivo = null;
-            renderizarVitrinaDrops();
-        }
-
-        function renderizarVitrinaDrops() {
-            const data = obtenerDatosActuales();
-            const grid = document.getElementById('vitrinaDropsGrid');
-            const statContador = document.getElementById('statDropsCount');
-            if (!grid || !data) return;
-
-            const misIds = data.misDrops || [];
-            statContador.innerText = misIds.length;
-
-            if (misIds.length === 0) {
-                grid.style.display = "block";
-                grid.innerHTML = `
-                    <div class="empty-state">
-                        <div class="empty-state-icon">📦</div>
-                        <h4 class="empty-state-title">Vitrina Vacía</h4>
-                        <p class="empty-state-desc">Aún no has cazado objetos. Mantente atenta a los avisos flotantes de drops sorpresas.</p>
-                    </div>
-                `;
-                return;
-            }
-
-            grid.style.display = "grid";
-            grid.innerHTML = misIds.map((idItem) => {
-                const info = CATALOGO_DROPS.find(d => d.id === idItem) || { nombre: 'Objeto Misterioso', emoji: '📦', rareza: 'Especial', desc: 'Tesoro único de Bollolandia.' };
-                return `
-                    <div class="vitrina-item">
-                        <div style="font-size: 2.2rem; margin-bottom:4px; z-index:2;">${info.emoji}</div>
-                        <h4 style="margin:0 0 2px 0; font-size:0.75rem; color:#fff; font-weight:700; z-index:2;">${info.nombre}</h4>
-                        <span style="display:inline-block; font-size:0.6rem; background:rgba(0, 234, 255, 0.2); color:#00eaff; padding:2px 6px; border-radius:8px; font-weight:bold; z-index:2;">${info.rareza}</span>
-                    </div>
-                `;
-            }).join('');
-        }
-
-        function renderizarBoutiqueMarcos() {
-            const data = obtenerDatosActuales();
-            if (!data) return;
-            const grid = document.getElementById("tiendaMarcosGrid");
-            if (!grid) return;
-
-            const desbloqueados = data.marcosDesbloqueados || ['marco-multicolor'];
-
-            grid.innerHTML = MARCOS_CATALOGO.map(m => {
-                if (m.exclusivoFundadora && !data.isGold) return '';
-                const tiene = desbloqueados.includes(m.id);
-                return `
-                    <div class="shop-item">
-                        <div class="shop-flex">
-                            <div class="preview-box">
-                                ✨
-                                <div class="marco-neon-humo ${m.id}"></div>
-                            </div>
-                            <div class="shop-item-info">
-                                <h4>${m.nombre}</h4>
-                                <div class="price-badge-tag">${m.precio === 0 ? 'Gratis / Exclusivo' : m.precio + ' 💖'}</div>
-                            </div>
-                        </div>
-                        ${tiene 
-                            ? `<button class="btn-buy" style="background:#87a38a; cursor:default;" disabled>✅ En propiedad</button>`
-                            : `<button class="btn-buy" onclick="comprarMarco('${m.id}', ${m.precio})">Comprar por ${m.precio} 💖</button>`
-                        }
-                    </div>
-                `;
-            }).join('');
-        }
-
-        function renderizarMisMarcosEquipar() {
-            const data = obtenerDatosActuales();
-            if (!data) return;
-            const contenedor = document.getElementById("listaMisMarcosEquipar");
-            if (!contenedor) return;
-
-            const desbloqueados = data.marcosDesbloqueados || ['marco-multicolor'];
-            const actual = data.marcoColor || 'marco-multicolor';
-
-            contenedor.innerHTML = desbloqueados.map(idMarco => {
-                const info = MARCOS_CATALOGO.find(m => m.id === idMarco) || { nombre: idMarco };
-                const esActual = actual === idMarco;
-                return `
-                    <button class="btn-principal" style="font-size:0.75rem; background:${esActual ? 'var(--accent-coral)' : 'var(--accent-green)'};" onclick="cambiarColorMarco('${idMarco}')">
-                        ${esActual ? '✔️ ' : ''}${info.nombre}
-                    </button>
-                `;
-            }).join('');
-        }
-
-        function comprarMarco(idMarco, precio) {
-            const data = obtenerDatosActuales();
-            if (!data) return;
-
-            const desbloqueados = data.marcosDesbloqueados || ['marco-multicolor'];
-            if (desbloqueados.includes(idMarco)) return mostrarToast("¡Ya tienes este marco en tu colección!", "ℹ️");
-
-            if (!data.isGold && (data.hearts || 0) < precio) {
-                return mostrarToast("No tienes suficientes corazones 💖", "⛔");
-            }
-
-            if (!data.isGold) actualizarCorazones(-precio);
-
-            desbloqueados.push(idMarco);
-            actualizarDatosActuales({ marcosDesbloqueados: desbloqueados, marcoColor: idMarco });
-            
-            renderizarBoutiqueMarcos();
-            renderizarMisMarcosEquipar();
-            cargarDatosCarnet(obtenerDatosActuales());
-            lanzarEfectoConfeti();
-            mostrarToast("¡Marco comprado y equipado con éxito!", "🎉");
-        }
-
-        function cambiarColorMarco(claseColor) {
-            const data = obtenerDatosActuales();
-            if (!data) return mostrarToast("Crea un perfil primero", "🎒");
-            const desbloqueados = data.marcosDesbloqueados || ['marco-multicolor'];
-            
-            if (!desbloqueados.includes(claseColor)) {
-                return mostrarToast("No tienes este marco comprado", "⛔");
-            }
-
-            actualizarDatosActuales({ marcoColor: claseColor });
-            cargarDatosCarnet(obtenerDatosActuales());
-            renderizarMisMarcosEquipar();
-            mostrarToast("¡Marco equipado con éxito!", "✨");
-        }
-
-        function procesarFotoCarnet() {
-            const file = document.getElementById('inPhoto').files[0];
-            const label = document.getElementById('photoLabel');
-            if (file) {
-                const reader = new FileReader();
-                reader.onloadend = function() {
-                    carnetFotoBase64 = reader.result;
-                    label.innerText = "✅ Foto cargada";
-                    label.style.borderColor = "var(--accent-green)";
-                    label.style.color = "var(--accent-green)";
-                }
-                reader.readAsDataURL(file);
-            }
-        }
-
-        function dispararCambioFotoDirecto() {
-            document.getElementById('inputFotoDirectoCarnet').click();
-        }
-
-        function procesarFotoDirectoCarnet(input) {
-            const file = input.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onloadend = function() {
-                    const nuevaFoto = reader.result;
-                    actualizarDatosActuales({ photo: nuevaFoto });
-                    cargarDatosCarnet(obtenerDatosActuales());
-                    mostrarToast("Foto de perfil actualizada", "✨");
-                }
-                reader.readAsDataURL(file);
-            }
-        }
-
-        function modificarNotaInteractiva() {
-            const userData = obtenerDatosActuales();
-            if (!userData) return mostrarToast("Crea un perfil primero", "🎒");
-            
-            const textoNuevo = prompt("Escribe tu nueva nota (o déjalo en blanco para borrarla, máx 30 caracteres):", userData.note || "");
-            if (textoNuevo !== null) {
-                const nuevaNota = textoNuevo.trim().substring(0, 30);
-                actualizarDatosActuales({ note: nuevaNota });
-                cargarDatosCarnet(obtenerDatosActuales());
-                mostrarToast("Nota actualizada", "✨");
-            }
-        }
-
-        function crearCarnet() {
-            const name = document.getElementById("inName").value.trim();
-            const note = document.getElementById("inNote").value.trim();
-            const bio = document.getElementById("inBio").value.trim();
-            const mision = document.getElementById("inMision").value;
-            const codigoIngresado = document.getElementById("inCodigo").value.trim();
-
-            if (!name || !mision) return mostrarToast("Por favor escribe tu nombre y elige una misión", "🌈");
-
-            let esGold = false;
-            let esSilver = false;
-
-            if (codigoIngresado === CODIGO_FUNDADORA) esGold = true;
-            else if (codigoIngresado === CODIGO_VIP) esSilver = true;
-            else return mostrarToast("Código incorrecto. Usa BL-VIP-8317 o BL-FUNDADORA-GOLD.", "⛔");
-
-            let counter = parseInt(localStorage.getItem("dni_counter_num") || "0", 10) + 1;
-            localStorage.setItem("dni_counter_num", counter.toString());
-
-            const formattedNum = counter.toString().padStart(7, '0');
-            const cardId = esGold ? `BL-GOLD-001` : `BL-${formattedNum}`;
-            const today = new Date().toLocaleDateString();
-
-            const marcosIniciales = ["marco-multicolor"];
-            if (esGold) marcosIniciales.push("marco-fundadora");
-
-            const nuevoUsuario = {
-                name, note: note || "", bio: bio || "", mision, cardId, date: today, photo: carnetFotoBase64, isGold: esGold, isSilver: esSilver,
-                marcoColor: esGold ? "marco-fundadora" : "marco-multicolor",
-                marcosDesbloqueados: marcosIniciales,
-                misDrops: ['drop_corona'],
-                fundadoraPos: { x: 0, y: 0, s: 1 },
-                hearts: esGold ? 9999 : 100,
-                buzonCartas: []
-            };
-
-            const db = obtenerBaseDatosGlobal();
-            db[name] = nuevoUsuario;
-            guardarBaseDatosGlobal(db);
-
-            perfilActivo = name;
-            localStorage.setItem("perfil_activo", name);
-            carnetFotoBase64 = "";
-
-            sincronizarInterfazUsuario();
-            lanzarEfectoConfeti();
-            abrirModalCarnet();
-            mostrarToast("¡Carnet creado con éxito!", "✨");
-        }
-
-        function cargarDatosCarnet(data) {
-            document.getElementById("dashboardUserName").innerText = data.name;
-            document.getElementById("cardNameOut").innerText = data.name;
-            
-            const cardNoteBox = document.getElementById("cardNoteOut");
-            const sidebarNoteBubble = document.getElementById("sidebarNoteBubble");
-            
-            if (data.note) {
-                cardNoteBox.innerText = data.note;
-                sidebarNoteBubble.innerText = data.note;
-                sidebarNoteBubble.style.display = "block";
-            } else {
-                cardNoteBox.innerText = "Haz clic para añadir nota...";
-                sidebarNoteBubble.style.display = "none";
-            }
-
-            const bioText = document.getElementById("bio-text");
-            if (data.bio) {
-                bioText.textContent = data.bio;
-            } else {
-                bioText.textContent = "Toca aquí para añadir tu bio...";
-            }
-
-            document.getElementById("cardMisionOut").innerText = data.mision;
-            document.getElementById("cardSignatureOut").innerText = data.name;
-            document.getElementById("cardIdOut").innerText = data.cardId;
-            document.getElementById("cardDateOut").innerText = data.date;
-
-            const cardElement = document.getElementById("mclovin-card");
-            cardElement.classList.remove("gold-edition", "silver-edition");
-            const sealNormal = document.getElementById("memberSealNormal");
-
-            if (data.isGold) {
-                cardElement.classList.add("gold-edition");
-                document.getElementById("cardHeaderTitle").innerText = "GOLD • ESPAÑA 👑";
-                document.getElementById("statEstadoBadge").innerText = "FUNDADORA";
-                document.getElementById("heartCount").innerText = "∞";
-                document.getElementById("statHearts").innerText = "∞";
-                if(sealNormal) sealNormal.style.display = "none";
-            } else if (data.isSilver) {
-                cardElement.classList.add("silver-edition");
-                document.getElementById("cardHeaderTitle").innerText = "VIP • ESPAÑA 🌟";
-                document.getElementById("statEstadoBadge").innerText = "MIEMBRO VIP";
-                document.getElementById("heartCount").innerText = data.hearts || 0;
-                document.getElementById("statHearts").innerText = data.hearts || 0;
-                if(sealNormal) sealNormal.style.display = "none";
-            } else {
-                document.getElementById("cardHeaderTitle").innerText = "ESPAÑA • BOLLOLANDIA 🌈";
-                document.getElementById("statEstadoBadge").innerText = "MIEMBRO SÁFICO";
-                document.getElementById("heartCount").innerText = data.hearts || 0;
-                document.getElementById("statHearts").innerText = data.hearts || 0;
-                if(sealNormal) sealNormal.style.display = "block";
-            }
-
-            const colorClase = data.marcoColor || "marco-multicolor";
-            const heroAvatarBox = document.getElementById("heroProfileAvatarBox");
-            if (data.photo) {
-                document.getElementById("cardPhotoBox").innerHTML = `<img src="${data.photo}" class="card-photo-img"><div id="marcoLayer" class="marco-neon-humo ${colorClase}"></div>`;
-                document.getElementById("btnMochilaHeader").innerHTML = `<img src="${data.photo}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;"><div id="miniMarcoLayer" class="marco-neon-humo ${colorClase}"></div>`;
-                heroAvatarBox.innerHTML = `<img src="${data.photo}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;"><div id="heroMarcoLayer" class="marco-neon-humo ${colorClase}"></div>`;
-            } else {
-                document.getElementById("cardPhotoBox").innerHTML = `<span style="font-size: 2rem;">👤</span><div id="marcoLayer" class="marco-neon-humo ${colorClase}"></div>`;
-                document.getElementById("btnMochilaHeader").innerHTML = `👤<div id="miniMarcoLayer" class="marco-neon-humo ${colorClase}"></div>`;
-                heroAvatarBox.innerHTML = `<span style="font-size: 2rem;">👤</span><div id="heroMarcoLayer" class="marco-neon-humo ${colorClase}"></div>`;
-            }
-        }
-
-        function cerrarSesionSegura() {
-            perfilActivo = "";
-            localStorage.removeItem("perfil_activo");
-            sincronizarInterfazUsuario();
-            mostrarLoginOverlay();
-            mostrarToast("Has cerrado sesión correctamente", "🔄");
-        }
-
-        function borrarPerfilActual() {
-            if (confirm(`⚠️ ¿Estás totalmente segura de borrar el perfil de ${perfilActivo}?`)) {
-                const db = obtenerBaseDatosGlobal();
-                delete db[perfilActivo];
-                guardarBaseDatosGlobal(db);
-                perfilActivo = "";
-                localStorage.removeItem("perfil_activo");
-                sincronizarInterfazUsuario();
-                mostrarLoginOverlay();
-                mostrarToast("Perfil eliminado correctamente", "🗑️");
-            }
-        }
-
-        function abrirModalCarnet() { 
-            const modal = document.getElementById("cardModal");
-            const card = document.getElementById("mclovin-card");
-            modal.style.display = "flex";
-            card.classList.remove("drop-animation");
-            void card.offsetWidth;
-            card.classList.add("drop-animation");
-        }
-        function cerrarModalCarnet() { document.getElementById("cardModal").style.display = "none"; }
-
-        function descargarCarnet() {
-            const cardElement = document.getElementById("mclovin-card");
-            html2canvas(cardElement).then(canvas => {
-                const link = document.createElement("a");
-                link.download = `carnet-${perfilActivo}.png`;
-                link.href = canvas.toDataURL("image/png");
-                link.click();
-                mostrarToast("Carnet descargado con éxito", "📸");
-            });
-        }
-
-        function girarRuleta() {
-            const costo = 20;
-            const data = obtenerDatosActuales();
-            if (!data) return mostrarToast("Crea un perfil primero", "🎒");
-            if (!data.isGold && data.hearts < costo) return mostrarToast(`Necesitas ${costo} 💖 para girar.`, "⛔");
-
-            if (!data.isGold) actualizarCorazones(-costo);
-
-            const wheel = document.getElementById("ruletaWheel");
-            const ticker = document.getElementById("rouletteTicker");
-            const randomDeg = Math.floor(1440 + Math.random() * 1080);
-            
-            wheel.style.transform = `rotate(${randomDeg}deg)`;
-
-            let ticks = 0;
-            const interval = setInterval(() => {
-                ticker.classList.add("tick");
-                setTimeout(() => ticker.classList.remove("tick"), 40);
-                ticks++;
-                if (ticks > 25) clearInterval(interval);
-            }, 100);
-
-            setTimeout(() => {
-                clearInterval(interval);
-                const premio = Math.random() > 0.5 ? { valor: 30, texto: '¡+30 💖 extra!' } : { valor: 50, texto: '🎉 ¡Premio gordo! +50 💖' };
-                actualizarCorazones(premio.valor);
-                lanzarEfectoConfeti();
-                mostrarToast(premio.texto, "🎡");
-            }, 3000);
-        }
-
-        function enviarCartaBuzon() {
-            const data = obtenerDatosActuales();
-            if (!data) return mostrarToast("Crea un perfil primero", "🎒");
-            const destSelect = document.getElementById("selectDestinataria");
-            const texto = document.getElementById("textoCarta").value.trim();
-            const destinataria = destSelect.value;
-
-            if (!destinataria || !texto) return mostrarToast("Selecciona destinataria y mensaje.", "⚠️");
-
-            const db = obtenerBaseDatosGlobal();
-            if (db[destinataria]) {
-                if (!db[destinataria].buzonCartas) db[destinataria].buzonCartas = [];
-                db[destinataria].buzonCartas.push({ de: perfilActivo, texto: texto, fecha: new Date().toLocaleDateString(), leida: false });
-                guardarBaseDatosGlobal(db);
-                document.getElementById("textoCarta").value = "";
-                mostrarToast("¡Carta enviada con éxito!", "💌");
-                cargarBuzonPersonal();
-            }
-        }
-
-        function cargarBuzonPersonal() {
-            const data = obtenerDatosActuales();
-            const contenedor = document.getElementById("miBuzonContenedor");
-            if (!contenedor || !data) return;
-
-            const cartas = data.buzonCartas || [];
-            if (cartas.length === 0) {
-                contenedor.innerHTML = `
-                    <div class="empty-state">
-                        <div class="empty-state-icon">💌</div>
-                        <h4 class="empty-state-title">Buzón Vacío</h4>
-                        <p class="empty-state-desc">No has recibido cartas todavía. Envía un saludo a tus amigas para empezar el chisme.</p>
-                    </div>
-                `;
-                return;
-            }
-
-            contenedor.innerHTML = cartas.map(c => `
-                <div class="carta-item ${c.leida ? '' : 'no-leida'}">
-                    <div style="display:flex; justify-content:space-between; font-weight:bold; color:var(--text-main); font-size:0.75rem;">
-                        <span>💌 De: ${c.de}</span>
-                        <span style="color:#8c827b; font-size:0.7rem;">${c.fecha}</span>
-                    </div>
-                    <p style="margin:6px 0 0 0; color:var(--text-main); font-size:0.8rem; white-space: pre-wrap;">${c.texto}</p>
-                </div>
-            `).join('');
-        }
-
-        function comprobarNotificacionesBuzon() {
-            const data = obtenerDatosActuales();
-            if (!data || !data.buzonCartas) return;
-
-            const noLeidas = data.buzonCartas.filter(c => !c.leida);
-            const dot = document.getElementById("dotBuzon");
-            const flotante = document.getElementById("cartaFlotanteBox");
-
-            if (noLeidas.length > 0) {
-                dot.style.display = "block";
-                const ultima = noLeidas[noLeidas.length - 1];
-                document.getElementById("flotanteRemitente").innerText = `¡Carta de ${ultima.de}!`;
-                document.getElementById("flotanteTexto").innerText = ultima.texto.substring(0, 25) + "...";
-                flotante.style.display = "block";
-            } else {
-                dot.style.display = "none";
-                flotante.style.display = "none";
-            }
-        }
-
-        function marcarBuzonComoLeido() {
-            const db = obtenerBaseDatosGlobal();
-            if (db[perfilActivo] && db[perfilActivo].buzonCartas) {
-                db[perfilActivo].buzonCartas.forEach(c => c.leida = true);
-                guardarBaseDatosGlobal(db);
-                document.getElementById("dotBuzon").style.display = "none";
-                document.getElementById("cartaFlotanteBox").style.display = "none";
-                cargarBuzonPersonal();
-            }
-        }
-
-        function abrirBuzonDesdeFlotante() {
-            cambiarPestana('buzon', document.querySelectorAll('.nav-icon-btn')[3]);
-        }
-
-        function inicializarCalendarioYMapa() {
-            const calendarEl = document.getElementById('calendar');
-            if (calendarEl && !calendarInstance) {
-                calendarInstance = new FullCalendar.Calendar(calendarEl, {
-                    initialView: 'dayGridMonth',
-                    locale: 'es',
-                    height: 300,
-                    headerToolbar: { left: 'prev', center: 'title', right: 'next' },
-                    events: obtenerEventosCalendario(),
-                    datesSet: function() {
-                        const titleEl = document.querySelector('.fc-toolbar-title');
-                        if (titleEl && !titleEl.hasAttribute('data-custom-click')) {
-                            titleEl.setAttribute('data-custom-click', 'true');
-                            titleEl.style.cursor = 'pointer';
-                            titleEl.addEventListener('click', abrirModalFechaCustom);
-                        }
-                    },
-                    dateClick: function(info) {
-                        const data = obtenerDatosActuales();
-                        if (!data) return mostrarToast("Crea un perfil primero", "🎒");
-                        const nombre = prompt(`🎂 Anota el nombre para tu cumpleaños en el día ${info.dateStr}:`);
-                        if (nombre && nombre.trim() !== "") {
-                            const cumples = JSON.parse(localStorage.getItem('cumples') || '[]');
-                            cumples.push({ nombre: nombre.trim(), fecha: info.dateStr });
-                            localStorage.setItem('cumples', JSON.stringify(cumples));
-                            actualizarCorazones(15);
-                            calendarInstance.addEvent({ title: `🎂 ${nombre.trim()}`, start: info.dateStr, color: '#f28b72' });
-                            mostrarToast("¡Cumpleaños guardado (+15 💖)!", "🎂");
-                        }
-                    }
-                });
-                calendarInstance.render();
-            }
-
-            const selectAnio = document.getElementById('selectAnioModal');
-            if(selectAnio && selectAnio.options.length === 0) {
-                const anioActual = new Date().getFullYear();
-                let aniosHTML = '';
-                for(let y = anioActual - 90; y <= anioActual + 5; y++) {
-                    aniosHTML += `<option value="${y}" ${y === anioActual ? 'selected' : ''}>${y}</option>`;
-                }
-                selectAnio.innerHTML = aniosHTML;
-            }
-
-            const mapEl = document.getElementById('mapContainer');
-            if (mapEl && !mapInstance) {
-                mapInstance = L.map('mapContainer').setView([40.4168, -3.7038], 6);
-                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '© OpenStreetMap' }).addTo(mapInstance);
-                setTimeout(() => { mapInstance.invalidateSize(); }, 300);
-                actualizarPuntosMapa();
-            }
-        }
-
-        function abrirModalFechaCustom() { document.getElementById('modalSelectorFecha').style.display = 'flex'; }
-        function cerrarModalFechaCustom() { document.getElementById('modalSelectorFecha').style.display = 'none'; }
-        function irAFechaSeleccionada() {
-            const mes = document.getElementById('selectMesModal').value;
-            const anio = document.getElementById('selectAnioModal').value;
-            if (calendarInstance) calendarInstance.gotoDate(`${anio}-${(parseInt(mes)+1).toString().padStart(2, '0')}-01`);
-            cerrarModalFechaCustom();
-        }
-
-        function obtenerEventosCalendario() {
-            const cumples = JSON.parse(localStorage.getItem('cumples') || '[]');
-            const quedadas = JSON.parse(localStorage.getItem('quedadas') || '[]');
-            let eventos = [];
-            cumples.forEach(c => eventos.push({ title: `🎂 ${c.nombre}`, start: c.fecha, color: '#f28b72' }));
-            quedadas.forEach(q => eventos.push({ title: `📍 ${q.titulo}`, start: q.fecha, color: '#87a38a' }));
-            return eventos;
-        }
-
-        function comprobarCumpleanosHoy() {
-            const hoy = new Date().toISOString().split('T')[0];
-            const mesDiaHoy = hoy.substring(5);
-            const cumples = JSON.parse(localStorage.getItem('cumples') || '[]');
-            const cumpleHoy = cumples.find(c => c.fecha && c.fecha.substring(5) === mesDiaHoy);
-            if (cumpleHoy) {
-                setTimeout(() => {
-                    lanzarEfectoConfeti();
-                    mostrarToast(`¡Hoy es el cumpleaños de ${cumpleHoy.nombre} 🥳!`, "🎂");
-                }, 1000);
-            }
-        }
-
-        function actualizarPuntosMapa() {
-            if (!mapInstance) return;
-            marcadoresMapa.forEach(m => mapInstance.removeLayer(m));
-            marcadoresMapa = [];
-            const quedadas = JSON.parse(localStorage.getItem('quedadas') || '[]');
-            const coordsCiudades = { 'madrid': [40.4168, -3.7038], 'barcelona': [41.3851, 2.1734], 'valencia': [39.4699, -0.3763], 'sevilla': [37.3891, -5.9845], 'bilbao': [43.2630, -2.9350] };
-
-            quedadas.forEach(q => {
-                let lugarLower = q.lugar.toLowerCase().trim();
-                let coords = [40.4168, -3.7038];
-                for (let c in coordsCiudades) {
-                    if (lugarLower.includes(c)) { coords = coordsCiudades[c]; break; }
-                }
-                const m = L.marker(coords).addTo(mapInstance).bindPopup(`<b>📍 ${q.titulo}</b><br>${q.lugar}`);
-                marcadoresMapa.push(m);
-            });
-        }
-
-        function agregarQuedada() {
-            const data = obtenerDatosActuales();
-            if (!data) return mostrarToast("Crea un perfil primero", "🎒");
-            const titulo = document.getElementById('tituloQuedada').value;
-            const lugar = document.getElementById('lugarQuedada').value;
-            const fecha = document.getElementById('fechaQuedada').value;
-            if(!titulo || !lugar || !fecha) return mostrarToast('Rellena todos los datos', '⚠️');
-            
-            const quedadas = JSON.parse(localStorage.getItem('quedadas') || '[]');
-            quedadas.push({ titulo, lugar, fecha });
-            localStorage.setItem('quedadas', JSON.stringify(quedadas));
-            
-            document.getElementById('tituloQuedada').value = '';
-            document.getElementById('lugarQuedada').value = '';
-            document.getElementById('fechaQuedada').value = '';
-            
-            actualizarCorazones(25);
-            cargarQuedadas();
-            if(calendarInstance) calendarInstance.addEvent({ title: `📍 ${titulo}`, start: fecha, color: '#87a38a' });
-            setTimeout(() => { if (mapInstance) { mapInstance.invalidateSize(); actualizarPuntosMapa(); } }, 100);
-            mostrarToast('¡Plan publicado (+25 💖)!', '📍');
-        }
-
-        function cargarQuedadas() {
-            const quedadas = JSON.parse(localStorage.getItem('quedadas') || '[]');
-            const cont = document.getElementById('listaQuedadas');
-            document.getElementById("statQuedadas").innerText = quedadas.length;
-            if(!cont) return;
-            if(quedadas.length === 0) return cont.innerHTML = 'Aún no hay planes.';
-            cont.innerHTML = quedadas.map(q => {
-                const mapUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(q.lugar)}`;
-                return `📍 <strong>${q.titulo}</strong> (${q.lugar})<br><a href="${mapUrl}" target="_blank" class="btn-mapa">🗺️ Google Maps</a><br>`;
-            }).join('');
-        }
-
-        function enviarFlechazo() {
-            const data = obtenerDatosActuales();
-            if (!data) return mostrarToast("Crea un perfil primero", "🎒");
-            const para = document.getElementById('destinoFlechazo').value.trim().toLowerCase();
-            if(!para) return alert('Escribe el nombre');
-            if(para === perfilActivo.toLowerCase()) return alert('No te puedes mandar un flechazo a ti misma');
-
-            const flechazos = JSON.parse(localStorage.getItem('flechazos') || '[]');
-            const de = perfilActivo.toLowerCase();
-            if(!flechazos.some(f => f.de === de && f.para === para)) {
-                flechazos.push({ de, para });
-                localStorage.setItem('flechazos', JSON.stringify(flechazos));
-            }
-            document.getElementById('destinoFlechazo').value = '';
-            mostrarToast('Flechazo enviado 💘', '🏹');
-            comprobarMatches();
-        }
-
-        function comprobarMatches() {
-            const cont = document.getElementById('misMatches');
-            if(!cont) return;
-            const flechazos = JSON.parse(localStorage.getItem('flechazos') || '[]');
-            const actual = perfilActivo.toLowerCase();
-            if(!actual) return;
-
-            const matches = flechazos.filter(f => f.para === actual && flechazos.some(reverso => reverso.de === actual && reverso.para === f.de));
-            
-            if(matches.length > 0) {
-                cont.innerHTML = matches.map(m => `
-                    <div style="background:var(--card-bg); border:1.5px solid var(--accent-coral); border-radius:14px; padding:10px; margin-top:8px;">
-                        💘 <strong>¡Match activo con ${m.de}!</strong>
-                    </div>
-                `).join('');
-            } else {
-                cont.innerHTML = "";
-            }
-        }
-    </script>
+      </section>
+
+      <section class="page" id="page-chat">
+        <div class="panel chat-layout">
+          <div class="chat-list"><h3>Conversaciones</h3><button class="chat-item selected" data-chat="nora"><div class="avatar">NO<span class="online"></span></div><div class="chat-meta"><strong>Nora · Luz de neón</strong><span>Te debo una recomendación...</span></div><time>10:42</time></button><button class="chat-item" data-chat="iris"><div class="avatar" style="background:linear-gradient(145deg,#8cc0c9,#8b75ba)">IR<span class="online"></span></div><div class="chat-meta"><strong>Iris · paseo largo</strong><span>Encuesta: ¿café o vino?</span></div><time>Ayer</time></button><button class="chat-item" data-chat="club"><div class="avatar" style="background:linear-gradient(145deg,#cf9a6a,#774f85)">AR<span class="online"></span></div><div class="chat-meta"><strong>ARX · Círculo íntimo</strong><span>3 mensajes nuevos</span></div><time>Lun</time></button></div>
+          <div class="chat-window">
+            <div class="chat-top"><div class="avatar">NO<span class="online"></span></div><div class="chat-meta"><strong id="chatName">Nora · Luz de neón</strong><span id="chatStatus">en línea · responde rápido</span></div><button class="round-btn" title="Más opciones"><svg class="icon"><use href="#i-settings"/></svg></button></div>
+            <div class="chat-messages" id="chatMessages">
+              <div class="chat-date">HOY · 10:31</div>
+              <div class="bubble-wrap"><div class="avatar" style="width:25px;height:25px;font-size:8px">NO</div><div class="bubble" data-message="Ese sitio tiene una terraza preciosa."><div class="message-tools"><button data-react="♥">♥</button><button data-reply="Ese sitio tiene una terraza preciosa."><svg class="icon"><use href="#i-reply"/></svg></button></div>Ese sitio tiene una terraza preciosa.<small>10:31 · leído</small></div></div>
+              <div class="bubble-wrap mine"><div class="bubble" data-message="Entonces queda decidido: paseo y café."><div class="message-tools"><button data-react="✦">✦</button><button data-reply="Entonces queda decidido: paseo y café."><svg class="icon"><use href="#i-reply"/></svg></button></div>Entonces queda decidido: paseo y café.<small>10:32 · leído</small><span class="reaction">✦</span></div></div>
+              <div class="bubble-wrap"><div class="avatar" style="width:25px;height:25px;font-size:8px">NO</div><div class="bubble" data-message="Te debo una recomendación musical para el camino. ¿Me dejas elegir?"><div class="message-tools"><button data-react="♥">♥</button><button data-reply="Te debo una recomendación musical para el camino. ¿Me dejas elegir?"><svg class="icon"><use href="#i-reply"/></svg></button></div>Te debo una recomendación musical para el camino. ¿Me dejas elegir?<small>10:42 · entregado</small></div></div>
+            </div>
+            <div class="typing" id="typing">Nora está escribiendo…</div>
+            <div class="chat-compose">
+              <div class="reply-bar" id="replyBar"><svg class="icon"><use href="#i-reply"/></svg><span id="replyText"></span><button id="cancelReply">×</button></div>
+              <div class="compose-row"><div class="compose-tools"><button id="emojiBtn" title="Reacciones">☺</button><button id="extraBtn" title="Más opciones">＋</button></div><textarea class="compose-input" id="messageInput" rows="1" placeholder="Escribe algo bonito…"></textarea><button class="btn-primary" id="sendBtn" style="width:42px;height:42px;padding:0"><svg class="icon"><use href="#i-send"/></svg></button></div>
+              <div class="extras-menu" id="extrasMenu"><button class="extra-chip" id="gifBtn">GIF · buscar</button><button class="extra-chip" id="audioBtn"><svg class="icon"><use href="#i-mic"/></svg> Audio</button><button class="extra-chip" id="pollBtn">Encuesta</button><button class="extra-chip" id="tempBtn">⌁ Temporal</button><button class="extra-chip" id="translateBtn"><svg class="icon"><use href="#i-translate"/></svg> Traducir</button></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="page" id="page-collection">
+        <div class="panel collection-hero"><div><div class="eyebrow" style="color:var(--gold)"><i class="pulse" style="background:var(--gold)"></i> Temporada activa · 01</div><h2>Archivo de señales</h2><p class="muted" style="max-width:540px">Cada figura tiene una fecha, una historia y una rareza. Colecciona las cinco piezas de la temporada y desbloquea el marco Prisma.</p><button class="btn-primary" id="simulateDrop" style="margin-top:12px"><svg class="icon"><use href="#i-gift"/></svg> Buscar un drop</button></div><div class="season-ring"></div></div>
+        <div class="collection-tabs"><button class="active">Temporada 01</button><button>Halloween</button><button>Pride</button><button>Oro</button><button>Legendarias</button></div>
+        <div class="relic-grid" id="relicGrid">
+          <article class="relic exclusive" data-relic="Cúpula de neón"><div class="relic-top"><span class="rarity">Exclusivo</span><span class="micro">01/06</span></div><div class="relic-art">◈</div><div class="relic-info"><strong>Cúpula de neón</strong><span>Encontrado en Malasaña</span><span class="relic-date">18 jun 2026 · 22:14</span></div></article>
+          <article class="relic legendary" data-relic="Michi guardián"><div class="relic-top"><span class="rarity">Legendario</span><span class="micro">02/06</span></div><div class="relic-art">♢</div><div class="relic-info"><strong>Michi guardián</strong><span>Drop nocturno</span><span class="relic-date">21 jun 2026 · 00:06</span></div></article>
+          <article class="relic rare" data-relic="Carta de verano"><div class="relic-top"><span class="rarity">Raro</span><span class="micro">03/06</span></div><div class="relic-art">✉</div><div class="relic-info"><strong>Carta de verano</strong><span>Regalo de Nora</span><span class="relic-date">27 jun 2026 · 18:40</span></div></article>
+          <article class="relic common" data-relic="Café de guardia"><div class="relic-top"><span class="rarity">Común</span><span class="micro">04/06</span></div><div class="relic-art">◌</div><div class="relic-info"><strong>Café de guardia</strong><span>Nébula Café</span><span class="relic-date">02 jul 2026 · 10:12</span></div></article>
+          <article class="relic rare" data-relic="Polaroid compartida"><div class="relic-top"><span class="rarity">Raro</span><span class="micro">05/06</span></div><div class="relic-art">▧</div><div class="relic-info"><strong>Polaroid compartida</strong><span>Una quedada</span><span class="relic-date">06 jul 2026 · 19:22</span></div></article>
+          <article class="relic" style="opacity:.46;filter:grayscale(.6)" data-relic="???"><div class="relic-top"><span class="rarity">Bloqueada</span><span class="micro">06/06</span></div><div class="relic-art">?</div><div class="relic-info"><strong>Señal desconocida</strong><span>Encuentra el próximo drop</span><span class="relic-date">—</span></div></article>
+        </div>
+      </section>
+
+      <section class="page" id="page-profile">
+        <div class="profile-grid">
+          <div class="panel profile-card">
+            <div class="profile-banner" id="profileBanner"></div><div class="profile-main"><div class="avatar large">AO<span class="online"></span></div><div class="profile-title"><div><h2>Aoi <span class="verified">◆</span></h2><p class="muted" style="margin:4px 0;font-size:11px">@aoi · Madrid · ella / ella</p></div><span class="status"><i></i> Disponible</span></div><p class="muted" style="font-size:12px;margin:18px 0 0">Coleccionista de lugares tranquilos, playlists largas y personas que saben escuchar. Busco conexiones con intención.</p><div class="tag-row"><span class="tag hot">Relación estable</span><span class="tag">Viajar</span><span class="tag">Indie pop</span><span class="tag">Humor absurdo</span></div><div class="music"><div class="music-cover">♫</div><div><strong>Ahora suena · “Silk Chiffon”</strong><span>MUNA · Estado musical visible</span></div><button class="round-btn" style="margin-left:auto;width:30px;height:30px">▶</button></div></div>
+          </div>
+          <div class="panel">
+            <div class="profile-section"><h3>Reputación <span class="micro">actualizada ahora</span></h3><div class="reputation"><div class="rep-level">18</div><div><strong>Guardiana de confianza</strong><p>Tu presencia hace que el refugio se sienta más seguro.</p><div class="progress"><i style="width:72%"></i></div><span class="micro">720 / 1000 XP para nivel 19</span></div></div></div>
+            <div class="profile-section"><h3>Insignias <button class="edit-link">Ver todas</button></h3><div class="badge-row"><div class="badge"><div><b>✦</b><span>Primera señal</span></div></div><div class="badge"><div><b>♥</b><span>Buena escucha</span></div></div><div class="badge"><div><b>◈</b><span>Exploradora</span></div></div><div class="badge"><div><b>∞</b><span>Constante</span></div></div></div></div>
+            <div class="profile-section"><h3>Historial de drops</h3><div class="history"><div class="history-item"><div class="history-icon">◈</div><div><strong>Cúpula de neón</strong> añadida a tu vitrina <span class="micro">hace 2 meses</span></div></div><div class="history-item"><div class="history-icon">♢</div><div><strong>Michi guardián</strong> encontrado en un drop nocturno <span class="micro">hace 1 mes</span></div></div></div></div>
+          </div>
+        </div>
+        <div class="section-head"><h2>Hazlo tuyo</h2><span class="micro">Los cambios se guardan en este navegador</span></div>
+        <div class="panel pad"><div class="form-grid"><div class="field"><label>Estado visible</label><select id="statusSelect"><option>Disponible</option><option>Buscando amigas</option><option>En una cita</option><option>Solo mirando</option></select></div><div class="field"><label>Estilo de movimiento</label><select id="motionSelect"><option value="float">Órbita suave</option><option value="still">Quieto</option></select></div><div class="field full"><label>Frase del perfil</label><textarea id="bioInput">Coleccionista de lugares tranquilos, playlists largas y personas que saben escuchar. Busco conexiones con intención.</textarea></div><div class="field"><label>Color de señal</label><div class="color-swatches"><button class="swatch selected" style="background:#ff6f9f" data-color="#ff6f9f"></button><button class="swatch" style="background:#a78bfa" data-color="#a78bfa"></button><button class="swatch" style="background:#65d8e8" data-color="#65d8e8"></button><button class="swatch" style="background:#7ce8bd" data-color="#7ce8bd"></button><button class="swatch" style="background:#f5cf72" data-color="#f5cf72"></button></div></div><div class="field"><label>Fondo de banner</label><select id="bannerSelect"><option value="nebula">Nebulosa pastel</option><option value="sunset">Atardecer eléctrico</option><option value="aurora">Aurora privada</option><option value="night">Noche de cristal</option></select></div></div><button class="btn-primary" id="saveProfile" style="margin-top:16px"><svg class="icon"><use href="#i-spark"/></svg> Guardar personalización</button></div>
+      </section>
+    </main>
+  </div>
+
+  <nav class="mobile-nav" id="mobileNav"><button class="active" data-page="home"><svg class="icon"><use href="#i-home"/></svg>Inicio</button><button data-page="map"><svg class="icon"><use href="#i-map"/></svg>Mapa</button><button data-page="chat"><svg class="icon"><use href="#i-chat"/></svg>Chat</button><button data-page="collection"><svg class="icon"><use href="#i-box"/></svg>Vitrina</button><button data-page="profile"><svg class="icon"><use href="#i-user"/></svg>Perfil</button></nav>
+
+  <div class="modal-backdrop" id="dropModal"><div class="modal"><div class="modal-head"><div><div class="eyebrow" style="color:var(--gold)"><i class="pulse" style="background:var(--gold)"></i> Pieza añadida · 360°</div><h2 id="dropModalTitle">Cúpula de neón</h2><p class="muted" style="margin:4px 0 0">Gira la pieza para ver cada detalle.</p></div><button class="close" data-close="dropModal">×</button></div><div class="drop-stage" id="dropStage"><div class="artifact-3d" id="artifact3d"><div class="artifact-face front">◈</div><div class="artifact-face side"></div><div class="artifact-face back">✦</div><div class="artifact-face top"></div></div><span class="rotate-hint">arrastra para rotar · doble click para reiniciar</span></div><div class="drop-data"><div><label>Rareza</label><strong id="dropRarity">Exclusivo</strong></div><div><label>Conseguido el</label><strong id="dropDate">18 jun 2026 · 22:14</strong></div><div><label>Ubicación</label><strong id="dropPlace">Malasaña, Madrid</strong></div><div><label>Temporada</label><strong>Temporada 01</strong></div></div></div></div>
+  <div class="modal-backdrop" id="simpleModal"><div class="modal"><div class="modal-head"><div><div class="eyebrow"><i class="pulse"></i> ARX</div><h2 id="simpleTitle">Aviso</h2><p class="muted" id="simpleText">Todo listo.</p></div><button class="close" data-close="simpleModal">×</button></div><button class="btn-primary" style="width:100%" data-close="simpleModal">Entendido</button></div></div>
+  <div id="toastRoot"></div>
+
+  <script>
+    const $ = (selector, root = document) => root.querySelector(selector);
+    const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
+    const state = JSON.parse(localStorage.getItem("arx_state") || '{"hearts":248,"drops":12,"theme":"dark"}');
+    let currentPage = "home";
+    let replyText = "";
+    let rotation = { x: -14, y: -26 };
+
+    const icons = {
+      spark: '<svg class="icon"><use href="#i-spark"/></svg>',
+      gift: '<svg class="icon"><use href="#i-gift"/></svg>'
+    };
+    function save() { localStorage.setItem("arx_state", JSON.stringify(state)); }
+    function toast(message, icon = icons.spark) {
+      const node = document.createElement("div");
+      node.className = "toast";
+      node.innerHTML = icon + "<span>" + message + "</span>";
+      $("#toastRoot").appendChild(node);
+      setTimeout(() => node.remove(), 3400);
+    }
+    function showSimple(title, text) { $("#simpleTitle").textContent = title; $("#simpleText").textContent = text; $("#simpleModal").classList.add("show"); }
+    function openPage(page) {
+      currentPage = page;
+      $$(".page").forEach(p => p.classList.toggle("active", p.id === "page-" + page));
+      $$("[data-page]").forEach(b => b.classList.toggle("active", b.dataset.page === page));
+      const labels = {
+        home: ["Tu refugio", "Un lugar seguro para coincidir, explorar y dejar huella."],
+        map: ["Mapa social", "La ciudad también tiene señales."],
+        chat: ["Mensajes", "Hablar bien también es una forma de cuidarse."],
+        collection: ["Tu vitrina", "Lo que encuentras cuenta quién eres."],
+        profile: ["Mi perfil vivo", "Una historia que cambia contigo."]
+      };
+      $("#pageTitle").textContent = labels[page][0];
+      $("#pageSub").textContent = labels[page][1];
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+    $$("[data-page]").forEach(button => button.addEventListener("click", () => openPage(button.dataset.page)));
+    $$("[data-go]").forEach(button => button.addEventListener("click", () => openPage(button.dataset.go)));
+    $("#themeBtn").addEventListener("click", () => {
+      document.body.classList.toggle("light");
+      state.theme = document.body.classList.contains("light") ? "light" : "dark";
+      save();
+      toast(state.theme === "light" ? "Modo claro activado" : "Modo nocturno activado");
+    });
+    if (state.theme === "light") document.body.classList.add("light");
+
+    $("#notifyBtn").addEventListener("click", () => showSimple("Tu refugio está despierto", "Nora ha reaccionado a tu carta y hay un drop secreto a 80 metros. Puedes explorarlo cuando quieras."));
+    $("#globalSearch").addEventListener("input", e => {
+      const value = e.target.value.trim();
+      if (value.length > 2) toast("Buscando señales para “" + value + "”…");
+    });
+    $("#locateBtn").addEventListener("click", () => toast("Modo exploración activado. Tu posición se muestra solo en este dispositivo.", icons.spark));
+    $$(".filter").forEach(filter => filter.addEventListener("click", () => {
+      $$(".filter").forEach(f => f.classList.remove("selected")); filter.classList.add("selected");
+      const value = filter.dataset.filter;
+      $$(".map-point").forEach(point => point.classList.toggle("hidden", value !== "all" && point.dataset.type !== "current" && point.dataset.type !== value));
+    }));
+    $("#claimNearbyDrop").addEventListener("click", () => {
+      state.drops = Number(state.drops || 12) + 1; state.hearts = Number(state.hearts || 248) + 15; save();
+      $("#statDrops").textContent = state.drops; $("#walletCount").textContent = state.hearts; $("#statHearts").textContent = state.hearts;
+      toast("¡Drop reclamado! Has encontrado una pieza rara.", icons.gift);
+      openDrop("Drop secreto · Jardines", "Raro", "06 ago 2026 · ahora", "Jardines del Oeste");
+    });
+    $$(".open-drop").forEach(b => b.addEventListener("click", () => openDrop(b.dataset.name, "Raro", "06 ago 2026 · ahora", "Jardines del Oeste")));
+    $$(".open-place").forEach(b => b.addEventListener("click", () => showSimple(b.dataset.name, "Hay 12 personas visibles y 4 señales nuevas en este lugar. Puedes unirte sin compartir tu ubicación exacta.")));
+    $$(".open-person").forEach(b => b.addEventListener("click", () => showSimple(b.dataset.name + " está cerca", "Compatibilidad preliminar: 84%. Ambas habéis marcado paseos, música y conexiones con intención.")));
+    function openDrop(title, rarity, date, place) {
+      $("#dropModalTitle").textContent = title; $("#dropRarity").textContent = rarity; $("#dropDate").textContent = date; $("#dropPlace").textContent = place;
+      $("#dropModal").classList.add("show"); rotation = { x: -14, y: -26 }; setArtifactRotation();
+    }
+    function setArtifactRotation() { $("#artifact3d").style.transform = `rotateX(${rotation.x}deg) rotateY(${rotation.y}deg)`; }
+    $$(".relic").forEach(relic => relic.addEventListener("click", () => {
+      if (relic.dataset.relic === "???") return toast("Esta señal todavía está oculta. Hay un drop nuevo cerca.");
+      const title = relic.dataset.relic; const rarity = $(".rarity", relic).textContent;
+      const date = $(".relic-date", relic).textContent; const place = $(".relic-info span", relic).textContent;
+      openDrop(title, rarity, date, place);
+    }));
+    $("#simulateDrop").addEventListener("click", () => {
+      state.drops = Number(state.drops || 12) + 1; save(); $("#statDrops").textContent = state.drops;
+      toast("Has encontrado una nueva señal. Se ha añadido a tu archivo.", icons.gift); openDrop("Señal de medianoche", "Legendario", "06 ago 2026 · ahora", "A 80 m de tu posición");
+    });
+    let dragStart;
+    $("#dropStage").addEventListener("pointerdown", e => { dragStart = { x: e.clientX, y: e.clientY }; $("#dropStage").setPointerCapture(e.pointerId); });
+    $("#dropStage").addEventListener("pointermove", e => { if (!dragStart) return; rotation.y += (e.clientX - dragStart.x) * .55; rotation.x -= (e.clientY - dragStart.y) * .3; dragStart = { x: e.clientX, y: e.clientY }; setArtifactRotation(); });
+    $("#dropStage").addEventListener("pointerup", () => dragStart = null);
+    $("#dropStage").addEventListener("dblclick", () => { rotation = { x: -14, y: -26 }; setArtifactRotation(); });
+    $$("[data-close]").forEach(button => button.addEventListener("click", () => $("#" + button.dataset.close).classList.remove("show")));
+    $$(".modal-backdrop").forEach(modal => modal.addEventListener("click", e => { if (e.target === modal) modal.classList.remove("show"); }));
+
+    const chatReplies = {
+      nora: { name: "Nora · Luz de neón", status: "en línea · responde rápido", avatar: "NO", text: "Entonces elijo yo la playlist. Prometo no poner baladas dramáticas… todavía." },
+      iris: { name: "Iris · paseo largo", status: "en línea · está preparando una quedada", avatar: "IR", text: "Voto por café primero y vino después. La ciencia lo recomienda." },
+      club: { name: "ARX · Círculo íntimo", status: "3 personas conectadas", avatar: "AR", text: "La señal de los Jardines sigue activa. ¿Quién se apunta?" }
+    };
+    $$(".chat-item").forEach(item => item.addEventListener("click", () => {
+      $$(".chat-item").forEach(i => i.classList.remove("selected")); item.classList.add("selected");
+      const chat = chatReplies[item.dataset.chat]; $("#chatName").textContent = chat.name; $("#chatStatus").textContent = chat.status;
+      toast("Conversación abierta con " + chat.name.split(" · ")[0]);
+    }));
+    function addMessage(text, mine = true, temporary = false) {
+      const wrap = document.createElement("div"); wrap.className = "bubble-wrap" + (mine ? " mine" : "");
+      const bubble = document.createElement("div"); bubble.className = "bubble"; bubble.dataset.message = text;
+      const reply = replyText ? `<div class="reply-preview">Respondiendo a: ${replyText}</div>` : "";
+      bubble.innerHTML = `<div class="message-tools"><button data-react="♥">♥</button><button data-reply="${text.replace(/"/g, "&quot;")}"><svg class="icon"><use href="#i-reply"/></svg></button></div>${reply}${text}<small>ahora · ${temporary ? "temporal" : "entregado"}</small>`;
+      wrap.innerHTML = mine ? "" : `<div class="avatar" style="width:25px;height:25px;font-size:8px">NO</div>`; wrap.appendChild(bubble); $("#chatMessages").appendChild(wrap); bindMessageTools(bubble);
+      $("#chatMessages").scrollTop = $("#chatMessages").scrollHeight; replyText = ""; $("#replyBar").classList.remove("show");
+    }
+    function bindMessageTools(root = document) {
+      $$("[data-react]", root).forEach(b => b.onclick = () => { const existing = $(".reaction", b.closest(".bubble")); if (existing) existing.remove(); else b.closest(".bubble").insertAdjacentHTML("beforeend", `<span class="reaction">${b.dataset.react}</span>`); });
+      $$("[data-reply]", root).forEach(b => b.onclick = () => { replyText = b.dataset.reply; $("#replyText").textContent = replyText; $("#replyBar").classList.add("show"); $("#messageInput").focus(); });
+    }
+    bindMessageTools();
+    $("#cancelReply").addEventListener("click", () => { replyText = ""; $("#replyBar").classList.remove("show"); });
+    $("#sendBtn").addEventListener("click", () => {
+      const input = $("#messageInput"); const text = input.value.trim(); if (!text) return;
+      addMessage(text); input.value = ""; $("#typing").style.display = "block";
+      setTimeout(() => { $("#typing").style.display = "none"; addMessage(chatReplies.nora.text, false); }, 1100);
+    });
+    $("#messageInput").addEventListener("keydown", e => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); $("#sendBtn").click(); } });
+    $("#extraBtn").addEventListener("click", () => $("#extrasMenu").classList.toggle("show"));
+    $("#emojiBtn").addEventListener("click", () => { $("#messageInput").value += "  ♥  ✦"; $("#messageInput").focus(); });
+    $("#gifBtn").addEventListener("click", () => { addMessage("[ GIF: una energía impecable ]"); $("#extrasMenu").classList.remove("show"); });
+    $("#audioBtn").addEventListener("click", () => { $("#extrasMenu").classList.remove("show"); toast("Audio listo: mantén pulsado para grabar. En esta demo se envía una nota de voz de 0:08.", '<svg class="icon"><use href="#i-mic"/></svg>'); setTimeout(() => addMessage("[ Nota de voz · 0:08 ]"), 500); });
+    $("#pollBtn").addEventListener("click", () => { $("#extrasMenu").classList.remove("show"); addMessage("ENCUESTA · ¿Paseo al atardecer o café de madrugada?\n○ Atardecer  ○ Madrugada"); });
+    $("#tempBtn").addEventListener("click", () => { $("#extrasMenu").classList.remove("show"); addMessage("Este mensaje desaparecerá al salir del chat.", true, true); toast("Modo temporal activado para tu próximo mensaje."); });
+    $("#translateBtn").addEventListener("click", () => { $("#extrasMenu").classList.remove("show"); toast("Traducción automática activada para esta conversación.", '<svg class="icon"><use href="#i-translate"/></svg>'); });
+
+    $$(".swatch").forEach(swatch => swatch.addEventListener("click", () => { $$(".swatch").forEach(s => s.classList.remove("selected")); swatch.classList.add("selected"); document.documentElement.style.setProperty("--accent", swatch.dataset.color); }));
+    const bannerStyles = {
+      nebula: "linear-gradient(135deg,#f3a7c3,#8c83c5 60%,#67d7dc)", sunset: "linear-gradient(135deg,#f58c7c,#df527c 52%,#574a98)", aurora: "linear-gradient(135deg,#79d6c1,#547bc9 55%,#bb79ce)", night: "linear-gradient(135deg,#252b57,#171b31 55%,#4e3266)"
+    };
+    $("#bannerSelect").addEventListener("change", e => $("#profileBanner").style.background = bannerStyles[e.target.value]);
+    $("#motionSelect").addEventListener("change", e => $(".hero-orbit .avatar").style.animation = e.target.value === "still" ? "none" : "float 4s ease-in-out infinite");
+    $("#saveProfile").addEventListener("click", () => { const bio = $("#bioInput").value.trim(); if (bio) toast("Perfil vivo actualizado. Tu historia tiene nueva señal.", icons.spark); else toast("Escribe algo para que tu perfil cuente quién eres."); });
+    $("#statusSelect").addEventListener("change", e => { $(".status").innerHTML = `<i></i> ${e.target.value}`; toast("Estado cambiado a “" + e.target.value + "”"); });
+    $("#walletCount").textContent = state.hearts || 248; $("#statHearts").textContent = state.hearts || 248; $("#statDrops").textContent = state.drops || 12;
+  </script>
 </body>
 </html>
